@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{4ABB7169-B61B-435E-9215-A9EDE3384727}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelTests", "ModelTests\ModelTests.csproj", "{AEC4DA9F-E267-478C-A793-B80D95E571CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4ABB7169-B61B-435E-9215-A9EDE3384727}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ABB7169-B61B-435E-9215-A9EDE3384727}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ABB7169-B61B-435E-9215-A9EDE3384727}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ABB7169-B61B-435E-9215-A9EDE3384727}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEC4DA9F-E267-478C-A793-B80D95E571CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEC4DA9F-E267-478C-A793-B80D95E571CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEC4DA9F-E267-478C-A793-B80D95E571CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEC4DA9F-E267-478C-A793-B80D95E571CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
