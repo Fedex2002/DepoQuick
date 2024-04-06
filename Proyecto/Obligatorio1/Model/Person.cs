@@ -11,4 +11,31 @@ public class Person
     {
         
     }
+    public Person(string name, string surname, string email, string password)
+    {
+        _name = name;
+        _surname = surname;
+        _email = email;
+        _password = password;
+    }
+
+    public string GetName()
+    {
+        return _name;
+    }
+    
+    public string GetSurname()
+    {
+        return _surname;
+    }
+    
+    public string GetEmail()
+    {
+        return _email;
+    }
+    
+    public string GetPassword()
+    {
+        return _password;
+    }
 }
