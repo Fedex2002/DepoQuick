@@ -38,6 +38,11 @@ public class PersonTests
         _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023#");
         Assert.IsTrue(_myperson.ValidatePassword());
     }
-    
-    
+
+    [TestMethod]
+    [ExpectedException(typeof(PersonExceptions))]
+    public void WhenCreatingANewUserWithPasswordValidations_ShouldReturnFalseIfItIsNotAValidPassword()
+    {
+        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "franco");
+    }
 }
