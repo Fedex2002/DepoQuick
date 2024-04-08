@@ -32,4 +32,10 @@ public class PersonTests
         Assert.AreEqual("1234", _myperson.GetPassword());
     }
     
+    [TestMethod]
+    public void WhenCreatingANewUserWithPasswordValidations_ShouldReturnTrueIfItIsAValidPassword()
+    {
+        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023");
+        Assert.IsTrue(_myperson.ValidatePassword());
+    }
 }
