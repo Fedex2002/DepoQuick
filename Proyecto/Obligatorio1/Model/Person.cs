@@ -35,56 +35,62 @@ public class Person
 
     private bool HasUppercaseLetter()
     {
+        bool ret = false;
         foreach (var p in _password)
         {
             if (char.IsUpper(p))
             {
-                return true;
+                ret = true;
+                
             }
         }
 
-        return false;
+        return ret;
     }
 
     private bool HasLowercaseLetter()
     {
+        bool ret = false;
         foreach (var p in _password)
         {
             if (char.IsLower(p))
             {
-                return true;
+                ret = true;
+                
             }
 
         }
 
-        return false;
+        return ret;
     }
 
     private bool HasAtLeastOneSymbol()
     {
+        bool ret = false;
         char[] symbols = { '#', '@', '$', '.', ',' };
         foreach (char symbol in symbols)
         {
             if (_password.Contains(symbol))
             {
-                return true;
+                ret = true;
             }
         }
 
-        return false;
+        return ret;
     }
 
     private bool HasAtLeastOneNumber()
     {
+        bool ret = false;
         foreach (var p in _password)
         {
             if (char.IsDigit(p))
             {
-                return true;
+                ret = true;
             }
         }
 
-        return false;
+        return ret;
     }
 
     public string GetName()
