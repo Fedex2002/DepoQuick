@@ -18,6 +18,11 @@ public class Person
         _email = email;
         _password = password;
     }
+    
+    public bool ValidatePassword()
+    {
+        return true;
+    }
 
     public string GetName()
     {
