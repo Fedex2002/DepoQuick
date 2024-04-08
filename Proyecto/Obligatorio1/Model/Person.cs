@@ -21,7 +21,67 @@ public class Person
     
     public bool ValidatePassword()
     {
-        return true;
+        return HasCorrectNumberOfDigits() && HasUppercaseLetter() && HasLowercaseLetter() 
+               && HasAtLeastOneSymbol() && HasAtLeastOneNumber();
+    }
+
+    private bool HasCorrectNumberOfDigits()
+    {
+        return _password.Length >= 8;
+    }
+
+    private bool HasUppercaseLetter()
+    {
+        foreach (var p in _password)
+        {
+            if (char.IsUpper(p))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool HasLowercaseLetter()
+    {
+        foreach (var p in _password)
+        {
+            if (char.IsLower(p))
+            {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    private bool HasAtLeastOneSymbol()
+    {
+        char[] symbols = { '#', '@', '$', '.', ',' };
+        foreach (char symbol in symbols)
+        {
+            if (_password.Contains(symbol))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool HasAtLeastOneNumber()
+    {
+        foreach (var p in _password)
+        {
+            if (char.IsDigit(p))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public string GetName()

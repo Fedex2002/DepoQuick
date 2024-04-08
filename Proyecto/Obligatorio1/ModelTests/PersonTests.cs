@@ -35,7 +35,9 @@ public class PersonTests
     [TestMethod]
     public void WhenCreatingANewUserWithPasswordValidations_ShouldReturnTrueIfItIsAValidPassword()
     {
-        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023");
+        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023#");
         Assert.IsTrue(_myperson.ValidatePassword());
     }
+    
+    
 }
