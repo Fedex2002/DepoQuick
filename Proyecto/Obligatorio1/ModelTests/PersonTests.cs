@@ -1,4 +1,6 @@
 using Model;
+using Model.Exceptions;
+
 namespace ModelTests;
 
 [TestClass]
@@ -24,12 +26,12 @@ public class PersonTests
         string name = "Franco";
         string surname = "Ramos";
         string email = "francoramos1511@gmail.com";
-        string password = "1234";
+        string password = "FrancoRamos2023#";
         _myperson = new Person(name, surname, email, password);
         Assert.AreEqual("Franco", _myperson.GetName());
         Assert.AreEqual("Ramos", _myperson.GetSurname());
         Assert.AreEqual("francoramos1511@gmail.com", _myperson.GetEmail());
-        Assert.AreEqual("1234", _myperson.GetPassword());
+        Assert.AreEqual("FrancoRamos2023#", _myperson.GetPassword());
     }
     
     [TestMethod]
@@ -41,7 +43,7 @@ public class PersonTests
 
     [TestMethod]
     [ExpectedException(typeof(PersonExceptions))]
-    public void WhenCreatingANewUserWithPasswordValidations_ShouldReturnFalseIfItIsNotAValidPassword()
+    public void WhenCreatingANewUserWithPasswordValidations_ShouldReturnExceptionIfItIsNotAValidPassword()
     {
         _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "franco");
     }

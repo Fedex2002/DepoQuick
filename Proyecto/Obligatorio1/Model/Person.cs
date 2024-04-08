@@ -1,4 +1,6 @@
-﻿namespace Model;
+﻿using Model.Exceptions;
+
+namespace Model;
 
 public class Person
 {
@@ -16,7 +18,8 @@ public class Person
         _name = name;
         _surname = surname;
         _email = email;
-        _password = password;
+        _password = "";
+        SetPassword(password);
     }
     
     public bool ValidatePassword()
@@ -103,4 +106,16 @@ public class Person
     {
         return _password;
     }
+    
+    private void SetPassword(string password)
+    {
+        _password = password;
+        if(!ValidatePassword())
+        {
+            throw new PersonExceptions("Password is not valid");
+        } 
+     
+        
+    }
+    
 }
