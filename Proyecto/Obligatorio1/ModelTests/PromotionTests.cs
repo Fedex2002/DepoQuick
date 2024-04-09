@@ -31,4 +31,10 @@ public class PromotionTests
     {
         Assert.IsTrue(_myPromotion.ValidateDiscount());
     }
+    
+    [TestMethod]
+    public void CreatingPromotionWithDateValidations_ShouldReturnTrueIfItIsAValidDate()
+    {
+        Assert.IsTrue(_myPromotion.ValidateDate());
+    }
 }
