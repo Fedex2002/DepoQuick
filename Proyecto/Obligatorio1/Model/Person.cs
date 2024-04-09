@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.ComponentModel.Design;
+using System.Text.RegularExpressions;
 using Model.Exceptions;
 
 namespace Model;
@@ -16,8 +17,9 @@ public class Person
     }
     public Person(string name, string surname, string email, string password)
     {
-        _name = name;
-        _surname = surname;
+        _name = "";
+        _surname = "";
+        SetNameAndSurname(name, surname);
         _email = "";
         SetEmail(email);
         _password = "";
@@ -35,12 +37,26 @@ public class Person
         string pattern = @"^[a-zA-Z0-9.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
         return Regex.IsMatch(this._email, pattern);
     }
-
+    
     public bool ValidateNameAndSurname()
     {
+        return CheckIfEmpty() && CheckLength() && CheckPattern();
+    }
+    
+    private bool CheckIfEmpty()
+    {
+        return !string.IsNullOrEmpty(_name) && !string.IsNullOrEmpty(_surname);
+    }
+    
+    private bool CheckLength()
+    {
+        return _name.Length + _surname.Length <= 100;
+    }
+    
+    private bool CheckPattern()
+    {
         string pattern = "^[a-zA-Z ]+$";
-        return !string.IsNullOrEmpty(_name) && !string.IsNullOrEmpty(_surname) && _name.Length + _surname.Length <= 100
-               && Regex.IsMatch(_name, pattern) && Regex.IsMatch(_surname, pattern);
+        return Regex.IsMatch(_name, pattern) && Regex.IsMatch(_surname, pattern);
     }
     
     private bool HasCorrectNumberOfDigits()
@@ -148,5 +164,15 @@ public class Person
         
     }
     
+    private void SetNameAndSurname(string name, string surname)
+    {
+        _name = name;
+        _surname = surname;
+        if(!ValidateNameAndSurname())
+        {
+            throw new PersonExceptions("Name or Surname are not valid");
+        } 
+        
+    }
     
 }
