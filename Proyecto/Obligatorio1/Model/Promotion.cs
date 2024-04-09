@@ -22,4 +22,9 @@ public class Promotion
     {
         return _label.Length <= 20;
     }
+    
+    public bool ValidateDiscount()
+    {
+        return _discount >= 5 && _discount <= 75;
+    }
 }
