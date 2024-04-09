@@ -17,6 +17,7 @@ public class PromotionTests
     [TestMethod]
     public void CreatingEmptyPromotionShouldReturnEmpty()
     {
+        _myPromotion = new Promotion();
         Assert.IsNotNull(_myPromotion);
     }
 

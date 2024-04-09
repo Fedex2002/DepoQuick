@@ -27,4 +27,9 @@ public class Promotion
     {
         return _discount >= 5 && _discount <= 75;
     }
+    
+    public bool ValidateDate()
+    {
+        return _dateStart < _dateEnd;
+    }
 }
