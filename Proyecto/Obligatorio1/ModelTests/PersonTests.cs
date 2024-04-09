@@ -50,5 +50,12 @@ public class PersonTests
         _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023#");
         Assert.IsTrue(_myperson.ValidateEmail());
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(PersonExceptions))]
+    public void WhenCreatingANewPersonWithEmailValidations_ShouldReturnExceptionIfItIsNotAValidEmail()
+    {
+        _myperson = new Person("Franco", "Ramos", "francoramos1511gmail.com", "franco");
+    }
 
 }
