@@ -27,7 +27,12 @@ public class Person
         return HasCorrectNumberOfDigits() && HasUppercaseLetter() && HasLowercaseLetter() 
                && HasAtLeastOneSymbol() && HasAtLeastOneNumber();
     }
-
+    
+    public bool ValidateEmail()
+    {
+        return _email.Contains("@") && _email.Contains(".");
+    }
+    
     private bool HasCorrectNumberOfDigits()
     {
         return _password.Length >= 8;
@@ -120,8 +125,9 @@ public class Person
         {
             throw new PersonExceptions("Password is not valid");
         } 
-     
         
     }
+    
+    
     
 }
