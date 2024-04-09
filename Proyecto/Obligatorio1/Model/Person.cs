@@ -35,6 +35,13 @@ public class Person
         string pattern = @"^[a-zA-Z0-9.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
         return Regex.IsMatch(this._email, pattern);
     }
+
+    public bool ValidateNameAndSurname()
+    {
+        string pattern = "^[a-zA-Z ]+$";
+        return !string.IsNullOrEmpty(_name) && !string.IsNullOrEmpty(_surname) && _name.Length + _surname.Length <= 100
+               && Regex.IsMatch(_name, pattern) && Regex.IsMatch(_surname, pattern);
+    }
     
     private bool HasCorrectNumberOfDigits()
     {
