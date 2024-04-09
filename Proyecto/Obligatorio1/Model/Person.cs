@@ -1,4 +1,5 @@
-﻿using Model.Exceptions;
+﻿using System.Text.RegularExpressions;
+using Model.Exceptions;
 
 namespace Model;
 
@@ -17,7 +18,8 @@ public class Person
     {
         _name = name;
         _surname = surname;
-        _email = email;
+        _email = "";
+        SetEmail(email);
         _password = "";
         SetPassword(password);
     }
@@ -30,7 +32,8 @@ public class Person
     
     public bool ValidateEmail()
     {
-        return _email.Contains("@") && _email.Contains(".");
+        string pattern = @"^[a-zA-Z0-9.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+        return Regex.IsMatch(this._email, pattern);
     }
     
     private bool HasCorrectNumberOfDigits()
@@ -128,6 +131,15 @@ public class Person
         
     }
     
+    private void SetEmail(string email)
+    {
+        _email = email;
+        if(!ValidateEmail())
+        {
+            throw new PersonExceptions("Email is not valid");
+        } 
+        
+    }
     
     
 }
