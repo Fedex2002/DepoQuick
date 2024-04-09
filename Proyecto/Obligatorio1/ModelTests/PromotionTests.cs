@@ -17,4 +17,13 @@ public class PromotionTests
     {
         Assert.IsNotNull(_myPromotion);
     }
+
+    [TestMethod]
+    public void CreatingPromotionWithLabelValidations_ShouldReturnTrueIfItIsAValidLabel()
+    {
+        DateTime dateStart = new DateTime(2024,7,15);
+        DateTime dateEnd = new DateTime(2024,10,15);
+        _myPromotion = new Promotion("Descuento Invierno", 25, dateStart, dateEnd);
+        Assert.IsTrue(_myPromotion.ValidateLabel());
+    }
 }
