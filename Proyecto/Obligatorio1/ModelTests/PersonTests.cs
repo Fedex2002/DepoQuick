@@ -23,11 +23,7 @@ public class PersonTests
     [TestMethod]
     public void CreatingPersonWithValuesShouldReturnValues()
     {
-        string name = "Franco";
-        string surname = "Ramos";
-        string email = "francoramos1511@gmail.com";
-        string password = "FrancoRamos2023#";
-        _myperson = new Person(name, surname, email, password);
+        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023#");
         Assert.AreEqual("Franco", _myperson.GetName());
         Assert.AreEqual("Ramos", _myperson.GetSurname());
         Assert.AreEqual("francoramos1511@gmail.com", _myperson.GetEmail());
@@ -35,7 +31,7 @@ public class PersonTests
     }
     
     [TestMethod]
-    public void WhenCreatingANewUserWithPasswordValidations_ShouldReturnTrueIfItIsAValidPassword()
+    public void WhenCreatingANewPersonWithPasswordValidations_ShouldReturnTrueIfItIsAValidPassword()
     {
         _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023#");
         Assert.IsTrue(_myperson.ValidatePassword());
@@ -43,7 +39,7 @@ public class PersonTests
 
     [TestMethod]
     [ExpectedException(typeof(PersonExceptions))]
-    public void WhenCreatingANewUserWithPasswordValidations_ShouldReturnExceptionIfItIsNotAValidPassword()
+    public void WhenCreatingANewPersonWithPasswordValidations_ShouldReturnExceptionIfItIsNotAValidPassword()
     {
         _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "franco");
     }
