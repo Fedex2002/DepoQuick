@@ -9,7 +9,9 @@ public class PromotionTests
     [TestInitialize]
     public void TestInitialize()
     {
-        _myPromotion = new Promotion();
+        DateTime dateStart = new DateTime(2024,7,15);
+        DateTime dateEnd = new DateTime(2024,10,15);
+        _myPromotion = new Promotion("Descuento Invierno", 25, dateStart, dateEnd);
     }
 
     [TestMethod]
@@ -21,9 +23,12 @@ public class PromotionTests
     [TestMethod]
     public void CreatingPromotionWithLabelValidations_ShouldReturnTrueIfItIsAValidLabel()
     {
-        DateTime dateStart = new DateTime(2024,7,15);
-        DateTime dateEnd = new DateTime(2024,10,15);
-        _myPromotion = new Promotion("Descuento Invierno", 25, dateStart, dateEnd);
         Assert.IsTrue(_myPromotion.ValidateLabel());
+    }
+
+    [TestMethod]
+    public void CreatingPromotionWithDiscountValidations_ShouldReturnTrueIfItIsAValidDiscount()
+    {
+        Assert.IsTrue(_myPromotion.ValidateDiscount());
     }
 }
