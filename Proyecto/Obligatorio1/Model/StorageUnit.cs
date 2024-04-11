@@ -4,39 +4,39 @@ namespace Model;
 
 public class StorageUnit
 {
-    private AreaType area = AreaType.A;
-    private SizeType size = SizeType.Small;
-    private bool climatization = false;
-    private Promotion? promotion = new Promotion();
+    private AreaType _area;
+    private SizeType _size;
+    private bool _climatization;
+    private List<Promotion>? _promotions;
     public StorageUnit()
     {
     }
     
-    public StorageUnit(AreaType area, SizeType size, bool climatization, Promotion promotion)
+    public StorageUnit(AreaType area, SizeType size, bool climatization, List<Promotion> promotions)
     {
-        this.area = area;
-        this.size = size;
-        this.climatization = climatization;
-        this.promotion = promotion;
+        this._area = area;
+        this._size = size;
+        this._climatization = climatization; 
+        this._promotions = promotions;
     }
-    
+       
     public AreaType GetArea()
     {
-        return area;
+        return _area;
     }
     
     public SizeType GetSize()
     {
-        return size;
+        return _size;
     }
     
     public bool GetClimatization()
     {
-        return climatization;
+        return _climatization;
     }
     
-    public Promotion GetPromotion()
+    public List<Promotion> GetPromotions()
     {
-        return promotion;
+        return _promotions;
     }
 }
