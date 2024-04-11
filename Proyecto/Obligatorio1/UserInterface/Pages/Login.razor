@@ -1,0 +1,43 @@
+@page "/"
+@page "/login"
+@layout LoginLayout
+@inherits LayoutComponentBase
+
+<div class="login-container">
+    <div class="login-form">
+        <!-- Agregar aquí el logo u otros elementos si es necesario -->
+        <h3>Iniciar sesión</h3>
+
+        <EditForm Model="@loginModel" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="username">Usuario:</label>
+                <InputText id="username" @bind-Value="loginModel.Username" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <InputText id="password" @bind-Value="loginModel.Password" type="password" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+
+    private void HandleValidSubmit()
+    {
+        // Lógica de manejo de inicio de sesión
+    }
+
+    public class LoginModel
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
+}
