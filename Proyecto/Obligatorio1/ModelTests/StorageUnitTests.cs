@@ -1,5 +1,6 @@
 using System.Transactions;
 using Model;
+using Model.Enums;
 namespace ModelTests;
 
 [TestClass]
