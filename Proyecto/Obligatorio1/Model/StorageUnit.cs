@@ -39,4 +39,35 @@ public class StorageUnit
     {
         return _promotions;
     }
+    
+    public int CalculateStorageUnitPrice()
+    {
+        return SizeOfStorageUnit() + HasClimatization();
+    }
+    private int SizeOfStorageUnit()
+    {
+        int size = 0;
+        if (_size == SizeType.Small)
+        {
+            size = 50;
+        } else if (_size == SizeType.Medium)
+        {
+            size = 75;
+        } else if (_size == SizeType.Large)
+        {
+            size = 100;
+        }
+        return size;
+    }
+    
+    private int HasClimatization()
+    {
+        int c = 0;
+        if (_climatization == true)
+        {
+            c = 20;
+        }
+        return c;
+    }
+    
 }

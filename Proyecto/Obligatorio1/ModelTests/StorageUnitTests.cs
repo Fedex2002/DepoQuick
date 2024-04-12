@@ -32,5 +32,22 @@ public class StorageUnitTests
         Assert.AreEqual(true, storageUnit.GetClimatization());
         Assert.AreEqual(p, storageUnit.GetPromotions());
     }
-    
+ 
+    [TestMethod]
+    public void CalculatingStorageUnitPriceWithValidations_ShouldReturnPrice()
+    {
+        List<Promotion> p = new List<Promotion>();
+        
+        StorageUnit storageUnit = new StorageUnit();
+        Assert.AreEqual(0, storageUnit.CalculateStorageUnitPrice());
+        
+        StorageUnit storageUnitSmall = new StorageUnit(AreaType.A, SizeType.Small, true, p);
+        Assert.AreEqual(70, storageUnitSmall.CalculateStorageUnitPrice());
+        
+        StorageUnit storageUnitMedium = new StorageUnit(AreaType.B, SizeType.Medium, false, null);
+        Assert.AreEqual(75, storageUnitMedium.CalculateStorageUnitPrice());
+        
+        StorageUnit storageUnitLarge = new StorageUnit(AreaType.C, SizeType.Large, true, p);
+        Assert.AreEqual(120, storageUnitLarge.CalculateStorageUnitPrice());
+    }
 }
