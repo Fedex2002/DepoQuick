@@ -9,7 +9,7 @@ public class BookingTests
     [TestInitialize]
     public void TestInitialize()
     {
-        _mybooking = new Booking(true, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _mybooking = new Booking(true, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15));
     }
     
     [TestMethod]
@@ -23,14 +23,14 @@ public class BookingTests
     public void CreatingBookingWithValidations_ShouldReturnValidValues()
     {
         Assert.AreEqual(true, _mybooking.GetApproved());
-        Assert.AreEqual(new DateTime(2024, 7, 15), _mybooking.GetDateStart());
-        Assert.AreEqual(new DateTime(2024, 10, 15), _mybooking.GetDateEnd());
+        Assert.AreEqual(new DateTime(2024, 7, 1), _mybooking.GetDateStart());
+        Assert.AreEqual(new DateTime(2024, 8, 15), _mybooking.GetDateEnd());
     }
     
     [TestMethod]
     public void CreatingBookingWithDateStartAndDayEnd_ShouldReturnCountOfDaysOfBooking()
     {
-        Assert.AreEqual(100, _mybooking.GetCountOfDays());
+        Assert.AreEqual(45, _mybooking.GetCountOfDays());
     }
     
 }

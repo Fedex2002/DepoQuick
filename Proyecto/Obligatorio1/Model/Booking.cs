@@ -31,4 +31,9 @@ public class Booking
     {
         return dateEnd;
     }
+    
+    public int GetCountOfDays()
+    {
+        return (dateEnd - dateStart).Days;
+    }
 }
