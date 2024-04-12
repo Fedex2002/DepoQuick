@@ -38,4 +38,11 @@ public class PromotionTests
     {
         Assert.IsTrue(_myPromotion.ValidateDate());
     }
+    
+    [TestMethod]
+    public void CreatingPromotionWithDiscount_ShouldReturnAValue()
+    {
+        _myPromotion = new Promotion("Descuento Invierno", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
+        Assert.AreEqual(25, _myPromotion.GetDiscount());
+    }
 }
