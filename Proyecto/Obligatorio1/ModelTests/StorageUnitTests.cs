@@ -34,12 +34,18 @@ public class StorageUnitTests
     }
  
     [TestMethod]
-    public void CalculatingDepositPriceWithValidations_ShouldReturnPrice()
+    public void CalculatingStorageUnitPriceWithValidations_ShouldReturnPrice()
     {
         AreaType area = AreaType.A;
-        SizeType size = SizeType.Small;
         List<Promotion> p = new List<Promotion>();
-        StorageUnit storageUnit = new StorageUnit(area, size, true, p);
-        Assert.AreEqual(100, storageUnit.CalculateDepositPrice());
+        
+        StorageUnit storageUnitSmall = new StorageUnit(area, SizeType.Small, true, p);
+        Assert.AreEqual(50, storageUnitSmall.CalculateStorageUnitPrice());
+        
+        StorageUnit storageUnitMedium = new StorageUnit(area, SizeType.Medium, true, p);
+        Assert.AreEqual(75, storageUnitMedium.CalculateStorageUnitPrice());
+        
+        StorageUnit storageUnitLarge = new StorageUnit(area, SizeType.Large, true, p);
+        Assert.AreEqual(100, storageUnitLarge.CalculateStorageUnitPrice());
     }
 }
