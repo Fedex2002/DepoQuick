@@ -39,4 +39,9 @@ public class StorageUnit
     {
         return _promotions;
     }
+    
+    public int CalculateDepositPrice()
+    {
+        return 100;
+    }
 }
