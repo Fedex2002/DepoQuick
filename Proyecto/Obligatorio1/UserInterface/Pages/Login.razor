@@ -3,6 +3,7 @@
 @layout LoginLayout
 @inherits LayoutComponentBase
 
+@inject NavigationManager NavigationManager
 <div class="login-container">
     <div class="login-form">
        
@@ -32,7 +33,7 @@
 
     private void HandleValidSubmit()
     {
-       
+        NavigationManager.NavigateTo("/Index");
     }
 
     public class LoginModel
