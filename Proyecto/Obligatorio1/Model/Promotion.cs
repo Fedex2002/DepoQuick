@@ -32,4 +32,9 @@ public class Promotion
     {
         return _dateStart < _dateEnd;
     }
+    
+    public int GetDiscount()
+    {
+        return _discount;
+    }
 }
