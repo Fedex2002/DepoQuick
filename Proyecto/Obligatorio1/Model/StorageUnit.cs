@@ -42,7 +42,7 @@ public class StorageUnit
     
     public int CalculateStorageUnitPrice()
     {
-        return SizeOfStorageUnit();
+        return SizeOfStorageUnit() + HasClimatization();
     }
     private int SizeOfStorageUnit()
     {
@@ -60,5 +60,14 @@ public class StorageUnit
         return size;
     }
     
+    private int HasClimatization()
+    {
+        int c = 0;
+        if (_climatization == true)
+        {
+            c = 20;
+        }
+        return c;
+    }
     
 }

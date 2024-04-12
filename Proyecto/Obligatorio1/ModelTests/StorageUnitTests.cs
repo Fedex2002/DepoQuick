@@ -42,12 +42,12 @@ public class StorageUnitTests
         Assert.AreEqual(0, storageUnit.CalculateStorageUnitPrice());
         
         StorageUnit storageUnitSmall = new StorageUnit(AreaType.A, SizeType.Small, true, p);
-        Assert.AreEqual(50, storageUnitSmall.CalculateStorageUnitPrice());
+        Assert.AreEqual(70, storageUnitSmall.CalculateStorageUnitPrice());
         
         StorageUnit storageUnitMedium = new StorageUnit(AreaType.B, SizeType.Medium, false, null);
         Assert.AreEqual(75, storageUnitMedium.CalculateStorageUnitPrice());
         
         StorageUnit storageUnitLarge = new StorageUnit(AreaType.C, SizeType.Large, true, p);
-        Assert.AreEqual(100, storageUnitLarge.CalculateStorageUnitPrice());
+        Assert.AreEqual(120, storageUnitLarge.CalculateStorageUnitPrice());
     }
 }
