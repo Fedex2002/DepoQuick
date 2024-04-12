@@ -40,8 +40,25 @@ public class StorageUnit
         return _promotions;
     }
     
-    public int CalculateDepositPrice()
+    public int CalculateStorageUnitPrice()
     {
-        return 100;
+        return SizeOfStorageUnit();
     }
+    private int SizeOfStorageUnit()
+    {
+        int size = 0;
+        if (_size == SizeType.Small)
+        {
+            size = 50;
+        } else if (_size == SizeType.Medium)
+        {
+            size = 75;
+        } else if (_size == SizeType.Large)
+        {
+            size = 100;
+        }
+        return size;
+    }
+    
+    
 }
