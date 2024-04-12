@@ -32,5 +32,14 @@ public class StorageUnitTests
         Assert.AreEqual(true, storageUnit.GetClimatization());
         Assert.AreEqual(p, storageUnit.GetPromotions());
     }
-    
+ 
+    [TestMethod]
+    public void CalculatingDepositPriceWithValidations_ShouldReturnPrice()
+    {
+        AreaType area = AreaType.A;
+        SizeType size = SizeType.Small;
+        List<Promotion> p = new List<Promotion>();
+        StorageUnit storageUnit = new StorageUnit(area, size, true, p);
+        Assert.AreEqual(100, storageUnit.CalculateDepositPrice());
+    }
 }
