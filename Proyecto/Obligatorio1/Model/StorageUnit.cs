@@ -51,12 +51,12 @@ public class StorageUnit
         return price;
     }
     
-    private double RuleOf3()
+    public double RuleOf3()
     {
         return ((SizeOfStorageUnit() + HasClimatization()) * GetValuePromotions()) / 100;
     }
     
-    private bool HasPromotions()
+    public bool HasPromotions()
     {
         return _promotions != null;
     }
