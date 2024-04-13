@@ -31,12 +31,11 @@ public class StorageUnitTests
     {
         AreaType area = AreaType.A;
         SizeType size = SizeType.Small;
-        List<Promotion> p = new List<Promotion>();
-        StorageUnit storageUnit = new StorageUnit(area, size, true, p);
-        Assert.AreEqual(AreaType.A, storageUnit.GetArea());
-        Assert.AreEqual(SizeType.Small, storageUnit.GetSize());
-        Assert.AreEqual(true, storageUnit.GetClimatization());
-        Assert.AreEqual(p, storageUnit.GetPromotions());
+        _mystorageunit = new StorageUnit(area, size, true, _promotions);
+        Assert.AreEqual(AreaType.A, _mystorageunit.GetArea());
+        Assert.AreEqual(SizeType.Small, _mystorageunit.GetSize());
+        Assert.AreEqual(true, _mystorageunit.GetClimatization());
+        Assert.AreEqual(_promotions, _mystorageunit.GetPromotions());
     }
  
     [TestMethod]
