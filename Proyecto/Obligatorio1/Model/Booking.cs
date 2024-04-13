@@ -18,6 +18,7 @@ public class Booking
         this.dateEnd = dateEnd;
         this.storageUnit = storageUnit;
     }
+    
     public bool GetApproved()
     {
         return approved;
@@ -40,7 +41,7 @@ public class Booking
     
     public double CalculateBookingTotalPrice()
     {
-        return 52.5;
+        return storageUnit.CalculateStorageUnitPrice() * GetCountOfDays();
     }
     
     

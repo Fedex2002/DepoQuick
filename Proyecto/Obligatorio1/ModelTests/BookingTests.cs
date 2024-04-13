@@ -41,7 +41,7 @@ public class BookingTests
     [TestMethod]
     public void CalculatingBookingTotalPriceWithValidations_ShouldReturnTotalPrice()
     {
-        Assert.AreEqual(52.5, _mybooking.CalculateBookingTotalPrice());
+        Assert.AreEqual(3150, _mybooking.CalculateBookingTotalPrice());
     }
     
 }
