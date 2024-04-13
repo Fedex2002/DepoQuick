@@ -41,7 +41,16 @@ public class BookingTests
     [TestMethod]
     public void CalculatingBookingTotalPriceWithValidations_ShouldReturnTotalPrice()
     {
-        Assert.AreEqual(2362.5, _mybooking.CalculateBookingTotalPrice());
+        Assert.AreEqual(2126.25, _mybooking.CalculateBookingTotalPrice());
+        
+        List<Promotion> p = new List<Promotion>();
+        Promotion myPromotion = new Promotion("Descuento Invierno", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
+        p.Add(myPromotion);
+        StorageUnit storageUnitSmall = new StorageUnit(AreaType.A, SizeType.Small, true, p);
+        _mybooking = new Booking(true, new DateTime(2024, 7, 1), new DateTime(2024, 7, 4), storageUnitSmall);
+        Assert.AreEqual(157.5, _mybooking.CalculateBookingTotalPrice());
+        
+        _mybooking = new Booking(true, new DateTime(2024, 7, 1), new DateTime(2024, 7, 9), storageUnitSmall);
+        Assert.AreEqual(399, _mybooking.CalculateBookingTotalPrice());
     }
-    
 }

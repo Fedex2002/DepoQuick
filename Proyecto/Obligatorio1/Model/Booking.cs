@@ -2,10 +2,10 @@ namespace Model;
 
 public class Booking
 {
-    private bool approved;
-    private DateTime dateStart;
-    private DateTime dateEnd;
-    private StorageUnit storageUnit;
+    private bool _approved;
+    private DateTime _dateStart;
+    private DateTime _dateEnd;
+    private StorageUnit _storageUnit;
     
     public Booking()
     {
@@ -13,35 +13,67 @@ public class Booking
     
     public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit)
     {
-        this.approved = approved;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-        this.storageUnit = storageUnit;
+        this._approved = approved;
+        this._dateStart = dateStart;
+        this._dateEnd = dateEnd;
+        this._storageUnit = storageUnit;
     }
     
     public bool GetApproved()
     {
-        return approved;
+        return _approved;
     }
     
     public DateTime GetDateStart()
     {
-        return dateStart;
+        return _dateStart;
     }
     
     public DateTime GetDateEnd()
     {
-        return dateEnd;
+        return _dateEnd;
     }
 
     public int GetCountOfDays()
     {
-        return (dateEnd - dateStart).Days;
+        return (_dateEnd - _dateStart).Days;
     }
     
     public double CalculateBookingTotalPrice()
     {
-        return storageUnit.CalculateStorageUnitPrice() * GetCountOfDays();
+        return TotalPriceWithDiscountForBookingDays();
     }
-    
+
+    private double TotalPriceWithDiscountForBookingDays()
+    {
+        double totalPrice = _storageUnit.CalculateStorageUnitPrice() * GetCountOfDays();;
+        return CheckDiscount(totalPrice);
+    }
+
+    private double CheckDiscount(double totalPrice)
+    {
+        double discount = 0;
+        double totalPriceWithDiscount = 0;
+        if (GetCountOfDays() >= 7 && GetCountOfDays() <= 14)
+        {
+            discount = 5;
+            totalPriceWithDiscount = RuleOf3(totalPrice, discount);
+        } else if (GetCountOfDays() > 14)
+        {
+            discount = 10;
+            totalPriceWithDiscount = RuleOf3(totalPrice, discount);
+        }
+        else
+        {
+            totalPriceWithDiscount = totalPrice;
+        }
+
+        return totalPriceWithDiscount;
+    }
+
+    private double RuleOf3(double totalPrice, double discount)
+    {
+        double totalDiscount = (totalPrice * discount) / 100;
+        return totalPrice - totalDiscount;
+    }
 }
