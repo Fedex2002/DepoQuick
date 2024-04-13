@@ -34,20 +34,22 @@ public class StorageUnitTests
     }
  
     [TestMethod]
-    public void CalculatingStorageUnitPriceWithValidations_ShouldReturnPrice()
+    public void CalculatingStorageUnitPricePerDayWithValidations_ShouldReturnPrice()
     {
         List<Promotion> p = new List<Promotion>();
+        Promotion myPromotion = new Promotion("Descuento Invierno", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
+        p.Add(myPromotion);
         
         StorageUnit storageUnit = new StorageUnit();
         Assert.AreEqual(0, storageUnit.CalculateStorageUnitPrice());
         
         StorageUnit storageUnitSmall = new StorageUnit(AreaType.A, SizeType.Small, true, p);
-        Assert.AreEqual(70, storageUnitSmall.CalculateStorageUnitPrice());
+        Assert.AreEqual(52.5, storageUnitSmall.CalculateStorageUnitPrice());
         
         StorageUnit storageUnitMedium = new StorageUnit(AreaType.B, SizeType.Medium, false, null);
         Assert.AreEqual(75, storageUnitMedium.CalculateStorageUnitPrice());
         
-        StorageUnit storageUnitLarge = new StorageUnit(AreaType.C, SizeType.Large, true, p);
+        StorageUnit storageUnitLarge = new StorageUnit(AreaType.C, SizeType.Large, true, null);
         Assert.AreEqual(120, storageUnitLarge.CalculateStorageUnitPrice());
     }
 }
