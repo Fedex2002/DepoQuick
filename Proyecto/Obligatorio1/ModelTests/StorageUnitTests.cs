@@ -34,7 +34,7 @@ public class StorageUnitTests
     }
  
     [TestMethod]
-    public void CalculatingStorageUnitPriceWithValidations_ShouldReturnPrice()
+    public void CalculatingStorageUnitPricePerDayWithValidations_ShouldReturnPrice()
     {
         List<Promotion> p = new List<Promotion>();
         Promotion myPromotion = new Promotion("Descuento Invierno", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
