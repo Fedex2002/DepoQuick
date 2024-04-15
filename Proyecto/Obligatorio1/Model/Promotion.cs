@@ -33,8 +33,23 @@ public class Promotion
         return _dateStart < _dateEnd;
     }
     
+    public string GetLabel()
+    {
+        return _label;
+    }
+    
     public int GetDiscount()
     {
         return _discount;
+    }
+    
+    public DateTime GetDateStart()
+    {
+        return _dateStart;
+    }
+    
+    public DateTime GetDateEnd()
+    {
+        return _dateEnd;
     }
 }
