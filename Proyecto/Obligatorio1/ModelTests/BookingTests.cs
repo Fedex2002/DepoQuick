@@ -53,4 +53,9 @@ public class BookingTests
         Assert.AreEqual(399, _mybooking.CalculateBookingTotalPrice());
     }
 
+    [TestMethod]
+    public void WhenRejectingBookingWithValidations_ShouldReturnTrueIfValid()
+    {
+        Assert.AreEqual("Rejected", _mybooking.GetRejection());
+    }
 }
