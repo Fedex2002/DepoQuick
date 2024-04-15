@@ -6,17 +6,19 @@ public class Booking
     private DateTime _dateStart;
     private DateTime _dateEnd;
     private StorageUnit _storageUnit;
+    private string _rejectedBooking;
     
     public Booking()
     {
     }
     
-    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit)
+    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedBooking)
     {
         this._approved = approved;
         this._dateStart = dateStart;
         this._dateEnd = dateEnd;
         this._storageUnit = storageUnit;
+        this._rejectedBooking = rejectedBooking;
     }
     
     public bool GetApproved()
@@ -32,6 +34,11 @@ public class Booking
     public DateTime GetDateEnd()
     {
         return _dateEnd;
+    }
+    
+    public string GetRejectedBooking()
+    {
+        return _rejectedBooking;
     }
 
     public int GetCountOfDays()
