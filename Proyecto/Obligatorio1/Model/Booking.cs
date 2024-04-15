@@ -1,3 +1,4 @@
+using Model.Exceptions;
 namespace Model;
 
 public class Booking
@@ -6,17 +7,20 @@ public class Booking
     private DateTime _dateStart;
     private DateTime _dateEnd;
     private StorageUnit _storageUnit;
+    private string _rejectedBooking { get; set; }
     
     public Booking()
     {
     }
     
-    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit)
+    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedBooking)
     {
         this._approved = approved;
         this._dateStart = dateStart;
         this._dateEnd = dateEnd;
         this._storageUnit = storageUnit;
+        _rejectedBooking = "";
+        SetRejectedBooking(rejectedBooking);
     }
     
     public bool GetApproved()
@@ -32,6 +36,20 @@ public class Booking
     public DateTime GetDateEnd()
     {
         return _dateEnd;
+    }
+    
+    public string GetRejectedBooking()
+    {
+        return _rejectedBooking;
+    }
+    
+    private void SetRejectedBooking(string rejectedBooking)
+    {
+        _rejectedBooking = rejectedBooking;
+        if (!CheckRejection())
+        {
+            throw new BookingExceptions("Rejection message is not valid");
+        }
     }
 
     public int GetCountOfDays()
@@ -75,5 +93,10 @@ public class Booking
     {
         double totalDiscount = (totalPrice * discount) / 100;
         return totalPrice - totalDiscount;
+    }
+    
+    public bool CheckRejection()
+    {
+        return _rejectedBooking.Length <= 300;
     }
 }
