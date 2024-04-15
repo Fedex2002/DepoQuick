@@ -57,7 +57,7 @@ public class BookingTests
     [TestMethod]
     public void WhenRejectingBookingWithValidations_ShouldReturnTrueIfValid()
     {
-        Assert.AreEqual("Rejected", _mybooking.GetRejection());
+        Assert.AreEqual(true, _mybooking.CheckRejection());
     }
 
     [TestMethod]
