@@ -6,11 +6,13 @@ namespace ModelTests;
 public class UserTests
 {
     private User _myuser;
+    private Booking _booking;
 
     [TestInitialize]
     public void TestInitialize()
     {
-        _myuser = new User();
+        _booking = new Booking();
+        _myuser = new User("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023#", _booking);
     }
 
     [TestMethod]
@@ -22,11 +24,10 @@ public class UserTests
     [TestMethod]
     public void CreatingUserWithValidations_ShouldReturnValues()
     {
-        _myuser = new User(string name, string surname, string email, string password, Booking _mybooking);
-        Assert.AreEqual(name, _myuser.GetName());
-        Assert.AreEqual(surname, _myuser.GetSurname());
-        Assert.AreEqual(email, _myuser.GetEmail());
-        Assert.AreEqual(password, _myuser.GetPassword());
-        Assert.AreEqual(_mybooking, _myuser.GetBooking());
+        Assert.AreEqual("Franco", _myuser.GetName());
+        Assert.AreEqual("Ramos", _myuser.GetSurname());
+        Assert.AreEqual("francoramos1511@gmail.com", _myuser.GetEmail());
+        Assert.AreEqual("FrancoRamos2023#", _myuser.GetPassword());
+        Assert.AreEqual(_booking, _myuser.GetBooking());
     }
 }
