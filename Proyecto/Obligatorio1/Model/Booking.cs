@@ -83,4 +83,9 @@ public class Booking
         double totalDiscount = (totalPrice * discount) / 100;
         return totalPrice - totalDiscount;
     }
+    
+    public string GetRejection()
+    {
+        return _rejectedBooking;
+    }
 }
