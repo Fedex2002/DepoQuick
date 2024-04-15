@@ -58,4 +58,12 @@ public class BookingTests
     {
         Assert.AreEqual("Rejected", _mybooking.GetRejection());
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(BookingExceptions))]
+    public void WhenRejectingBookingWithValidations_ShouldReturnExceptionIfNotValid()
+    {
+        _mybooking = new Booking(true, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, 
+            "Lamentamos informarte que, después de una revisión exhaustiva y consideración cuidadosa, hemos decidido que no podremos avanzar con tu solicitud en esta ocasión. Nos gustaría expresarte nuestro agradecimiento por haber compartido tu propuesta con nosotros y por tu interés en colaborar con nuestro equipo. Valoramos sinceramente el tiempo y el esfuerzo que has dedicado a esta oportunidad. Por favor, no dudes en ponerte en contacto con nosotros si tienes alguna pregunta o si deseas obtener más información sobre nuestra decisión. Te deseamos todo lo mejor en tus futuros esfuerzos y proyectos.");
+    }
 }
