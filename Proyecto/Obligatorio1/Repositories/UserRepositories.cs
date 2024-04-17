@@ -7,11 +7,11 @@ public class UserRepositories
     
     public void AddUser(User user)
     {
-        return;
+        _users.Add(user);
     }
     public User FindUser(User user)
     {
-        User userInRepo = new User();
+        User userInRepo = _users.Find(u => u.GetEmail() == user.GetEmail());
         return userInRepo;
     }
 }
