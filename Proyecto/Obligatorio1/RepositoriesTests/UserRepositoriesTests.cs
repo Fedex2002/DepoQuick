@@ -1,16 +1,17 @@
 using Model;
+using Repositories;
 
 namespace RepositoriesTests;
 
 [TestClass]
 public class UserRepositoryTest
 {
-    private UserRepository _userepo;
+    private UserRepositories _userepo;
     private User _user;
     [TestInitialize] 
     public void TestInitialize()
     {
-        _userepo = new UserRepository();
+        _userepo = new UserRepositories();
         _user = new User();
     }
 
