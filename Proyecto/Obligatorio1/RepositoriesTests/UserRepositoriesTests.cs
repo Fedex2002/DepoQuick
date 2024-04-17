@@ -1,4 +1,5 @@
 using Model;
+using Model.Exceptions;
 using Repositories;
 
 namespace RepositoriesTests;
@@ -27,11 +28,9 @@ public class UserRepositoryTest
     [TestMethod]
     [ExpectedException(typeof(RepositoryExceptions))]
     public void WhenAddingExistingUserShouldThrowAnException()
-
     {
         _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", _booking);
         _userepo.AddUser(_user);
         _userepo.AddUser(_user);
-        
     }
 }
