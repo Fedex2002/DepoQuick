@@ -8,6 +8,7 @@ public class UserRepositoryTest
 {
     private UserRepositories _userepo;
     private User _user;
+    private Booking _booking;
     [TestInitialize] 
     public void TestInitialize()
     {
@@ -21,5 +22,16 @@ public class UserRepositoryTest
         _userepo.AddUser(_user);
         User userInRepo = _userepo.FindUser(_user);
         Assert.AreEqual(_user.GetEmail(), userInRepo.GetEmail());
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(RepositoryExceptions))]
+    public void WhenAddingExistingUserShouldThrowAnException()
+
+    {
+        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", _booking);
+        _userepo.AddUser(_user);
+        _userepo.AddUser(_user);
+        
     }
 }
