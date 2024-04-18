@@ -20,7 +20,7 @@ public class UserRepositoryTest
     [TestMethod]
     public void WhenAddingNewUserShouldAddItToRepository()
     {
-        _userepo.AddUser(_user);
+        _userepo.AddToRepository(_user);
         User userInRepo = _userepo.FindUser(_user);
         Assert.AreEqual(_user.GetEmail(), userInRepo.GetEmail());
     }
