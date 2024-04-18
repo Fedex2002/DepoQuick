@@ -31,6 +31,9 @@ public class UserRepositories : IRepositories<User>
     {
         return _users.Any(u => u.GetEmail() == user.GetEmail());
     }
-    
+    public void RemoveFromRepository(User user)
+    {
+        _users.Remove(user);
+    }
   
 }
