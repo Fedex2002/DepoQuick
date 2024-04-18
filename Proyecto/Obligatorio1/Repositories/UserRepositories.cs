@@ -9,7 +9,7 @@ public class UserRepositories : IRepositories<User>
     
      public void AddToRepository(User user)
      {
-         if (UserExists(user))
+         if (ExistsInRepository(user))
          {
              ThrowException();
          }
@@ -27,8 +27,13 @@ public class UserRepositories : IRepositories<User>
         return userInRepo;
     }
 
-    private bool UserExists(User user)
+    public bool ExistsInRepository(User user)
     {
         return _users.Any(u => u.GetEmail() == user.GetEmail());
+    }
+    
+    public void RemoveFromRepository (User user)
+    {
+        _users.Remove(user);
     }
 }
