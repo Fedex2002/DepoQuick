@@ -10,17 +10,23 @@ public class UserRepositories
     {
         if (UserExists(user))
         {
-            throw new RepositoryExceptions("The user already exists");
+            ThrowException();
         }
         _users.Add(user);
     }
+
+    private static void ThrowException()
+    {
+        throw new RepositoryExceptions("The user already exists");
+    }
+
     public User FindUser(User user)
     {
         User userInRepo = _users.Find(u => u.GetEmail() == user.GetEmail());
         return userInRepo;
     }
 
-    public bool UserExists(User user)
+    private bool UserExists(User user)
     {
         return _users.Any(u => u.GetEmail() == user.GetEmail());
     }
