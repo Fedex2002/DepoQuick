@@ -20,7 +20,7 @@ public class UserRepositoryTest
     [TestMethod]
     public void WhenAddingNewUserShouldAddItToRepository()
     {
-        _userepo.AddUser(_user);
+        _userepo.AddToRepository(_user);
         User userInRepo = _userepo.FindUser(_user);
         Assert.AreEqual(_user.GetEmail(), userInRepo.GetEmail());
     }
@@ -30,7 +30,15 @@ public class UserRepositoryTest
     public void WhenAddingExistingUserShouldThrowAnException()
     {
         _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", _booking);
-        _userepo.AddUser(_user);
-        _userepo.AddUser(_user);
+        _userepo.AddToRepository(_user);
+        _userepo.AddToRepository(_user);
+    }
+    
+    [TestMethod] 
+    public void WhenDeletingUserShouldRemoveItFromRepository()
+    {
+        _userepo.AddToRepository(_user);
+        _userepo.RemoveFromRepository(_user);
+        Assert.IsFalse(_userepo.ExistsInRepository(_user));
     }
 }

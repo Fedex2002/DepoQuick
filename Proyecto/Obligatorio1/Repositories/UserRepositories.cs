@@ -1,19 +1,20 @@
-﻿using Model;
+﻿using Logic;
+using Model;
 using Model.Exceptions;
 
 namespace Repositories;
-public class UserRepositories
+public class UserRepositories : IRepositories<User>
 {
     private List<User> _users = new List<User>();
     
-    public void AddUser(User user)
-    {
-        if (UserExists(user))
-        {
-            ThrowException();
-        }
-        _users.Add(user);
-    }
+     public void AddToRepository(User user)
+     {
+         if (ExistsInRepository(user))
+         {
+             ThrowException();
+         }
+         _users.Add(user);
+     }
 
     private static void ThrowException()
     {
@@ -26,8 +27,13 @@ public class UserRepositories
         return userInRepo;
     }
 
-    private bool UserExists(User user)
+    public bool ExistsInRepository(User user)
     {
         return _users.Any(u => u.GetEmail() == user.GetEmail());
     }
+    public void RemoveFromRepository(User user)
+    {
+        _users.Remove(user);
+    }
+  
 }
