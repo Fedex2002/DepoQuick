@@ -33,4 +33,12 @@ public class UserRepositoryTest
         _userepo.AddToRepository(_user);
         _userepo.AddToRepository(_user);
     }
+    
+    [TestMethod] 
+    public void WhenDeletingUserShouldRemoveItFromRepository()
+    {
+        _userepo.AddToRepository(_user);
+        _userepo.RemoveFromRepository(_user);
+        Assert.IsFalse(_userepo.ExistsInRepository(_user));
+    }
 }
