@@ -37,7 +37,7 @@ public class PromotionsRepositoriesTests
     public void WhenDeletingPromotionShouldRemoveItFromRepository()
     {
         _promotionsRepositories.AddToRepository(_promotion);
-        _promotionsRepositories.DeleteFromRepository(_promotion);
+        _promotionsRepositories.RemoveFromRepository(_promotion);
         Assert.IsFalse(_promotionsRepositories.ExistsInRepository(_promotion));
     }
 }

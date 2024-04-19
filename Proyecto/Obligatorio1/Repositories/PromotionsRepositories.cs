@@ -1,8 +1,9 @@
+using Logic;
 using Model;
 
 namespace Repositories;
 
-public class PromotionsRepositories
+public class PromotionsRepositories : IRepositories<Promotion>
 {
     private List<Promotion> _promotions = new List<Promotion>();
     
@@ -18,7 +19,7 @@ public class PromotionsRepositories
     {
         return _promotions.Any(p => p.GetLabel() == promotion.GetLabel());
     }
-    public void DeleteFromRepository(Promotion promotion)
+    public void RemoveFromRepository(Promotion promotion)
     {
         _promotions.Remove(promotion);
     }
