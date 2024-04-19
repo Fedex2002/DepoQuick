@@ -14,4 +14,8 @@ public class PromotionsRepositories
     {
         return _promotions.Find(p => p.GetLabel() == promotion.GetLabel());
     }
+    public bool ExistsInRepository(Promotion promotion)
+    {
+        return true;
+    }
 }
