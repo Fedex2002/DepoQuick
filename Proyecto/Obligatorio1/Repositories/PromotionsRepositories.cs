@@ -12,6 +12,6 @@ public class PromotionsRepositories
     }
     public Promotion GetFromRepository(Promotion promotion)
     {
-        return promotion;
+        return _promotions.Find(p => p.GetLabel() == promotion.GetLabel());
     }
 }
