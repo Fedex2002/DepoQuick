@@ -21,7 +21,7 @@ public class UserRepositories : IRepositories<User>
         throw new RepositoryExceptions("The user already exists");
     }
 
-    public User FindUser(User user)
+    public User GetFromRepository(User user)
     {
         User userInRepo = _users.Find(u => u.GetEmail() == user.GetEmail());
         return userInRepo;
