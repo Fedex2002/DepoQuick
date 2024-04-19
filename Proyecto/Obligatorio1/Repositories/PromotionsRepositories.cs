@@ -18,4 +18,8 @@ public class PromotionsRepositories
     {
         return _promotions.Any(p => p.GetLabel() == promotion.GetLabel());
     }
+    public void DeleteFromRepository(Promotion promotion)
+    {
+        _promotions.Remove(promotion);
+    }
 }
