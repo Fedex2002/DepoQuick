@@ -15,7 +15,8 @@ public class Promotion
     {
         _label = "";
         SetLabel(label);
-        _discount = discount;
+        _discount = 0;
+        SetDiscount(discount);
         _dateStart = dateStart;
         _dateEnd = dateEnd;
     }
@@ -58,14 +59,23 @@ public class Promotion
     private void SetLabel(string label)
     {
         _label = label;
-        IfHasInvalidLabelThrowException();
+        IsHasInvalidLabelThrowException();
     }
 
-    private void IfHasInvalidLabelThrowException()
+    private void IsHasInvalidLabelThrowException()
     {
         if (!ValidateLabel())
         {
             throw new PromotionExceptions("Label is not valid (max 20 characters)");
+        }
+    }
+    
+    private void SetDiscount(int discount)
+    {
+        _discount = discount;
+        if (!ValidateDiscount())
+        {
+            throw new PromotionExceptions("Discount is not valid (between 5 and 75)");
         }
     }
 }
