@@ -63,4 +63,11 @@ public class PromotionTests
     {
         _myPromotion = new Promotion("Descuento Verano 2024", 50, new DateTime(2024,1,3), new DateTime(2024,2,24));
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(PromotionExceptions))]
+    public void CreatingPromotionWithInvalidDiscount_ShouldReturnException()
+    {
+        _myPromotion = new Promotion("Descuento Verano", 80, new DateTime(2024,1,3), new DateTime(2024,2,24));
+    }
 }
