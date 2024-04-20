@@ -17,8 +17,9 @@ public class Promotion
         SetLabel(label);
         _discount = 0;
         SetDiscount(discount);
-        _dateStart = dateStart;
-        _dateEnd = dateEnd;
+        _dateStart = DateTime.MinValue;
+        _dateEnd = DateTime.MaxValue;
+        SetDate(dateStart, dateEnd);
     }
 
     public bool ValidateLabel()
@@ -81,6 +82,16 @@ public class Promotion
         if (!ValidateDiscount())
         {
             throw new PromotionExceptions("Discount is not valid (between 5 and 75)");
+        }
+    }
+    
+    private void SetDate(DateTime dateStart, DateTime dateEnd)
+    {
+        _dateStart = dateStart;
+        _dateEnd = dateEnd;
+        if (!ValidateDate())
+        {
+            throw new PromotionExceptions("Date is not valid (start date must be before end date)");
         }
     }
 }
