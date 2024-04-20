@@ -59,10 +59,10 @@ public class Promotion
     private void SetLabel(string label)
     {
         _label = label;
-        IsHasInvalidLabelThrowException();
+        IfHasInvalidLabelThrowException();
     }
 
-    private void IsHasInvalidLabelThrowException()
+    private void IfHasInvalidLabelThrowException()
     {
         if (!ValidateLabel())
         {
@@ -73,6 +73,11 @@ public class Promotion
     private void SetDiscount(int discount)
     {
         _discount = discount;
+        IfHasInvalidDiscountThrowException();
+    }
+
+    private void IfHasInvalidDiscountThrowException()
+    {
         if (!ValidateDiscount())
         {
             throw new PromotionExceptions("Discount is not valid (between 5 and 75)");
