@@ -55,4 +55,11 @@ public class PromotionTests
         Assert.AreEqual(new DateTime(2024,1,3), _myPromotion.GetDateStart());
         Assert.AreEqual(new DateTime(2024,2,24), _myPromotion.GetDateEnd());
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(PromotionExceptions))]
+    public void CreatingPromotionWithInvalidLabel_ShouldReturnException()
+    {
+        _myPromotion.SetLabel("Descuento Invierno 2024");
+    }
 }
