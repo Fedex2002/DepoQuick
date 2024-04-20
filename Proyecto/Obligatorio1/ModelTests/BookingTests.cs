@@ -74,4 +74,10 @@ public class BookingTests
     {
         _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected");
     }
+    
+    [TestMethod]
+    public void CreatingBookingWithDateValidations_ShouldReturnTrueIfValid()
+    {
+        Assert.AreEqual(true, _mybooking.CheckDate());
+    }
 }
