@@ -89,6 +89,11 @@ public class Promotion
     {
         _dateStart = dateStart;
         _dateEnd = dateEnd;
+        IfHasInvalidDateThrowException();
+    }
+
+    private void IfHasInvalidDateThrowException()
+    {
         if (!ValidateDate())
         {
             throw new PromotionExceptions("Date is not valid (start date must be before end date)");
