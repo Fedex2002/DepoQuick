@@ -58,6 +58,11 @@ public class Promotion
     private void SetLabel(string label)
     {
         _label = label;
+        IfHasInvalidLabelThrowException();
+    }
+
+    private void IfHasInvalidLabelThrowException()
+    {
         if (!ValidateLabel())
         {
             throw new PromotionExceptions("Label is not valid (max 20 characters)");
