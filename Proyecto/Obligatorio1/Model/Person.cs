@@ -176,11 +176,14 @@ public class Person
     {
         _name = name;
         _surname = surname;
+        IfHasInvalidNameOrSurnameThrowException(); 
+    }
+
+    private void IfHasInvalidNameOrSurnameThrowException()
+    {
         if(!ValidateNameAndSurname())
         {
             throw new PersonExceptions("Name or Surname are not valid");
-        } 
-        
+        }
     }
-    
 }
