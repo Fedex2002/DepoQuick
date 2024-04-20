@@ -104,10 +104,14 @@ public class Booking
     private void SetApproved(bool approved)
     {
         _approved = approved;
+        IfHasInvalidApprovedThrowException(approved);
+    }
+
+    private void IfHasInvalidApprovedThrowException(bool approved)
+    {
         if (!approved)
         {
             throw new BookingExceptions("Approved is not valid");
         }
     }
-
 }
