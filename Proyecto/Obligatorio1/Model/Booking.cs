@@ -15,10 +15,11 @@ public class Booking
     
     public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedBooking)
     {
-        this._approved = approved;
-        this._dateStart = dateStart;
-        this._dateEnd = dateEnd;
-        this._storageUnit = storageUnit;
+        _approved = false;
+        SetApproved(approved);
+        _dateStart = dateStart;
+        _dateEnd = dateEnd;
+        _storageUnit = storageUnit;
         _rejectedBooking = "";
         SetRejectedBooking(rejectedBooking);
     }
@@ -99,4 +100,14 @@ public class Booking
     {
         return _rejectedBooking.Length <= 300;
     }
+    
+    private void SetApproved(bool approved)
+    {
+        _approved = approved;
+        if (!approved)
+        {
+            throw new BookingExceptions("Approved is not valid");
+        }
+    }
+
 }
