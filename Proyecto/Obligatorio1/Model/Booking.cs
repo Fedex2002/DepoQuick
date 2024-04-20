@@ -114,4 +114,9 @@ public class Booking
             throw new BookingExceptions("Approved is not valid");
         }
     }
+
+    public bool CheckDate(DateTime dateStart, DateTime dateEnd)
+    {
+        return dateStart < dateEnd;
+    }
 }
