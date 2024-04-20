@@ -78,7 +78,7 @@ public class BookingTests
     [TestMethod]
     public void CreatingBookingWithDateValidations_ShouldReturnTrueIfValid()
     {
-        Assert.AreEqual(true, _mybooking.CheckDate(_mybooking.GetDateStart(), _mybooking.GetDateEnd()));
+        Assert.AreEqual(true, _mybooking.CheckDate());
     }
     
     [TestMethod]

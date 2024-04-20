@@ -116,16 +116,21 @@ public class Booking
         }
     }
 
-    public bool CheckDate(DateTime dateStart, DateTime dateEnd)
+    public bool CheckDate()
     {
-        return dateStart < dateEnd;
+        return _dateStart < _dateEnd;
     }
     
     private void SetDate(DateTime dateStart, DateTime dateEnd)
     {
         _dateStart = dateStart;
         _dateEnd = dateEnd;
-        if (!CheckDate(dateStart, dateEnd))
+        IfHasInvalidDateThrowException();
+    }
+
+    private void IfHasInvalidDateThrowException()
+    {
+        if (!CheckDate())
         {
             throw new BookingExceptions("Date is not valid");
         }
