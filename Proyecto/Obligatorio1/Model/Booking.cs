@@ -48,6 +48,11 @@ public class Booking
     private void SetRejectedBooking(string rejectedBooking)
     {
         _rejectedBooking = rejectedBooking;
+        IfHasInvalidRejectionThrowException();
+    }
+
+    private void IfHasInvalidRejectionThrowException()
+    {
         if (!CheckRejection())
         {
             throw new BookingExceptions("Rejection message is not valid");
