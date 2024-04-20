@@ -107,7 +107,7 @@ public class Booking
         IfHasInvalidApprovedThrowException(approved);
     }
 
-    private void IfHasInvalidApprovedThrowException(bool approved)
+    private static void IfHasInvalidApprovedThrowException(bool approved)
     {
         if (!approved)
         {
