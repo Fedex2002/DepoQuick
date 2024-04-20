@@ -1,4 +1,6 @@
 using Model;
+using Model.Exceptions;
+
 namespace ModelTests;
 
 [TestClass]
@@ -21,15 +23,53 @@ public class PersonTests
     [TestMethod]
     public void CreatingPersonWithValuesShouldReturnValues()
     {
-        string name = "Franco";
-        string surname = "Ramos";
-        string email = "francoramos1511@gmail.com";
-        string password = "1234";
-        _myperson = new Person(name, surname, email, password);
+        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023#");
         Assert.AreEqual("Franco", _myperson.GetName());
         Assert.AreEqual("Ramos", _myperson.GetSurname());
         Assert.AreEqual("francoramos1511@gmail.com", _myperson.GetEmail());
-        Assert.AreEqual("1234", _myperson.GetPassword());
+        Assert.AreEqual("FrancoRamos2023#", _myperson.GetPassword());
+    }
+    
+    [TestMethod]
+    public void WhenCreatingANewPersonWithPasswordValidations_ShouldReturnTrueIfItIsAValidPassword()
+    {
+        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023#");
+        Assert.IsTrue(_myperson.ValidatePassword());
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(PersonExceptions))]
+    public void WhenCreatingANewPersonWithPasswordValidations_ShouldReturnExceptionIfItIsNotAValidPassword()
+    {
+        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "franco");
+    }
+    
+    [TestMethod]
+    public void WhenCreatingANewPersonWithValidEmail_ShouldReturnTrueIfItIsAValidEmail()
+    {
+        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023#");
+        Assert.IsTrue(_myperson.ValidateEmail());
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(PersonExceptions))]
+    public void WhenCreatingANewPersonWithEmailValidations_ShouldReturnExceptionIfItIsNotAValidEmail()
+    {
+        _myperson = new Person("Franco", "Ramos", "francoramos1511gmail.com", "franco");
+    }
+    
+    [TestMethod]
+    public void WhenCreatingANewPersonWithNameAndSurnameValidations_ShouldReturnTrueIfItIsAValidNameAndSurname()
+    {
+        _myperson = new Person("Franco Maximiliano", "Ramos Risso", "francoramos1511@gmail.com", "FrancoRamos2023#");
+        Assert.IsTrue(_myperson.ValidateNameAndSurname());
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(PersonExceptions))]
+    public void WhenCreatingANewPersonWithNameAndSurnameValidations_ShouldReturnExceptionIfItIsNotAValidNameAndSurname()
+    {
+        _myperson = new Person("", "Ra2m#s", "francoramos1511gmail.com", "franco");
     }
     
 }
