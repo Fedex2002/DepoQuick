@@ -17,8 +17,9 @@ public class Booking
     {
         _approved = false;
         SetApproved(approved);
-        _dateStart = dateStart;
-        _dateEnd = dateEnd;
+        _dateStart = DateTime.MinValue;
+        _dateEnd = DateTime.MaxValue;
+        SetDate(dateStart, dateEnd);
         _storageUnit = storageUnit;
         _rejectedBooking = "";
         SetRejectedBooking(rejectedBooking);
@@ -118,5 +119,15 @@ public class Booking
     public bool CheckDate(DateTime dateStart, DateTime dateEnd)
     {
         return dateStart < dateEnd;
+    }
+    
+    private void SetDate(DateTime dateStart, DateTime dateEnd)
+    {
+        _dateStart = dateStart;
+        _dateEnd = dateEnd;
+        if (!CheckDate(dateStart, dateEnd))
+        {
+            throw new BookingExceptions("Date is not valid");
+        }
     }
 }
