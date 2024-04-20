@@ -80,4 +80,11 @@ public class BookingTests
     {
         Assert.AreEqual(true, _mybooking.CheckDate(_mybooking.GetDateStart(), _mybooking.GetDateEnd()));
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(BookingExceptions))]
+    public void CreatingBookingWithInvalidDate_ShouldReturnException()
+    {
+        _mybooking = new Booking(true, new DateTime(2024, 5, 15), new DateTime(2024, 5, 14), _mystorageunit, "");
+    }
 }
