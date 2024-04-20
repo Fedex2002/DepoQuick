@@ -40,9 +40,9 @@ public class StorageUnit
         return _promotions;
     }
     
-    public double CalculateStorageUnitPrice()
+    public double CalculateStorageUnitPricePerDay()
     {
-        double price = SizeOfStorageUnit() + HasClimatization();
+        double price = ValueOfSizeOfStorageUnit() + ValueOfClimatization();
         if (HasPromotions())
         {
             price -= RuleOf3();
@@ -53,14 +53,14 @@ public class StorageUnit
     
     private double RuleOf3()
     {
-        return ((SizeOfStorageUnit() + HasClimatization()) * GetValuePromotions()) / 100;
+        return ((ValueOfSizeOfStorageUnit() + ValueOfClimatization()) * GetValuePromotions()) / 100;
     }
     
     private bool HasPromotions()
     {
         return _promotions != null;
     }
-    private double SizeOfStorageUnit()
+    private double ValueOfSizeOfStorageUnit()
     {
         int size = 0;
         if (_size == SizeType.Small)
@@ -76,7 +76,7 @@ public class StorageUnit
         return size;
     }
     
-    private double HasClimatization()
+    private double ValueOfClimatization()
     {
         int c = 0;
         if (_climatization)
