@@ -1,3 +1,4 @@
+using Model.Exceptions;
 namespace Model;
 
 public class Promotion
@@ -12,7 +13,8 @@ public class Promotion
     }
     public Promotion(string label, int discount, DateTime dateStart, DateTime dateEnd)
     {
-        _label = label;
+        _label = "";
+        SetLabel(label);
         _discount = discount;
         _dateStart = dateStart;
         _dateEnd = dateEnd;
@@ -51,5 +53,14 @@ public class Promotion
     public DateTime GetDateEnd()
     {
         return _dateEnd;
+    }
+
+    private void SetLabel(string label)
+    {
+        _label = label;
+        if (!ValidateLabel())
+        {
+            throw new PromotionExceptions("Label is not valid (max 20 characters)");
+        }
     }
 }

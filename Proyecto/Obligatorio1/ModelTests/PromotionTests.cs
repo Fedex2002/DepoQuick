@@ -1,4 +1,5 @@
 using Model;
+using Model.Exceptions;
 namespace ModelTests;
 
 [TestClass]
@@ -60,6 +61,6 @@ public class PromotionTests
     [ExpectedException(typeof(PromotionExceptions))]
     public void CreatingPromotionWithInvalidLabel_ShouldReturnException()
     {
-        _myPromotion.SetLabel("Descuento Invierno 2024");
+        _myPromotion = new Promotion("Descuento Verano 2024", 50, new DateTime(2024,1,3), new DateTime(2024,2,24));
     }
 }
