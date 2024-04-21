@@ -45,11 +45,13 @@ public class StorageUnitTests
         
         _mystorageunit= new StorageUnit(AreaType.A, SizeType.Small, true,_promotions );
         Assert.AreEqual(52.5, _mystorageunit.CalculateStorageUnitPricePerDay());
+
+        _promotions = new List<Promotion>();
         
-        _mystorageunit = new StorageUnit(AreaType.B, SizeType.Medium, false, null);
+        _mystorageunit = new StorageUnit(AreaType.B, SizeType.Medium, false, _promotions);
         Assert.AreEqual(75, _mystorageunit.CalculateStorageUnitPricePerDay());
         
-        _mystorageunit = new StorageUnit(AreaType.C, SizeType.Large, true, null);
+        _mystorageunit = new StorageUnit(AreaType.C, SizeType.Large, true, _promotions);
         Assert.AreEqual(120, _mystorageunit.CalculateStorageUnitPricePerDay());
     }
 }
