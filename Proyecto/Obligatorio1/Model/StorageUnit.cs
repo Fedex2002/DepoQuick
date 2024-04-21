@@ -4,6 +4,7 @@ namespace Model;
 
 public class StorageUnit
 {
+    private int _id;
     private AreaType _area;
     private SizeType _size;
     private bool _climatization;
@@ -12,8 +13,9 @@ public class StorageUnit
     {
     }
     
-    public StorageUnit(AreaType area, SizeType size, bool climatization, List<Promotion> promotions)
+    public StorageUnit(int id,AreaType area, SizeType size, bool climatization, List<Promotion> promotions)
     {
+        this._id = id;
         this._area = area;
         this._size = size;
         this._climatization = climatization; 
@@ -23,6 +25,11 @@ public class StorageUnit
     public AreaType GetArea()
     {
         return _area;
+    }
+    
+    public int GetId()
+    {
+        return _id;
     }
     
     public SizeType GetSize()
