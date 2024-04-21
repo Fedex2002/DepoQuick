@@ -41,15 +41,15 @@ public class StorageUnitTests
     [TestMethod]
     public void CalculatingStorageUnitPricePerDayWithValidations_ShouldReturnPrice()
     {
-        Assert.AreEqual(0, _mystorageunit.CalculateStorageUnitPrice());
+        Assert.AreEqual(0, _mystorageunit.CalculateStorageUnitPricePerDay());
         
         _mystorageunit= new StorageUnit(AreaType.A, SizeType.Small, true,_promotions );
-        Assert.AreEqual(52.5, _mystorageunit.CalculateStorageUnitPrice());
+        Assert.AreEqual(52.5, _mystorageunit.CalculateStorageUnitPricePerDay());
         
         _mystorageunit = new StorageUnit(AreaType.B, SizeType.Medium, false, null);
-        Assert.AreEqual(75, _mystorageunit.CalculateStorageUnitPrice());
+        Assert.AreEqual(75, _mystorageunit.CalculateStorageUnitPricePerDay());
         
         _mystorageunit = new StorageUnit(AreaType.C, SizeType.Large, true, null);
-        Assert.AreEqual(120, _mystorageunit.CalculateStorageUnitPrice());
+        Assert.AreEqual(120, _mystorageunit.CalculateStorageUnitPricePerDay());
     }
 }
