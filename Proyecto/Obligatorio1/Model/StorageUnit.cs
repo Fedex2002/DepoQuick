@@ -4,6 +4,7 @@ namespace Model;
 
 public class StorageUnit
 {
+    private int _id;
     private AreaType _area;
     private SizeType _size;
     private bool _climatization;
@@ -12,8 +13,9 @@ public class StorageUnit
     {
     }
     
-    public StorageUnit(AreaType area, SizeType size, bool climatization, List<Promotion> promotions)
+    public StorageUnit(int id,AreaType area, SizeType size, bool climatization, List<Promotion> promotions)
     {
+        this._id = id;
         this._area = area;
         this._size = size;
         this._climatization = climatization; 
@@ -23,6 +25,11 @@ public class StorageUnit
     public AreaType GetArea()
     {
         return _area;
+    }
+    
+    public int GetId()
+    {
+        return _id;
     }
     
     public SizeType GetSize()
@@ -40,9 +47,9 @@ public class StorageUnit
         return _promotions;
     }
     
-    public double CalculateStorageUnitPrice()
+    public double CalculateStorageUnitPricePerDay()
     {
-        double price = SizeOfStorageUnit() + HasClimatization();
+        double price = ValueOfSizeOfStorageUnit() + ValueOfClimatization();
         if (HasPromotions())
         {
             price -= RuleOf3();
@@ -51,16 +58,16 @@ public class StorageUnit
         return price;
     }
     
-    public double RuleOf3()
+    private double RuleOf3()
     {
-        return ((SizeOfStorageUnit() + HasClimatization()) * GetValuePromotions()) / 100;
+        return ((ValueOfSizeOfStorageUnit() + ValueOfClimatization()) * GetValuePromotions()) / 100;
     }
     
-    public bool HasPromotions()
+    private bool HasPromotions()
     {
         return _promotions != null;
     }
-    private double SizeOfStorageUnit()
+    private double ValueOfSizeOfStorageUnit()
     {
         int size = 0;
         if (_size == SizeType.Small)
@@ -76,10 +83,10 @@ public class StorageUnit
         return size;
     }
     
-    private double HasClimatization()
+    private double ValueOfClimatization()
     {
         int c = 0;
-        if (_climatization == true)
+        if (_climatization)
         {
             c = 20;
         }

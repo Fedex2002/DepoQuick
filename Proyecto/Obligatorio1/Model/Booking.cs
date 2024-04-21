@@ -71,7 +71,7 @@ public class Booking
 
     private double TotalPriceWithDiscountForBookingDays()
     {
-        double totalPrice = _storageUnit.CalculateStorageUnitPrice() * GetCountOfDays();;
+        double totalPrice = _storageUnit.CalculateStorageUnitPricePerDay() * GetCountOfDays();;
         return CheckDiscount(totalPrice);
     }
 
