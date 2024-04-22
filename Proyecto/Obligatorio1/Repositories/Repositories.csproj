@@ -7,7 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Logic\Logic.csproj" />
       <ProjectReference Include="..\Model\Model.csproj" />
+      <ProjectReference Include="..\RepositoriesInterface\RepositoriesInterface.csproj" />
     </ItemGroup>
 
 </Project>

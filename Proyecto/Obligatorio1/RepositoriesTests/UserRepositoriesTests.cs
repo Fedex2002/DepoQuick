@@ -9,7 +9,7 @@ public class UserRepositoryTest
 {
     private UserRepositories _userepo;
     private User _user;
-    private Booking _booking;
+    private List<Booking> _bookings;
     [TestInitialize] 
     public void TestInitialize()
     {
@@ -20,8 +20,8 @@ public class UserRepositoryTest
     [TestMethod]
     public void WhenAddingNewUserShouldAddItToRepository()
     {
-        _userepo.AddUser(_user);
-        User userInRepo = _userepo.FindUser(_user);
+        _userepo.AddToRepository(_user);
+        User userInRepo = _userepo.GetFromRepository(_user);
         Assert.AreEqual(_user.GetEmail(), userInRepo.GetEmail());
     }
     
@@ -29,8 +29,16 @@ public class UserRepositoryTest
     [ExpectedException(typeof(RepositoryExceptions))]
     public void WhenAddingExistingUserShouldThrowAnException()
     {
-        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", _booking);
-        _userepo.AddUser(_user);
-        _userepo.AddUser(_user);
+        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", _bookings);
+        _userepo.AddToRepository(_user);
+        _userepo.AddToRepository(_user);
+    }
+    
+    [TestMethod] 
+    public void WhenDeletingUserShouldRemoveItFromRepository()
+    {
+        _userepo.AddToRepository(_user);
+        _userepo.RemoveFromRepository(_user);
+        Assert.IsFalse(_userepo.ExistsInRepository(_user));
     }
 }

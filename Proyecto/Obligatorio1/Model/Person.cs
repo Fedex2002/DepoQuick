@@ -147,32 +147,43 @@ public class Person
     private void SetPassword(string password)
     {
         _password = password;
+        IfHasInvalidPasswordThrowException();
+    }
+
+    private void IfHasInvalidPasswordThrowException()
+    {
         if(!ValidatePassword())
         {
             throw new PersonExceptions("Password is not valid");
-        } 
-        
+        }
     }
-    
+
     private void SetEmail(string email)
     {
         _email = email;
+        IfHasInvalidEmailThrowException();
+    }
+
+    private void IfHasInvalidEmailThrowException()
+    {
         if(!ValidateEmail())
         {
             throw new PersonExceptions("Email is not valid");
-        } 
-        
+        }
     }
-    
+
     private void SetNameAndSurname(string name, string surname)
     {
         _name = name;
         _surname = surname;
+        IfHasInvalidNameOrSurnameThrowException(); 
+    }
+
+    private void IfHasInvalidNameOrSurnameThrowException()
+    {
         if(!ValidateNameAndSurname())
         {
             throw new PersonExceptions("Name or Surname are not valid");
-        } 
-        
+        }
     }
-    
 }
