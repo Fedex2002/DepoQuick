@@ -15,9 +15,9 @@ public class PromotionsRepositories : IRepositories<Promotion>
     {
         return _promotions.Find(p => p.GetLabel() == promotion.GetLabel());
     }
-    public bool ExistsInRepository(Promotion promotion)
+    public bool ExistsInRepository(string label)
     {
-        return _promotions.Any(p => p.GetLabel() == promotion.GetLabel());
+        return _promotions.Any(p => p.GetLabel() == label);
     }
     public void RemoveFromRepository(Promotion promotion)
     {
