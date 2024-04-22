@@ -34,4 +34,12 @@ public class StorageUnitRepositoriesTests
         Assert.IsTrue(_storageUnitRepositories.ExistsInRepository(_storageUnit));
     }
     
+    [TestMethod]
+    public void WhenDeletingStorageUnitShouldRemoveItFromRepository()
+    {
+        _storageUnitRepositories.AddToRepository(_storageUnit);
+        _storageUnitRepositories.RemoveFromRepository(_storageUnit);
+        Assert.IsFalse(_storageUnitRepositories.ExistsInRepository(_storageUnit));
+    }
+    
 }
