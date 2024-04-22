@@ -9,7 +9,7 @@ public class UserRepositoryTest
 {
     private UserRepositories _userepo;
     private User _user;
-    private Booking _booking;
+    private List<Booking> _bookings;
     [TestInitialize] 
     public void TestInitialize()
     {
@@ -29,7 +29,7 @@ public class UserRepositoryTest
     [ExpectedException(typeof(RepositoryExceptions))]
     public void WhenAddingExistingUserShouldThrowAnException()
     {
-        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", _booking);
+        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", _bookings);
         _userepo.AddToRepository(_user);
         _userepo.AddToRepository(_user);
     }
@@ -39,6 +39,6 @@ public class UserRepositoryTest
     {
         _userepo.AddToRepository(_user);
         _userepo.RemoveFromRepository(_user);
-        Assert.IsFalse(_userepo.ExistsInRepository(_user));
+        Assert.IsFalse(_userepo.ExistsInRepository(_user.GetEmail()));
     }
 }
