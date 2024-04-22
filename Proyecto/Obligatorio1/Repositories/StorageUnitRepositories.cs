@@ -14,4 +14,8 @@ public class StorageUnitRepositories
     {
         return _storageUnits.Find(s => s.GetId() == storageUnit.GetId());
     }
+    public bool ExistsInRepository(StorageUnit storageUnit)
+    {
+        return true;
+    }
 }
