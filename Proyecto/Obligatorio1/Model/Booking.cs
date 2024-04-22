@@ -1,3 +1,4 @@
+using Model.Exceptions;
 namespace Model;
 
 public class Booking
@@ -6,17 +7,22 @@ public class Booking
     private DateTime _dateStart;
     private DateTime _dateEnd;
     private StorageUnit _storageUnit;
+    private string _rejectedBooking { get; set; }
     
     public Booking()
     {
     }
     
-    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit)
+    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedBooking)
     {
-        this._approved = approved;
-        this._dateStart = dateStart;
-        this._dateEnd = dateEnd;
-        this._storageUnit = storageUnit;
+        _approved = false;
+        SetApproved(approved);
+        _dateStart = DateTime.MinValue;
+        _dateEnd = DateTime.MaxValue;
+        SetDate(dateStart, dateEnd);
+        _storageUnit = storageUnit;
+        _rejectedBooking = "";
+        SetRejectedBooking(rejectedBooking);
     }
     
     public bool GetApproved()
@@ -33,6 +39,25 @@ public class Booking
     {
         return _dateEnd;
     }
+    
+    public string GetRejectedBooking()
+    {
+        return _rejectedBooking;
+    }
+    
+    private void SetRejectedBooking(string rejectedBooking)
+    {
+        _rejectedBooking = rejectedBooking;
+        IfHasInvalidRejectionThrowException();
+    }
+
+    private void IfHasInvalidRejectionThrowException()
+    {
+        if (!CheckRejection())
+        {
+            throw new BookingExceptions("Rejection message is not valid");
+        }
+    }
 
     public int GetCountOfDays()
     {
@@ -46,7 +71,7 @@ public class Booking
 
     private double TotalPriceWithDiscountForBookingDays()
     {
-        double totalPrice = _storageUnit.CalculateStorageUnitPrice() * GetCountOfDays();;
+        double totalPrice = _storageUnit.CalculateStorageUnitPricePerDay() * GetCountOfDays();;
         return CheckDiscount(totalPrice);
     }
 
@@ -75,5 +100,44 @@ public class Booking
     {
         double totalDiscount = (totalPrice * discount) / 100;
         return totalPrice - totalDiscount;
+    }
+    
+    public bool CheckRejection()
+    {
+        return _rejectedBooking.Length <= 300;
+    }
+    
+    private void SetApproved(bool approved)
+    {
+        _approved = approved;
+        IfHasInvalidApprovedThrowException(approved);
+    }
+
+    private static void IfHasInvalidApprovedThrowException(bool approved)
+    {
+        if (!approved)
+        {
+            throw new BookingExceptions("Approved is not valid");
+        }
+    }
+
+    public bool CheckDate()
+    {
+        return _dateStart < _dateEnd;
+    }
+    
+    private void SetDate(DateTime dateStart, DateTime dateEnd)
+    {
+        _dateStart = dateStart;
+        _dateEnd = dateEnd;
+        IfHasInvalidDateThrowException();
+    }
+
+    private void IfHasInvalidDateThrowException()
+    {
+        if (!CheckDate())
+        {
+            throw new BookingExceptions("Date is not valid");
+        }
     }
 }
