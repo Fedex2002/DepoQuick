@@ -27,4 +27,11 @@ public class StorageUnitRepositoriesTests
         Assert.AreEqual(_storageUnit.GetId(), storageUnitInRepo.GetId());
     }
     
+    [TestMethod]
+    public void WhenAStorageUnitExistsInRepositoryShouldFindIt()
+    {
+        _storageUnitRepositories.AddToRepository(_storageUnit);
+        Assert.IsTrue(_storageUnitRepositories.ExistsInRepository(_storageUnit));
+    }
+    
 }
