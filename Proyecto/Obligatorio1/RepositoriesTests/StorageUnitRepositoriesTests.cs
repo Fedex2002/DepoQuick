@@ -42,4 +42,12 @@ public class StorageUnitRepositoriesTests
         Assert.IsFalse(_storageUnitRepositories.ExistsInRepository(_storageUnit));
     }
     
+    [TestMethod]
+    [ExpectedException(typeof(RepositoryExceptions))]
+    public void WhenAddingTheSameStorageUnitShouldThrowAnException()
+    {
+        _storageUnitRepositories.AddToRepository(_storageUnit);
+        _storageUnitRepositories.AddToRepository(_storageUnit);
+    }
+    
 }
