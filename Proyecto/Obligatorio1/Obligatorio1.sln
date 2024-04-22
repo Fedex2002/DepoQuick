@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoriesTests", "Reposi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{4722E4C6-0C65-4772-967C-5AA59F9C70B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoriesInterface", "RepositoriesInterface\RepositoriesInterface.csproj", "{BFEFB51F-B5B6-4DD9-BEE6-7E89F97D8945}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{4722E4C6-0C65-4772-967C-5AA59F9C70B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4722E4C6-0C65-4772-967C-5AA59F9C70B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4722E4C6-0C65-4772-967C-5AA59F9C70B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFEFB51F-B5B6-4DD9-BEE6-7E89F97D8945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFEFB51F-B5B6-4DD9-BEE6-7E89F97D8945}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFEFB51F-B5B6-4DD9-BEE6-7E89F97D8945}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFEFB51F-B5B6-4DD9-BEE6-7E89F97D8945}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
