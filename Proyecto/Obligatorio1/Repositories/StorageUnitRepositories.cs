@@ -12,10 +12,16 @@ public class StorageUnitRepositories : IRepositories<StorageUnit>
     {
         if (ExistsInRepository(storageUnit))
         {
-            throw new RepositoryExceptions("The storage unit already exists");
+            ThrowException();
         }
         _storageUnits.Add(storageUnit);
     }
+
+    private static void ThrowException()
+    {
+        throw new RepositoryExceptions("The storage unit already exists");
+    }
+
     public StorageUnit GetFromRepository(StorageUnit storageUnit)
     {
         return _storageUnits.Find(s => s.GetId() == storageUnit.GetId());
