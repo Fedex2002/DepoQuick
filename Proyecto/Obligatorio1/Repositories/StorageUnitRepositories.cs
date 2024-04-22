@@ -1,5 +1,6 @@
 using Logic;
 using Model;
+using Model.Exceptions;
 
 namespace Repositories;
 
@@ -9,6 +10,10 @@ public class StorageUnitRepositories : IRepositories<StorageUnit>
     
     public void AddToRepository(StorageUnit storageUnit)
     {
+        if (ExistsInRepository(storageUnit))
+        {
+            throw new RepositoryExceptions("The storage unit already exists");
+        }
         _storageUnits.Add(storageUnit);
     }
     public StorageUnit GetFromRepository(StorageUnit storageUnit)

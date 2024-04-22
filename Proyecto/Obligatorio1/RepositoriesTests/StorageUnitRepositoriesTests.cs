@@ -1,5 +1,6 @@
 using Model;
 using Model.Enums;
+using Model.Exceptions;
 using Repositories;
 
 namespace RepositoriesTests;
