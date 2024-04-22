@@ -1,4 +1,4 @@
-﻿namespace Logic;
+﻿namespace RepositoriesInterface;
 
 public interface IRepositories<T>
 {
