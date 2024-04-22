@@ -1,8 +1,9 @@
+using Logic;
 using Model;
 
 namespace Repositories;
 
-public class StorageUnitRepositories
+public class StorageUnitRepositories : IRepositories<StorageUnit>
 {
     private List<StorageUnit> _storageUnits = new List<StorageUnit>();
     
