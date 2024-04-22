@@ -15,10 +15,12 @@ public class Booking
     
     public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedBooking)
     {
-        this._approved = approved;
-        this._dateStart = dateStart;
-        this._dateEnd = dateEnd;
-        this._storageUnit = storageUnit;
+        _approved = false;
+        SetApproved(approved);
+        _dateStart = DateTime.MinValue;
+        _dateEnd = DateTime.MaxValue;
+        SetDate(dateStart, dateEnd);
+        _storageUnit = storageUnit;
         _rejectedBooking = "";
         SetRejectedBooking(rejectedBooking);
     }
@@ -46,6 +48,11 @@ public class Booking
     private void SetRejectedBooking(string rejectedBooking)
     {
         _rejectedBooking = rejectedBooking;
+        IfHasInvalidRejectionThrowException();
+    }
+
+    private void IfHasInvalidRejectionThrowException()
+    {
         if (!CheckRejection())
         {
             throw new BookingExceptions("Rejection message is not valid");
@@ -64,7 +71,7 @@ public class Booking
 
     private double TotalPriceWithDiscountForBookingDays()
     {
-        double totalPrice = _storageUnit.CalculateStorageUnitPrice() * GetCountOfDays();;
+        double totalPrice = _storageUnit.CalculateStorageUnitPricePerDay() * GetCountOfDays();;
         return CheckDiscount(totalPrice);
     }
 
@@ -98,5 +105,39 @@ public class Booking
     public bool CheckRejection()
     {
         return _rejectedBooking.Length <= 300;
+    }
+    
+    private void SetApproved(bool approved)
+    {
+        _approved = approved;
+        IfHasInvalidApprovedThrowException(approved);
+    }
+
+    private static void IfHasInvalidApprovedThrowException(bool approved)
+    {
+        if (!approved)
+        {
+            throw new BookingExceptions("Approved is not valid");
+        }
+    }
+
+    public bool CheckDate()
+    {
+        return _dateStart < _dateEnd;
+    }
+    
+    private void SetDate(DateTime dateStart, DateTime dateEnd)
+    {
+        _dateStart = dateStart;
+        _dateEnd = dateEnd;
+        IfHasInvalidDateThrowException();
+    }
+
+    private void IfHasInvalidDateThrowException()
+    {
+        if (!CheckDate())
+        {
+            throw new BookingExceptions("Date is not valid");
+        }
     }
 }
