@@ -12,6 +12,6 @@ public class StorageUnitRepositories
     }
     public StorageUnit GetFromRepository(StorageUnit storageUnit)
     {
-        return storageUnit;
+        return _storageUnits.Find(s => s.GetId() == storageUnit.GetId());
     }
 }
