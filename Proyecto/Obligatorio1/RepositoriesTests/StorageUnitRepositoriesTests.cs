@@ -1,3 +1,7 @@
+using Model;
+using Model.Enums;
+using Repositories;
+
 namespace RepositoriesTests;
 
 [TestClass]
