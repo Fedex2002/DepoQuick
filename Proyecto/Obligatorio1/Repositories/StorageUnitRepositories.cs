@@ -18,4 +18,8 @@ public class StorageUnitRepositories
     {
         return _storageUnits.Any(s => s.GetId() == storageUnit.GetId());
     }
+    public void RemoveFromRepository(StorageUnit storageUnit)
+    {
+        _storageUnits.Remove(storageUnit);
+    }
 }
