@@ -16,7 +16,7 @@ public class StorageUnitRepositoriesTests
     public void TestInitialize()
     {
         _storageUnitRepositories = new StorageUnitRepositories();
-        _storageUnit = new StorageUnit(0,AreaType.A, SizeType.Small, true,null );
+        _storageUnit = new StorageUnit("",AreaType.A, SizeType.Small, true,null );
     }
     
     
@@ -32,7 +32,7 @@ public class StorageUnitRepositoriesTests
     public void WhenAStorageUnitExistsInRepositoryShouldFindIt()
     {
         _storageUnitRepositories.AddToRepository(_storageUnit);
-        Assert.IsTrue(_storageUnitRepositories.ExistsInRepository(_storageUnit));
+        Assert.IsTrue(_storageUnitRepositories.ExistsInRepository(_storageUnit.GetId()));
     }
     
     [TestMethod]
@@ -40,7 +40,7 @@ public class StorageUnitRepositoriesTests
     {
         _storageUnitRepositories.AddToRepository(_storageUnit);
         _storageUnitRepositories.RemoveFromRepository(_storageUnit);
-        Assert.IsFalse(_storageUnitRepositories.ExistsInRepository(_storageUnit));
+        Assert.IsFalse(_storageUnitRepositories.ExistsInRepository(_storageUnit.GetId()));
     }
     
     [TestMethod]

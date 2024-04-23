@@ -10,7 +10,7 @@ public class StorageUnitRepositories : IRepositories<StorageUnit>
     
     public void AddToRepository(StorageUnit storageUnit)
     {
-        if (ExistsInRepository(storageUnit))
+        if (ExistsInRepository(storageUnit.GetId()))
         {
             ThrowException();
         }
@@ -26,9 +26,9 @@ public class StorageUnitRepositories : IRepositories<StorageUnit>
     {
         return _storageUnits.Find(s => s.GetId() == storageUnit.GetId());
     }
-    public bool ExistsInRepository(StorageUnit storageUnit)
+    public bool ExistsInRepository(string id)
     {
-        return _storageUnits.Any(s => s.GetId() == storageUnit.GetId());
+        return _storageUnits.Any(s => s.GetId() == id);
     }
     public void RemoveFromRepository(StorageUnit storageUnit)
     {
