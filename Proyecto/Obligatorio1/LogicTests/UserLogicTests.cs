@@ -43,4 +43,12 @@ public class LogicTests
         _userRepo.AddToRepository(_user);
         Assert.IsTrue(_userLogic.CheckIfEmailIsRegistered(_user.GetEmail()));
     }
+
+    [TestMethod]
+    public void WhenPasswordIsCorrectReturnTrue()
+    {
+        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", null);
+        _userRepo.AddToRepository(_user);
+        Assert.IsTrue(_userLogic.CheckIfPasswordIsCorrect(_user.GetPassword(), _user.GetPassword()));
+    }
 }
