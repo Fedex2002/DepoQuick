@@ -22,5 +22,8 @@ public class UserLogic
         return true;
     }
 
-
+    public bool CheckIfPasswordIsCorrect(string getPassword, string catchFromPage)
+    {
+        throw new LogicExceptions("The password is not correct");
+    }
 }
