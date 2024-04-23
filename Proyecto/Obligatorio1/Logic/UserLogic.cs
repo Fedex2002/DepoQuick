@@ -5,7 +5,12 @@ namespace Logic;
 
 public class UserLogic
 {
-    private UserRepositories _userRepositories= new UserRepositories();
+    private UserRepositories _userRepositories;
+    
+    public UserLogic(UserRepositories userRepositories)
+    {
+        _userRepositories = userRepositories;
+    }
 
     public bool CheckIfEmailIsRegistered(string email)
     {
