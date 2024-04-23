@@ -34,6 +34,5 @@ public class LogicTests
         _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", null);
         _userRepo.AddToRepository(_user); 
         _userLogic.CheckIfPasswordIsCorrect(_user.GetPassword(), "Catch from page");
-        
     }
 }
