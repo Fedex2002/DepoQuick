@@ -1,3 +1,7 @@
+using Logic;
+using Model;
+using Model.Exceptions;
+
 namespace LogicTests;
 
 [TestClass]
@@ -9,7 +13,7 @@ public class LogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenEmailIsNotRegisteredThrowException()
     {
-        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", _bookings);
+        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", null);
         _userLogic.CheckIfEmailIsRegistered(_user.GetEmail());
     }
 }
