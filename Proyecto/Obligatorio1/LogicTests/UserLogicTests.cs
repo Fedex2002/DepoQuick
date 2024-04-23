@@ -17,13 +17,13 @@ public class LogicTests
     {
         _userRepo = new UserRepositories();
         _userLogic = new UserLogic(_userRepo);
+        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", null);
     }
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenEmailIsNotRegisteredThrowException()
     {
-        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", null);
         _userLogic.CheckIfEmailIsRegistered(_user.GetEmail());
     }
 
@@ -31,7 +31,6 @@ public class LogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPasswordIsNotCorrectThrowException()
     {
-        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", null);
         _userRepo.AddToRepository(_user); 
         _userLogic.CheckIfPasswordIsCorrect(_user.GetPassword(), "Catch from page");
     }
@@ -39,7 +38,6 @@ public class LogicTests
     [TestMethod]
     public void WhenEmailIsRegisteredReturnTrue()
     {
-        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", null);
         _userRepo.AddToRepository(_user);
         Assert.IsTrue(_userLogic.CheckIfEmailIsRegistered(_user.GetEmail()));
     }
@@ -47,7 +45,6 @@ public class LogicTests
     [TestMethod]
     public void WhenPasswordIsCorrectReturnTrue()
     {
-        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", null);
         _userRepo.AddToRepository(_user);
         Assert.IsTrue(_userLogic.CheckIfPasswordIsCorrect(_user.GetPassword(), _user.GetPassword()));
     }
