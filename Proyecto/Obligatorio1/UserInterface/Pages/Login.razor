@@ -1,14 +1,16 @@
 @page "/"
 @page "/login"
 @layout LoginLayout
+@using Microsoft.AspNetCore.Identity
 @inherits LayoutComponentBase
+
 
 @inject NavigationManager NavigationManager
 <section class="vh-100">
   <div class="container-fluid h-custom">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-md-9 col-lg-6 col-xl-5 justify-content-center align-items-center">
-        <img src="../wwwroot/logo.png" class="img-fluid" alt="Logo Depo Quick" width="520" height="320">
+        <img src="logo.png" class="img-fluid" alt="Logo Depo Quick" width="520" height="320">
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
         <EditForm Model="@loginModel" OnValidSubmit="HandleValidSubmit">
@@ -30,8 +32,7 @@
           
           <div class="text-center text-lg-start mt-4 pt-2">
             <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
-
-            <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
+            <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a @onclick="GoToSignUp"
                 class="link-danger">Register</a></p>
           </div>
         </EditForm>
@@ -50,14 +51,50 @@
 @code {
     private LoginModel loginModel = new LoginModel();
 
-    private void HandleValidSubmit()
-    {
-        NavigationManager.NavigateTo("/Index");
-    }
-
     public class LoginModel
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+      public string Email { get; set; }
+      public string Password { get; set; }
+    }
+    
+    /*
+    User user;
+    private string email = String.Empty;
+    private string password = String.Empty;
+         
+    private string errorMessage;
+    private bool showSuccessMessage = false;
+    
+    protected override void OnInitialized()
+    {
+      user = new User();
+    }
+    
+    private async Task HandleValidSubmit()
+    {
+      try
+      {
+        user.Email = email;
+        user.Password = password;
+        SessionLogic.Login(user);
+        showSuccessMessage = true;
+        await Task.Delay(2000);
+        NavigationManager.NavigateTo("/Index", true);
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine(e.Message);
+      }
+    }
+    */
+    
+    private void HandleValidSubmit()
+    {
+      NavigationManager.NavigateTo("/Index");
+    }
+    
+    private void GoToSignUp()
+    {
+      NavigationManager.NavigateTo("/SignUp");
     }
 }
