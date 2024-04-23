@@ -30,7 +30,7 @@ public class PromotionsRepositoriesTests
     public void WhenAPromotionExistsInRepositoryShouldFindIt()
     {
         _promotionsRepositories.AddToRepository(_promotion);
-        Assert.IsTrue(_promotionsRepositories.ExistsInRepository(_promotion));
+        Assert.IsTrue(_promotionsRepositories.ExistsInRepository(_promotion.GetLabel()));
     }
     
     [TestMethod]
@@ -38,6 +38,6 @@ public class PromotionsRepositoriesTests
     {
         _promotionsRepositories.AddToRepository(_promotion);
         _promotionsRepositories.RemoveFromRepository(_promotion);
-        Assert.IsFalse(_promotionsRepositories.ExistsInRepository(_promotion));
+        Assert.IsFalse(_promotionsRepositories.ExistsInRepository(_promotion.GetLabel()));
     }
 }
