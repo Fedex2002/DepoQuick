@@ -77,10 +77,10 @@ public class UserLogicTests
         _mypromotion= new Promotion("Winter discount", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
         _promotions.Add(_mypromotion);
         _mystorageunit= new StorageUnit("20",AreaType.A, SizeType.Small, true, _promotions);
-        _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected");
+        _mybooking = new Booking(true, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected");
         _userLogic.AddBookingToUser(_userRepo.GetFromRepository(_user), _mybooking);
-        _userLogic.ApproveBooking(_userRepo.GetFromRepository(_user), _mybooking);
-        Assert.AreEqual(approved, _mybooking.GetApproved());
+        bool status = _userLogic.ApprovedBooking(_userRepo.GetFromRepository(_user).GetBookings().Find(Booking => Booking == _mybooking));
+        Assert.AreEqual(approved, status);
     }
     
 }

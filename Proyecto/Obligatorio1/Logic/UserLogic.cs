@@ -37,4 +37,9 @@ public class UserLogic
     {
         user.GetBookings().Add(booking);
     }
+
+    public bool ApprovedBooking(Booking booking)
+    {
+        return booking.GetApproved();
+    }
 }
