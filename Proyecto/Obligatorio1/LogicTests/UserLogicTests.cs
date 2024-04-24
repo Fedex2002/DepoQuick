@@ -70,7 +70,6 @@ public class UserLogicTests
     [TestMethod]
     public void WhenUserBookingIsApprovedShouldReturnTrue()
     {
-        bool approved = true;
         _userRepo.AddToRepository(_user);
         _userRepo.GetFromRepository(_user); //Selected by administrator
         _promotions = new List<Promotion>();
@@ -80,7 +79,7 @@ public class UserLogicTests
         _mybooking = new Booking(true, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected");
         _userLogic.AddBookingToUser(_userRepo.GetFromRepository(_user), _mybooking);
         bool status = _userLogic.ApprovedBooking(_userRepo.GetFromRepository(_user).GetBookings().Find(Booking => Booking == _mybooking));
-        Assert.AreEqual(approved, status);
+        Assert.IsTrue(status);
     }
 
     [TestMethod]
