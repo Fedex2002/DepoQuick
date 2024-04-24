@@ -66,5 +66,21 @@ public class UserLogicTests
         _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected");
         _userLogic.AddBookingToUser(_userRepo.GetFromRepository(_user), _mybooking);
     }
+
+    [TestMethod]
+    public void WhenUserBookingIsApprovedShouldReturnTrue()
+    {
+        bool approved = true;
+        _userRepo.AddToRepository(_user);
+        _userRepo.GetFromRepository(_user); //Selected by administrator
+        _promotions = new List<Promotion>();
+        _mypromotion= new Promotion("Winter discount", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
+        _promotions.Add(_mypromotion);
+        _mystorageunit= new StorageUnit("20",AreaType.A, SizeType.Small, true, _promotions);
+        _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected");
+        _userLogic.AddBookingToUser(_userRepo.GetFromRepository(_user), _mybooking);
+        _userLogic.ApproveBooking(_userRepo.GetFromRepository(_user), _mybooking);
+        Assert.AreEqual(approved, _mybooking.GetApproved());
+    }
     
 }
