@@ -6,7 +6,7 @@ using Repositories;
 namespace LogicTests;
 
 [TestClass]
-public class LogicTests
+public class UserLogicTests
 {
     private UserRepositories _userRepo;
     private UserLogic _userLogic;
