@@ -106,19 +106,10 @@ public class Booking
     {
         return _rejectedBooking.Length <= 300;
     }
-    
+
     private void SetApproved(bool approved)
     {
         _approved = approved;
-        IfHasInvalidApprovedThrowException(approved);
-    }
-
-    private static void IfHasInvalidApprovedThrowException(bool approved)
-    {
-        if (!approved)
-        {
-            throw new BookingExceptions("Approved is not valid");
-        }
     }
 
     public bool CheckDate()
