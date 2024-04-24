@@ -7,13 +7,13 @@ namespace RepositoriesTests;
 
 public class PromotionsRepositoriesTests
 {
-    private PromotionRepositories _promotionRepositories;
+    private PromotionsRepositories _promotionRepositories;
     private Promotion _promotion;
     
     [TestInitialize]
     public void TestInitialize()
     {
-        _promotionRepositories = new PromotionRepositories();
+        _promotionRepositories = new PromotionsRepositories();
         _promotion = new Promotion("Descuento Invierno", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
     }
     
