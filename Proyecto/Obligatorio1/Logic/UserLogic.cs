@@ -42,4 +42,9 @@ public class UserLogic
     {
         return booking.GetApproved();
     }
+    
+    public void RemoveBookingFromUser(User user, Booking booking)
+    {
+        user.GetBookings().Remove(booking);
+    }
 }
