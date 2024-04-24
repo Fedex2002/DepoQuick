@@ -1,7 +1,9 @@
 using Logic;
 using Model;
+using Model.Enums;
 using Model.Exceptions;
 using Repositories;
+
 
 namespace LogicTests;
 
@@ -11,6 +13,10 @@ public class UserLogicTests
     private UserRepositories _userRepo;
     private UserLogic _userLogic;
     private User _user;
+    private List<Promotion> _promotions;
+    private Promotion _mypromotion;
+    private StorageUnit _mystorageunit;
+    private Booking _mybooking;
     
     [TestInitialize]
     public void TestInitialize()
@@ -47,5 +53,17 @@ public class UserLogicTests
     {
         _userRepo.AddToRepository(_user);
         Assert.IsTrue(_userLogic.CheckIfPasswordIsCorrect(_user.GetPassword(), _user.GetPassword()));
+    }
+
+    [TestMethod]
+    public void WhenUserMakesABookingShouldAddItToHisListOfBookings()
+    {
+        _user = _userRepo.GetFromRepository(_user);
+        _promotions = new List<Promotion>();
+        _mypromotion= new Promotion("Winter discount", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
+        _promotions.Add(_mypromotion);
+        _mystorageunit= new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions);
+        _mybooking = new Booking(true, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected");
+        _userLogic.AddBooking(_mybooking);
     }
 }
