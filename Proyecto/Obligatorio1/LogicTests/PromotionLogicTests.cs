@@ -1,7 +1,8 @@
 using System.Runtime.InteropServices.ComTypes;
 using Repositories;
-namespace LogicTests;
 using Model;
+using Logic;
+namespace LogicTests;
 
 [TestClass]
 public class PromotionLogicTests
@@ -22,9 +23,8 @@ public class PromotionLogicTests
     public void WhenModifyingPromotionShouldEliminateTheOldOneAndAddTheNewOne()
     {
         _promotionRepo.AddToRepository(_promotion);
-        Promotion newPromotion = _promotionRepo.GetFromRepository(_promotion);
         _promotionRepo.RemoveFromRepository(_promotion);
-        _promotionLogic.ModifyPromotion(newPromotion, "Summer discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        Promotion newPromotion = _promotionLogic.ModifyPromotion("Summer discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotionRepo.AddToRepository(newPromotion);
     }
 }
