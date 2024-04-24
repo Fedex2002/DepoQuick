@@ -1,3 +1,4 @@
+using Model;
 using Model.Exceptions;
 using Repositories;
 
@@ -30,5 +31,10 @@ public class UserLogic
     private static bool PasswordStringMatch(string userpassword, string catchFromPage)
     {
         return userpassword != catchFromPage;
+    }
+    
+    public void AddBookingToUser(User user, Booking booking)
+    {
+        user.GetBookings().Add(booking);
     }
 }

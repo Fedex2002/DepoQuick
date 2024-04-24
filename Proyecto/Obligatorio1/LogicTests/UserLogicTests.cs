@@ -23,7 +23,7 @@ public class UserLogicTests
     {
         _userRepo = new UserRepositories();
         _userLogic = new UserLogic(_userRepo);
-        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", null);
+        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<Booking>());
     }
     
     [TestMethod]
@@ -58,12 +58,12 @@ public class UserLogicTests
     [TestMethod]
     public void WhenUserMakesABookingShouldAddItToHisListOfBookings()
     {
-        _user = _userRepo.GetFromRepository(_user);
+        _userRepo.AddToRepository(_user);
         _promotions = new List<Promotion>();
         _mypromotion= new Promotion("Winter discount", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
         _promotions.Add(_mypromotion);
         _mystorageunit= new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions);
         _mybooking = new Booking(true, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected");
-        _userLogic.AddBooking(_mybooking);
+        _userLogic.AddBookingToUser(_user, _mybooking);
     }
 }
