@@ -1,11 +1,18 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Logic;
+using Model;
+using Repositories;
+using RepositoriesInterface;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
+builder.Services.AddSingleton<IRepositories<User>, UserRepositories>();
+builder.Services.AddSingleton<UserLogic>();
 
 var app = builder.Build();
 
