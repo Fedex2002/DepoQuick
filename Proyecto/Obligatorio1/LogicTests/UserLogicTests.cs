@@ -84,4 +84,10 @@ public class UserLogicTests
         _userLogic.RemoveBookingFromUser(_userRepo.GetFromRepository(_user), _mybooking);
         
     }
+    
+    [TestMethod]
+    public void WhenUserIsTryingToLoginShouldReturnUserIfValidationsAreCorrect()
+    {
+        Assert.AreEqual(_user, _userLogic.Login(_user));
+    }
 }
