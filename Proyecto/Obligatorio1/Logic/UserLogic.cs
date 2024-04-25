@@ -63,4 +63,9 @@ public class UserLogic
 
         return user;
     }
+
+    public UserRepositories GetRepository()
+    {
+        return _userRepositories;
+    }
 }

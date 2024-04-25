@@ -95,7 +95,6 @@ public class UserLogicTests
     public void WhenUsersAreAddedToRepositoryShouldReturnTheRepository()
     {
         User federico = new User("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#", new List<Booking>());
-        _userRepo.AddToRepository(_user); 
         _userRepo.AddToRepository(federico); 
         Assert.AreEqual(_userRepo, _userLogic.GetRepository());
     }
