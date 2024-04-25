@@ -24,12 +24,19 @@ public class UserLogicTests
         _userRepo = new UserRepositories();
         _userLogic = new UserLogic(_userRepo);
         _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<Booking>());
+        _userRepo.AddToRepository(_user); 
+        _promotions = new List<Promotion>();
+        _mypromotion= new Promotion("Winter discount", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
+        _promotions.Add(_mypromotion);
+        _mystorageunit= new StorageUnit("20",AreaType.A, SizeType.Small, true, _promotions);
+        _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected");
     }
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenEmailIsNotRegisteredThrowException()
     {
+        _userRepo.RemoveFromRepository(_user); 
         _userLogic.CheckIfEmailIsRegistered(_user.GetEmail());
     }
 
@@ -37,45 +44,32 @@ public class UserLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPasswordIsNotCorrectThrowException()
     {
-        _userRepo.AddToRepository(_user); 
+        _userRepo.RemoveFromRepository(_user);
         _userLogic.CheckIfPasswordIsCorrect(_user.GetPassword(), "Catch from page");
     }
 
     [TestMethod]
     public void WhenEmailIsRegisteredReturnTrue()
     {
-        _userRepo.AddToRepository(_user);
         Assert.IsTrue(_userLogic.CheckIfEmailIsRegistered(_user.GetEmail()));
     }
 
     [TestMethod]
     public void WhenPasswordIsCorrectReturnTrue()
     {
-        _userRepo.AddToRepository(_user);
         Assert.IsTrue(_userLogic.CheckIfPasswordIsCorrect(_user.GetPassword(), _user.GetPassword()));
     }
 
     [TestMethod]
     public void WhenUserMakesABookingShouldAddItToHisListOfBookings()
     {
-        _userRepo.AddToRepository(_user);
-        _promotions = new List<Promotion>();
-        _mypromotion= new Promotion("Winter discount", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
-        _promotions.Add(_mypromotion);
-        _mystorageunit= new StorageUnit("20",AreaType.A, SizeType.Small, true, _promotions);
-        _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected");
         _userLogic.AddBookingToUser(_userRepo.GetFromRepository(_user), _mybooking);
     }
 
     [TestMethod]
     public void WhenUserBookingIsApprovedShouldReturnTrue()
     {
-        _userRepo.AddToRepository(_user);
-        _userRepo.GetFromRepository(_user); //Selected by administrator
-        _promotions = new List<Promotion>();
-        _mypromotion= new Promotion("Winter discount", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
-        _promotions.Add(_mypromotion);
-        _mystorageunit= new StorageUnit("20",AreaType.A, SizeType.Small, true, _promotions);
+        _userRepo.GetFromRepository(_user); 
         _mybooking = new Booking(true, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected");
         _userLogic.AddBookingToUser(_userRepo.GetFromRepository(_user), _mybooking);
         bool status = _userLogic.ApprovedBooking(_userRepo.GetFromRepository(_user).GetBookings().Find(Booking => Booking == _mybooking));
@@ -85,13 +79,7 @@ public class UserLogicTests
     [TestMethod]
     public void WhenUserBookingIsRejectedShouldEliminateBookingFromUserListOfBookings()
     {
-        _userRepo.AddToRepository(_user);
-        _userRepo.GetFromRepository(_user); //Selected by administrator
-        _promotions = new List<Promotion>();
-        _mypromotion= new Promotion("Winter discount", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
-        _promotions.Add(_mypromotion);
-        _mystorageunit= new StorageUnit("20",AreaType.A, SizeType.Small, true, _promotions);
-        _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected");
+        _userRepo.GetFromRepository(_user); 
         _userLogic.AddBookingToUser(_userRepo.GetFromRepository(_user), _mybooking);
         _userLogic.RemoveBookingFromUser(_userRepo.GetFromRepository(_user), _mybooking);
         
