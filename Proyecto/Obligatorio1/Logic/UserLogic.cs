@@ -47,4 +47,9 @@ public class UserLogic
     {
         user.GetBookings().Remove(booking);
     }
+
+    public User Login(User anyUser)
+    {
+        return _userRepositories.GetFromRepository(anyUser);
+    }
 }
