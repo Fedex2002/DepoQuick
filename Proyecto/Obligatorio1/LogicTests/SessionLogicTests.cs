@@ -18,11 +18,12 @@ public class SessionLogicTests
         _userLogic = new UserLogic(_userRepo);
         _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<Booking>());
         _userRepo.AddToRepository(_user);
+        _sessionLogic = new SessionLogic(_userLogic);
     }
 
     [TestMethod]
     public void WhenUserIsLoggedInSetItAsCurrentUser()
     {
-        SessionLogic.Login(_userLogic.GetRepository().GetFromRepository(_user));
+        _sessionLogic.Login(_userLogic.GetRepository().GetFromRepository(_user));
     }
 }
