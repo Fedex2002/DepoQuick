@@ -16,4 +16,9 @@ public class SessionLogic
     {
         CurrentUser = _userLogic.Login(user);
     }
+    
+    public void Logout(User user)
+    {
+        CurrentUser = null;
+    }
 }
