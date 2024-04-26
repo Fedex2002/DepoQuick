@@ -26,4 +26,10 @@ public class SessionLogicTests
     {
         _sessionLogic.Login(_userLogic.GetRepository().GetFromRepository(_user));
     }
+    
+    [TestMethod]
+    public void WhenUserIsLoggedOutSetCurrentUserToEmpty()
+    {
+        _sessionLogic.Logout(_userLogic.GetRepository().GetFromRepository(_user));
+    }
 }
