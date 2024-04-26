@@ -36,8 +36,8 @@ public class UserLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenEmailIsNotRegisteredThrowException()
     {
-        _userRepo.RemoveFromRepository(_user); 
-        _userLogic.CheckIfEmailIsRegistered(_user.GetEmail());
+        _userRepo.RemoveFromRepository(_user);;
+        _userLogic.IfEmailIsNotRegisteredThrowException(_userLogic.CheckIfEmailIsRegistered(_user.GetEmail()));
     }
 
     [TestMethod]

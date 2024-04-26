@@ -15,11 +15,15 @@ public class UserLogic
 
     public bool CheckIfEmailIsRegistered(string email)
     {
-        if (!_userRepositories.ExistsInRepository(email))
-            throw new LogicExceptions("The email is not registered");
-        return true;
+        return _userRepositories.ExistsInRepository(email);
     }
 
+    public void IfEmailIsNotRegisteredThrowException(bool registered)
+    {
+        if (!registered)
+            throw new LogicExceptions("The email is not registered");
+    }
+    
     public bool CheckIfPasswordIsCorrect(string userpassword, string catchFromPage)
     {
        
@@ -70,7 +74,7 @@ public class UserLogic
     }
 
     public void SignUp(User user)
-    {
+    { 
         _userRepositories.AddToRepository(user);
     }
 }
