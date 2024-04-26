@@ -22,9 +22,9 @@ public class StorageUnitRepositories : IRepositories<StorageUnit>
         throw new RepositoryExceptions("The storage unit already exists");
     }
 
-    public StorageUnit GetFromRepository(StorageUnit storageUnit)
+    public StorageUnit GetFromRepository(string id)
     {
-        return _storageUnits.Find(s => s.GetId() == storageUnit.GetId());
+        return _storageUnits.Find(s => s.GetId() == id);
     }
     public bool ExistsInRepository(string id)
     {
