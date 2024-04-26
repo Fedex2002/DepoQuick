@@ -68,4 +68,9 @@ public class UserLogic
     {
         return _userRepositories;
     }
+
+    public void SignUp(User user)
+    {
+        _userRepositories.AddToRepository(user);
+    }
 }

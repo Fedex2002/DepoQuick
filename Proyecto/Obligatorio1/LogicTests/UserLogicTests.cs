@@ -102,6 +102,8 @@ public class UserLogicTests
     [TestMethod]
     public void WhenUserIsTryingToSignUpShouldAddUserToRepositoryIfValidationsAreCorrect()
     {
+        _userRepo.RemoveFromRepository(_user);
         _userLogic.SignUp(_user);
+        Assert.IsTrue(_userRepo.ExistsInRepository(_user.GetEmail()));
     }
 }
