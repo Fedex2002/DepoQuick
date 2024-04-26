@@ -74,7 +74,10 @@ public class UserLogic
     }
 
     public void SignUp(User user)
-    { 
-        _userRepositories.AddToRepository(user);
+    {
+        if (!CheckIfEmailIsRegistered(user.GetEmail()))
+        {
+            _userRepositories.AddToRepository(user);
+        }
     }
 }
