@@ -60,7 +60,7 @@ public class UserLogic
     private User LoginCheckUserValidations(User anyUser)
     {
         User user = new User();
-        if (CheckIfEmailIsRegistered(anyUser.GetEmail()) && CheckIfPasswordIsCorrect(anyUser.GetPassword(), _userRepositories.GetFromRepository(anyUser).GetPassword()))
+        if (CheckIfEmailIsRegistered(anyUser.GetEmail()) && CheckIfPasswordIsCorrect(anyUser.GetPassword(), _userRepositories.GetFromRepository(anyUser.GetEmail()).GetPassword()))
         {
             user = anyUser;
         }

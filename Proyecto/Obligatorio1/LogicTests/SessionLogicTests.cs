@@ -24,12 +24,12 @@ public class SessionLogicTests
     [TestMethod]
     public void WhenUserIsLoggedInSetItAsCurrentUser()
     {
-        _sessionLogic.Login(_userLogic.GetRepository().GetFromRepository(_user));
+        _sessionLogic.Login(_userLogic.GetRepository().GetFromRepository(_user.GetEmail()));
     }
     
     [TestMethod]
     public void WhenUserIsLoggedOutSetCurrentUserToEmpty()
     {
-        _sessionLogic.Logout(_userLogic.GetRepository().GetFromRepository(_user));
+        _sessionLogic.Logout(_userLogic.GetRepository().GetFromRepository(_user.GetEmail()));
     }
 }
