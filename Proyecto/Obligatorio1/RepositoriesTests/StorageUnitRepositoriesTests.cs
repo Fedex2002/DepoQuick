@@ -24,7 +24,7 @@ public class StorageUnitRepositoriesTests
     public void WhenAddingNewStorageUnitShouldAddItToRepository()
     {
         _storageUnitRepositories.AddToRepository(_storageUnit);
-        StorageUnit storageUnitInRepo = _storageUnitRepositories.GetFromRepository(_storageUnit);
+        StorageUnit storageUnitInRepo = _storageUnitRepositories.GetFromRepository(_storageUnit.GetId());
         Assert.AreEqual(_storageUnit.GetId(), storageUnitInRepo.GetId());
     }
     

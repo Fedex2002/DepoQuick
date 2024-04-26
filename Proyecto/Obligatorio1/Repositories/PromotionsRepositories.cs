@@ -11,9 +11,9 @@ public class PromotionsRepositories : IRepositories<Promotion>
     {
         _promotions.Add(promotion);
     }
-    public Promotion GetFromRepository(Promotion promotion)
+    public Promotion GetFromRepository(string label)
     {
-        return _promotions.Find(p => p.GetLabel() == promotion.GetLabel());
+        return _promotions.Find(p => p.GetLabel() == label);
     }
     public bool ExistsInRepository(string label)
     {

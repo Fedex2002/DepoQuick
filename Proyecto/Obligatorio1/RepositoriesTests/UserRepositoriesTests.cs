@@ -21,7 +21,7 @@ public class UserRepositoryTest
     public void WhenAddingNewUserShouldAddItToRepository()
     {
         _userepo.AddToRepository(_user);
-        User userInRepo = _userepo.GetFromRepository(_user);
+        User userInRepo = _userepo.GetFromRepository(_user.GetEmail());
         Assert.AreEqual(_user.GetEmail(), userInRepo.GetEmail());
     }
     
