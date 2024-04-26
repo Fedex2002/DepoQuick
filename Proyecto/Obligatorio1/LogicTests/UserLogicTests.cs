@@ -90,6 +90,13 @@ public class UserLogicTests
     {
         Assert.AreEqual(_user, _userLogic.Login(_user.GetEmail(), _user.GetPassword()));
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenUserIsTryingToLoginShouldReturnExceptionIfValidationsAreNotCorrect()
+    {
+        Assert.AreEqual(_user, _userLogic.Login(_user.GetEmail(), _user.GetPassword()));
+    }
 
     [TestMethod]
     public void WhenUsersAreAddedToRepositoryShouldReturnTheRepository()
