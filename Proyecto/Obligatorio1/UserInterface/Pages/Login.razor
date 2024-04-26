@@ -36,7 +36,7 @@
           <div class="text-center text-lg-start mt-4 pt-2">
             <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
             <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#" @onclick="GoToSignUp"
-                class="link-danger">Register</a></p>
+                                                                              class="link-danger">Register</a></p>
           </div>
         </form>
       </div>
@@ -50,12 +50,22 @@
   </div>
 </section>
 
+@if (showUserErrorModal)
+{
+            <AuthenticationModal 
+                        Title="Login Error" 
+                        Text="@errorMessage" 
+                        DialogType=AuthenticationModal.ModalDialogType.Ok
+                        OnClose="@CloseUserErrorModal">
+            </AuthenticationModal>
+}
 
 @code {
     Model.User user;
     private string email;
     private string password;
-    
+    private bool showUserErrorModal = false;
+    private string errorMessage = "";
     protected override void OnInitialized()
     {
       user = new Model.User();
@@ -65,15 +75,23 @@
     {
       try
       {
-        user = new Model.User("placeholder", "placeholder", email, password, new List<Booking>());
-        user = UserLogic.GetRepository().GetFromRepository(user);
-        SessionLogic.Login(user);
+        SessionLogic.Login(email,password);//cambiar por el metodo de login que mande
         NavigationManager.NavigateTo("/Index", true);
+        
+        
       }
       catch (Exception e)
       {
-        Console.WriteLine(e.Message);
+        showUserErrorModal = true;
+        errorMessage = e.Message;
       }
+      
+      
+    }
+    
+    private void CloseUserErrorModal()
+    {
+      showUserErrorModal = false;
     }
     
     private void GoToSignUp()
