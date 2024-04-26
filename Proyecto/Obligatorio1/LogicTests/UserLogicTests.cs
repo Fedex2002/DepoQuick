@@ -84,4 +84,18 @@ public class UserLogicTests
         _userLogic.RemoveBookingFromUser(_userRepo.GetFromRepository(_user), _mybooking);
         
     }
+    
+    [TestMethod]
+    public void WhenUserIsTryingToLoginShouldReturnUserIfValidationsAreCorrect()
+    {
+        Assert.AreEqual(_user, _userLogic.Login(_user));
+    }
+
+    [TestMethod]
+    public void WhenUsersAreAddedToRepositoryShouldReturnTheRepository()
+    {
+        User federico = new User("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#", new List<Booking>());
+        _userRepo.AddToRepository(federico); 
+        Assert.AreEqual(_userRepo, _userLogic.GetRepository());
+    }
 }

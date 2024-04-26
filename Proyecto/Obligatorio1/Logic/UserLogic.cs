@@ -47,4 +47,25 @@ public class UserLogic
     {
         user.GetBookings().Remove(booking);
     }
+
+    public User Login(User anyUser)
+    {
+        User user = new User();
+        return LoginCheckUserValidations(anyUser, user);
+    }
+
+    private User LoginCheckUserValidations(User anyUser, User user)
+    {
+        if (CheckIfEmailIsRegistered(anyUser.GetEmail()) && CheckIfPasswordIsCorrect(anyUser.GetPassword(), anyUser.GetPassword()))
+        {
+            user = _userRepositories.GetFromRepository(anyUser);
+        }
+
+        return user;
+    }
+
+    public UserRepositories GetRepository()
+    {
+        return _userRepositories;
+    }
 }
