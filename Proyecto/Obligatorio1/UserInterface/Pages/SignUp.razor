@@ -3,7 +3,9 @@
 @using Model;
 @layout LoginLayout
 @using Microsoft.AspNetCore.Identity
+@using Logic
 @inherits LayoutComponentBase
+@inject UserLogic UserLogic
 @inject NavigationManager NavigationManager
 
 <PageTitle>DepoQuick</PageTitle>
@@ -79,8 +81,12 @@
   {
     try
     {
-      user = new Model.User("Franco", "Ramos", email, password, new List<Booking>());
-      await Task.Delay(2000);
+      if (password != passwordConfirmation)
+      {
+        Console.WriteLine("Passwords do not match");
+      }
+      user = new Model.User(name, surname, email, password, new List<Booking>());
+      UserLogic.SignUp(user);
       NavigationManager.NavigateTo("/");
     }
     catch (Exception e)

@@ -5,6 +5,7 @@
 @using Logic
 @using Model
 @inherits LayoutComponentBase
+@inject UserLogic UserLogic
 @inject SessionLogic SessionLogic
 @inject NavigationManager NavigationManager
 
@@ -23,7 +24,7 @@
           </div>
 
           <div data-mdb-input-init class="form-outline mb-4">
-            <input type="email" class="form-control form-control-lg" placeholder="Enter email address"  @bind="email" required/>
+            <input type="email" class="form-control form-control-lg" placeholder="Enter email address" @bind="email" required/>
             <label class="form-label" for="UserEmail">Email address</label>
           </div>
           
@@ -64,9 +65,9 @@
     {
       try
       {
-        user = new Model.User("Franco", "Ramos", email, password, new List<Booking>());
+        user = new Model.User("placeholder", "placeholder", email, password, new List<Booking>());
+        user = UserLogic.GetRepository().GetFromRepository(user);
         SessionLogic.Login(user);
-        await Task.Delay(2000);
         NavigationManager.NavigateTo("/Index", true);
       }
       catch (Exception e)
