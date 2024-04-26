@@ -14,7 +14,7 @@ public class SessionLogic
     
     public void Login(User user)
     {
-        CurrentUser = _userLogic.Login(user);
+        CurrentUser = _userLogic.Login(user.GetEmail(), user.GetPassword());
     }
     
     public void Logout(User user)

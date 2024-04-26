@@ -88,7 +88,7 @@ public class UserLogicTests
     [TestMethod]
     public void WhenUserIsTryingToLoginShouldReturnUserIfValidationsAreCorrect()
     {
-        Assert.AreEqual(_user, _userLogic.Login(_user));
+        Assert.AreEqual(_user, _userLogic.Login(_user.GetEmail(), _user.GetPassword()));
     }
 
     [TestMethod]
