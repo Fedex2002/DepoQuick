@@ -22,7 +22,7 @@ public class PromotionsRepositoriesTests
     public void WhenAddingNewPromotionShouldAddItToRepository()
     {
         _promotionsRepositories.AddToRepository(_promotion);
-        Promotion promotionInRepo = _promotionsRepositories.GetFromRepository(_promotion);
+        Promotion promotionInRepo = _promotionsRepositories.GetFromRepository(_promotion.GetLabel());
         Assert.AreEqual(_promotion.GetLabel(), promotionInRepo.GetLabel());
     }
     
