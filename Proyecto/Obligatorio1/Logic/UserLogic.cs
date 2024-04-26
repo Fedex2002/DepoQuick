@@ -15,11 +15,15 @@ public class UserLogic
 
     public bool CheckIfEmailIsRegistered(string email)
     {
-        if (!_userRepositories.ExistsInRepository(email))
-            throw new LogicExceptions("The email is not registered");
-        return true;
+        return _userRepositories.ExistsInRepository(email);
     }
 
+    public void IfEmailIsNotRegisteredThrowException(bool registered)
+    {
+        if (!registered)
+            throw new LogicExceptions("The email is not registered");
+    }
+    
     public bool CheckIfPasswordIsCorrect(string userpassword, string catchFromPage)
     {
        
@@ -50,15 +54,15 @@ public class UserLogic
 
     public User Login(User anyUser)
     {
-        User user = new User();
-        return LoginCheckUserValidations(anyUser, user);
+        return LoginCheckUserValidations(anyUser);
     }
 
-    private User LoginCheckUserValidations(User anyUser, User user)
+    private User LoginCheckUserValidations(User anyUser)
     {
-        if (CheckIfEmailIsRegistered(anyUser.GetEmail()) && CheckIfPasswordIsCorrect(anyUser.GetPassword(), anyUser.GetPassword()))
+        User user = new User();
+        if (CheckIfEmailIsRegistered(anyUser.GetEmail()) && CheckIfPasswordIsCorrect(anyUser.GetPassword(), _userRepositories.GetFromRepository(anyUser.GetEmail()).GetPassword()))
         {
-            user = _userRepositories.GetFromRepository(anyUser);
+            user = anyUser;
         }
 
         return user;
@@ -67,5 +71,13 @@ public class UserLogic
     public UserRepositories GetRepository()
     {
         return _userRepositories;
+    }
+
+    public void SignUp(User user)
+    {
+        if (!CheckIfEmailIsRegistered(user.GetEmail()))
+        {
+            _userRepositories.AddToRepository(user);
+        }
     }
 }
