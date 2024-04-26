@@ -11,8 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-builder.Services.AddSingleton<IRepositories<User>, UserRepositories>();
+builder.Services.AddSingleton<UserRepositories>();
 builder.Services.AddSingleton<UserLogic>();
+builder.Services.AddSingleton<SessionLogic>();
 
 var app = builder.Build();
 
