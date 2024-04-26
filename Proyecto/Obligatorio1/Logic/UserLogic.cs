@@ -54,15 +54,15 @@ public class UserLogic
 
     public User Login(User anyUser)
     {
-        User user = new User();
-        return LoginCheckUserValidations(anyUser, user);
+        return LoginCheckUserValidations(anyUser);
     }
 
-    private User LoginCheckUserValidations(User anyUser, User user)
+    private User LoginCheckUserValidations(User anyUser)
     {
-        if (CheckIfEmailIsRegistered(anyUser.GetEmail()) && CheckIfPasswordIsCorrect(anyUser.GetPassword(), anyUser.GetPassword()))
+        User user = new User();
+        if (CheckIfEmailIsRegistered(anyUser.GetEmail()) && CheckIfPasswordIsCorrect(anyUser.GetPassword(), _userRepositories.GetFromRepository(anyUser).GetPassword()))
         {
-            user = _userRepositories.GetFromRepository(anyUser);
+            user = anyUser;
         }
 
         return user;
