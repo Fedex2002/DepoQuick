@@ -64,6 +64,10 @@ public class UserLogic
         {
             user = _userRepositories.GetFromRepository(email);
         }
+        else
+        {
+            throw new LogicExceptions("The user does not exist");
+        }
 
         return user;
     }
