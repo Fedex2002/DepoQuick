@@ -98,4 +98,10 @@ public class UserLogicTests
         _userRepo.AddToRepository(federico); 
         Assert.AreEqual(_userRepo, _userLogic.GetRepository());
     }
+
+    [TestMethod]
+    public void WhenUserIsTryingToSignUpShouldAddUserToRepositoryIfValidationsAreCorrect()
+    {
+        _userLogic.SignUp(_user);
+    }
 }
