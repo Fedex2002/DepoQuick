@@ -4,23 +4,21 @@ namespace Logic;
 
 public class SessionLogic
 {
-    private readonly UserLogic _userLogic;
-    public User CurrentUser { get; set; }
+    private readonly PersonLogic _personLogic;
+    public Person CurrentPerson { get; set; }
     
-    public SessionLogic(UserLogic userLogic)
+    public SessionLogic(PersonLogic personLogic)
     {
-        _userLogic = userLogic;
+        _personLogic = personLogic;
     }
     
     public void Login(string email,string password)
     {
-        User user = _userLogic.GetRepository().GetFromRepository(email);
-        CurrentUser = _userLogic.Login(email,password); 
-       
+        CurrentPerson = _personLogic.Login(email,password); 
     }
     
-    public void Logout(User user)
+    public void Logout(Person person)
     {
-        CurrentUser = null;
+        CurrentPerson = null;
     }
 }

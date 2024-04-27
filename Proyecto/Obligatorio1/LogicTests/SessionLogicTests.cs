@@ -6,30 +6,30 @@ namespace LogicTests;
 [TestClass]
 public class SessionLogicTests
 {
-    private UserRepositories _userRepo;
-    private UserLogic _userLogic;
-    private User _user;
+    private PersonRepositories _personRepo;
+    private PersonLogic _personLogic;
+    private Person _person;
     private SessionLogic _sessionLogic;
 
     [TestInitialize]
     public void TestInitialize()
     {
-        _userRepo = new UserRepositories();
-        _userLogic = new UserLogic(_userRepo);
-        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<Booking>());
-        _userRepo.AddToRepository(_user);
-        _sessionLogic = new SessionLogic(_userLogic);
+        _personRepo = new PersonRepositories();
+        _personLogic = new PersonLogic(_personRepo);
+        _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#");
+        _personRepo.AddToRepository(_person);
+        _sessionLogic = new SessionLogic(_personLogic);
     }
 
     [TestMethod]
-    public void WhenUserIsLoggedInSetItAsCurrentUser()
+    public void WhenPersonIsLoggedInSetItAsCurrentPerson()
     {
-        _sessionLogic.Login(_userLogic.GetRepository().GetFromRepository(_user.GetEmail()).GetEmail(),_userLogic.GetRepository().GetFromRepository(_user.GetEmail()).GetPassword());
+        _sessionLogic.Login(_personLogic.GetRepository().GetFromRepository(_person.GetEmail()).GetEmail(),_personLogic.GetRepository().GetFromRepository(_person.GetEmail()).GetPassword());
     }
     
     [TestMethod]
-    public void WhenUserIsLoggedOutSetCurrentUserToEmpty()
+    public void WhenPersonIsLoggedOutSetCurrentPersonToEmpty()
     {
-        _sessionLogic.Logout(_userLogic.GetRepository().GetFromRepository(_user.GetEmail()));
+        _sessionLogic.Logout(_personLogic.GetRepository().GetFromRepository(_person.GetEmail()));
     }
 }
