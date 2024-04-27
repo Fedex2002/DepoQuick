@@ -6,7 +6,7 @@ namespace LogicTests;
 [TestClass]
 public class SessionLogicTests
 {
-    private UserRepositories _userRepo;
+    private PersonRepositories _personRepo;
     private UserLogic _userLogic;
     private User _user;
     private SessionLogic _sessionLogic;
@@ -14,10 +14,10 @@ public class SessionLogicTests
     [TestInitialize]
     public void TestInitialize()
     {
-        _userRepo = new UserRepositories();
-        _userLogic = new UserLogic(_userRepo);
+        _personRepo = new PersonRepositories();
+        _userLogic = new UserLogic(_personRepo);
         _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<Booking>());
-        _userRepo.AddToRepository(_user);
+        _personRepo.AddToRepository(_user);
         _sessionLogic = new SessionLogic(_userLogic);
     }
 

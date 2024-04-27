@@ -10,7 +10,7 @@ namespace LogicTests;
 [TestClass]
 public class UserLogicTests
 {
-    private UserRepositories _userRepo;
+    private PersonRepositories _personRepo;
     private UserLogic _userLogic;
     private User _user;
     private List<Promotion> _promotions;
@@ -21,10 +21,10 @@ public class UserLogicTests
     [TestInitialize]
     public void TestInitialize()
     {
-        _userRepo = new UserRepositories();
-        _userLogic = new UserLogic(_userRepo);
+        _personRepo = new PersonRepositories();
+        _userLogic = new UserLogic(_personRepo);
         _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<Booking>());
-        _userRepo.AddToRepository(_user); 
+        _personRepo.AddToRepository(_user); 
         _promotions = new List<Promotion>();
         _mypromotion= new Promotion("Winter discount", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
         _promotions.Add(_mypromotion);
@@ -36,7 +36,7 @@ public class UserLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenEmailIsNotRegisteredThrowException()
     {
-        _userRepo.RemoveFromRepository(_user);;
+        _personRepo.RemoveFromRepository(_user);;
         _userLogic.IfEmailIsNotRegisteredThrowException(_userLogic.CheckIfEmailIsRegistered(_user.GetEmail()));
     }
 
@@ -44,7 +44,7 @@ public class UserLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPasswordIsNotCorrectThrowException()
     {
-        _userRepo.RemoveFromRepository(_user);
+        _personRepo.RemoveFromRepository(_user);
         _userLogic.CheckIfPasswordIsCorrect(_user.GetPassword(), "Catch from page");
     }
 
@@ -63,25 +63,25 @@ public class UserLogicTests
     [TestMethod]
     public void WhenUserMakesABookingShouldAddItToHisListOfBookings()
     {
-        _userLogic.AddBookingToUser(_userRepo.GetFromRepository(_user.GetEmail()), _mybooking);
+        _userLogic.AddBookingToUser(_personRepo.GetFromRepository(_user.GetEmail()), _mybooking);
     }
 
     [TestMethod]
     public void WhenUserBookingIsApprovedShouldReturnTrue()
     {
-        _userRepo.GetFromRepository(_user.GetEmail()); 
+        _personRepo.GetFromRepository(_user.GetEmail()); 
         _mybooking = new Booking(true, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected");
-        _userLogic.AddBookingToUser(_userRepo.GetFromRepository(_user.GetEmail()), _mybooking);
-        bool status = _userLogic.ApprovedBooking(_userRepo.GetFromRepository(_user.GetEmail()).GetBookings().Find(Booking => Booking == _mybooking));
+        _userLogic.AddBookingToUser(_personRepo.GetFromRepository(_user.GetEmail()), _mybooking);
+        bool status = _userLogic.ApprovedBooking(_personRepo.GetFromRepository(_user.GetEmail()).GetBookings().Find(Booking => Booking == _mybooking));
         Assert.IsTrue(status);
     }
 
     [TestMethod]
     public void WhenUserBookingIsRejectedShouldEliminateBookingFromUserListOfBookings()
     {
-        _userRepo.GetFromRepository(_user.GetEmail()); 
-        _userLogic.AddBookingToUser(_userRepo.GetFromRepository(_user.GetEmail()), _mybooking);
-        _userLogic.RemoveBookingFromUser(_userRepo.GetFromRepository(_user.GetEmail()), _mybooking);
+        _personRepo.GetFromRepository(_user.GetEmail()); 
+        _userLogic.AddBookingToUser(_personRepo.GetFromRepository(_user.GetEmail()), _mybooking);
+        _userLogic.RemoveBookingFromUser(_personRepo.GetFromRepository(_user.GetEmail()), _mybooking);
         
     }
     
@@ -102,15 +102,15 @@ public class UserLogicTests
     public void WhenUsersAreAddedToRepositoryShouldReturnTheRepository()
     {
         User federico = new User("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#", new List<Booking>());
-        _userRepo.AddToRepository(federico); 
-        Assert.AreEqual(_userRepo, _userLogic.GetRepository());
+        _personRepo.AddToRepository(federico); 
+        Assert.AreEqual(_personRepo, _userLogic.GetRepository());
     }
 
     [TestMethod]
     public void WhenUserIsTryingToSignUpShouldAddUserToRepositoryIfValidationsAreCorrect()
     {
-        _userRepo.RemoveFromRepository(_user);
+        _personRepo.RemoveFromRepository(_user);
         _userLogic.SignUp(_user);
-        Assert.IsTrue(_userRepo.ExistsInRepository(_user.GetEmail()));
+        Assert.IsTrue(_personRepo.ExistsInRepository(_user.GetEmail()));
     }
 }

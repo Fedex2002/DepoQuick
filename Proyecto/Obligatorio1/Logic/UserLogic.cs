@@ -6,16 +6,16 @@ namespace Logic;
 
 public class UserLogic
 {
-    private UserRepositories _userRepositories;
+    private PersonRepositories _personRepositories;
     
-    public UserLogic(UserRepositories userRepositories)
+    public UserLogic(PersonRepositories personRepositories)
     {
-        _userRepositories = userRepositories;
+        _personRepositories = personRepositories;
     }
 
     public bool CheckIfEmailIsRegistered(string email)
     {
-        return _userRepositories.ExistsInRepository(email);
+        return _personRepositories.ExistsInRepository(email);
     }
 
     public void IfEmailIsNotRegisteredThrowException(bool registered)
@@ -60,9 +60,9 @@ public class UserLogic
     private User LoginCheckUserValidations(string email, string password)
     {
         User user = new User();
-        if (CheckIfEmailIsRegistered(email) && CheckIfPasswordIsCorrect(password, _userRepositories.GetFromRepository(email).GetPassword()))
+        if (CheckIfEmailIsRegistered(email) && CheckIfPasswordIsCorrect(password, _personRepositories.GetFromRepository(email).GetPassword()))
         {
-            user = _userRepositories.GetFromRepository(email);
+            user = _personRepositories.GetFromRepository(email);
         }
         else
         {
@@ -72,16 +72,16 @@ public class UserLogic
         return user;
     }
 
-    public UserRepositories GetRepository()
+    public PersonRepositories GetRepository()
     {
-        return _userRepositories;
+        return _personRepositories;
     }
 
     public void SignUp(User user)
     {
         if (!CheckIfEmailIsRegistered(user.GetEmail()))
         {
-            _userRepositories.AddToRepository(user);
+            _personRepositories.AddToRepository(user);
         }
     }
 }
