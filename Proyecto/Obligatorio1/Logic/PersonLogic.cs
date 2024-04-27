@@ -70,5 +70,9 @@ public class PersonLogic
         {
             _personRepositories.AddToRepository(person);
         }
+        else
+        {
+            throw new LogicExceptions("The email is already registered");
+        }
     }
 }
