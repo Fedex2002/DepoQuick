@@ -4,11 +4,11 @@ using Repositories;
 
 namespace Logic;
 
-public class UserLogic
+public class PersonLogic
 {
     private PersonRepositories _personRepositories;
     
-    public UserLogic(PersonRepositories personRepositories)
+    public PersonLogic(PersonRepositories personRepositories)
     {
         _personRepositories = personRepositories;
     }
