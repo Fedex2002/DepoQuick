@@ -14,9 +14,7 @@ public class SessionLogic
     
     public void Login(string email,string password)
     {
-        User user = _userLogic.GetRepository().GetFromRepository(email);
         CurrentUser = _userLogic.Login(email,password); 
-       
     }
     
     public void Logout(User user)
