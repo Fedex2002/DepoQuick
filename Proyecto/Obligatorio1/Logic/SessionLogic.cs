@@ -12,9 +12,13 @@ public class SessionLogic
         _userLogic = userLogic;
     }
     
-    public void Login(User user)
+    public void Login(string email,string password)
     {
-        CurrentUser = _userLogic.Login(user);
+        User user = _userLogic.GetRepository().GetFromRepository(email);
+        if (user != null)
+        {
+            CurrentUser = _userLogic.Login(email,password); 
+        }
     }
     
     public void Logout(User user)

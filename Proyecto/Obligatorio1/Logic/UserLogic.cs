@@ -52,17 +52,21 @@ public class UserLogic
         user.GetBookings().Remove(booking);
     }
 
-    public User Login(User anyUser)
+    public User Login(string email,string password)
     {
-        return LoginCheckUserValidations(anyUser);
+        return LoginCheckUserValidations(email, password);
     }
 
-    private User LoginCheckUserValidations(User anyUser)
+    private User LoginCheckUserValidations(string email, string password)
     {
         User user = new User();
-        if (CheckIfEmailIsRegistered(anyUser.GetEmail()) && CheckIfPasswordIsCorrect(anyUser.GetPassword(), _userRepositories.GetFromRepository(anyUser.GetEmail()).GetPassword()))
+        if (CheckIfEmailIsRegistered(email) && CheckIfPasswordIsCorrect(password, _userRepositories.GetFromRepository(email).GetPassword()))
         {
-            user = anyUser;
+            user = _userRepositories.GetFromRepository(email);
+        }
+        else
+        {
+            throw new LogicExceptions("The user does not exist");
         }
 
         return user;
