@@ -1,8 +1,7 @@
-@page "/SignUp"
+@page "/"
 
 @using Model;
 @layout LoginLayout
-@using Microsoft.AspNetCore.Identity
 @using Logic
 @inherits LayoutComponentBase
 @inject UserLogic UserLogic
@@ -14,7 +13,7 @@
   <div class="container-fluid h-custom">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-md-9 col-lg-6 col-xl-5 justify-content-center align-items-center">
-        <img src="logo.png" class="img-fluid" alt="Logo Depo Quick" width="520" height="320">
+        <img src="logo.png" class="img-fluid logo" alt="Logo Depo Quick">
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
         <form @onsubmit="HandleValidSubmit">
@@ -23,28 +22,28 @@
           </div>
           
           <div data-mdb-input-init class="form-outline mb-2">
-            <input type="name" class="form-control form-control-lg" placeholder="Enter name" @bind="name" required/>
-            <label class="form-label" for="UserName">Name</label>
+            <input class="form-control form-control-lg" placeholder="Enter name" @bind="name" required/>
+            <label class="form-label" >Name</label>
           </div>
           
           <div data-mdb-input-init class="form-outline mb-2">
-            <input type="surname" class="form-control form-control-lg" placeholder="Enter surname" @bind="surname" required/>
-            <label class="form-label" for="UserSurname">Surname</label>
+            <input class="form-control form-control-lg" placeholder="Enter surname" @bind="surname" required/>
+            <label class="form-label" >Surname</label>
           </div>
           
           <div data-mdb-input-init class="form-outline mb-2">
             <input type="email" class="form-control form-control-lg" placeholder="Enter email address" @bind="email" required/>
-            <label class="form-label" for="UserEmail">Email address</label>
+            <label class="form-label" >Email address</label>
           </div>
           
           <div data-mdb-input-init class="form-outline mb-2">
             <input type="password" class="form-control form-control-lg" placeholder="Enter password" @bind="password" required/>
-            <label class="form-label" for="UserPassword">Password</label>
+            <label class="form-label" >Password</label>
           </div>
           
           <div data-mdb-input-init class="form-outline mb-2">
             <input type="password" class="form-control form-control-lg" placeholder="Enter password again" @bind="passwordConfirmation" required/>
-            <label class="form-label" for="UserPasswordConfirmation">Verify Password</label>
+            <label class="form-label" >Verify Password</label>
           </div>
           
           <div class="text-center text-lg-start mt-4 pt-2">
@@ -62,16 +61,25 @@
     </div>
   </div>
 </section>
-
+@if (showUserErrorModal)
+{
+            <AuthenticationModal 
+                        Title="Login Error" 
+                        Text="@errorMessage" 
+                        DialogType=AuthenticationModal.ModalDialogType.Ok
+                        OnClose="@CloseUserErrorModal">
+            </AuthenticationModal>
+}
 
 @code {
   Model.User user;
   private string name;
-  private string surname;
-  private string email;
+  private string? surname;
+  private string? email;
   private string password;
   private string passwordConfirmation;
-
+  private bool showUserErrorModal = false;
+  private string errorMessage;
   protected override void OnInitialized()
   {
     user = new Model.User();
@@ -83,21 +91,27 @@
     {
       if (password != passwordConfirmation)
       {
-        Console.WriteLine("Passwords do not match");
+        UserLogic.CheckIfPasswordIsCorrect(password, passwordConfirmation);
       }
       user = new Model.User(name, surname, email, password, new List<Booking>());
       UserLogic.SignUp(user);
-      NavigationManager.NavigateTo("/");
+      GoToLogin();
     }
     catch (Exception e)
     {
-      Console.WriteLine(e.Message);
+      showUserErrorModal = true;
+      errorMessage = e.Message;
     }
   }
 
+  private void CloseUserErrorModal()
+  {
+    showUserErrorModal = false;
+  }
+  
   private void GoToLogin()
   {
-    NavigationManager.NavigateTo("/");
+    NavigationManager.NavigateTo("/Login");
   }
     
 }

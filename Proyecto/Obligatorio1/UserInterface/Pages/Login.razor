@@ -1,5 +1,4 @@
-@page "/"
-@page "/login"
+@page "/Login"
 @layout LoginLayout
 @using Microsoft.AspNetCore.Identity
 @using Logic
@@ -12,10 +11,11 @@
 <PageTitle>DepoQuick</PageTitle>
 
 <section class="vh-100">
+
   <div class="container-fluid h-custom">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-md-9 col-lg-6 col-xl-5 justify-content-center align-items-center">
-        <img src="logo.png" class="img-fluid" alt="Logo Depo Quick" width="520" height="320">
+        <img src="logo.png" class="img-fluid logo" alt="Logo Depo Quick">
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
         <form @onsubmit="HandleValidSubmit">
@@ -96,6 +96,6 @@
     
     private void GoToSignUp()
     {
-      NavigationManager.NavigateTo("/SignUp");
+      NavigationManager.NavigateTo("/");
     }
 }
