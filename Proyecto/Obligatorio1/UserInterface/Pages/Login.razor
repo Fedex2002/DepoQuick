@@ -4,7 +4,7 @@
 @using Logic
 @using Model
 @inherits LayoutComponentBase
-@inject UserLogic UserLogic
+@inject PersonLogic PersonLogic
 @inject SessionLogic SessionLogic
 @inject NavigationManager NavigationManager
 
@@ -61,14 +61,14 @@
 }
 
 @code {
-    Model.User user;
+    Person person;
     private string email;
     private string password;
     private bool showUserErrorModal = false;
     private string errorMessage = "";
     protected override void OnInitialized()
     {
-      user = new Model.User();
+      person = new Person();
     }
     
     private async Task HandleValidSubmit()
@@ -76,7 +76,7 @@
       try
       {
         SessionLogic.Login(email,password);
-        user = SessionLogic.CurrentUser;
+        person = SessionLogic.CurrentPerson;
        GoToIndex();
         
       }

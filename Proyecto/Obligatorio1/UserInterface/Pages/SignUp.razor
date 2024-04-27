@@ -4,7 +4,7 @@
 @layout LoginLayout
 @using Logic
 @inherits LayoutComponentBase
-@inject UserLogic UserLogic
+@inject PersonLogic PersonLogic
 @inject NavigationManager NavigationManager
 
 <PageTitle>DepoQuick</PageTitle>
@@ -72,7 +72,7 @@
 }
 
 @code {
-  Model.User user;
+  Person person;
   private string name;
   private string? surname;
   private string? email;
@@ -82,7 +82,7 @@
   private string errorMessage;
   protected override void OnInitialized()
   {
-    user = new Model.User();
+    person = new Person();
   }
 
   private async Task HandleValidSubmit()
@@ -91,10 +91,10 @@
     {
       if (password != passwordConfirmation)
       {
-        UserLogic.CheckIfPasswordIsCorrect(password, passwordConfirmation);
+        PersonLogic.CheckIfPasswordIsCorrect(password, passwordConfirmation);
       }
-      user = new Model.User(name, surname, email, password, new List<Booking>());
-      UserLogic.SignUp(user);
+      person = new Person(name, surname, email, password);
+      PersonLogic.SignUp(person);
       GoToLogin();
     }
     catch (Exception e)

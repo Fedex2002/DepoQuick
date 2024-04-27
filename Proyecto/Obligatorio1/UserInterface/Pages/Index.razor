@@ -1,13 +1,13 @@
 @page "/Index"
 @using Logic
 @layout MainLayout
-@inject UserLogic UserLogic
+@inject PersonLogic PersonLogic
 @inject SessionLogic SessionLogic
 <PageTitle>DepoQuick</PageTitle>
 
 <div class="container">
     <h1 class="mt-5">DepoQuick</h1>
-    <p class="lead">Welcome to our page @SessionLogic.CurrentUser.GetName() !  Discover the convenience of hassle-free storage solutions. Whether you're decluttering your home, moving to a new place, or just need some extra space, we've got you covered. Explore our range of StorageUnits and find the perfect fit for your needs. Start storing smarter today!</p>
+    <p class="lead">Welcome to our page @SessionLogic.CurrentPerson.GetName() !  Discover the convenience of hassle-free storage solutions. Whether you're decluttering your home, moving to a new place, or just need some extra space, we've got you covered. Explore our range of StorageUnits and find the perfect fit for your needs. Start storing smarter today!</p>
 
     <div class="row">
         <div class="col-md-6">
