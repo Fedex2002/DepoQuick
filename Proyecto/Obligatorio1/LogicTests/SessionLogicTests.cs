@@ -22,13 +22,13 @@ public class SessionLogicTests
     }
 
     [TestMethod]
-    public void WhenUserIsLoggedInSetItAsCurrentUser()
+    public void WhenPersonIsLoggedInSetItAsCurrentPerson()
     {
         _sessionLogic.Login(_personLogic.GetRepository().GetFromRepository(_person.GetEmail()).GetEmail(),_personLogic.GetRepository().GetFromRepository(_person.GetEmail()).GetPassword());
     }
     
     [TestMethod]
-    public void WhenUserIsLoggedOutSetCurrentUserToEmpty()
+    public void WhenPersonIsLoggedOutSetCurrentPersonToEmpty()
     {
         _sessionLogic.Logout(_personLogic.GetRepository().GetFromRepository(_person.GetEmail()));
     }

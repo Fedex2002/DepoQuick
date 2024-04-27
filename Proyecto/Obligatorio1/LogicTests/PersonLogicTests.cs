@@ -56,28 +56,28 @@ public class PersonLogicTests
     
     
     [TestMethod]
-    public void WhenUserIsTryingToLoginShouldReturnUserIfValidationsAreCorrect()
+    public void WhenPersonIsTryingToLoginShouldReturnPersonIfValidationsAreCorrect()
     {
         Assert.AreEqual(_person, _personLogic.Login(_person.GetEmail(), _person.GetPassword()));
     }
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
-    public void WhenUserIsTryingToLoginAndDoesNotExistShouldReturnException()
+    public void WhenPersonIsTryingToLoginAndDoesNotExistShouldReturnException()
     {
         Assert.AreEqual(_person, _personLogic.Login("mail@gmail.com", "PassWord921#EAa"));
     }
 
     [TestMethod]
-    public void WhenUsersAreAddedToRepositoryShouldReturnTheRepository()
+    public void WhenPersonsAreAddedToRepositoryShouldReturnTheRepository()
     {
-        User federico = new User("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#", new List<Booking>());
+        Person federico = new Person("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#");
         _personRepo.AddToRepository(federico); 
         Assert.AreEqual(_personRepo, _personLogic.GetRepository());
     }
 
     [TestMethod]
-    public void WhenUserIsTryingToSignUpShouldAddUserToRepositoryIfValidationsAreCorrect()
+    public void WhenPersonIsTryingToSignUpShouldAddPersonToRepositoryIfValidationsAreCorrect()
     {
         _personRepo.RemoveFromRepository(_person);
         _personLogic.SignUp(_person);

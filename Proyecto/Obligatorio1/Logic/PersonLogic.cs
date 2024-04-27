@@ -24,52 +24,39 @@ public class PersonLogic
             throw new LogicExceptions("The email is not registered");
     }
     
-    public bool CheckIfPasswordIsCorrect(string userpassword, string catchFromPage)
+    public bool CheckIfPasswordIsCorrect(string personpass, string catchFromPage)
     {
        
-        if (PasswordStringMatch(userpassword, catchFromPage))
+        if (PasswordStringMatch(personpass, catchFromPage))
             throw new LogicExceptions("The password is not correct");
         return true;
     }
 
-    private static bool PasswordStringMatch(string userpassword, string catchFromPage)
+    private static bool PasswordStringMatch(string personpass, string catchFromPage)
     {
-        return userpassword != catchFromPage;
+        return personpass != catchFromPage;
     }
     
-    public void AddBookingToUser(User user, Booking booking)
+
+
+    public Person Login(string email,string password)
     {
-        user.GetBookings().Add(booking);
+        return LoginCheckPersonValidations(email, password);
     }
 
-    public bool ApprovedBooking(Booking booking)
+    private Person LoginCheckPersonValidations(string email, string password)
     {
-        return booking.GetApproved();
-    }
-    
-    public void RemoveBookingFromUser(User user, Booking booking)
-    {
-        user.GetBookings().Remove(booking);
-    }
-
-    public User Login(string email,string password)
-    {
-        return LoginCheckUserValidations(email, password);
-    }
-
-    private User LoginCheckUserValidations(string email, string password)
-    {
-        User user = new User();
+        Person person = new Person();
         if (CheckIfEmailIsRegistered(email) && CheckIfPasswordIsCorrect(password, _personRepositories.GetFromRepository(email).GetPassword()))
         {
-            user = _personRepositories.GetFromRepository(email);
+            person = _personRepositories.GetFromRepository(email);
         }
         else
         {
-            throw new LogicExceptions("The user does not exist");
+            throw new LogicExceptions("The Person does not exist");
         }
 
-        return user;
+        return person;
     }
 
     public PersonRepositories GetRepository()
@@ -77,11 +64,11 @@ public class PersonLogic
         return _personRepositories;
     }
 
-    public void SignUp(User user)
+    public void SignUp(Person person)
     {
-        if (!CheckIfEmailIsRegistered(user.GetEmail()))
+        if (!CheckIfEmailIsRegistered(person.GetEmail()))
         {
-            _personRepositories.AddToRepository(user);
+            _personRepositories.AddToRepository(person);
         }
     }
 }
