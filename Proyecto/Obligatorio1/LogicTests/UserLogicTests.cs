@@ -93,10 +93,9 @@ public class UserLogicTests
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
-    public void WhenUserIsTryingToLoginShouldReturnExceptionIfValidationsAreNotCorrect()
+    public void WhenUserIsTryingToLoginAndDoesNotExistShouldReturnException()
     {
-        User user2 = new User("Franco", "Ramos", "francoramos1511@gmail.com", "PassWord921#EA", new List<Booking>());
-        Assert.AreEqual(_user, _userLogic.Login(_user.GetEmail(), user2.GetPassword()));
+        Assert.AreEqual(_user, _userLogic.Login("mail@gmail.com", "PassWord921#EAa"));
     }
 
     [TestMethod]
