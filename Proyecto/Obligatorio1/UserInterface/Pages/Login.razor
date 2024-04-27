@@ -76,8 +76,8 @@
       try
       {
         SessionLogic.Login(email,password);
-        Console.WriteLine(user.GetEmail());
-        NavigationManager.NavigateTo("/Index", true);
+        user = SessionLogic.CurrentUser;
+       GoToIndex();
         
       }
       catch (Exception e)
@@ -94,6 +94,11 @@
       showUserErrorModal = false;
     }
     
+    private void GoToIndex()
+    {
+      NavigationManager.NavigateTo("/Index", true);
+    }
+
     private void GoToSignUp()
     {
       NavigationManager.NavigateTo("/");
