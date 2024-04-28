@@ -22,27 +22,27 @@
           </div>
           
           <div data-mdb-input-init class="form-outline mb-2">
-            <input class="form-control form-control-lg" placeholder="Enter name" @bind="name" required/>
+            <input class="form-control form-control-lg" placeholder="Enter name" @bind="_name" required/>
             <label class="form-label" >Name</label>
           </div>
           
           <div data-mdb-input-init class="form-outline mb-2">
-            <input class="form-control form-control-lg" placeholder="Enter surname" @bind="surname" required/>
+            <input class="form-control form-control-lg" placeholder="Enter surname" @bind="_surname" required/>
             <label class="form-label" >Surname</label>
           </div>
           
           <div data-mdb-input-init class="form-outline mb-2">
-            <input type="email" class="form-control form-control-lg" placeholder="Enter email address" @bind="email" required/>
+            <input type="email" class="form-control form-control-lg" placeholder="Enter email address" @bind="_email" required/>
             <label class="form-label" >Email address</label>
           </div>
           
           <div data-mdb-input-init class="form-outline mb-2">
-            <input type="password" class="form-control form-control-lg" placeholder="Enter password" @bind="password" required/>
+            <input type="password" class="form-control form-control-lg" placeholder="Enter password" @bind="_password" required/>
             <label class="form-label" >Password</label>
           </div>
           
           <div data-mdb-input-init class="form-outline mb-2">
-            <input type="password" class="form-control form-control-lg" placeholder="Enter password again" @bind="passwordConfirmation" required/>
+            <input type="password" class="form-control form-control-lg" placeholder="Enter password again" @bind="_passwordConfirmation" required/>
             <label class="form-label" >Verify Password</label>
           </div>
           
@@ -61,52 +61,61 @@
     </div>
   </div>
 </section>
-@if (showUserErrorModal)
+@if (_showUserErrorModal)
 {
             <AuthenticationModal 
                         Title="Login Error" 
-                        Text="@errorMessage" 
+                        Text="@_errorMessage" 
                         DialogType=AuthenticationModal.ModalDialogType.Ok
                         OnClose="@CloseUserErrorModal">
             </AuthenticationModal>
 }
 
 @code {
-  Person person;
-  private string name;
-  private string? surname;
-  private string? email;
-  private string password;
-  private string passwordConfirmation;
-  private bool showUserErrorModal = false;
-  private string errorMessage;
+  private Person? _person;
+  private string? _name;
+  private string? _surname;
+  private string? _email;
+  private string? _password;
+  private string? _passwordConfirmation;
+  private bool _showUserErrorModal;
+  private string? _errorMessage;
+  private readonly bool _adminRegistered = false;
   protected override void OnInitialized()
   {
-    person = new Person();
+    _person = new Person();
+    
   }
 
   private async Task HandleValidSubmit()
   {
     try
     {
-      if (password != passwordConfirmation)
+      if (_password != _passwordConfirmation)
       {
-        PersonLogic.CheckIfPasswordIsCorrect(password, passwordConfirmation);
+        PersonLogic.CheckIfPasswordIsCorrect(_password, _passwordConfirmation);
       }
-      person = new Person(name, surname, email, password);
-      PersonLogic.SignUp(person);
+
+      if (!_adminRegistered)
+      {
+        Person admin = new Administrator(_name, _surname, _email, _password);
+
+      }
+
+      _person = new Person(_name, _surname, _email, _password);
+      PersonLogic.SignUp(_person);
       GoToLogin();
     }
     catch (Exception e)
     {
-      showUserErrorModal = true;
-      errorMessage = e.Message;
+      _showUserErrorModal = true;
+      _errorMessage = e.Message;
     }
   }
 
   private void CloseUserErrorModal()
   {
-    showUserErrorModal = false;
+    _showUserErrorModal = false;
   }
   
   private void GoToLogin()
