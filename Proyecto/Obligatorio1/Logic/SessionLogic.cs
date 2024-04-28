@@ -17,7 +17,7 @@ public class SessionLogic
         CurrentPerson = _personLogic.Login(email,password); 
     }
     
-    public void Logout(Person person)
+    public void Logout()
     {
         CurrentPerson = null;
     }

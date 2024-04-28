@@ -30,6 +30,6 @@ public class SessionLogicTests
     [TestMethod]
     public void WhenPersonIsLoggedOutSetCurrentPersonToEmpty()
     {
-        _sessionLogic.Logout(_personLogic.GetRepository().GetFromRepository(_person.GetEmail()));
+        _sessionLogic.Logout();
     }
 }
