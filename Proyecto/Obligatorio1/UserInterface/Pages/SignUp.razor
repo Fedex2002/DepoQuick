@@ -81,10 +81,10 @@
   private string? _passwordConfirmation;
   private bool _showUserErrorModal;
   private string? _errorMessage;
-  private  bool _adminRegistered;
+  private static bool _adminRegistered;
   protected override void OnInitialized()
   {
-    _person = new Person();
+    _person = new Model.User();
     
   }
 
@@ -92,6 +92,7 @@
   {
     try
     {
+      Console.WriteLine(_adminRegistered);
       if (_password != _passwordConfirmation)
       {
         PersonLogic.CheckIfPasswordIsCorrect(_password, _passwordConfirmation);
@@ -100,16 +101,15 @@
       if (!_adminRegistered)
       {
         _adminRegistered = true;
-        Administrator admin = new Administrator(_name, _surname, _email, _password);
-        PersonLogic.SignUp(admin);
+        _person = new Administrator(_name, _surname, _email, _password);
+        PersonLogic.SignUp(_person);
 
       }
       else
       {
-        _person = new Person(_name, _surname, _email, _password);
-        PersonLogic.SignUp(_person);  
+        _person = new Model.User(_name, _surname, _email, _password, new List<Booking>());
+        PersonLogic.SignUp(_person);
       }
-
       
       GoToLogin();
     }

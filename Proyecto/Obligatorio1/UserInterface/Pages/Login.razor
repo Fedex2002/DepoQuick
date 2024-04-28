@@ -77,18 +77,7 @@
       {
         SessionLogic.Login(email,password);
         person = SessionLogic.CurrentPerson;
-        
-        if (person is Administrator)
-        {
-          //Do admin things
-        }
-        else if(person is Model.User)
-        {
-           GoToIndex();
-        }
-
-
-       
+        GoToIndex();
         
       }
       catch (Exception e)
@@ -113,5 +102,10 @@
     private void GoToSignUp()
     {
       NavigationManager.NavigateTo("/");
+    }
+
+    private void GoToAdminIndex()
+    {
+      NavigationManager.NavigateTo("/AdminIndex", true);
     }
 }

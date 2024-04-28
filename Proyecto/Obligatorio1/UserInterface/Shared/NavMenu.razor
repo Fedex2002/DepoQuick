@@ -1,36 +1,70 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using Logic
+@using Model
+@inject SessionLogic SessionLogic
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">DepoQuick</a>
+        <a class="navbar-brand" href="/Index">DepoQuick</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/Index" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/MyStorageUnits">
-                <span class="oi oi-plus" aria-hidden="true"></span> My StorageUnits
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/MyBookings">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> My Bookings
-            </NavLink>
-        </div>
-         <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="/Bookings">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Bookings
-                    </NavLink>
-                </div>
-    </nav>
-</div>
+@if (SessionLogic.CurrentPerson is Administrator)
+{
+    <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+        <nav class="flex-column">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/Index" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/Promotions">
+                    <span class="oi oi-star" aria-hidden="true"></span> Promotions
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/StorageUnits">
+                    <span class="oi oi-basket" aria-hidden="true"></span> StorageUnits
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/ApproveOrRejectBookings">
+                    <span class="oi oi-dollar" aria-hidden="true"></span> Bookings
+                </NavLink>
+            </div>
+        </nav>
+    </div>
+}
+else if (SessionLogic.CurrentPerson is User)
+{
+    <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+        <nav class="flex-column">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/Index" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/MyStorageUnits">
+                    <span class="oi oi-basket" aria-hidden="true"></span> My StorageUnits
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/MyBookings">
+                    <span class="oi oi-bold" aria-hidden="true"></span> My Bookings
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/Bookings">
+                    <span class="oi oi-dollar" aria-hidden="true"></span> Bookings
+                </NavLink>
+            </div>
+        </nav>
+    </div>
+}
 
 @code {
     private bool collapseNavMenu = true;

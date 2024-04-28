@@ -1,45 +1,89 @@
 @page "/Index"
 @using Logic
+@using Model
 @layout MainLayout
 @inject PersonLogic PersonLogic
 @inject SessionLogic SessionLogic
 <PageTitle>DepoQuick</PageTitle>
 
-<div class="container">
-    <h1 class="mt-5">DepoQuick</h1>
-    <p class="lead">Welcome to our page @SessionLogic.CurrentPerson.GetName() !  Discover the convenience of hassle-free storage solutions. Whether you're decluttering your home, moving to a new place, or just need some extra space, we've got you covered. Explore our range of StorageUnits and find the perfect fit for your needs. Start storing smarter today!</p>
-
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h5 class="card-title">My Reserved StorageUnits</h5>
-                    <p class="card-text">Check your pending for approval StorageUnits.</p>
-                    <a href="/MyStorageUnits" class="btn btn-primary">Go to my StorageUnits</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h5 class="card-title">My booked StorageUnits</h5>
-                    <p class="card-text">Check your active StorageUnits.</p>
-                    <a href="/MyBookings" class="btn btn-primary">Go to my Bookings</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 mt-4">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h5 class="card-title">Still not having a StorageUnit? Go check our last updates!</h5>
-                    <p class="card-text">Check our best and renovated options.</p>
-                    <a href="/Bookings" class="btn btn-primary">Go to Bookings</a>
+@if(SessionLogic.CurrentPerson is Administrator)
+{
+    <div class="container">
+        <h1 class="mt-5">DepoQuick</h1>
+        <p class="lead">Welcome admin @SessionLogic.CurrentPerson.GetName() to DepoQuick! We're delighted to have you onboard as our administrator. 
+            Your role is pivotal in ensuring smooth operations and delivering exceptional service to our users. Thank you for joining our team at DepoQuick. 
+            Together, we'll continue to innovate, exceed expectations, and make storage solutions simpler than ever before. Welcome aboard!</p>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Create Promotions</h5>
+                        <p class="card-text">Go here to create new Promotions</p>
+                        <a href="/Promotions" class="btn btn-primary">Go to Promotions</a>
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Create StorageUnits</h5>
+                        <p class="card-text">Go here to create new StorageUnits</p>
+                        <a href="/StorageUnits" class="btn btn-primary">Go to StorageUnits</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Go to check the current user Bookings</h5>
+                        <p class="card-text">Go here to approve or reject Bookings.</p>
+                        <a href="/ApproveOrRejectBookings" class="btn btn-primary">Go to Bookings</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
+}
+else
+{
+    <div class="container">
+        <h1 class="mt-5">DepoQuick</h1>
+        <p class="lead">Welcome to our page @SessionLogic.CurrentPerson.GetName() !  Discover the convenience of hassle-free storage solutions. 
+            Whether you're decluttering your home, moving to a new place, or just need some extra space, we've got you covered. 
+            Explore our range of StorageUnits and find the perfect fit for your needs. Start storing smarter today!</p>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">My Reserved StorageUnits</h5>
+                        <p class="card-text">Check your pending for approval StorageUnits.</p>
+                        <a href="/MyStorageUnits" class="btn btn-primary">Go to my StorageUnits</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">My booked StorageUnits</h5>
+                        <p class="card-text">Check your active StorageUnits.</p>
+                        <a href="/MyBookings" class="btn btn-primary">Go to my Bookings</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Still not having a StorageUnit? Go check our last updates!</h5>
+                        <p class="card-text">Check our best and renovated options.</p>
+                        <a href="/Bookings" class="btn btn-primary">Go to Bookings</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+}
 
 
 
