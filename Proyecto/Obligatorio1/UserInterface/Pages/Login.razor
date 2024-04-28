@@ -77,7 +77,18 @@
       {
         SessionLogic.Login(email,password);
         person = SessionLogic.CurrentPerson;
-       GoToIndex();
+        
+        if (person is Administrator)
+        {
+          //Do admin things
+        }
+        else if(person is Model.User)
+        {
+           GoToIndex();
+        }
+
+
+       
         
       }
       catch (Exception e)
