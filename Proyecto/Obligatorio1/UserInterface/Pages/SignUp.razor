@@ -64,12 +64,13 @@
 @if (_showUserErrorModal)
 {
             <AuthenticationModal 
-                        Title="Login Error" 
+                        Title="Signup Error" 
                         Text="@_errorMessage" 
                         DialogType=AuthenticationModal.ModalDialogType.Ok
                         OnClose="@CloseUserErrorModal">
             </AuthenticationModal>
 }
+
 
 @code {
   private Person? _person;
@@ -80,7 +81,7 @@
   private string? _passwordConfirmation;
   private bool _showUserErrorModal;
   private string? _errorMessage;
-  private readonly bool _adminRegistered = false;
+  private  bool _adminRegistered;
   protected override void OnInitialized()
   {
     _person = new Person();
@@ -98,12 +99,18 @@
 
       if (!_adminRegistered)
       {
-        Person admin = new Administrator(_name, _surname, _email, _password);
+        _adminRegistered = true;
+        Administrator admin = new Administrator(_name, _surname, _email, _password);
+        PersonLogic.SignUp(admin);
 
       }
+      else
+      {
+        _person = new Person(_name, _surname, _email, _password);
+        PersonLogic.SignUp(_person);  
+      }
 
-      _person = new Person(_name, _surname, _email, _password);
-      PersonLogic.SignUp(_person);
+      
       GoToLogin();
     }
     catch (Exception e)
