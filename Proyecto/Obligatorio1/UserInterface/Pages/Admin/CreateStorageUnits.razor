@@ -1,0 +1,72 @@
+@page "/CreateStorageUnits"
+@using Logic
+@layout MainLayout
+@inject SessionLogic SessionLogic
+<PageTitle>DepoQuick</PageTitle>
+
+<h3>Create StorageUnits</h3>
+
+<section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <form >
+          <div class="divider d-flex align-items-center my-4">
+            <p class="text-center fw-bold mx-3 mb-0 fs-4"></p>
+          </div>
+          
+          <div data-mdb-input-init class="form-outline mb-2">
+            <input class="form-control form-control-lg" placeholder="Enter Id" required/>
+            <label class="form-label" >Id</label>
+          </div>
+          
+          <div data-mdb-input-init class="form-outline mb-2">
+            <select class="form-select form-select-lg" required>
+              <option value="" selected disabled hidden>Choose an option</option>
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+            <label class="form-label">Area</label>
+          </div>
+          
+          
+          <div data-mdb-input-init class="form-outline mb-2">
+              <select class="form-select form-select-lg" required>
+                  <option value="" selected disabled hidden>Choose an option</option>
+                  <option value="small">Small</option>
+                  <option value="medium">Medium</option>
+                  <option value="large">Large</option>
+              </select>
+              <label class="form-label">Size</label>
+          </div>
+
+          <div data-mdb-input-init class="form-outline mb-2">
+            <select class="form-select form-select-lg" required>
+              <option value="" selected disabled hidden>Select if has climatization</option>
+              <option value="1">Yes</option>
+              <option value="2">No</option>
+            </select>
+            <label class="form-label">Climatization</label>
+          </div>
+          
+          <div data-mdb-input-init class="form-outline mb-2">
+            <select multiple class="form-select form-select-lg" required>
+              <option value="promotion1">Promotion 1</option>
+              <option value="promotion2">Promotion 2</option>
+              <option value="promotion3">Promotion 3</option>
+            </select>
+            <label class="form-label">Promotions</label>
+          </div>
+          
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Submit The Storage unit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+@code {
+    
+}
