@@ -46,5 +46,9 @@ public class UserLogic
         {
             user.GetBookings().Remove(booking);
         }
+        else
+        {
+            throw new LogicExceptions("The person is not a user");
+        }
     }
 }
