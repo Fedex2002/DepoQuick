@@ -26,7 +26,7 @@ public class UserLogic
         }
         else
         {
-            throw new LogicExceptions("The person is not a user");
+            PersonIsNotAUserSoThrowException();
         }
     }
     
@@ -48,7 +48,12 @@ public class UserLogic
         }
         else
         {
-            throw new LogicExceptions("The person is not a user");
+            PersonIsNotAUserSoThrowException();
         }
+    }
+
+    private static void PersonIsNotAUserSoThrowException()
+    {
+        throw new LogicExceptions("The person is not a user");
     }
 }
