@@ -1,9 +1,45 @@
 @page "/DeletePromotions"
+@using Logic
+@using Model;
+@using Model.Enums
+@layout MainLayout
+@inject SessionLogic SessionLogic
 
 <PageTitle>DepoQuick</PageTitle>
 
-<h3>DeletePromotions</h3>
+<section class="vh-75">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-75">
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <form>
+                    <div class="divider d-flex align-items-center my-4">
+                        <p class="text-center fw-bold mx-3 mb-0 fs-4">Delete Promotion</p>
+                    </div>
+                    <div data-mdb-input-init class="form-outline mb-2">
+                        <input class="form-control form-control-lg" placeholder="Enter Label" required/>
+                        <label class="form-label" >Label</label>
+                    </div>
+                    <div data-mdb-input-init class="form-outline mb-2">
+                        <input class="form-control form-control-lg" placeholder="Enter discount" required/>
+                        <label class="form-label" >Discount</label>
+                    </div>
+                    <div data-mdb-input-init class="form-outline mb-2">
+                        <input class="form-control form-control-lg" placeholder="Enter DateStart mm/dd/yyyy" required/>
+                        <label class="form-label" >DateStart</label>
+                    </div>
+                    <div data-mdb-input-init class="form-outline mb-2">
+                        <input class="form-control form-control-lg" placeholder="Enter DateEnd mm/dd/yyyy" required/>
+                        <label class="form-label" >DateEnd</label>
+                    </div>
+                    <div class="text-center text-lg-start pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Create the Promotion</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 
 @code {
-    
+  
 }

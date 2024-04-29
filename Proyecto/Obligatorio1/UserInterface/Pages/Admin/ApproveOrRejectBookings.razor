@@ -1,9 +1,36 @@
 @page "/ApproveOrRejectBookings"
+@using Logic
+@using Model;
+@using Model.Enums
+@layout MainLayout
+@inject SessionLogic SessionLogic
 
 <PageTitle>DepoQuick</PageTitle>
 
-<h3>Approve Or Reject Bookings</h3>
-
-@code {
-    
-}
+<section class="vh-75">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-75">
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <form>
+                    <div class="divider d-flex align-items-center my-4">
+                        <p class="text-center fw-bold mx-3 mb-0 fs-4" style="display: inline-block">Approve Or Reject Bookings</p>
+                    </div>
+                    <div data-mdb-input-init class="form-outline mb-2">
+                        <select multiple class="form-select form-select-lg" required>
+                            <option value="booking1">Booking 1</option>
+                            <option value="booking2">Booking 2</option>
+                            <option value="booking3">Booking 3</option>
+                        </select>
+                        <label class="form-label">Bookings</label>
+                    </div>
+                    <div class="text-center text-lg-start pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Reject the Booking</button>
+                    </div>
+                    <div class="text-center text-lg-start pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Accept the Booking</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
