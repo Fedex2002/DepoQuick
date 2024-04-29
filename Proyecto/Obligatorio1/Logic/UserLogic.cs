@@ -34,4 +34,12 @@ public class UserLogic
     {
         return booking.GetApproved();
     }
+    
+    public void RemoveBookingFromUser(Person person, Booking booking)
+    {
+        if (person is User user)
+        {
+            user.GetBookings().Remove(booking);
+        }
+    }
 }
