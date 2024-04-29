@@ -18,6 +18,7 @@ public class UserTests
     [TestMethod]
     public void CreatingEmptyUserShouldReturnEmpty()
     {
+        _myuser = new User();
         Assert.IsNotNull(_myuser);
     }
 
