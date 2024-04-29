@@ -57,4 +57,12 @@ public class UserLogicTests
         _userLogic.AddBookingToUser(_personRepo.GetFromRepository(_person.GetEmail()), _mybooking);
         _userLogic.RemoveBookingFromUser(_personRepo.GetFromRepository(_person.GetEmail()), _mybooking);
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenSomeoneThatIsNotAUserGetsBookingRejectedShouldThrowException()
+    {
+        Administrator admin = new Administrator("Franco", "Ramos", "francoramos@gmail.com", "PassWord921#2");
+        _userLogic.RemoveBookingFromUser(_personRepo.GetFromRepository(admin.GetEmail()), _mybooking);
+    }
 }
