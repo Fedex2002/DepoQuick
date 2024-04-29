@@ -51,10 +51,6 @@ public class PersonLogicTests
         Assert.IsTrue(_personLogic.CheckIfPasswordIsCorrect(_person.GetPassword(), _person.GetPassword()));
     }
 
- 
-
-    
-    
     [TestMethod]
     public void WhenPersonIsTryingToLoginShouldReturnPersonIfValidationsAreCorrect()
     {
@@ -83,6 +79,7 @@ public class PersonLogicTests
         _personLogic.SignUp(_person);
         Assert.IsTrue(_personRepo.ExistsInRepository(_person.GetEmail()));
     }
+    
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPersonIsTryingToSignUpAndEmailIsAlreadyRegisteredShouldReturnException()
