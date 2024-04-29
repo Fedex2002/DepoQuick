@@ -3,6 +3,7 @@ using Logic;
 using Repositories;
 using Model;
 using Model.Enums;
+using Model.Exceptions;
 
 namespace LogicTests;
 
@@ -32,5 +33,13 @@ public class UserLogicTests
     public void WhenUserMakesABookingShouldAddItToHisListOfBookings()
     {
         _userLogic.AddBookingToUser(_personRepo.GetFromRepository(_person.GetEmail()), _mybooking);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenSomeoneThatIsNotAUserMakesABookingShouldThrowException()
+    {
+        Person admin = new Administrator("John", "Doe", "johndoe@gmail.com", "PassWord921#");
+        _userLogic.AddBookingToUser(_personRepo.GetFromRepository(admin.GetEmail()), _mybooking);
     }
 }
