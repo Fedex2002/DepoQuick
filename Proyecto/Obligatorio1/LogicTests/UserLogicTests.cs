@@ -48,7 +48,6 @@ public class UserLogicTests
     {
         _mybooking = new Booking(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), _storageUnit, "");
         _userLogic.AddBookingToUser(_personRepo.GetFromRepository(_person.GetEmail()), _mybooking);
-        bool status = _userLogic.CheckIfBookingIsApproved(_mybooking);
-        Assert.IsTrue(status);
+        Assert.IsTrue(_userLogic.CheckIfBookingIsApproved(_mybooking));
     }
 }
