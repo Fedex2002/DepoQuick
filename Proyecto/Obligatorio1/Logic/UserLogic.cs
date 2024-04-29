@@ -14,6 +14,11 @@ public class UserLogic
     
     public void AddBookingToUser(Person person, Booking booking)
     {
+        CheckIfPersonIsAUserAddBooking(person, booking);
+    }
+
+    private static void CheckIfPersonIsAUserAddBooking(Person person, Booking booking)
+    {
         if (person is User user)
         {
             user.GetBookings().Add(booking);
