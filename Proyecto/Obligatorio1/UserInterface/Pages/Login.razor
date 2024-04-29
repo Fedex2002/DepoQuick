@@ -4,8 +4,7 @@
 @using Logic
 @using Model
 @inherits LayoutComponentBase
-@inject PersonLogic PersonLogic
-@inject SessionLogic SessionLogic
+@inject SessionLogic sessionLogic
 @inject NavigationManager NavigationManager
 
 <PageTitle>DepoQuick</PageTitle>
@@ -75,8 +74,8 @@
     {
       try
       {
-        SessionLogic.Login(email,password);
-        person = SessionLogic.CurrentPerson;
+        sessionLogic.Login(email,password);
+        person = sessionLogic.CurrentPerson;
         GoToIndex();
         
       }

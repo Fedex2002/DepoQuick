@@ -1,10 +1,9 @@
 @page "/"
-
 @using Model;
 @layout LoginLayout
 @using Logic
 @inherits LayoutComponentBase
-@inject PersonLogic PersonLogic
+@inject PersonLogic personLogic
 @inject NavigationManager NavigationManager
 
 <PageTitle>DepoQuick</PageTitle>
@@ -95,20 +94,20 @@
       Console.WriteLine(_adminRegistered);
       if (_password != _passwordConfirmation)
       {
-        PersonLogic.CheckIfPasswordIsCorrect(_password, _passwordConfirmation);
+        personLogic.CheckIfPasswordIsCorrect(_password, _passwordConfirmation);
       }
 
       if (!_adminRegistered)
       {
         _adminRegistered = true;
         _person = new Administrator(_name, _surname, _email, _password);
-        PersonLogic.SignUp(_person);
+        personLogic.SignUp(_person);
 
       }
       else
       {
         _person = new Model.User(_name, _surname, _email, _password, new List<Booking>());
-        PersonLogic.SignUp(_person);
+        personLogic.SignUp(_person);
       }
       
       GoToLogin();

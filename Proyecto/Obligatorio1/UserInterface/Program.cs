@@ -10,10 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-
-builder.Services.AddSingleton<PersonRepositories>();
-builder.Services.AddSingleton<PersonLogic>();
-builder.Services.AddSingleton<SessionLogic>();
+PersonRepositories personRepositories = new PersonRepositories();
+PersonLogic personLogic = new PersonLogic(personRepositories);
+builder.Services.AddSingleton(personRepositories);
+builder.Services.AddSingleton(personLogic);
+SessionLogic sessionLogic = new SessionLogic(personLogic);
+builder.Services.AddSingleton(sessionLogic);
 
 var app = builder.Build();
 

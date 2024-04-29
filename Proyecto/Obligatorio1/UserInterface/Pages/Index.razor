@@ -2,15 +2,14 @@
 @using Logic
 @using Model
 @layout MainLayout
-@inject PersonLogic PersonLogic
-@inject SessionLogic SessionLogic
+@inject SessionLogic sessionLogic
 <PageTitle>DepoQuick</PageTitle>
 
-@if(SessionLogic.CurrentPerson is Administrator)
+@if(sessionLogic.CurrentPerson is Administrator)
 {
     <div class="container">
         <h1 class="mt-3">DepoQuick</h1>
-        <p class="lead">Welcome admin @SessionLogic.CurrentPerson.GetName() to DepoQuick! We're delighted to have you onboard as our administrator. 
+        <p class="lead">Welcome admin @sessionLogic.CurrentPerson.GetName() to DepoQuick! We're delighted to have you onboard as our administrator. 
             Your role is pivotal in ensuring smooth operations and delivering exceptional service to our users. Thank you for joining our team at DepoQuick. 
             Together, we'll continue to innovate, exceed expectations, and make storage solutions simpler than ever before. Welcome aboard!</p>
         <div class="row">
@@ -76,7 +75,7 @@ else
 {
     <div class="container">
         <h1 class="mt-5">DepoQuick</h1>
-        <p class="lead">Welcome to our page @SessionLogic.CurrentPerson.GetName() !  Discover the convenience of hassle-free storage solutions. 
+        <p class="lead">Welcome to our page @sessionLogic.CurrentPerson.GetName() !  Discover the convenience of hassle-free storage solutions. 
             Whether you're decluttering your home, moving to a new place, or just need some extra space, we've got you covered. 
             Explore our range of StorageUnits and find the perfect fit for your needs. Start storing smarter today!</p>
         <div class="row">
