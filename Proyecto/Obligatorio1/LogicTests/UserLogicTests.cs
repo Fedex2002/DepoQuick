@@ -50,4 +50,11 @@ public class UserLogicTests
         _userLogic.AddBookingToUser(_personRepo.GetFromRepository(_person.GetEmail()), _mybooking);
         Assert.IsTrue(_userLogic.CheckIfBookingIsApproved(_mybooking));
     }
+    
+    [TestMethod]
+    public void WhenUserBookingIsRejectedShouldEliminateBookingFromUserListOfBookings()
+    {
+        _userLogic.AddBookingToUser(_personRepo.GetFromRepository(_person.GetEmail()), _mybooking);
+        _userLogic.RemoveBookingFromUser(_personRepo.GetFromRepository(_person.GetEmail()), _mybooking);
+    }
 }
