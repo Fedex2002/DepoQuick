@@ -39,7 +39,7 @@ public class UserLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenSomeoneThatIsNotAUserMakesABookingShouldThrowException()
     {
-        Person admin = new Administrator("John", "Doe", "johndoe@gmail.com", "PassWord921#");
+        Administrator admin = new Administrator("Franco", "Ramos", "francoramos@gmail.com", "PassWord921#2");
         _userLogic.AddBookingToUser(_personRepo.GetFromRepository(admin.GetEmail()), _mybooking);
     }
 }

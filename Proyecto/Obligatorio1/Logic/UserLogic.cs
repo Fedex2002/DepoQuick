@@ -1,4 +1,5 @@
 using Model;
+using Model.Exceptions;
 using Repositories;
 namespace Logic;
 
@@ -22,6 +23,10 @@ public class UserLogic
         if (person is User user)
         {
             user.GetBookings().Add(booking);
+        }
+        else
+        {
+            throw new LogicExceptions("The person is not a user");
         }
     }
 }
