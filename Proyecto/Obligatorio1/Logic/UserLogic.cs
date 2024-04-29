@@ -37,6 +37,11 @@ public class UserLogic
     
     public void RemoveBookingFromUser(Person person, Booking booking)
     {
+        CheckIfPersonIsAUserRemoveBooking(person, booking);
+    }
+
+    private static void CheckIfPersonIsAUserRemoveBooking(Person person, Booking booking)
+    {
         if (person is User user)
         {
             user.GetBookings().Remove(booking);
