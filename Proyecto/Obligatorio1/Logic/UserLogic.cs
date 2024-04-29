@@ -5,12 +5,11 @@ namespace Logic;
 
 public class UserLogic
 {
-    private User user;
-    private PersonRepositories personRepo;
+    private PersonRepositories _personRepo;
     
     public UserLogic(PersonRepositories personRepo)
     {
-        this.personRepo = personRepo;
+        _personRepo = personRepo;
     }
     
     public void AddBookingToUser(Person person, Booking booking)
