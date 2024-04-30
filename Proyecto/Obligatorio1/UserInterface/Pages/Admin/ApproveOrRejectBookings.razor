@@ -24,8 +24,15 @@
                         <label class="form-label">Bookings</label>
                     </div>
                     <div class="text-center text-lg-start pt-2">
-                        <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Reject the Booking</button>
+                        <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="ToggleRejectInput">Reject the Booking</button>
                     </div>
+                   @if (showRejectInput) 
+                        {
+                            <div data-mdb-input-init class="form-outline mt-2 mb-2">
+                                <input type="text" class="form-control form-control-lg" placeholder="Reason for rejection" required />
+                                <label class="form-label">Rejection Reason</label>
+                            </div>
+                        }
                     <div class="text-center text-lg-start pt-2">
                         <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Accept the Booking</button>
                     </div>
@@ -34,3 +41,12 @@
         </div>
     </div>
 </section>
+
+@code {
+    private bool showRejectInput = false;
+
+    private void ToggleRejectInput()
+    {
+        showRejectInput = !showRejectInput;
+    }
+}
