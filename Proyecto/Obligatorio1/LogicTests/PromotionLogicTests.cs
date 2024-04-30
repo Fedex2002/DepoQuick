@@ -19,12 +19,17 @@ public class PromotionLogicTests
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
     }
     
-    [TestMethod]
-    public void WhenModifyingPromotionShouldEliminateTheOldOneAndAddTheNewOne()
+    [TestMethod] public void WhenModifyingPromotionShouldEliminateTheOldOneAndAddTheNewOne()
     {
         _promotionRepo.AddToRepository(_promotion);
-        _promotionRepo.RemoveFromRepository(_promotion);
-        Promotion newPromotion = _promotionLogic.ModifyPromotion("Summer discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
-        _promotionRepo.AddToRepository(newPromotion);
+                        
+        _promotionDto= new PromotionDTO("Summer discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _promotionLogic.ModifyPromotion(_promotionDto);
+        Assert.AreEqual(_promotionDto.Label, _promotionRepo.GetFromRepository(_promotionDto.Label).GetLabel());
+        Assert.AreEqual(_promotionDto.Discount, _promotionRepo.GetFromRepository(_promotionDto.Label).GetDiscount());
+        Assert.AreEqual(_promotionDto.DateStart, _promotionRepo.GetFromRepository(_promotionDto.Label).GetDateStart());
+        Assert.AreEqual(_promotionDto.DateEnd, _promotionRepo.GetFromRepository(_promotionDto.Label).GetDateEnd());
+                        
+                        
     }
 }
