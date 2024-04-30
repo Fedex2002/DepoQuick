@@ -1,4 +1,5 @@
 using Logic;
+using Logic.DTOs;
 using Model;
 using Model.Enums;
 using Model.Exceptions;
@@ -50,20 +51,16 @@ public class PersonLogicTests
     {
         Assert.IsTrue(_personLogic.CheckIfPasswordIsCorrect(_person.GetPassword(), _person.GetPassword()));
     }
-
- 
-
-    
     
     [TestMethod]
     public void WhenPersonIsTryingToLoginShouldReturnPersonIfValidationsAreCorrect()
     {
-        PersonDTO loggedInPersonDTO = _personLogic.Login(_personModel.GetEmail(), _personModel.GetPassword());
-        PersonDTO expectedPersonDTO = new PersonDTO(_personModel.GetName(), _personModel.GetSurname(), _personModel.GetEmail(), _personModel.GetPassword());
-        Assert.AreEqual(expectedPersonDTO.Name, loggedInPersonDTO.Name);
-        Assert.AreEqual(expectedPersonDTO.Surname, loggedInPersonDTO.Surname);
-        Assert.AreEqual(expectedPersonDTO.Email, loggedInPersonDTO.Email);
-        Assert.AreEqual(expectedPersonDTO.Password, loggedInPersonDTO.Password);
+        PersonDto loggedInPersonDto = _personLogic.Login(_person.GetEmail(), _person.GetPassword());
+        PersonDto expectedPersonDto = new PersonDto(_person.GetName(), _person.GetSurname(), _person.GetEmail(), _person.GetPassword());
+        Assert.AreEqual(expectedPersonDto.Name, loggedInPersonDto.Name);
+        Assert.AreEqual(expectedPersonDto.Surname, loggedInPersonDto.Surname);
+        Assert.AreEqual(expectedPersonDto.Email, loggedInPersonDto.Email);
+        Assert.AreEqual(expectedPersonDto.Password, loggedInPersonDto.Password);
     }
     
     [TestMethod]

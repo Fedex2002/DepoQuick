@@ -1,3 +1,4 @@
+using Logic.DTOs;
 using Model;
 using Model.Exceptions;
 using Repositories;
@@ -39,24 +40,28 @@ public class PersonLogic
     
 
 
-    public Person Login(string email,string password)
+    public PersonDto Login(string email, string password)
     {
         return LoginCheckPersonValidations(email, password);
     }
 
-    private Person LoginCheckPersonValidations(string email, string password)
+    private PersonDto LoginCheckPersonValidations(string email, string password)
     {
-        Person person = new Person();
-        if (CheckIfEmailIsRegistered(email) && CheckIfPasswordIsCorrect(password, _personRepositories.GetFromRepository(email).GetPassword()))
+        PersonDto personDto = new PersonDto();
+        if (CheckIfEmailIsRegistered(email))
         {
-            person = _personRepositories.GetFromRepository(email);
+            Person person = _personRepositories.GetFromRepository(email);
+            if (CheckIfPasswordIsCorrect(password, person.GetPassword()))
+            {
+                personDto= new PersonDto(person.GetName(), person.GetSurname(), person.GetEmail(), person.GetPassword());
+            }
         }
         else
         {
-            throw new LogicExceptions("The Person does not exist");
+            throw new LogicExceptions("The email is not registered");
         }
 
-        return person;
+        return personDto;
     }
 
     public PersonRepositories GetRepository()
