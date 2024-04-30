@@ -4,6 +4,7 @@
 @using Model.Enums
 @layout MainLayout
 @inject SessionLogic SessionLogic
+@inject NavigationManager NavigationManager
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -23,19 +24,26 @@
                         </select>
                         <label class="form-label">Bookings</label>
                     </div>
-                    <div class="text-center text-lg-start pt-2">
-                        <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="ToggleRejectInput">Reject the Booking</button>
-                    </div>
+                    @if (!showRejectInput)
+                    {
+                        <div class="text-center text-lg-start pt-2">
+                            <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="ToggleRejectInput">Reject the Booking</button>
+                        </div>
+                        <div class="text-center text-lg-start pt-2">
+                            <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Accept the Booking</button>
+                        </div>
+                    }
                    @if (showRejectInput) 
                         {
                             <div data-mdb-input-init class="form-outline mt-2 mb-2">
                                 <input type="text" class="form-control form-control-lg" placeholder="Reason for rejection" required />
-                                <label class="form-label">Rejection Reason</label>
+                                <label class="form-label">Rejection</label>
                             </div>
+                            <div class="text-center text-lg-start pt-2">
+                                <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Confirm the Rejection</button>
+                            </div>
+                            <p class="small fw-bold mt-2 pt-1 mb-0">Changed your decision? <a href="#" @onclick="RefreshPage" class="link-danger">Go Back</a></p>
                         }
-                    <div class="text-center text-lg-start pt-2">
-                        <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Accept the Booking</button>
-                    </div>
                 </form>
             </div>
         </div>
@@ -49,4 +57,10 @@
     {
         showRejectInput = !showRejectInput;
     }
+    
+    private void RefreshPage()
+    {
+        NavigationManager.NavigateTo("/ApproveOrRejectBookings");
+    }
+
 }
