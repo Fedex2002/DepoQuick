@@ -126,6 +126,16 @@ public class PersonLogicTests
         Assert.IsTrue(_personRepo.ExistsInRepository(userDto.Email));
     }
 
+
+    [TestMethod]
+    public void WhenAdministratorIsTryingToSignUpShouldAddAdministratorToRepositoryIfValidationsAreCorrect()
+    {
+        PersonDto adminDto = new AdministratorDto("John", "Doe", "johndoe1235@gmail.com", "PassWord921#");
+        _personLogic.SignUp(adminDto);
+        Assert.IsTrue(_personRepo.ExistsInRepository(adminDto.Email));
+
+    }
+
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPersonIsTryingToSignUpAndEmailIsAlreadyRegisteredShouldReturnException()

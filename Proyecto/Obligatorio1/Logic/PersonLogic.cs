@@ -93,8 +93,16 @@ public class PersonLogic
             }
             else 
             {
-                Person person = new Person(personDto.Name, personDto.Surname, personDto.Email, personDto.Password);
-                _personRepositories.AddToRepository(person);
+                if(personDto is AdministratorDto adminDto)
+                {
+                    Administrator admin = new Administrator(adminDto.Name, adminDto.Surname, adminDto.Email, adminDto.Password);
+                    _personRepositories.AddToRepository(admin);
+                }
+                else
+                {
+                    Person person = new Person(personDto.Name, personDto.Surname, personDto.Email, personDto.Password);
+                    _personRepositories.AddToRepository(person);
+                }
             }
         }
         else
