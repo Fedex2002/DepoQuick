@@ -14,7 +14,10 @@ public class PersonLogicTests
     private PersonRepositories _personRepo;
     private PersonLogic _personLogic;
     private Person _person;
+    private UserDto _userDto;
+    private User _user;
     private PersonDto _personDto;
+    private List<Booking> _bookings;
     
     [TestInitialize]
     public void TestInitialize()
@@ -23,6 +26,9 @@ public class PersonLogicTests
         _personLogic = new PersonLogic(_personRepo);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#");
         _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#");
+        _bookings = new List<Booking>();
+        _user = new User("User", "User", "emailuser@gmail.com","PassWord921#",_bookings);
+        _userDto = new UserDto("User", "User", "emailuser@gmail.com","PassWord921#",_bookings);
         _personRepo.AddToRepository(_person); 
     }
     
@@ -76,7 +82,20 @@ public class PersonLogicTests
         Assert.AreEqual(admin.GetEmail(), loggedInAdministratorDto.Email);
         Assert.AreEqual(admin.GetPassword(), loggedInAdministratorDto.Password);
     }
-    
+
+    [TestMethod]
+    public void WhenPersonIsTryingToLoginAndIsUserShouldReturnUser()
+    {
+        _personRepo.AddToRepository(_user);
+        PersonDto loggedInUserDto = _personLogic.Login(_user.GetEmail(),_user.GetPassword());
+        Assert.AreEqual(_user.GetName(), loggedInUserDto.Name);
+        Assert.AreEqual(_user.GetSurname(), loggedInUserDto.Surname);
+        Assert.AreEqual(_user.GetEmail(), loggedInUserDto.Email);
+        Assert.AreEqual(_user.GetPassword(), loggedInUserDto.Password);
+        Assert.AreEqual(_user.GetBookings(), loggedInUserDto.Bookings);
+    }
+
+
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPersonIsTryingToLoginAndDoesNotExistShouldReturnException()
@@ -99,6 +118,8 @@ public class PersonLogicTests
         _personLogic.SignUp(_personDto);
         Assert.IsTrue(_personRepo.ExistsInRepository(_person.GetEmail()));
     }
+    
+    
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPersonIsTryingToSignUpAndEmailIsAlreadyRegisteredShouldReturnException()
