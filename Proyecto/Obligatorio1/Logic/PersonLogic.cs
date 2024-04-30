@@ -57,12 +57,16 @@ public class PersonLogic
                 {
                     personDto= new AdministratorDto(person.GetName(), person.GetSurname(), person.GetEmail(), person.GetPassword());
                 }
-                else
+                else if (person is User user)
                 {
-                    personDto= new PersonDto(person.GetName(), person.GetSurname(), person.GetEmail(), person.GetPassword());
+                    personDto= new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), user.GetBookings());
+                }
+                else if (person != null)
+                {
+                    personDto = new PersonDto(person.GetName(), person.GetSurname(), person.GetEmail(),
+                        person.GetPassword());
                 }
 
-                
             }
         }
         else
@@ -82,12 +86,7 @@ public class PersonLogic
     {
         if (!CheckIfEmailIsRegistered(personDto.Email))
         {
-            if (personDto is AdministratorDto)
-            {
-                Administrator admin = new Administrator(personDto.Name, personDto.Surname, personDto.Email, personDto.Password);
-                _personRepositories.AddToRepository(admin);
-            }
-            else 
+        
             {
                 Person person = new Person(personDto.Name, personDto.Surname, personDto.Email, personDto.Password);
                 _personRepositories.AddToRepository(person);

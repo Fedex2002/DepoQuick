@@ -14,7 +14,6 @@ public class PersonLogicTests
     private PersonRepositories _personRepo;
     private PersonLogic _personLogic;
     private Person _person;
-    private UserDto _userDto;
     private User _user;
     private PersonDto _personDto;
     private List<Booking> _bookings;
@@ -28,7 +27,6 @@ public class PersonLogicTests
         _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#");
         _bookings = new List<Booking>();
         _user = new User("User", "User", "emailuser@gmail.com","PassWord921#",_bookings);
-        _userDto = new UserDto("User", "User", "emailuser@gmail.com","PassWord921#",_bookings);
         _personRepo.AddToRepository(_person); 
     }
     
@@ -87,12 +85,13 @@ public class PersonLogicTests
     public void WhenPersonIsTryingToLoginAndIsUserShouldReturnUser()
     {
         _personRepo.AddToRepository(_user);
-        PersonDto loggedInUserDto = _personLogic.Login(_user.GetEmail(),_user.GetPassword());
-        Assert.AreEqual(_user.GetName(), loggedInUserDto.Name);
-        Assert.AreEqual(_user.GetSurname(), loggedInUserDto.Surname);
-        Assert.AreEqual(_user.GetEmail(), loggedInUserDto.Email);
-        Assert.AreEqual(_user.GetPassword(), loggedInUserDto.Password);
-        Assert.AreEqual(_user.GetBookings(), loggedInUserDto.Bookings);
+        PersonDto loggedInPersonDto = _personLogic.Login(_user.GetEmail(),_user.GetPassword());
+        
+        Assert.AreEqual(_user.GetName(), loggedInPersonDto.Name);
+        Assert.AreEqual(_user.GetSurname(), loggedInPersonDto.Surname);
+        Assert.AreEqual(_user.GetEmail(), loggedInPersonDto.Email);
+        Assert.AreEqual(_user.GetPassword(), loggedInPersonDto.Password);
+        Assert.AreEqual(_user.GetBookings(), ((UserDto)loggedInPersonDto).Bookings);
     }
 
 
