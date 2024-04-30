@@ -2,6 +2,7 @@
 @layout LoginLayout
 @using Microsoft.AspNetCore.Identity
 @using Logic
+@using Logic.DTOs
 @using Model
 @inherits LayoutComponentBase
 @inject SessionLogic sessionLogic
@@ -60,47 +61,51 @@
 }
 
 @code {
-    Person person;
-    private string email;
-    private string password;
-    private bool showUserErrorModal = false;
-    private string errorMessage = "";
-    protected override void OnInitialized()
-    {
-      person = new Person();
-    }
+  PersonDto person;
+  private string email;
+  private string password;
+  private bool showUserErrorModal = false;
+  private string errorMessage = "";
+  protected override void OnInitialized()
+  {
+    person = new PersonDto();
+  }
     
-    private async Task HandleValidSubmit()
+  private async Task HandleValidSubmit()
+  {
+    try
     {
-      try
-      {
-        sessionLogic.Login(email,password);
-        person = sessionLogic.CurrentPerson;
-        GoToIndex();
+      sessionLogic.Login(email,password);
+      person = sessionLogic.CurrentPerson;
+      GoToIndex();
         
-      }
-      catch (Exception e)
-      {
-        showUserErrorModal = true;
-        errorMessage = e.Message;
-      }
+    }
+    catch (Exception e)
+    {
+      showUserErrorModal = true;
+      errorMessage = e.Message;
+    }
       
       
-    }
+  }
     
-    private void CloseUserErrorModal()
-    {
-      showUserErrorModal = false;
-    }
+  private void CloseUserErrorModal()
+  {
+    showUserErrorModal = false;
+  }
     
-    private void GoToIndex()
-    {
-      NavigationManager.NavigateTo("/Index", true);
-    }
+  private void GoToIndex()
+  {
+    NavigationManager.NavigateTo("/Index", true);
+  }
 
-    private void GoToSignUp()
-    {
-      NavigationManager.NavigateTo("/");
-    }
-    
+  private void GoToSignUp()
+  {
+    NavigationManager.NavigateTo("/");
+  }
+
+  private void GoToAdminIndex()
+  {
+    NavigationManager.NavigateTo("/AdminIndex", true);
+  }
 }

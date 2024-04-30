@@ -2,6 +2,7 @@
 @using Model;
 @layout LoginLayout
 @using Logic
+@using Logic.DTOs
 @inherits LayoutComponentBase
 @inject PersonLogic personLogic
 @inject NavigationManager NavigationManager
@@ -72,7 +73,7 @@
 
 
 @code {
-  private Person? _person;
+  private PersonDto? _person;
   private string? _name;
   private string? _surname;
   private string? _email;
@@ -83,7 +84,7 @@
   private static bool _adminRegistered;
   protected override void OnInitialized()
   {
-    _person = new Model.User();
+    _person = new PersonDto();
     
   }
 
@@ -99,13 +100,13 @@
       if (!_adminRegistered)
       {
         _adminRegistered = true;
-        _person = new Administrator(_name, _surname, _email, _password);
+        _person = new AdministratorDto(_name, _surname, _email, _password);
         personLogic.SignUp(_person);
 
       }
       else
       {
-        _person = new Model.User(_name, _surname, _email, _password, new List<Booking>());
+        _person = new UserDto(_name, _surname, _email, _password, new List<Booking>());
         personLogic.SignUp(_person);
       }
       

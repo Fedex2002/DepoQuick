@@ -116,10 +116,6 @@ public class PersonLogicTests
         _personLogic.SignUp(_personDto);
         Assert.IsTrue(_personRepo.ExistsInRepository(_person.GetEmail()));
     }
-<<<<<<< HEAD
-    
-=======
-
     [TestMethod]
     public void WhenUserIsTryingToSignUpShouldAddUserToRepositoryIfValidationsAreCorrect()
     {
@@ -137,8 +133,7 @@ public class PersonLogicTests
         Assert.IsTrue(_personRepo.ExistsInRepository(adminDto.Email));
 
     }
-
->>>>>>> feature/LogicDtos
+    
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPersonIsTryingToSignUpAndEmailIsAlreadyRegisteredShouldReturnException()
