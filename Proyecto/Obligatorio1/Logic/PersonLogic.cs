@@ -78,11 +78,20 @@ public class PersonLogic
         return _personRepositories;
     }
 
-    public void SignUp(Person person)
+    public void SignUp(PersonDto personDto)
     {
-        if (!CheckIfEmailIsRegistered(person.GetEmail()))
+        if (!CheckIfEmailIsRegistered(personDto.Email))
         {
-            _personRepositories.AddToRepository(person);
+            if (personDto is AdministratorDto)
+            {
+                Administrator admin = new Administrator(personDto.Name, personDto.Surname, personDto.Email, personDto.Password);
+                _personRepositories.AddToRepository(admin);
+            }
+            else 
+            {
+                Person person = new Person(personDto.Name, personDto.Surname, personDto.Email, personDto.Password);
+                _personRepositories.AddToRepository(person);
+            }
         }
         else
         {
@@ -90,3 +99,4 @@ public class PersonLogic
         }
     }
 }
+    

@@ -14,6 +14,7 @@ public class PersonLogicTests
     private PersonRepositories _personRepo;
     private PersonLogic _personLogic;
     private Person _person;
+    private PersonDto _personDto;
     
     [TestInitialize]
     public void TestInitialize()
@@ -21,6 +22,7 @@ public class PersonLogicTests
         _personRepo = new PersonRepositories();
         _personLogic = new PersonLogic(_personRepo);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#");
+        _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#");
         _personRepo.AddToRepository(_person); 
     }
     
@@ -94,13 +96,13 @@ public class PersonLogicTests
     public void WhenPersonIsTryingToSignUpShouldAddPersonToRepositoryIfValidationsAreCorrect()
     {
         _personRepo.RemoveFromRepository(_person);
-        _personLogic.SignUp(_person);
+        _personLogic.SignUp(_personDto);
         Assert.IsTrue(_personRepo.ExistsInRepository(_person.GetEmail()));
     }
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPersonIsTryingToSignUpAndEmailIsAlreadyRegisteredShouldReturnException()
     {
-        _personLogic.SignUp(_person);
+        _personLogic.SignUp(_personDto);
     }
 }
