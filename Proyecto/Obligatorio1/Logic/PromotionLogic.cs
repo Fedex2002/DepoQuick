@@ -1,3 +1,4 @@
+using Logic.DTOs;
 using Repositories;
 using Model;
 namespace Logic;
@@ -11,9 +12,11 @@ public class PromotionLogic
         _promotionRepositories = promotionRepositories;
     }
     
-    public Promotion ModifyPromotion(string label, int discount, DateTime startDate, DateTime endDate)
+    public void ModifyPromotion(PromotionDto promotionDto)
     {
-        Promotion promotion = new Promotion(label, discount, startDate, endDate);
-        return promotion;
+        Promotion promotionInRepo= _promotionRepositories.GetFromRepository(promotionDto.Label);
+        _promotionRepositories.RemoveFromRepository(promotionInRepo);
+        promotionInRepo= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
+        _promotionRepositories.AddToRepository(promotionInRepo);
     }
 }
