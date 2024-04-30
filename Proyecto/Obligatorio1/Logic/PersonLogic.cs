@@ -1,3 +1,4 @@
+using Logic.DTOs;
 using Model;
 using Model.Exceptions;
 using Repositories;
@@ -39,24 +40,41 @@ public class PersonLogic
     
 
 
-    public Person Login(string email,string password)
+    public PersonDto Login(string email, string password)
     {
         return LoginCheckPersonValidations(email, password);
     }
 
-    private Person LoginCheckPersonValidations(string email, string password)
+    private PersonDto LoginCheckPersonValidations(string email, string password)
     {
-        Person person = new Person();
-        if (CheckIfEmailIsRegistered(email) && CheckIfPasswordIsCorrect(password, _personRepositories.GetFromRepository(email).GetPassword()))
+        PersonDto personDto = new PersonDto();
+        if (CheckIfEmailIsRegistered(email))
         {
-            person = _personRepositories.GetFromRepository(email);
+            Person person = _personRepositories.GetFromRepository(email);
+            if (CheckIfPasswordIsCorrect(password, person.GetPassword()))
+            {
+                if (person is Administrator)
+                {
+                    personDto= new AdministratorDto(person.GetName(), person.GetSurname(), person.GetEmail(), person.GetPassword());
+                }
+                else if (person is User user)
+                {
+                    personDto= new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), user.GetBookings());
+                }
+                else if (person != null)
+                {
+                    personDto = new PersonDto(person.GetName(), person.GetSurname(), person.GetEmail(),
+                        person.GetPassword());
+                }
+
+            }
         }
         else
         {
-            throw new LogicExceptions("The Person does not exist");
+            throw new LogicExceptions("The email is not registered");
         }
 
-        return person;
+        return personDto;
     }
 
     public PersonRepositories GetRepository()
@@ -64,11 +82,28 @@ public class PersonLogic
         return _personRepositories;
     }
 
-    public void SignUp(Person person)
+    public void SignUp(PersonDto personDto)
     {
-        if (!CheckIfEmailIsRegistered(person.GetEmail()))
+        if (!CheckIfEmailIsRegistered(personDto.Email))
         {
-            _personRepositories.AddToRepository(person);
+            if (personDto is UserDto userDto)
+            {
+                User user = new User(userDto.Name, userDto.Surname, userDto.Email, userDto.Password, userDto.Bookings);
+                _personRepositories.AddToRepository(user);
+            }
+            else 
+            {
+                if(personDto is AdministratorDto adminDto)
+                {
+                    Administrator admin = new Administrator(adminDto.Name, adminDto.Surname, adminDto.Email, adminDto.Password);
+                    _personRepositories.AddToRepository(admin);
+                }
+                else
+                {
+                    Person person = new Person(personDto.Name, personDto.Surname, personDto.Email, personDto.Password);
+                    _personRepositories.AddToRepository(person);
+                }
+            }
         }
         else
         {
@@ -76,3 +111,4 @@ public class PersonLogic
         }
     }
 }
+    
