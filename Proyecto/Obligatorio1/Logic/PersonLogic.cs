@@ -86,7 +86,12 @@ public class PersonLogic
     {
         if (!CheckIfEmailIsRegistered(personDto.Email))
         {
-        
+            if (personDto is UserDto userDto)
+            {
+                User user = new User(userDto.Name, userDto.Surname, userDto.Email, userDto.Password, userDto.Bookings);
+                _personRepositories.AddToRepository(user);
+            }
+            else 
             {
                 Person person = new Person(personDto.Name, personDto.Surname, personDto.Email, personDto.Password);
                 _personRepositories.AddToRepository(person);

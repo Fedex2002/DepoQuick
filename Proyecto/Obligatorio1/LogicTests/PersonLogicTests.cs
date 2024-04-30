@@ -111,14 +111,21 @@ public class PersonLogicTests
     }
 
     [TestMethod]
-    public void WhenPersonIsTryingToSignUpShouldAddPersonToRepositoryIfValidationsAreCorrect()
+    public void WhenUserIsTryingToSignUpShouldAddPersonToRepositoryIfValidationsAreCorrect()
     {
         _personRepo.RemoveFromRepository(_person);
         _personLogic.SignUp(_personDto);
         Assert.IsTrue(_personRepo.ExistsInRepository(_person.GetEmail()));
     }
-    
-    
+
+    [TestMethod]
+    public void WhenUserIsTryingToSignUpShouldAddUserToRepositoryIfValidationsAreCorrect()
+    {
+        PersonDto userDto = new UserDto("John", "Doe", "johndoe123@gmail.com", "PassWord921#",_bookings);
+        _personLogic.SignUp(userDto);
+        Assert.IsTrue(_personRepo.ExistsInRepository(userDto.Email));
+    }
+
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPersonIsTryingToSignUpAndEmailIsAlreadyRegisteredShouldReturnException()
