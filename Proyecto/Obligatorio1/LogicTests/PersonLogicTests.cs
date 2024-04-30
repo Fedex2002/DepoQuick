@@ -64,6 +64,18 @@ public class PersonLogicTests
     }
     
     [TestMethod]
+    public void WhenPersonIsTryingToLoginAndIsAdministratorShouldReturnAdministrator()
+    {
+        Administrator admin = new Administrator("Admin", "Admin","email@gmail.com","PassWord921#EAa");
+        _personRepo.AddToRepository(admin);
+        AdminDto loggedInAdminDto = _personLogic.Login(admin.GetName(),admin.GetPassword());
+        Assert.AreEqual(admin.GetName(), loggedInAdminDto.Name);
+        Assert.AreEqual(admin.GetSurname(), loggedInAdminDto.Surname);
+        Assert.AreEqual(admin.GetEmail(), loggedInAdminDto.Email);
+        Assert.AreEqual(admin.GetPassword(), loggedInAdminDto.Password);
+    }
+    
+    [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPersonIsTryingToLoginAndDoesNotExistShouldReturnException()
     {
