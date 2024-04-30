@@ -53,7 +53,16 @@ public class PersonLogic
             Person person = _personRepositories.GetFromRepository(email);
             if (CheckIfPasswordIsCorrect(password, person.GetPassword()))
             {
-                personDto= new PersonDto(person.GetName(), person.GetSurname(), person.GetEmail(), person.GetPassword());
+                if (person is Administrator)
+                {
+                    personDto= new AdministratorDto(person.GetName(), person.GetSurname(), person.GetEmail(), person.GetPassword());
+                }
+                else
+                {
+                    personDto= new PersonDto(person.GetName(), person.GetSurname(), person.GetEmail(), person.GetPassword());
+                }
+
+                
             }
         }
         else

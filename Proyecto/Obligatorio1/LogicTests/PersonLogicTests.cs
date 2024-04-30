@@ -68,11 +68,11 @@ public class PersonLogicTests
     {
         Administrator admin = new Administrator("Admin", "Admin","email@gmail.com","PassWord921#EAa");
         _personRepo.AddToRepository(admin);
-        AdminDto loggedInAdminDto = _personLogic.Login(admin.GetName(),admin.GetPassword());
-        Assert.AreEqual(admin.GetName(), loggedInAdminDto.Name);
-        Assert.AreEqual(admin.GetSurname(), loggedInAdminDto.Surname);
-        Assert.AreEqual(admin.GetEmail(), loggedInAdminDto.Email);
-        Assert.AreEqual(admin.GetPassword(), loggedInAdminDto.Password);
+        PersonDto loggedInAdministratorDto = _personLogic.Login(admin.GetEmail(),admin.GetPassword());
+        Assert.AreEqual(admin.GetName(), loggedInAdministratorDto.Name);
+        Assert.AreEqual(admin.GetSurname(), loggedInAdministratorDto.Surname);
+        Assert.AreEqual(admin.GetEmail(), loggedInAdministratorDto.Email);
+        Assert.AreEqual(admin.GetPassword(), loggedInAdministratorDto.Password);
     }
     
     [TestMethod]
