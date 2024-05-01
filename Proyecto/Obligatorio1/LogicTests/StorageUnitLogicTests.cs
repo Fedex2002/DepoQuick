@@ -19,7 +19,7 @@ public class StorageUnitLogicTests
     public void TestInitialize()
     {
         _storageUnitRepo = new StorageUnitRepositories();
-        _storageUnitLogic = new StorageUnitLogic(_storageunitrepo);
+        _storageUnitLogic = new StorageUnitLogic(_storageUnitRepo);
         _promotions = new List<Promotion>();
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotions.Add(_promotion);
