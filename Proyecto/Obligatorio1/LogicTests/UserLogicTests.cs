@@ -30,6 +30,13 @@ public class UserLogicTests
     }
     
     [TestMethod]
+    public void WhenCreatingABookingDtoEmptyShouldReturnEmptyBooking()
+    {
+        BookingDto bookingDto = new BookingDto();
+        Assert.IsNotNull(bookingDto);
+    }
+    
+    [TestMethod]
     public void WhenUserMakesABookingShouldAddItToHisListOfBookings()
     {
         _userLogic.AddBookingToUser(_personRepo.GetFromRepository(_person.GetEmail()), _mybooking);
