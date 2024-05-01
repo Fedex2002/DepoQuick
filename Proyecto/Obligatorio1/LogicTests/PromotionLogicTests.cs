@@ -3,6 +3,7 @@ using Repositories;
 using Model;
 using Logic;
 using Logic.DTOs;
+using Model.Exceptions;
 
 namespace LogicTests;
 
@@ -20,19 +21,65 @@ public class PromotionLogicTests
         _promotionRepo = new PromotionsRepositories();
         _promotionLogic = new PromotionLogic(_promotionRepo);
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _promotionDto= new PromotionDto("Winter discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
     }
+
+    [TestMethod]
+    public void WhenEmptyPromotionDtoIsCreatedShouldReturnEmptyPromotionDto()
+    {
+        PromotionDto promotionDto = new PromotionDto();
+        Assert.IsNotNull(promotionDto);
+    }    
     
-    [TestMethod] public void WhenModifyingPromotionShouldEliminateTheOldOneAndAddTheNewOne()
+    [TestMethod] 
+    public void WhenModifyingPromotionShouldEliminateTheOldOneAndAddTheNewOne()
     {
         _promotionRepo.AddToRepository(_promotion);
-                        
-        _promotionDto= new PromotionDto("Summer discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _promotionDto= new PromotionDto("Winter discount", 50, new DateTime(2025, 7, 15), new DateTime(2025, 10, 15));
         _promotionLogic.ModifyPromotion(_promotionDto);
         Assert.AreEqual(_promotionDto.Label, _promotionRepo.GetFromRepository(_promotionDto.Label).GetLabel());
         Assert.AreEqual(_promotionDto.Discount, _promotionRepo.GetFromRepository(_promotionDto.Label).GetDiscount());
         Assert.AreEqual(_promotionDto.DateStart, _promotionRepo.GetFromRepository(_promotionDto.Label).GetDateStart());
         Assert.AreEqual(_promotionDto.DateEnd, _promotionRepo.GetFromRepository(_promotionDto.Label).GetDateEnd());
-                        
-                        
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToModifyANonExistingPromotionShouldThrowException()
+    {
+        _promotionLogic.ModifyPromotion(_promotionDto);
+    }
+    
+    [TestMethod]
+    public void WhenPromotionIsCreatedShouldBeAddedToRepository()
+    {
+        _promotionLogic.CreatePromotion(_promotionDto);
+        Assert.AreEqual(_promotionDto.Label, _promotionRepo.GetFromRepository(_promotionDto.Label).GetLabel());
+        Assert.AreEqual(_promotionDto.Discount, _promotionRepo.GetFromRepository(_promotionDto.Label).GetDiscount());
+        Assert.AreEqual(_promotionDto.DateStart, _promotionRepo.GetFromRepository(_promotionDto.Label).GetDateStart());
+        Assert.AreEqual(_promotionDto.DateEnd, _promotionRepo.GetFromRepository(_promotionDto.Label).GetDateEnd());
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenPromotionIsCreatedWithAnExistingLabelShouldThrowException()
+    {
+        _promotionRepo.AddToRepository(_promotion);
+        _promotionLogic.CreatePromotion(_promotionDto);
+    }
+    
+    [TestMethod]
+    public void WhenPromotionIsEliminatedShouldBeRemovedFromRepository()
+    {
+        _promotionRepo.AddToRepository(_promotion);
+        _promotionLogic.RemovePromotion(_promotionDto);
+        Assert.IsNull(_promotionRepo.GetFromRepository(_promotion.GetLabel()));
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToEliminateANonExistingPromotionShouldThrowException()
+    {
+        _promotionLogic.RemovePromotion(_promotionDto);
     }
 }

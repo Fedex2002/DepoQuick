@@ -57,6 +57,28 @@ public class PersonLogicTests
     {
         Assert.IsTrue(_personLogic.CheckIfPasswordIsCorrect(_person.GetPassword(), _person.GetPassword()));
     }
+
+    [TestMethod]
+    public void WhenEmptyPersonDtoIsCreatedShouldReturnEmptyPersonDto()
+    {
+        PersonDto personDto = new PersonDto();
+        Assert.IsNotNull(personDto);
+    }
+    
+    [TestMethod]
+    public void WhenEmptyUserDtoIsCreatedShouldReturnEmptyUserDto()
+    {
+        UserDto userDto = new UserDto();
+        Assert.IsNotNull(userDto);
+    }
+    
+    [TestMethod]
+    public void WhenEmptyAdministratorDtoIsCreatedShouldReturnEmptyAdministratorDto()
+    {
+        AdministratorDto administratorDto = new AdministratorDto();
+        Assert.IsNotNull(administratorDto);
+    }
+    
     [TestMethod]
     public void WhenPersonIsTryingToLoginShouldReturnPersonIfValidationsAreCorrect()
     {
@@ -116,6 +138,7 @@ public class PersonLogicTests
         _personLogic.SignUp(_personDto);
         Assert.IsTrue(_personRepo.ExistsInRepository(_person.GetEmail()));
     }
+
     [TestMethod]
     public void WhenUserIsTryingToSignUpShouldAddUserToRepositoryIfValidationsAreCorrect()
     {
@@ -123,8 +146,7 @@ public class PersonLogicTests
         _personLogic.SignUp(userDto);
         Assert.IsTrue(_personRepo.ExistsInRepository(userDto.Email));
     }
-
-
+    
     [TestMethod]
     public void WhenAdministratorIsTryingToSignUpShouldAddAdministratorToRepositoryIfValidationsAreCorrect()
     {
