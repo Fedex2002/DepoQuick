@@ -23,6 +23,13 @@ public class PromotionLogicTests
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotionDto= new PromotionDto("Winter discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
     }
+
+    [TestMethod]
+    public void WhenEmptyPromotionDtoIsCreatedShouldReturnEmptyPromotionDto()
+    {
+        PromotionDto promotionDto = new PromotionDto();
+        Assert.IsNotNull(promotionDto);
+    }    
     
     [TestMethod] 
     public void WhenModifyingPromotionShouldEliminateTheOldOneAndAddTheNewOne()
