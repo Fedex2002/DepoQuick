@@ -93,8 +93,7 @@ public class PersonLogicTests
         Assert.AreEqual(_user.GetPassword(), loggedInPersonDto.Password);
         Assert.AreEqual(_user.GetBookings(), ((UserDto)loggedInPersonDto).Bookings);
     }
-
-
+    
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPersonIsTryingToLoginAndDoesNotExistShouldReturnException()
@@ -125,8 +124,7 @@ public class PersonLogicTests
         _personLogic.SignUp(userDto);
         Assert.IsTrue(_personRepo.ExistsInRepository(userDto.Email));
     }
-
-
+    
     [TestMethod]
     public void WhenAdministratorIsTryingToSignUpShouldAddAdministratorToRepositoryIfValidationsAreCorrect()
     {
