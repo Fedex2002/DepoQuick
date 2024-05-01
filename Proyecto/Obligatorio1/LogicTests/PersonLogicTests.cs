@@ -129,15 +129,7 @@ public class PersonLogicTests
         _personRepo.AddToRepository(federico); 
         Assert.AreEqual(_personRepo, _personLogic.GetRepository());
     }
-
-    [TestMethod]
-    public void WhenUserIsTryingToSignUpShouldAddPersonToRepositoryIfValidationsAreCorrect()
-    {
-        _personRepo.RemoveFromRepository(_person);
-        _personLogic.SignUp(_personDto);
-        Assert.IsTrue(_personRepo.ExistsInRepository(_person.GetEmail()));
-    }
-
+    
     [TestMethod]
     public void WhenUserIsTryingToSignUpShouldAddUserToRepositoryIfValidationsAreCorrect()
     {
@@ -154,6 +146,7 @@ public class PersonLogicTests
         Assert.IsTrue(_personRepo.ExistsInRepository(adminDto.Email));
 
     }
+
 
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
