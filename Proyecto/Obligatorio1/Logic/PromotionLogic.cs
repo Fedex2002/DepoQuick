@@ -1,6 +1,8 @@
 using Logic.DTOs;
 using Repositories;
 using Model;
+using Model.Exceptions;
+
 namespace Logic;
 
 public class PromotionLogic
@@ -23,6 +25,13 @@ public class PromotionLogic
     public void CreatePromotion(PromotionDto promotionDto)
     {
         Promotion promotion= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
-        _promotionRepositories.AddToRepository(promotion);
+        if (_promotionRepositories.GetFromRepository(promotionDto.Label) != null)
+        {
+            throw new LogicExceptions("Promotion already exists");
+        }
+        else
+        {
+            _promotionRepositories.AddToRepository(promotion);
+        }
     }
 }
