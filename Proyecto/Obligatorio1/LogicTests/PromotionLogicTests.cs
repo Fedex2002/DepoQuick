@@ -63,4 +63,12 @@ public class PromotionLogicTests
         _promotionLogic.RemovePromotion(_promotionDto);
         Assert.IsNull(_promotionRepo.GetFromRepository(_promotion.GetLabel()));
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToEliminateANonExistingPromotionShouldThrowException()
+    {
+        _promotionDto= new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _promotionLogic.RemovePromotion(_promotionDto);
+    }
 }
