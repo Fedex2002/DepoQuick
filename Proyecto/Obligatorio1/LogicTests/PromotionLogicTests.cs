@@ -3,6 +3,7 @@ using Repositories;
 using Model;
 using Logic;
 using Logic.DTOs;
+using Model.Exceptions;
 
 namespace LogicTests;
 
@@ -43,5 +44,14 @@ public class PromotionLogicTests
         Assert.AreEqual(_promotionDto.Discount, _promotionRepo.GetFromRepository(_promotionDto.Label).GetDiscount());
         Assert.AreEqual(_promotionDto.DateStart, _promotionRepo.GetFromRepository(_promotionDto.Label).GetDateStart());
         Assert.AreEqual(_promotionDto.DateEnd, _promotionRepo.GetFromRepository(_promotionDto.Label).GetDateEnd());
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenPromotionIsCreatedWithAnExistingLabelShouldThrowException()
+    {
+        _promotionRepo.AddToRepository(_promotion);
+        _promotionDto= new PromotionDto("Winter discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _promotionLogic.CreatePromotion(_promotionDto);
     }
 }
