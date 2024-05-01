@@ -66,6 +66,13 @@ public class PersonLogicTests
     }
     
     [TestMethod]
+    public void WhenEmptyUserDtoIsCreatedShouldReturnEmptyUserDto()
+    {
+        UserDto userDto = new UserDto();
+        Assert.IsNotNull(userDto);
+    }
+    
+    [TestMethod]
     public void WhenPersonIsTryingToLoginShouldReturnPersonIfValidationsAreCorrect()
     {
         PersonDto loggedInPersonDto = _personLogic.Login(_person.GetEmail(), _person.GetPassword());
