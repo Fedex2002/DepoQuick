@@ -61,4 +61,11 @@ public class StorageUnitLogicTests
         _storageUnitLogic.RemoveStorageUnit(_storageUnitDto);
         Assert.IsNull(_storageUnitRepo.GetFromRepository(_storageUnitDto.Id));
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToRemoveANonExistingStorageUnitShouldThrowException()
+    {
+        _storageUnitLogic.RemoveStorageUnit(_storageUnitDto);
+    }
 }
