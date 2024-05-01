@@ -34,4 +34,10 @@ public class PromotionLogic
             _promotionRepositories.AddToRepository(promotion);
         }
     }
+    
+    public void RemovePromotion(PromotionDto promotionDto)
+    {
+        Promotion promotionInRepo= _promotionRepositories.GetFromRepository(promotionDto.Label);
+        _promotionRepositories.RemoveFromRepository(promotionInRepo);
+    }
 }
