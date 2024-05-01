@@ -19,4 +19,10 @@ public class PromotionLogic
         promotionInRepo= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
         _promotionRepositories.AddToRepository(promotionInRepo);
     }
+    
+    public void CreatePromotion(PromotionDto promotionDto)
+    {
+        Promotion promotion= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
+        _promotionRepositories.AddToRepository(promotion);
+    }
 }
