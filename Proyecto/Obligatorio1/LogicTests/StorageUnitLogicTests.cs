@@ -53,4 +53,12 @@ public class StorageUnitLogicTests
         _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
         _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
     }
+    
+    [TestMethod]
+    public void WhenStorageUnitIsEliminatedShouldBeRemovedFromRepository()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _storageUnitLogic.RemoveStorageUnit(_storageUnitDto);
+        Assert.IsNull(_storageUnitRepo.GetFromRepository(_storageUnitDto.Id));
+    }
 }
