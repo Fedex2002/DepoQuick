@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices.ComTypes;
 using Logic;
+using Logic.DTOs;
 using Repositories;
 using Model;
 using Model.Enums;
