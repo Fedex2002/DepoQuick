@@ -16,7 +16,7 @@ public class StorageUnitLogic
     
     public void CreateStorageUnit(StorageUnitDto storageUnitDto)
     {
-        List<Promotion> promotions = createListPromotions(storageUnitDto);
+        List<Promotion> promotions = CreateListPromotions(storageUnitDto);
         StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions);
         if (_storageUnitRepositories.GetFromRepository(storageUnitDto.Id) != null)
         {
@@ -28,9 +28,10 @@ public class StorageUnitLogic
         }
     }
 
-    public List<Promotion> createListPromotions(StorageUnitDto storageUnitDto)
+    public List<Promotion> CreateListPromotions(StorageUnitDto storageUnitDto)
     {
-        return storageUnitDto.Promotions.Select(promotionDto => new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd)).ToList();
+        List<Promotion> promotions = storageUnitDto.Promotions.Select(promotionDto => new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd)).ToList();
+        return promotions;
     }
 
     public void RemoveStorageUnit(StorageUnitDto storageUnitDto)

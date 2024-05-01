@@ -16,7 +16,7 @@ public class StorageUnitLogicTests
     private List<Promotion>? _promotions;
     private List<PromotionDto>? _promotionsDto;
     private Promotion? _promotion;
-    
+    private PromotionDto _promotionDto;
     [TestInitialize]
     public void TestInitialize()
     {
@@ -25,8 +25,16 @@ public class StorageUnitLogicTests
         _promotions = new List<Promotion>();
         _promotionsDto = new List<PromotionDto>();
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _promotionDto = new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotions.Add(_promotion);
+        _promotionsDto.Add(_promotionDto);
         _storageUnitDto = new StorageUnitDto("1", AreaType.B, SizeType.Medium, false, _promotionsDto);
+    }
+    [TestMethod]
+    public void WhenCreatingPromotionListFromStorageUnitDtoShouldReturnPromotionList()
+    {
+        _promotions = _storageUnitLogic.CreateListPromotions(_storageUnitDto);
+        Assert.IsNotNull(_promotions);
     }
 
     [TestMethod]
@@ -44,7 +52,7 @@ public class StorageUnitLogicTests
         Assert.AreEqual(_storageUnitDto.Area, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetArea());
         Assert.AreEqual(_storageUnitDto.Size, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetSize());
         Assert.AreEqual(_storageUnitDto.Climatization, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetClimatization());
-        Assert.IsTrue(_storageUnitLogic.createListPromotions(_storageUnitDto).SequenceEqual(_storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetPromotions()));
+        Assert.IsTrue(_storageUnitLogic.CreateListPromotions(_storageUnitDto).SequenceEqual(_storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetPromotions()));
 
     }
 
