@@ -3,6 +3,7 @@ using Model.Enums;
 using Repositories;
 using Logic;
 using Logic.DTOs;
+using Model.Exceptions;
 
 namespace LogicTests;
 
@@ -14,6 +15,7 @@ public class StorageUnitLogicTests
     private StorageUnitDto _storageUnitDto;
     private List<Promotion> _promotions;
     private Promotion _promotion;
+    private StorageUnit _storageUnit;
     
     [TestInitialize]
     public void TestInitialize()
@@ -23,7 +25,7 @@ public class StorageUnitLogicTests
         _promotions = new List<Promotion>();
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotions.Add(_promotion);
-        _storageUnitDto = new StorageUnitDto("1", AreaType.A, SizeType.Small, true, _promotions);
+        _storageUnitDto = new StorageUnitDto("1", AreaType.B, SizeType.Medium, false, _promotions);
     }
 
     [TestMethod]
@@ -42,5 +44,13 @@ public class StorageUnitLogicTests
         Assert.AreEqual(_storageUnitDto.Size, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetSize());
         Assert.AreEqual(_storageUnitDto.Climatization, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetClimatization());
         Assert.AreEqual(_storageUnitDto.Promotions, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetPromotions());
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToCreateAnExistingStorageUnitShouldThrowException()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
     }
 }
