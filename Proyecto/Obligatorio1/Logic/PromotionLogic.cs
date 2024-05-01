@@ -17,9 +17,16 @@ public class PromotionLogic
     public void ModifyPromotion(PromotionDto promotionDto)
     {
         Promotion promotionInRepo= _promotionRepositories.GetFromRepository(promotionDto.Label);
-        _promotionRepositories.RemoveFromRepository(promotionInRepo);
-        promotionInRepo= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
-        _promotionRepositories.AddToRepository(promotionInRepo);
+        if (_promotionRepositories.GetFromRepository(promotionDto.Label) == null)
+        {
+            throw new LogicExceptions("Promotion does not exist");
+        }
+        else
+        {
+            _promotionRepositories.RemoveFromRepository(promotionInRepo);
+            promotionInRepo= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
+            _promotionRepositories.AddToRepository(promotionInRepo);
+        }
     }
     
     public void CreatePromotion(PromotionDto promotionDto)
