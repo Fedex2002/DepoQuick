@@ -57,6 +57,13 @@ public class PersonLogicTests
     {
         Assert.IsTrue(_personLogic.CheckIfPasswordIsCorrect(_person.GetPassword(), _person.GetPassword()));
     }
+
+    [TestMethod]
+    public void WhenEmptyPersonDtoIsCreatedShouldReturnEmptyPersonDto()
+    {
+        PersonDto personDto = new PersonDto();
+        Assert.IsNotNull(personDto);
+    }
     
     [TestMethod]
     public void WhenPersonIsTryingToLoginShouldReturnPersonIfValidationsAreCorrect()
