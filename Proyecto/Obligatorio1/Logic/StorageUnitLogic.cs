@@ -30,6 +30,13 @@ public class StorageUnitLogic
     public void RemoveStorageUnit(StorageUnitDto storageUnitDto)
     {
         StorageUnit storageUnitInRepo= _storageUnitRepositories.GetFromRepository(storageUnitDto.Id);
-        _storageUnitRepositories.RemoveFromRepository(storageUnitInRepo);
+        if (_storageUnitRepositories.GetFromRepository(storageUnitDto.Id) == null)
+        {
+            throw new LogicExceptions("Storage unit does not exist");
+        }
+        else
+        {
+            _storageUnitRepositories.RemoveFromRepository(storageUnitInRepo);
+        }
     }
 }
