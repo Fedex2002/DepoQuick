@@ -26,4 +26,10 @@ public class StorageUnitLogic
             _storageUnitRepositories.AddToRepository(storageUnit);
         }
     }
+
+    public void RemoveStorageUnit(StorageUnitDto storageUnitDto)
+    {
+        StorageUnit storageUnitInRepo= _storageUnitRepositories.GetFromRepository(storageUnitDto.Id);
+        _storageUnitRepositories.RemoveFromRepository(storageUnitInRepo);
+    }
 }
