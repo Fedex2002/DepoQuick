@@ -37,6 +37,13 @@ public class PromotionLogicTests
     }
     
     [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToModifyANonExistingPromotionShouldThrowException()
+    {
+        _promotionLogic.ModifyPromotion(_promotionDto);
+    }
+    
+    [TestMethod]
     public void WhenPromotionIsCreatedShouldBeAddedToRepository()
     {
         _promotionLogic.CreatePromotion(_promotionDto);
