@@ -54,4 +54,12 @@ public class PromotionLogicTests
         _promotionDto= new PromotionDto("Winter discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotionLogic.CreatePromotion(_promotionDto);
     }
+    
+    [TestMethod]
+    public void WhenPromotionIsEliminatedShouldBeRemovedFromRepository()
+    {
+        _promotionRepo.AddToRepository(_promotion);
+        _promotionLogic.RemovePromotion(_promotionDto);
+        Assert.IsNull(_promotionRepo.GetFromRepository(_promotion.GetLabel()));
+    }
 }
