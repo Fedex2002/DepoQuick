@@ -16,7 +16,8 @@ public class StorageUnitLogic
     
     public void CreateStorageUnit(StorageUnitDto storageUnitDto)
     {
-        StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, storageUnitDto.Promotions);
+        List<Promotion> promotions = createListPromotions(storageUnitDto);
+        StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions);
         if (_storageUnitRepositories.GetFromRepository(storageUnitDto.Id) != null)
         {
             throw new LogicExceptions("Storage unit already exists");
@@ -25,6 +26,11 @@ public class StorageUnitLogic
         {
             _storageUnitRepositories.AddToRepository(storageUnit);
         }
+    }
+
+    public List<Promotion> createListPromotions(StorageUnitDto storageUnitDto)
+    {
+        return storageUnitDto.Promotions.Select(promotionDto => new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd)).ToList();
     }
 
     public void RemoveStorageUnit(StorageUnitDto storageUnitDto)
