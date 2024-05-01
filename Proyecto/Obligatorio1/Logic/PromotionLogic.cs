@@ -38,6 +38,13 @@ public class PromotionLogic
     public void RemovePromotion(PromotionDto promotionDto)
     {
         Promotion promotionInRepo= _promotionRepositories.GetFromRepository(promotionDto.Label);
-        _promotionRepositories.RemoveFromRepository(promotionInRepo);
+        if (_promotionRepositories.GetFromRepository(promotionDto.Label) == null)
+        {
+            throw new LogicExceptions("Promotion does not exist");
+        }
+        else
+        {
+            _promotionRepositories.RemoveFromRepository(promotionInRepo);
+        }
     }
 }
