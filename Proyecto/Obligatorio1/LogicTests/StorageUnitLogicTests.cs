@@ -1,4 +1,5 @@
 using Model;
+using Model.Enums;
 using Repositories;
 using Logic;
 using Logic.DTOs;
@@ -22,6 +23,7 @@ public class StorageUnitLogicTests
         _promotions = new List<Promotion>();
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotions.Add(_promotion);
+        _storageUnitDto = new StorageUnitDto("1", AreaType.A, SizeType.Small, true, _promotions);
     }
 
     [TestMethod]
@@ -29,5 +31,16 @@ public class StorageUnitLogicTests
     {
         StorageUnitDto storageUnitDto = new StorageUnitDto();
         Assert.IsNotNull(storageUnitDto);
+    }
+    
+    [TestMethod]
+    public void WhenStorageUnitIsCreatedShouldBeAddedToRepository()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        Assert.AreEqual(_storageUnitDto.Id, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetId());
+        Assert.AreEqual(_storageUnitDto.Area, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetArea());
+        Assert.AreEqual(_storageUnitDto.Size, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetSize());
+        Assert.AreEqual(_storageUnitDto.Climatization, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetClimatization());
+        Assert.AreEqual(_storageUnitDto.Promotions, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetPromotions());
     }
 }
