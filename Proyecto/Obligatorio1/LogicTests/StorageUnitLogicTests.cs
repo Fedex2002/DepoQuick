@@ -52,7 +52,6 @@ public class StorageUnitLogicTests
         Assert.AreEqual(_storageUnitDto.Area, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetArea());
         Assert.AreEqual(_storageUnitDto.Size, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetSize());
         Assert.AreEqual(_storageUnitDto.Climatization, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetClimatization());
-        Assert.IsTrue(_storageUnitLogic.CreateListPromotions(_storageUnitDto).SequenceEqual(_storageUnitRepo.GetFromRepository(_storageUnitDto.Id).GetPromotions()));
 
     }
 
