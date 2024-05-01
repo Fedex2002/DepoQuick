@@ -1,9 +1,10 @@
 @page "/CreatePromotions"
 @using Logic
+@using Logic.DTOs
 @using Model;
 @using Model.Enums
 @layout MainLayout
-@inject SessionLogic SessionLogic
+@inject PromotionLogic promotionLogic
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -16,23 +17,23 @@
             <p class="text-center fw-bold mx-3 mb-0 fs-4">Create Promotion</p>
           </div>
           <div data-mdb-input-init class="form-outline mb-2">
-            <input class="form-control form-control-lg" placeholder="Enter Label" required/>
+            <input class="form-control form-control-lg" placeholder="Enter Label" @bind="label" required/>
             <label class="form-label" >Label</label>
           </div>
           <div data-mdb-input-init class="form-outline mb-2">
-            <input class="form-control form-control-lg" placeholder="Enter discount" required/>
+            <input class="form-control form-control-lg" placeholder="Enter discount" @bind="discount" required/>
             <label class="form-label" >Discount</label>
           </div>
           <div data-mdb-input-init class="form-outline mb-2">
-            <input type="date" class="form-control form-control-lg" required/>
+            <input type="date" class="form-control form-control-lg" @bind="dateStart" required/>
             <label class="form-label" >DateStart</label>
           </div>
           <div data-mdb-input-init class="form-outline mb-2">
-            <input type="date" class="form-control form-control-lg" required/>
+            <input type="date" class="form-control form-control-lg" @bind="dateEnd" required/>
             <label class="form-label" >DateEnd</label>
           </div>
           <div class="text-center text-lg-start pt-2">
-            <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Create the Promotion</button>
+            <button type="button" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="HandleValidSubmit">Create the Promotion</button>
           </div>
         </form>
       </div>
@@ -40,6 +41,64 @@
   </div>
 </section>
 
+@if (showAdminErrorModal)
+{
+  <AuthenticationModal
+    Title="Promotion already exists"
+    Text="@errorMessage"
+    DialogType=AuthenticationModal.ModalDialogType.Ok
+    OnClose="@ClosePromotionErrorModal">
+  </AuthenticationModal>
+}
+@if(showAdminConfirmationModal)
+{
+    <AuthenticationModal 
+      Title="Promotion created successfully"
+      Text="Promotion created successfully"
+      DialogType=AuthenticationModal.ModalDialogType.Ok
+      OnClose="@ClosePromotionConfirmationModal">
+    </AuthenticationModal>
+}
+
 @code {
+  PromotionDto promotionDto;
+  private string label;
+  private int discount;
+  private DateTime dateStart;
+  private DateTime dateEnd;
+  private bool showAdminErrorModal = false;
+  private string errorMessage = "";
+  private bool showAdminConfirmationModal = false;
+
+  protected override void OnInitialized()
+  {
+      promotionDto = new PromotionDto();
+      dateStart = DateTime.Now;
+      dateEnd = DateTime.Now;
+  }
+
+  private async Task HandleValidSubmit()
+  {
+    try
+    {
+      promotionDto = new PromotionDto(label, discount, dateStart, dateEnd);
+      promotionLogic.CreatePromotion(promotionDto);
+      showAdminConfirmationModal = true;
+    }
+    catch (Exception e)
+    {
+      showAdminErrorModal = true;
+      errorMessage = e.Message;
+    }
+  }
   
+  private void ClosePromotionErrorModal()
+  {
+    showAdminErrorModal = false;
+  }
+  
+  private void ClosePromotionConfirmationModal()
+  {
+    showAdminConfirmationModal = false;
+  }
 }

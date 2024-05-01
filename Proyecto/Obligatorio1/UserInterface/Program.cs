@@ -16,6 +16,10 @@ builder.Services.AddSingleton(personRepositories);
 builder.Services.AddSingleton(personLogic);
 SessionLogic sessionLogic = new SessionLogic(personLogic);
 builder.Services.AddSingleton(sessionLogic);
+PromotionsRepositories promotionsRepositories = new PromotionsRepositories();
+PromotionLogic promotionLogic = new PromotionLogic(promotionsRepositories);
+builder.Services.AddSingleton(promotionsRepositories);
+builder.Services.AddSingleton(promotionLogic);
 
 var app = builder.Build();
 
