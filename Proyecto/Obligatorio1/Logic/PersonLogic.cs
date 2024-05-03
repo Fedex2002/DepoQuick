@@ -59,7 +59,7 @@ public class PersonLogic
                 }
                 else if (person is User user)
                 {
-                    personDto= new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), user.GetBookings());
+                    personDto= new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), ChangeToBookingsDtos(user.GetBookings()));
                 }
                 else if (person != null)
                 {
@@ -88,7 +88,7 @@ public class PersonLogic
         {
             if (personDto is UserDto userDto)
             {
-                User user = new User(userDto.Name, userDto.Surname, userDto.Email, userDto.Password, userDto.Bookings);
+                User user = new User(userDto.Name, userDto.Surname, userDto.Email, userDto.Password, new List<Booking>());
                 _personRepositories.AddToRepository(user);
             }
             else 
