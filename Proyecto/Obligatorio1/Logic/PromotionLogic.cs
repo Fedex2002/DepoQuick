@@ -54,4 +54,12 @@ public class PromotionLogic
             _promotionRepositories.RemoveFromRepository(promotionInRepo);
         }
     }
+    
+    public List<PromotionDto> GetPromotionsDto()
+    {
+        List<PromotionDto> promotionsDto = new List<PromotionDto>();
+        PromotionDto promotionDto = new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15)); 
+        promotionsDto.Add(promotionDto);
+        return promotionsDto;
+    }
 }
