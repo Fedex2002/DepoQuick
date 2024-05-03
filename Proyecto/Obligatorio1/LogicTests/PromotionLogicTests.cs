@@ -90,4 +90,12 @@ public class PromotionLogicTests
         List<PromotionDto> promotionsDto = _promotionLogic.GetPromotionsDto();
         Assert.IsNotNull(promotionsDto);
     }
+
+    [TestMethod]
+    public void WhenGettingPromotionsDtoFromLabelShouldReturnIt()
+    {
+        _promotionRepo.AddToRepository(_promotion);
+        PromotionDto promotionDto = _promotionLogic.GetPromotionDtoFromLabel(_promotion.GetLabel());
+        Assert.AreEqual(_promotion.GetLabel(), promotionDto.Label);
+    }
 }
