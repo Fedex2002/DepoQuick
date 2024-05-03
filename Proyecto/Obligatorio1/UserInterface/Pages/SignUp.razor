@@ -106,7 +106,7 @@
       }
       else
       {
-        _person = new UserDto(_name, _surname, _email, _password, new List<Booking>());
+        _person = new UserDto(_name, _surname, _email, _password, new List<BookingDto>());
         personLogic.SignUp(_person);
       }
       

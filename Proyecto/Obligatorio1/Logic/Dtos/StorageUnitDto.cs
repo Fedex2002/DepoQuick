@@ -9,13 +9,13 @@ public class StorageUnitDto
     public AreaType Area { get; set; }
     public SizeType Size { get; set; }
     public bool Climatization { get; set; }
-    public List<Promotion>? Promotions { get; set; }
+    public List<PromotionDto>? Promotions { get; set; }
 
     public StorageUnitDto()
     {
     }
 
-    public StorageUnitDto(string id, AreaType area, SizeType size, bool climatization, List<Promotion> promotions)
+    public StorageUnitDto(string id, AreaType area, SizeType size, bool climatization, List<PromotionDto> promotions)
     {
         Id = id;
         Area = area;

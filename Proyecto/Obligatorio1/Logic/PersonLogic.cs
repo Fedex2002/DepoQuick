@@ -59,7 +59,7 @@ public class PersonLogic
                 }
                 else if (person is User user)
                 {
-                    personDto= new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), user.GetBookings());
+                    personDto= new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), ChangeToBookingsDtos(user.GetBookings()));
                 }
                 else if (person != null)
                 {
@@ -88,7 +88,7 @@ public class PersonLogic
         {
             if (personDto is UserDto userDto)
             {
-                User user = new User(userDto.Name, userDto.Surname, userDto.Email, userDto.Password, userDto.Bookings);
+                User user = new User(userDto.Name, userDto.Surname, userDto.Email, userDto.Password, new List<Booking>());
                 _personRepositories.AddToRepository(user);
             }
             else 
@@ -98,17 +98,29 @@ public class PersonLogic
                     Administrator admin = new Administrator(adminDto.Name, adminDto.Surname, adminDto.Email, adminDto.Password);
                     _personRepositories.AddToRepository(admin);
                 }
-                else
-                {
-                    Person person = new Person(personDto.Name, personDto.Surname, personDto.Email, personDto.Password);
-                    _personRepositories.AddToRepository(person);
-                }
             }
         }
         else
         {
             throw new LogicExceptions("The email is already registered");
         }
+    }
+    
+    public List<BookingDto> ChangeToBookingsDtos(List<Booking> bookings)
+    {
+        List<BookingDto> bookingDtos = new List<BookingDto>();
+        foreach (var booking in bookings)
+        {
+            List<PromotionDto> promotionDtos = new List<PromotionDto>();
+            foreach (var Promotion in booking.GetStorageUnit().GetPromotions())
+            {
+                promotionDtos.Add(new PromotionDto(Promotion.GetLabel(), Promotion.GetDiscount(), Promotion.GetDateStart(), Promotion.GetDateEnd()));
+            }
+            StorageUnitDto storageUnitDto = new StorageUnitDto(booking.GetStorageUnit().GetId(), booking.GetStorageUnit().GetArea(), booking.GetStorageUnit().GetSize(), booking.GetStorageUnit().GetClimatization(), promotionDtos);
+            bookingDtos.Add(new BookingDto(booking.GetApproved(), booking.GetDateStart(), booking.GetDateEnd(), storageUnitDto, booking.GetRejectedMessage()));
+        }
+
+        return bookingDtos;
     }
 }
     
