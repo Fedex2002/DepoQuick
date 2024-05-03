@@ -7,13 +7,13 @@ public class Booking
     private DateTime _dateStart;
     private DateTime _dateEnd;
     private StorageUnit _storageUnit;
-    private string _rejectedBooking { get; set; }
+    private string _rejectedMessage { get; set; }
     
     public Booking()
     {
     }
     
-    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedBooking)
+    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedMessage)
     {
         _approved = false;
         SetApproved(approved);
@@ -21,8 +21,8 @@ public class Booking
         _dateEnd = DateTime.MaxValue;
         SetDate(dateStart, dateEnd);
         _storageUnit = storageUnit;
-        _rejectedBooking = "";
-        SetRejectedBooking(rejectedBooking);
+        _rejectedMessage = "";
+        SetRejectedBooking(rejectedMessage);
     }
     
     public bool GetApproved()
@@ -40,9 +40,9 @@ public class Booking
         return _dateEnd;
     }
     
-    public string GetRejectedBooking()
+    public string GetRejectedMessage()
     {
-        return _rejectedBooking;
+        return _rejectedMessage;
     }
     
     public StorageUnit GetStorageUnit()
@@ -50,9 +50,9 @@ public class Booking
         return _storageUnit;
     }
     
-    private void SetRejectedBooking(string rejectedBooking)
+    private void SetRejectedBooking(string rejectedMessage)
     {
-        _rejectedBooking = rejectedBooking;
+        _rejectedMessage = rejectedMessage;
         IfHasInvalidRejectionThrowException();
     }
 
@@ -109,7 +109,7 @@ public class Booking
     
     public bool CheckRejection()
     {
-        return _rejectedBooking.Length <= 300;
+        return _rejectedMessage.Length <= 300;
     }
 
     private void SetApproved(bool approved)
