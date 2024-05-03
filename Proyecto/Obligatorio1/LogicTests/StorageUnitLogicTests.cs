@@ -100,7 +100,7 @@ public class StorageUnitLogicTests
         StorageUnit storageUnit = new StorageUnit("1", AreaType.B, SizeType.Medium, false, _promotions);
         _storageUnitRepo.AddToRepository(storageUnit);
         StorageUnitDto storageUnitDto = _storageUnitLogic.GetStorageUnitDtoFromId(storageUnit.GetId());
-        Assert.AreEqual(storageUnit.GetId(), storageUnitsDto[0].Id);
+        Assert.AreEqual(storageUnit.GetId(),storageUnitDto.Id);
     }
     
 }
