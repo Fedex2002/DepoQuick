@@ -122,7 +122,7 @@ public class PersonLogic
                 promotionDtos.Add(new PromotionDto(Promotion.GetLabel(), Promotion.GetDiscount(), Promotion.GetDateStart(), Promotion.GetDateEnd()));
             }
             StorageUnitDto storageUnitDto = new StorageUnitDto(booking.GetStorageUnit().GetId(), booking.GetStorageUnit().GetArea(), booking.GetStorageUnit().GetSize(), booking.GetStorageUnit().GetClimatization(), promotionDtos);
-            bookingDtos.Add(new BookingDto(booking.GetApproved(), booking.GetDateStart(), booking.GetDateEnd(), storageUnitDto, booking.GetRejectedBooking()));
+            bookingDtos.Add(new BookingDto(booking.GetApproved(), booking.GetDateStart(), booking.GetDateEnd(), storageUnitDto, booking.GetRejectedMessage()));
         }
 
         return bookingDtos;

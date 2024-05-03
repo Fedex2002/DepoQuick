@@ -14,7 +14,7 @@ public class AdministratorLogic
     
     public BookingDto ApproveBooking(BookingDto bookingDto)
     {
-        return new BookingDto(true, bookingDto.DateStart, bookingDto.DateEnd, bookingDto.StorageUnitDto, bookingDto.RejectedBooking);
+        return new BookingDto(true, bookingDto.DateStart, bookingDto.DateEnd, bookingDto.StorageUnitDto, bookingDto.RejectedMessage);
     }
     
     public BookingDto SetRejectionMessage(BookingDto bookingDto, string rejectionMessage)

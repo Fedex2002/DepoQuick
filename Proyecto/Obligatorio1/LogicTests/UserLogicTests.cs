@@ -82,7 +82,7 @@ public class UserLogicTests
         User user = new User("Franco", "Ramos", "francoramos1511@gmail.com", "PassWord921#2", new List<Booking>());
         _personRepo.AddToRepository(user);
         BookingDto bookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnitDto("", AreaType.A, SizeType.Small, true, new List<PromotionDto>()), "");
-        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _userLogic.ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedBooking);
+        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _userLogic.ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
         user.GetBookings().Add(booking);
         user.GetBookings().Remove(booking);
     }
