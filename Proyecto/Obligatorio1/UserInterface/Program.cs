@@ -20,6 +20,10 @@ PromotionsRepositories promotionsRepositories = new PromotionsRepositories();
 PromotionLogic promotionLogic = new PromotionLogic(promotionsRepositories);
 builder.Services.AddSingleton(promotionsRepositories);
 builder.Services.AddSingleton(promotionLogic);
+StorageUnitRepositories storageUnitRepositories = new StorageUnitRepositories();
+StorageUnitLogic storageUnitLogic = new StorageUnitLogic(storageUnitRepositories);
+builder.Services.AddSingleton(storageUnitRepositories);
+builder.Services.AddSingleton(storageUnitLogic);
 
 var app = builder.Build();
 
