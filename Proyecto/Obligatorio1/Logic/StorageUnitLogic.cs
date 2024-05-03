@@ -51,9 +51,11 @@ public class StorageUnitLogic
     public List<StorageUnitDto> GetStorageUnitsDto()
     {
         List<StorageUnitDto> storageUnitsDto = new List<StorageUnitDto>();
-        List<PromotionDto> promotionsDto = new List<PromotionDto>();
-        StorageUnitDto storageUnitDto = new StorageUnitDto("1", AreaType.B, SizeType.Medium, false, promotionsDto);
-        storageUnitsDto.Add(storageUnitDto);
+        foreach (var storageUnit in _storageUnitRepositories.GetAllFromRepository())
+        {
+            StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.GetId(), storageUnit.GetArea(), storageUnit.GetSize(), storageUnit.GetClimatization(), ChangeToPromotionsDto(storageUnit.GetPromotions()));
+            storageUnitsDto.Add(storageUnitDto);
+        }
         return storageUnitsDto;
     }
     
