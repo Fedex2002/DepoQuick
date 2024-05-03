@@ -23,4 +23,8 @@ public class PromotionsRepositories : IRepositories<Promotion>
     {
         _promotions.Remove(promotion);
     }
+    public List<Promotion> GetAllFromRepository()
+    {
+        return _promotions;
+    }
 }
