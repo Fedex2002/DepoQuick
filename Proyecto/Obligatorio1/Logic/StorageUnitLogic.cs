@@ -56,4 +56,16 @@ public class StorageUnitLogic
         storageUnitsDto.Add(storageUnitDto);
         return storageUnitsDto;
     }
+    
+    public List<PromotionDto> ChangeToPromotionsDto(List<Promotion> promotions)
+    {
+        List<PromotionDto> promotionsDto = new List<PromotionDto>();
+        foreach(var promotion in promotions)
+        {
+            PromotionDto promotionDto = new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(), promotion.GetDateStart(), promotion.GetDateEnd());
+            promotionsDto.Add(promotionDto);
+        }
+
+        return promotionsDto;
+    }
 }
