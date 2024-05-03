@@ -70,4 +70,11 @@ public class StorageUnitLogic
 
         return promotionsDto;
     }
+    
+    public StorageUnitDto GetStorageUnitDtoFromId(string id)
+    {
+        StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(id);
+        StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.GetId(), storageUnit.GetArea(), storageUnit.GetSize(), storageUnit.GetClimatization(), ChangeToPromotionsDto(storageUnit.GetPromotions()));
+        return storageUnitDto;
+    }
 }
