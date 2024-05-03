@@ -1,4 +1,5 @@
 using Model;
+using Model.Enums;
 using Logic.DTOs;
 using Repositories;
 using Model.Exceptions;
@@ -45,5 +46,14 @@ public class StorageUnitLogic
         {
             _storageUnitRepositories.RemoveFromRepository(storageUnitInRepo);
         }
+    }
+    
+    public List<StorageUnitDto> GetStorageUnitsDto()
+    {
+        List<StorageUnitDto> storageUnitsDto = new List<StorageUnitDto>();
+        List<PromotionDto> promotionsDto = new List<PromotionDto>();
+        StorageUnitDto storageUnitDto = new StorageUnitDto("1", AreaType.B, SizeType.Medium, false, promotionsDto);
+        storageUnitsDto.Add(storageUnitDto);
+        return storageUnitsDto;
     }
 }
