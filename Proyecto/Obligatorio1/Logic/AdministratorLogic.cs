@@ -16,4 +16,8 @@ public class AdministratorLogic
         return new BookingDto(true, bookingDto.DateStart, bookingDto.DateEnd, bookingDto.StorageUnitDto, bookingDto.RejectedBooking);
     }
     
+    public BookingDto SetRejectionMessage(BookingDto bookingDto, string rejectionMessage)
+    {
+        return new BookingDto(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, bookingDto.StorageUnitDto, rejectionMessage);
+    }
 }
