@@ -154,4 +154,15 @@ public class PersonLogicTests
     {
         _personLogic.SignUp(_personDto);
     }
+    
+    [TestMethod]
+    public void WhenUserIsTryingToLoginInShouldReturnAListOfHisBookingDtos()
+    {
+        User user = new User("Franco", "Ramos", "francoramos1511@gmail.com", "PassWord921#2", new List<Booking>());
+        _personRepo.AddToRepository(user);
+        Booking booking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnit("", AreaType.A, SizeType.Small, true, new List<Promotion>()), "");
+        user.GetBookings().Add(booking);
+        List<BookingDto> bookingsDtos = _personLogic.ChangeToBookingsDtos(user.GetBookings());
+        Assert.AreEqual(user.GetBookings().Count, bookingsDtos.Count);
+    }
 }
