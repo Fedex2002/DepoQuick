@@ -40,4 +40,15 @@ public class PersonRepositoryTest
         _personRepo.RemoveFromRepository(_person);
         Assert.IsFalse(_personRepo.ExistsInRepository(_person.GetEmail()));
     }
+
+    [TestMethod]
+
+    public void WhenGettingAllPersonsFromRepositoryShouldReturnIt()
+    {
+        Person person2 = new Person("Jane", "Doe", "janedoe@gmail.com", "PassWord921#");
+        _personRepo.AddToRepository(_person);
+        _personRepo.AddToRepository(person2);
+        List<Person> persons = _personRepo.GetAllFromRepository();
+        Assert.AreEqual(2, persons.Count);
+    }
 }

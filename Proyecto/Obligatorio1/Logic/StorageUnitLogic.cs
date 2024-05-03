@@ -1,4 +1,5 @@
 using Model;
+using Model.Enums;
 using Logic.DTOs;
 using Repositories;
 using Model.Exceptions;
@@ -45,5 +46,28 @@ public class StorageUnitLogic
         {
             _storageUnitRepositories.RemoveFromRepository(storageUnitInRepo);
         }
+    }
+    
+    public List<StorageUnitDto> GetStorageUnitsDto()
+    {
+        List<StorageUnitDto> storageUnitsDto = new List<StorageUnitDto>();
+        foreach (var storageUnit in _storageUnitRepositories.GetAllFromRepository())
+        {
+            StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.GetId(), storageUnit.GetArea(), storageUnit.GetSize(), storageUnit.GetClimatization(), ChangeToPromotionsDto(storageUnit.GetPromotions()));
+            storageUnitsDto.Add(storageUnitDto);
+        }
+        return storageUnitsDto;
+    }
+    
+    public List<PromotionDto> ChangeToPromotionsDto(List<Promotion> promotions)
+    {
+        List<PromotionDto> promotionsDto = new List<PromotionDto>();
+        foreach(var promotion in promotions)
+        {
+            PromotionDto promotionDto = new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(), promotion.GetDateStart(), promotion.GetDateEnd());
+            promotionsDto.Add(promotionDto);
+        }
+
+        return promotionsDto;
     }
 }

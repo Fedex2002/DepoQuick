@@ -54,4 +54,15 @@ public class PromotionLogic
             _promotionRepositories.RemoveFromRepository(promotionInRepo);
         }
     }
+    
+    public List<PromotionDto> GetPromotionsDto()
+    {
+        List<PromotionDto> promotionsDto = new List<PromotionDto>();
+        foreach (var promotion in _promotionRepositories.GetAllFromRepository())
+        {
+            promotionsDto.Add(new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(), promotion.GetDateStart(), promotion.GetDateEnd()));
+        }
+        
+        return promotionsDto;
+    }
 }

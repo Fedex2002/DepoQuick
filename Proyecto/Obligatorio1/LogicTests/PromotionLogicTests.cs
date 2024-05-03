@@ -82,4 +82,12 @@ public class PromotionLogicTests
     {
         _promotionLogic.RemovePromotion(_promotionDto);
     }
+    
+    [TestMethod]
+    public void WhenGettingPromotionsDtoShouldReturnAListOfPromotionsDto()
+    {
+        _promotionRepo.AddToRepository(_promotion);
+        List<PromotionDto> promotionsDto = _promotionLogic.GetPromotionsDto();
+        Assert.IsNotNull(promotionsDto);
+    }
 }

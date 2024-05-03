@@ -34,4 +34,9 @@ public class StorageUnitRepositories : IRepositories<StorageUnit>
     {
         _storageUnits.Remove(storageUnit);
     }
+    
+    public List<StorageUnit> GetAllFromRepository()
+    {
+        return _storageUnits;
+    }
 }
