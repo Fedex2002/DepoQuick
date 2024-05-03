@@ -86,4 +86,11 @@ public class StorageUnitLogicTests
         List<StorageUnitDto> storageUnitsDto = _storageUnitLogic.GetStorageUnitsDto();
         Assert.IsNotNull(storageUnitsDto);
     }
+
+    [TestMethod]
+    public void WhenGettingPromotionsFromRepositoryShouldChangeThemToPromotionsDto()
+    {
+        List<PromotionDto> promotionsDto = _storageUnitLogic.ChangeToPromotionsDto(_promotions);
+        Assert.IsNotNull(promotionsDto);
+    }
 }
