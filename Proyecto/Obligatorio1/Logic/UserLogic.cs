@@ -59,4 +59,13 @@ public class UserLogic
         throw new LogicExceptions("The person is not a user");
     }
     
+    public StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
+    {
+        List<Promotion> promotions = new List<Promotion>();
+        foreach (var promotionDto in storageUnitDto.Promotions)
+        {
+            promotions.Add(new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd));
+        }
+        return new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions);
+    }
 }
