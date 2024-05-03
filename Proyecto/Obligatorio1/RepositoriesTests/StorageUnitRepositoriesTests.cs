@@ -51,4 +51,14 @@ public class StorageUnitRepositoriesTests
         _storageUnitRepositories.AddToRepository(_storageUnit);
     }
     
+    [TestMethod]
+    public void WhenGettingAllStorageUnitsShouldReturnAllStorageUnits()
+    {
+        StorageUnit storageUnit2 = new StorageUnit("", AreaType.B, SizeType.Medium, true, null);
+        _storageUnitRepositories.AddToRepository(_storageUnit);
+        _storageUnitRepositories.AddToRepository(storageUnit2);
+        List<StorageUnit> storageUnits = _storageUnitRepositories.GetAllFromRepository();
+        Assert.AreEqual(2, storageUnits.Count);
+    }
+    
 }

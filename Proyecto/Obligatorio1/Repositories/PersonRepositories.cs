@@ -35,5 +35,10 @@ public class PersonRepositories : IRepositories<Person>
     {
         _persons.Remove(person);
     }
+    
+    public List<Person> GetAllFromRepository()
+    {
+        return _persons;
+    }
   
 }
