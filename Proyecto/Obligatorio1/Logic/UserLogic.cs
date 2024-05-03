@@ -58,4 +58,5 @@ public class UserLogic
     {
         throw new LogicExceptions("The person is not a user");
     }
+    
 }

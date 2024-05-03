@@ -76,4 +76,14 @@ public class UserLogicTests
         _userLogic.RemoveBookingFromUser(_personRepo.GetFromRepository(admin.GetEmail()), _mybookingDto);
     }
     
+    [TestMethod]
+    public void WhenAUserBookingIsAddedOrRemovedShouldChangeStorageUnitDtoToAStorageUnit()
+    {
+        User user = new User("Franco", "Ramos", "francoramos1511@gmail.com", "PassWord921#2", new List<Booking>());
+        _personRepo.AddToRepository(user);
+        BookingDto bookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnitDto("", AreaType.A, SizeType.Small, true, new List<PromotionDto>()), "");
+        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _userLogic.ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedBooking);
+        user.GetBookings().Add(booking);
+        user.GetBookings().Remove(booking);
+    }
 }
