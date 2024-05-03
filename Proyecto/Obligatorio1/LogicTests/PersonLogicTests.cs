@@ -159,7 +159,10 @@ public class PersonLogicTests
     {
         User user = new User("Franco", "Ramos", "francoramos1511@gmail.com", "PassWord921#2", new List<Booking>());
         _personRepo.AddToRepository(user);
-        Booking booking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnit("", AreaType.A, SizeType.Small, true, new List<Promotion>()), "");
+        List<Promotion> promotions = new List<Promotion>();
+        Promotion promotion = new Promotion("Promo", 10, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15));
+        promotions.Add(promotion);
+        Booking booking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnit("", AreaType.A, SizeType.Small, true,promotions ), "");
         user.GetBookings().Add(booking);
         List<BookingDto> bookingsDtos = _personLogic.ChangeToBookingsDtos(user.GetBookings());
         Assert.AreEqual(user.GetBookings().Count, bookingsDtos.Count);
