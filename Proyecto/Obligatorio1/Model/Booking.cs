@@ -45,6 +45,11 @@ public class Booking
         return _rejectedBooking;
     }
     
+    public StorageUnit GetStorageUnit()
+    {
+        return _storageUnit;
+    }
+    
     private void SetRejectedBooking(string rejectedBooking)
     {
         _rejectedBooking = rejectedBooking;
