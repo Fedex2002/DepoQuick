@@ -1,5 +1,6 @@
 using Repositories;
 using Logic.DTOs;
+using Model.Exceptions;
 namespace Logic;
 
 public class AdministratorLogic
@@ -18,6 +19,13 @@ public class AdministratorLogic
     
     public BookingDto SetRejectionMessage(BookingDto bookingDto, string rejectionMessage)
     {
-        return new BookingDto(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, bookingDto.StorageUnitDto, rejectionMessage);
+        if (rejectionMessage.Length == 0)
+        {
+            throw new LogicExceptions("The rejection message cannot be empty");
+        }
+        else
+        {
+            return new BookingDto(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, bookingDto.StorageUnitDto, rejectionMessage);
+        }
     }
 }
