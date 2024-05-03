@@ -34,7 +34,7 @@ public class BookingTests
         Assert.AreEqual(false, _mybooking.GetApproved());
         Assert.AreEqual(new DateTime(2024, 7, 1), _mybooking.GetDateStart());
         Assert.AreEqual(new DateTime(2024, 8, 15), _mybooking.GetDateEnd());
-        Assert.AreEqual("Rejected", _mybooking.GetRejectedBooking());
+        Assert.AreEqual("Rejected", _mybooking.GetRejectedMessage());
     }
     
     [TestMethod]
