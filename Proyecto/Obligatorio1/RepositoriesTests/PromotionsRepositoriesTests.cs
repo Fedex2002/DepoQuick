@@ -46,9 +46,9 @@ public class PromotionsRepositoriesTests
     public void WhenGettingAllPromotionsFromRepositoryShouldReturnIt()
     {
            Promotion promotion2 = new Promotion("Descuento Verano", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
-            _promotionsRepositories.AddToRepository(_promotion);
-            _promotionsRepositories.AddToRepository(promotion2);
-            List<Promotion> promotions = _promotionsRepositories.GetAllFromRepository();
+            _promotionRepositories.AddToRepository(_promotion);
+            _promotionRepositories.AddToRepository(promotion2);
+            List<Promotion> promotions = _promotionRepositories.GetAllFromRepository();
             Assert.AreEqual(2, promotions.Count);
     }
 }
