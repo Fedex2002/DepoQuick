@@ -1,4 +1,5 @@
 using Repositories;
+using Logic;
 using Logic.DTOs;
 using Model.Enums;
 
@@ -21,7 +22,7 @@ public class AdministratorLogicTests
     }
     
     [TestMethod]
-    public void WhenAdministratorApprovesABookingShouldChangeItToTrue()
+    public void WhenAdministratorApprovesABookingDtoShouldChangeItToTrue()
     {
         _bookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), new StorageUnitDto("12", AreaType.A, SizeType.Small, true, new List<PromotionDto>()), "");
         _bookingDto = _administratorLogic.ApproveBooking(_bookingDto);
