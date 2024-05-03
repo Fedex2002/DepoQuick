@@ -28,4 +28,13 @@ public class AdministratorLogicTests
         _bookingDto = _administratorLogic.ApproveBooking(_bookingDto);
         Assert.AreEqual(true, _bookingDto.Approved);
     }
+
+    [TestMethod]
+    public void WhenAdministratorRejectsABookingDtoShouldWriteARejectionMessage()
+    {
+        _bookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), new StorageUnitDto("12", AreaType.A, SizeType.Small, true, new List<PromotionDto>()), "");
+        string rejectionMessage = "The booking is rejected";
+        _bookingDto = _administratorLogic.RejectionMessage(_bookingDto, rejectionMessage);
+        Assert.IsTrue(_bookingDto.RejectedBooking.Length > 0);
+    }
 }
