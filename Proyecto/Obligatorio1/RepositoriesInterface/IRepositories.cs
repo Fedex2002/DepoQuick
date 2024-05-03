@@ -6,5 +6,6 @@ public interface IRepositories<T>
     public void RemoveFromRepository(T item);
     public bool ExistsInRepository(string item);
     public T GetFromRepository(string item);
+    public List<T> GetAllFromRepository();
     
 }
