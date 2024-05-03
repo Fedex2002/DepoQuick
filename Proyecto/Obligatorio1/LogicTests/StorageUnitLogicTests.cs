@@ -77,4 +77,13 @@ public class StorageUnitLogicTests
     {
         _storageUnitLogic.RemoveStorageUnit(_storageUnitDto);
     }
+
+    [TestMethod]
+    public void WhenGettingStorageUnitsDtoShouldReturnAListOfStorageUnitsDto()
+    {
+        StorageUnit storageUnit = new StorageUnit("1", AreaType.B, SizeType.Medium, false, _promotions);
+        _storageUnitRepo.AddToRepository(storageUnit);
+        List<StorageUnitDto> storageUnitsDto = _storageUnitLogic.GetStorageUnitsDto();
+        Assert.IsNotNull(storageUnitsDto);
+    }
 }
