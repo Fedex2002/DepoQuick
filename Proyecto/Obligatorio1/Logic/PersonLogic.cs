@@ -110,5 +110,22 @@ public class PersonLogic
             throw new LogicExceptions("The email is already registered");
         }
     }
+    
+    public List<BookingDto> ChangeToBookingsDtos(List<Booking> bookings)
+    {
+        List<BookingDto> bookingDtos = new List<BookingDto>();
+        foreach (var booking in bookings)
+        {
+            List<PromotionDto> promotionDtos = new List<PromotionDto>();
+            foreach (var Promotion in booking.GetStorageUnit().GetPromotions())
+            {
+                promotionDtos.Add(new PromotionDto(Promotion.GetLabel(), Promotion.GetDiscount(), Promotion.GetDateStart(), Promotion.GetDateEnd()));
+            }
+            StorageUnitDto storageUnitDto = new StorageUnitDto(booking.GetStorageUnit().GetId(), booking.GetStorageUnit().GetArea(), booking.GetStorageUnit().GetSize(), booking.GetStorageUnit().GetClimatization(), promotionDtos);
+            bookingDtos.Add(new BookingDto(booking.GetApproved(), booking.GetDateStart(), booking.GetDateEnd(), storageUnitDto, booking.GetRejectedBooking()));
+        }
+
+        return bookingDtos;
+    }
 }
     
