@@ -65,4 +65,11 @@ public class PromotionLogic
         
         return promotionsDto;
     }
+    
+    public PromotionDto GetPromotionDtoFromLabel(string label)
+    {
+        Promotion promotion= _promotionRepositories.GetFromRepository(label);
+        PromotionDto promotionDto = new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(), promotion.GetDateStart(), promotion.GetDateEnd());
+        return promotionDto;
+    }
 }
