@@ -1,3 +1,4 @@
+using Logic.DTOs;
 using Model;
 using Model.Exceptions;
 using Repositories;
@@ -12,15 +13,16 @@ public class UserLogic
         _personRepo = personRepo;
     }
     
-    public void AddBookingToUser(Person person, Booking booking)
+    public void AddBookingToUser(Person person, BookingDto bookingDto)
     {
-        CheckIfPersonIsAUserAddBooking(person, booking);
+        CheckIfPersonIsAUserAddBooking(person, bookingDto);
     }
 
-    private static void CheckIfPersonIsAUserAddBooking(Person person, Booking booking)
+    private void CheckIfPersonIsAUserAddBooking(Person person, BookingDto bookingDto)
     {
         if (person is User user)
         {
+            Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedBooking);
             user.GetBookings().Add(booking);
         }
         else
@@ -29,20 +31,21 @@ public class UserLogic
         }
     }
     
-    public bool CheckIfBookingIsApproved(Booking booking)
+    public bool CheckIfBookingIsApproved(BookingDto bookingDto)
     {
-        return booking.GetApproved();
+        return bookingDto.Approved;
     }
     
-    public void RemoveBookingFromUser(Person person, Booking booking)
+    public void RemoveBookingFromUser(Person person, BookingDto bookingDto)
     {
-        CheckIfPersonIsAUserRemoveBooking(person, booking);
+        CheckIfPersonIsAUserRemoveBooking(person, bookingDto);
     }
 
-    private static void CheckIfPersonIsAUserRemoveBooking(Person person, Booking booking)
+    private void CheckIfPersonIsAUserRemoveBooking(Person person, BookingDto bookingDto)
     {
         if (person is User user)
         {
+            Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedBooking);
             user.GetBookings().Remove(booking);
         }
         else
