@@ -47,21 +47,21 @@
                                      }
                                  </td>
                                  <td>
-                                     @* <label class="form-label">$@PricePerDay</label> *@
+                                     <label class="form-label">$@pricePerDay[storageUnit.Id]</label>
                                  </td>
                                  <td>
                                      <div data-mdb-input-init class="form-outline mb-2">
-                                         <input type="date" class="form-control form-control-lg" @bind="dateStart" required/>
+                                         <input type="date" class="form-control form-control-lg" @bind="dateStart[storageUnit.Id]" required/>
                                      </div>
                                  </td>
                                  <td>
                                      <div data-mdb-input-init class="form-outline mb-2">
-                                         <input type="date" class="form-control form-control-lg" @bind="dateEnd" required/>
+                                         <input type="date" class="form-control form-control-lg" @bind="dateEnd[storageUnit.Id]" required/>
                                      </div>
                                  </td>
                                  <td>
                                      <div>
-                                         <label class="form-label">$@totalPrice</label>
+                                         <label class="form-label">$@totalPrice[storageUnit.Id]</label>
                                      </div>
                                  </td>
                                  <td>
@@ -90,10 +90,10 @@
 @code {
     BookingDto bookingDto;
     UserDto userDto;
-    private DateTime dateStart;
-    private DateTime dateEnd;
-    private double pricePerDay;
-    private double totalPrice;
+    Dictionary<string, DateTime> dateStart = new Dictionary<string, DateTime>();
+    Dictionary<string, DateTime> dateEnd = new Dictionary<string, DateTime>();
+    Dictionary<string, double> pricePerDay = new Dictionary<string, double>();
+    Dictionary<string, double> totalPrice = new Dictionary<string, double>();
     private List<StorageUnitDto> storageUnits;
     private bool showAdminConfirmationModal;
     
@@ -101,15 +101,20 @@
     {
         bookingDto = new BookingDto();
         storageUnits = storageUnitLogic.GetStorageUnitsDto();
-        dateStart = DateTime.Now;
-        dateEnd = DateTime.Now;
-        //pricePerDay = storageUnitLogic.GetPricePerDay();
-        totalPrice = 0;
+        foreach (var storageUnitDto in storageUnitLogic.GetStorageUnitsDto())
+        {
+            pricePerDay[storageUnitDto.Id] = userLogic.CalculateStorageUnitPricePerDay(storageUnitDto);
+            dateStart[storageUnitDto.Id] = DateTime.Now;
+            dateEnd[storageUnitDto.Id] = DateTime.Now;
+            totalPrice[storageUnitDto.Id] = 0;
+        }
     }
 
     private async Task HandleValidSubmit(StorageUnitDto storageUnitDto)
     {
-        bookingDto = new BookingDto(false, dateStart, dateEnd, storageUnitDto, "");
+        DateTime finalDateStart = dateStart[storageUnitDto.Id];
+        DateTime finalDateEnd = dateEnd[storageUnitDto.Id];
+        bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "");
         userDto = new UserDto(sessionLogic.CurrentPerson.Name, sessionLogic.CurrentPerson.Surname, sessionLogic.CurrentPerson.Email, sessionLogic.CurrentPerson.Password, new List<BookingDto>());
         userLogic.AddBookingToUser(userDto, bookingDto);
         showAdminConfirmationModal = true;
@@ -118,8 +123,10 @@
 
     private void SetTotalPrice(StorageUnitDto storageUnitDto)
     {
-        bookingDto = new BookingDto(false, dateStart, dateEnd, storageUnitDto, "");
-        totalPrice = userLogic.CalculateTotalPriceOfBooking(bookingDto);
+        DateTime finalDateStart = dateStart[storageUnitDto.Id];
+        DateTime finalDateEnd = dateEnd[storageUnitDto.Id];
+        bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "");
+        totalPrice[storageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
     }
 
     private void ClosePromotionConfirmationModal()
