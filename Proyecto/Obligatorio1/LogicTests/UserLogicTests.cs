@@ -57,7 +57,7 @@ public class UserLogicTests
     public void WhenUserBookingIsApprovedShouldReturnTrue()
     {
         _mybookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), _storageUnitDto, "");
-        _userLogic.AddBookingToUser(_personRepo.GetFromRepository(_userDto.Email), _mybookingDto);
+        _userLogic.AddBookingToUser(_userDto, _mybookingDto);
         Assert.IsTrue(_userLogic.CheckIfBookingIsApproved(_mybookingDto));
     }
     
