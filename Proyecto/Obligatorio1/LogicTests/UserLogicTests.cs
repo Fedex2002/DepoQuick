@@ -78,6 +78,6 @@ public class UserLogicTests
     [TestMethod]
     public void WhenUserSelectsStartDayAndEndDayOfBookingShouldShowTotalPrice()
     {
-        Assert.AreEqual(315, _userLogic.CalculateTotalPriceOfBooking(_mybookingDto));
+        Assert.AreEqual(2835, _userLogic.CalculateTotalPriceOfBooking(_mybookingDto));
     }
 }

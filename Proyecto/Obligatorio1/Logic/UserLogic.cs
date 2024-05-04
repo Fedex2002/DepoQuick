@@ -57,4 +57,10 @@ public class UserLogic
         }
         return new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions);
     }
+    
+    public double CalculateTotalPriceOfBooking(BookingDto bookingDto)
+    {
+        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+        return booking.CalculateBookingTotalPrice();
+    }
 }
