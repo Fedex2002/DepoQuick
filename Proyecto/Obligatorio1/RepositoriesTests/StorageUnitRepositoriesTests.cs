@@ -16,7 +16,7 @@ public class StorageUnitRepositoriesTests
     public void TestInitialize()
     {
         _storageUnitRepositories = new StorageUnitRepositories();
-        _storageUnit = new StorageUnit("",AreaType.A, SizeType.Small, true,null );
+        _storageUnit = new StorageUnit("1",AreaType.A, SizeType.Small, true,null );
     }
     
     
@@ -54,7 +54,7 @@ public class StorageUnitRepositoriesTests
     [TestMethod]
     public void WhenGettingAllStorageUnitsShouldReturnAllStorageUnits()
     {
-        StorageUnit storageUnit2 = new StorageUnit("", AreaType.B, SizeType.Medium, true, null);
+        StorageUnit storageUnit2 = new StorageUnit("2", AreaType.B, SizeType.Medium, true, null);
         _storageUnitRepositories.AddToRepository(_storageUnit);
         _storageUnitRepositories.AddToRepository(storageUnit2);
         List<StorageUnit> storageUnits = _storageUnitRepositories.GetAllFromRepository();
