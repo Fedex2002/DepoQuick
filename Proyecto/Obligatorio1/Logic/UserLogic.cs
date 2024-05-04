@@ -64,7 +64,7 @@ public class UserLogic
         return booking.CalculateBookingTotalPrice();
     }
 
-    public double CalculatePricePerDay(StorageUnitDto storageUnitDto)
+    public double CalculateStorageUnitPricePerDay(StorageUnitDto storageUnitDto)
     {
         StorageUnit storageUnit = ChangeToStorageUnit(storageUnitDto);
         return storageUnit.CalculateStorageUnitPricePerDay();

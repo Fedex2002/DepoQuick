@@ -84,6 +84,6 @@ public class UserLogicTests
     [TestMethod]
     public void WhenUserEntersPageBookingsShouldShowPricePerDayOfStorageUnit()
     {
-        Assert.AreEqual(70, _userLogic.CalculatePricePerDay(_storageUnitDto));
+        Assert.AreEqual(70, _userLogic.CalculateStorageUnitPricePerDay(_storageUnitDto));
     }
 }
