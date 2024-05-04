@@ -63,4 +63,10 @@ public class UserLogic
         Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
         return booking.CalculateBookingTotalPrice();
     }
+
+    public double CalculateStorageUnitPricePerDay(StorageUnitDto storageUnitDto)
+    {
+        StorageUnit storageUnit = ChangeToStorageUnit(storageUnitDto);
+        return storageUnit.CalculateStorageUnitPricePerDay();
+    }
 }
