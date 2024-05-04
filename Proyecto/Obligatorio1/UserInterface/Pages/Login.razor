@@ -1,9 +1,7 @@
 @page "/Login"
 @layout LoginLayout
-@using Microsoft.AspNetCore.Identity
 @using Logic
 @using Logic.DTOs
-@using Model
 @inherits LayoutComponentBase
 @inject SessionLogic sessionLogic
 @inject NavigationManager NavigationManager
@@ -66,6 +64,7 @@
   private string password;
   private bool showUserErrorModal = false;
   private string errorMessage = "";
+  
   protected override void OnInitialized()
   {
     person = new PersonDto();
@@ -78,15 +77,12 @@
       sessionLogic.Login(email,password);
       person = sessionLogic.CurrentPerson;
       GoToIndex();
-        
     }
     catch (Exception e)
     {
       showUserErrorModal = true;
       errorMessage = e.Message;
     }
-      
-      
   }
     
   private void CloseUserErrorModal()
@@ -102,10 +98,5 @@
   private void GoToSignUp()
   {
     NavigationManager.NavigateTo("/");
-  }
-
-  private void GoToAdminIndex()
-  {
-    NavigationManager.NavigateTo("/AdminIndex", true);
   }
 }
