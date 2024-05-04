@@ -120,7 +120,8 @@
   
   protected override void OnInitialized()
   {
-    _storageUnitDto= new StorageUnitDto();
+    _storageUnitDto = new StorageUnitDto();
+    selectedPromotions = new List<PromotionDto>();
     promotions = promotionLogic.GetPromotionsDto();
   }
   
@@ -150,10 +151,6 @@
   
   private void AddToSelectedPromotions(string promotionLabel)
   {
-    if (selectedPromotions == null)
-    {
-      selectedPromotions = new List<PromotionDto>();
-    }
     PromotionDto promotion = promotionLogic.GetPromotionDtoFromLabel(promotionLabel);
     if (promotionLogic.GetPromotionsDto().Contains(promotion))
     {

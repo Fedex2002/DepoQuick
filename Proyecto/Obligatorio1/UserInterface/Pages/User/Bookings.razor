@@ -18,9 +18,10 @@
                     <thead>
                         <tr>
                             <th>StorageUnit data</th>
-                            <th>StartDate</th>
-                            <th>EndDate</th>
-                            <th>TotalPrice</th>
+                            <th>Price per day</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Total Price</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -29,10 +30,10 @@
                         {
                              <tr>
                                  <td>
-                                      <strong>Id:</strong>@storageUnit.Id<br/>
-                                      <strong>Area:</strong>@storageUnit.Area<br/>
-                                      <strong>Size:</strong>@storageUnit.Size<br/>
-                                      <strong>Climatization:</strong>@storageUnit.Climatization<br/>
+                                     <strong>Id:</strong>@storageUnit.Id<br/>
+                                     <strong>Area:</strong>@storageUnit.Area<br/>
+                                     <strong>Size:</strong>@storageUnit.Size<br/>
+                                     <strong>Climatization:</strong>@storageUnit.Climatization<br/>
                                      @foreach (var promotion in storageUnit.Promotions)
                                      {
                                          <div>
@@ -46,23 +47,27 @@
                                      }
                                  </td>
                                  <td>
+                                     @* <label class="form-label">$@PricePerDay</label> *@
+                                 </td>
+                                 <td>
                                      <div data-mdb-input-init class="form-outline mb-2">
                                          <input type="date" class="form-control form-control-lg" @bind="dateStart" required/>
                                      </div>
                                  </td>
                                  <td>
                                      <div data-mdb-input-init class="form-outline mb-2">
-                                         <input type="date" class="form-control form-control-lg" @bind="dateEnd" @onclick="() =>SetTotalPrice(storageUnit)" required/>
+                                         <input type="date" class="form-control form-control-lg" @bind="dateEnd" required/>
                                      </div>
                                  </td>
                                  <td>
                                      <div>
-                                         <label class="form-label">$@TotalPrice</label>
+                                         <label class="form-label">$@totalPrice</label>
                                      </div>
                                  </td>
-                                <td>
-                                    <button type="button" class="btn btn-success" @onclick="() =>HandleValidSubmit(storageUnit)">Select</button>
-                                </td>
+                                 <td>
+                                     <button type="button" class="btn btn-primary mb-2" @onclick="() => SetTotalPrice(storageUnit)">Calculate Total Price</button><br/>
+                                     <button type="button" class="btn btn-success" @onclick="() => HandleValidSubmit(storageUnit)">Select Storage Unit</button>
+                                 </td>
                             </tr>
                         }
                     </tbody>
@@ -87,10 +92,10 @@
     UserDto userDto;
     private DateTime dateStart;
     private DateTime dateEnd;
-    private int TotalPrice;
+    private double pricePerDay;
+    private double totalPrice;
     private List<StorageUnitDto> storageUnits;
-    private bool showAdminErrorModal = false;
-    private bool showAdminConfirmationModal = false;
+    private bool showAdminConfirmationModal;
     
     protected override void OnInitialized()
     {
@@ -98,7 +103,8 @@
         storageUnits = storageUnitLogic.GetStorageUnitsDto();
         dateStart = DateTime.Now;
         dateEnd = DateTime.Now;
-        TotalPrice = 0;
+        //pricePerDay = storageUnitLogic.GetPricePerDay();
+        totalPrice = 0;
     }
 
     private async Task HandleValidSubmit(StorageUnitDto storageUnitDto)
@@ -113,7 +119,7 @@
     private void SetTotalPrice(StorageUnitDto storageUnitDto)
     {
         bookingDto = new BookingDto(false, dateStart, dateEnd, storageUnitDto, "");
-        //TotalPrice = storageUnitLogic.CalculateTotalPriceForBookingDays(storageUnitDto, bookingDto);
+        totalPrice = userLogic.CalculateTotalPriceOfBooking(bookingDto);
     }
 
     private void ClosePromotionConfirmationModal()
