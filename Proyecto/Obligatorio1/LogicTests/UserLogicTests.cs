@@ -73,7 +73,7 @@ public class UserLogicTests
     public void WhenSomeoneThatIsNotAUserGetsBookingRejectedShouldThrowException()
     {
         Administrator admin = new Administrator("Franco", "Ramos", "francoramos@gmail.com", "PassWord921#2");
-        _userLogic.RemoveBookingFromUser(_personRepo.GetFromRepository(admin.GetEmail()), _mybookingDto);
+        _userLogic.RemoveBookingFromUser(_userDto, _mybookingDto);
     }
     
     [TestMethod]
