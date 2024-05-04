@@ -16,6 +16,7 @@ public class UserLogicTests
     private UserLogic _userLogic;
     private PersonRepositories _personRepo;
     private PromotionDto _promotionDto;
+    private List<PromotionDto> _promotionsDto;
     private StorageUnitDto _storageUnitDto;
     private BookingDto _mybookingDto;
     
@@ -25,6 +26,7 @@ public class UserLogicTests
     {
         _person = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<Booking>());
         _personRepo = new PersonRepositories();
+        _promotionsDto = new List<PromotionDto>();
         _userLogic = new UserLogic(_personRepo);
         _personRepo.AddToRepository(_person);
         _userDto = new UserDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<BookingDto>());
@@ -65,7 +67,9 @@ public class UserLogicTests
     {
         User user = new User("Franco", "Ramos", "francoramos1511@gmail.com", "PassWord921#2", new List<Booking>());
         _personRepo.AddToRepository(user);
-        BookingDto bookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnitDto("", AreaType.A, SizeType.Small, true, new List<PromotionDto>()), "");
+        _promotionDto = new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _promotionsDto.Add(_promotionDto);
+        BookingDto bookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnitDto("", AreaType.A, SizeType.Small, true, _promotionsDto), "");
         Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _userLogic.ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
         user.GetBookings().Add(booking);
         user.GetBookings().Remove(booking);
