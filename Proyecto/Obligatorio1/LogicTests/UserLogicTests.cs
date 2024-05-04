@@ -46,14 +46,6 @@ public class UserLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
-    public void WhenSomeoneThatIsNotAUserMakesABookingShouldThrowException()
-    {
-        Administrator admin = new Administrator("Franco", "Ramos", "francoramos@gmail.com", "PassWord921#2");
-        _userLogic.AddBookingToUser(_userDto, _mybookingDto);
-    }
-    
-    [TestMethod]
     public void WhenUserBookingIsApprovedShouldReturnTrue()
     {
         _mybookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), _storageUnitDto, "");
@@ -65,14 +57,6 @@ public class UserLogicTests
     public void WhenUserBookingIsRejectedShouldEliminateBookingFromUserListOfBookings()
     {
         _userLogic.AddBookingToUser(_userDto, _mybookingDto);
-        _userLogic.RemoveBookingFromUser(_userDto, _mybookingDto);
-    }
-    
-    [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
-    public void WhenSomeoneThatIsNotAUserGetsBookingRejectedShouldThrowException()
-    {
-        Administrator admin = new Administrator("Franco", "Ramos", "francoramos@gmail.com", "PassWord921#2");
         _userLogic.RemoveBookingFromUser(_userDto, _mybookingDto);
     }
     

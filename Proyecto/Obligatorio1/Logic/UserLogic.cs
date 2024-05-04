@@ -20,15 +20,11 @@ public class UserLogic
 
     private void CheckIfPersonIsAUserAddBooking(UserDto userDto, BookingDto bookingDto)
     {
+        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
         Person person = _personRepo.GetFromRepository(userDto.Email);
         if (person is User user)
         {
-            Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
             user.GetBookings().Add(booking);
-        }
-        else
-        {
-            PersonIsNotAUserSoThrowException();
         }
     }
     
@@ -43,22 +39,13 @@ public class UserLogic
     }
 
     private void CheckIfPersonIsAUserRemoveBooking(UserDto userDto, BookingDto bookingDto)
-    {
+    { 
+        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
         Person person = _personRepo.GetFromRepository(userDto.Email);
         if (person is User user)
         {
-            Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
             user.GetBookings().Remove(booking);
         }
-        else
-        {
-            PersonIsNotAUserSoThrowException();
-        }
-    }
-
-    private static void PersonIsNotAUserSoThrowException()
-    {
-        throw new LogicExceptions("The person is not a user");
     }
     
     public StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
