@@ -15,14 +15,49 @@
                     <div class="divider d-flex align-items-center my-4">
                         <p class="text-center fw-bold mx-3 mb-0 fs-4">Modify Promotion</p>
                     </div>
-                    <div data-mdb-input-init class="form-outline mb-2">
-                        <select multiple class="form-select form-select-lg" required>
-                            <option value="promotion1">Promotion 1</option>
-                            <option value="promotion2">Promotion 2</option>
-                            <option value="promotion3">Promotion 3</option>
-                        </select>
-                        <label class="form-label">Promotions</label>
-                    </div>
+                   <div class="mb-3">
+                               <table class="table table-bordered">
+                                 <thead>
+                                 <tr>
+                                   <th>Promotions</th>
+                                 </tr>
+                                 </thead>
+                                 <tbody>
+                                 @foreach (var promotion in promotionLogic.GetPromotionsDto())
+                                 {
+                                   <tr>
+                                     <td>
+                                       <div class="form-check">
+                                         <input class="form-check-input" type="checkbox" required value="@promotion.Label" @onclick="() =>AddToSelectedPromotions(promotion.Label)"/>
+                                         <label class="form-check-label">@promotion.Label</label>
+                                       </div>
+                                     </td>
+                                   </tr>
+                                 }
+                                 </tbody>
+                               </table>
+                             </div><div class="mb-3">
+                                               <table class="table table-bordered">
+                                                 <thead>
+                                                 <tr>
+                                                   <th>Promotions</th>
+                                                 </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                 @foreach (var promotion in promotionLogic.GetPromotionsDto())
+                                                 {
+                                                   <tr>
+                                                     <td>
+                                                       <div class="form-check">
+                                                         <input class="form-check-input" type="checkbox" value="@promotion.Label" @onclick="() =>AddToSelectedPromotions(promotion.Label)"/>
+                                                         <label class="form-check-label">@promotion.Label</label>
+                                                       </div>
+                                                     </td>
+                                                   </tr>
+                                                 }
+                                                 </tbody>
+                                               </table>
+                                             </div>
                     <div data-mdb-input-init class="form-outline mb-2">
                         <input class="form-control form-control-lg" placeholder="Enter new Label" required/>
                         <label class="form-label" >Label</label>

@@ -12,7 +12,7 @@
   <div class="container-fluid h-custom">
     <div class="row d-flex justify-content-center align-items-center h-75">
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-        <form>
+        <form @onsubmit="HandleValidSubmit">
           <div class="divider d-flex align-items-center my-4">
             <p class="text-center fw-bold mx-3 mb-0 fs-4">Create Promotion</p>
           </div>
@@ -33,7 +33,7 @@
             <label class="form-label" >DateEnd</label>
           </div>
           <div class="text-center text-lg-start pt-2">
-            <button type="button" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="HandleValidSubmit">Create the Promotion</button>
+            <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" >Create the Promotion</button>
           </div>
         </form>
       </div>
@@ -44,7 +44,7 @@
 @if (showAdminErrorModal)
 {
   <AuthenticationModal
-    Title="Promotion already exists"
+    Title="Promotion error"
     Text="@errorMessage"
     DialogType=AuthenticationModal.ModalDialogType.Ok
     OnClose="@ClosePromotionErrorModal">
@@ -95,10 +95,12 @@
   private void ClosePromotionErrorModal()
   {
     showAdminErrorModal = false;
+    StateHasChanged();
   }
   
   private void ClosePromotionConfirmationModal()
   {
     showAdminConfirmationModal = false;
+    StateHasChanged();
   }
 }

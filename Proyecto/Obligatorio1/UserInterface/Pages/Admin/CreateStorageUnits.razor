@@ -14,7 +14,7 @@
   <div class="container-fluid h-custom">
     <div class="row d-flex justify-content-center align-items-center h-75">
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-        <form>
+        <form @onsubmit="HandleValidSubmit">
           <div class="divider d-flex align-items-center my-4">
             <p class="text-center fw-bold mx-3 mb-0 fs-4">Create Storage Unit</p>
           </div>
@@ -79,7 +79,7 @@
           </div>
           
           <div class="text-center text-lg-start pt-2">
-            <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick:preventDefault="true" @onclick="HandleValidSubmit">Create the Storage Unit</button>
+            <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Create the Storage Unit</button>
           </div>
         </form>
       </div>
@@ -141,6 +141,7 @@
       _storageUnitDto = new StorageUnitDto(id, area, size, climatization, selectedPromotions);
       storageUnitLogic.CreateStorageUnit(_storageUnitDto);
       showAdminConfirmationModal = true;
+      
     }
     catch (Exception e)
     {
