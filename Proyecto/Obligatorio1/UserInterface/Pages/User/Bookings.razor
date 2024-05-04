@@ -105,8 +105,7 @@
     {
         bookingDto = new BookingDto(false, dateStart, dateEnd, storageUnitDto, "");
         userDto = new UserDto(sessionLogic.CurrentPerson.Name, sessionLogic.CurrentPerson.Surname, sessionLogic.CurrentPerson.Email, sessionLogic.CurrentPerson.Password, new List<BookingDto>());
-        //falta crear meotodo en userLogic que devuelva la lista de BookingsDto del usuario
-        //userLogic.AddBookingToUser(userDto, bookingDto);
+        userLogic.AddBookingToUser(userDto, bookingDto);
         showAdminConfirmationModal = true;
         storageUnits = storageUnitLogic.GetStorageUnitsDto();
     }
