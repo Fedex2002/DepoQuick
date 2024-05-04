@@ -1,9 +1,11 @@
 @page "/ModifyPromotions"
 @using Logic
+@using Logic.DTOs
 @using Model;
 @using Model.Enums
 @layout MainLayout
 @inject SessionLogic SessionLogic
+@inject PromotionLogic promotionLogic
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -11,67 +13,46 @@
     <div class="container-fluid h-custom">
         <div class="row d-flex justify-content-center align-items-center h-75">
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                <form>
+                <form @onsubmit="HandleValidSubmit">
                     <div class="divider d-flex align-items-center my-4">
                         <p class="text-center fw-bold mx-3 mb-0 fs-4">Modify Promotion</p>
                     </div>
-                   <div class="mb-3">
-                               <table class="table table-bordered">
-                                 <thead>
-                                 <tr>
-                                   <th>Promotions</th>
-                                 </tr>
-                                 </thead>
-                                 <tbody>
-                                 @foreach (var promotion in promotionLogic.GetPromotionsDto())
-                                 {
-                                   <tr>
-                                     <td>
-                                       <div class="form-check">
-                                         <input class="form-check-input" type="checkbox" required value="@promotion.Label" @onclick="() =>AddToSelectedPromotions(promotion.Label)"/>
-                                         <label class="form-check-label">@promotion.Label</label>
-                                       </div>
-                                     </td>
-                                   </tr>
-                                 }
-                                 </tbody>
-                               </table>
-                             </div><div class="mb-3">
-                                               <table class="table table-bordered">
-                                                 <thead>
-                                                 <tr>
-                                                   <th>Promotions</th>
-                                                 </tr>
-                                                 </thead>
-                                                 <tbody>
-                                                 @foreach (var promotion in promotionLogic.GetPromotionsDto())
-                                                 {
-                                                   <tr>
-                                                     <td>
-                                                       <div class="form-check">
-                                                         <input class="form-check-input" type="checkbox" value="@promotion.Label" @onclick="() =>AddToSelectedPromotions(promotion.Label)"/>
-                                                         <label class="form-check-label">@promotion.Label</label>
-                                                       </div>
-                                                     </td>
-                                                   </tr>
-                                                 }
-                                                 </tbody>
-                                               </table>
-                                             </div>
+                    <div class="mb-3">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Promotions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var promotion in promotionLogic.GetPromotionsDto())
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="selectedPromotion" value="@promotion.Label" @onclick="() => SetSelectedPromotion(promotion)" required />
+                                                <label class="form-check-label">@promotion.Label</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                     <div data-mdb-input-init class="form-outline mb-2">
-                        <input class="form-control form-control-lg" placeholder="Enter new Label" required/>
+                        <input class="form-control form-control-lg" @bind="selectedPromotion.Label" placeholder="Enter new Label" required/>
                         <label class="form-label" >Label</label>
                     </div>
                     <div data-mdb-input-init class="form-outline mb-2">
-                        <input class="form-control form-control-lg" placeholder="Enter new discount" required/>
+                        <input class="form-control form-control-lg" @bind="selectedPromotion.Discount" placeholder="Enter new discount" required/>
                         <label class="form-label" >Discount</label>
                     </div>
                     <div data-mdb-input-init class="form-outline mb-2">
-                        <input type="date" class="form-control form-control-lg" required/>
+                        <input type="date" class="form-control form-control-lg" @bind="selectedPromotion.DateStart" required/>
                         <label class="form-label" >DateStart</label>
                     </div>
                     <div data-mdb-input-init class="form-outline mb-2">
-                        <input type="date" class="form-control form-control-lg" required/>
+                        <input type="date" class="form-control form-control-lg" @bind="selectedPromotion.DateEnd" required/>
                         <label class="form-label" >DateEnd</label>
                     </div>
                     <div class="text-center text-lg-start pt-2">
@@ -83,6 +64,59 @@
     </div>
 </section>
 
+
+@if (showAdminErrorModal)
+{
+  <AuthenticationModal
+    Title="Promotion does not exist"
+    Text="@errorMessage"
+    DialogType=AuthenticationModal.ModalDialogType.Ok
+    OnClose="@ClosePromotionErrorModal">
+  </AuthenticationModal>
+}
+@if(showAdminConfirmationModal)
+{
+    <AuthenticationModal 
+      Title="Promotion deleted successfully"
+      Text="Promotion deleted successfully"
+      DialogType=AuthenticationModal.ModalDialogType.Ok
+      OnClose="@ClosePromotionConfirmationModal">
+    </AuthenticationModal>
+}
 @code {
-  
+    private PromotionDto selectedPromotion = new PromotionDto();
+    private bool showAdminErrorModal = false;
+    private bool showAdminConfirmationModal = false;
+    private string errorMessage = "";
+    private void SetSelectedPromotion(PromotionDto promotion)
+    {
+        selectedPromotion = promotion;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            promotionLogic.ModifyPromotion(selectedPromotion);
+            showAdminConfirmationModal = true;
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+            showAdminErrorModal = true;
+            
+        }
+    }
+
+    private void ClosePromotionErrorModal()
+    {
+        showAdminErrorModal = false;
+        
+    }
+    
+    private void ClosePromotionConfirmationModal()
+    {
+        showAdminConfirmationModal = false;
+    }
+
 }
