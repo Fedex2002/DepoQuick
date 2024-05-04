@@ -1,8 +1,5 @@
 @page "/DeleteStorageUnits"
 @using Logic
-@using Model;
-@using Model.Enums
-@using System.Reflection.Emit
 @using Logic.DTOs
 @layout MainLayout
 @inject PromotionLogic promotionLogic
@@ -57,15 +54,6 @@
     </div>
 </section>
 
-@if (showAdminErrorModal)
-{
-  <AuthenticationModal
-    Title="StorageUnit does not exist"
-    Text="@errorMessage"
-    DialogType=AuthenticationModal.ModalDialogType.Ok
-    OnClose="@ClosePromotionErrorModal">
-  </AuthenticationModal>
-}
 @if(showAdminConfirmationModal)
 {
     <AuthenticationModal 
@@ -80,7 +68,6 @@
     StorageUnitDto storageUnitDto;
     private List<StorageUnitDto> storageUnits;
     private bool showAdminErrorModal = false;
-    private string errorMessage = "";
     private bool showAdminConfirmationModal = false;
     
     protected override void OnInitialized()
@@ -91,23 +78,10 @@
     
     private async Task HandleValidSubmit(string id)
     {
-        try
-        {
-            storageUnitDto = storageUnitLogic.GetStorageUnitDtoFromId(id);
-            storageUnitLogic.RemoveStorageUnit(storageUnitDto);
-            showAdminConfirmationModal = true;
-            storageUnits = storageUnitLogic.GetStorageUnitsDto();
-        }
-        catch (Exception e)
-        {
-            showAdminErrorModal = true;
-            errorMessage = e.Message;
-        }
-    }
-    
-    private void ClosePromotionErrorModal()
-    {
-        showAdminErrorModal = false;
+        storageUnitDto = storageUnitLogic.GetStorageUnitDtoFromId(id);
+        storageUnitLogic.RemoveStorageUnit(storageUnitDto);
+        showAdminConfirmationModal = true;
+        storageUnits = storageUnitLogic.GetStorageUnitsDto();
     }
   
     private void ClosePromotionConfirmationModal()

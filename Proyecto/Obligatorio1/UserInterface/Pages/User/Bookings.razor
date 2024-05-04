@@ -1,9 +1,103 @@
 @page "/Bookings"
+@using Logic
+@using Logic.DTOs
+@layout MainLayout
+@inject StorageUnitLogic storageUnitLogic
+@inject UserLogic userLogic
 
 <PageTitle>DepoQuick</PageTitle>
 
-<h3>Bookings</h3>
+<section class="vh-75">
+    <div class="container">
+        <h2 class="mt-5 mb-4">Bookings</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>StorageUnit data</th>
+                            <th>startDate</th>
+                            <th>endDate</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var storageUnit in storageUnits)
+                        {
+                             <tr>
+                                 <td>
+                                      <strong>Id:</strong>@storageUnit.Id<br/>
+                                      <strong>Area:</strong>@storageUnit.Area<br/>
+                                      <strong>Size:</strong>@storageUnit.Size<br/>
+                                      <strong>Climatization:</strong>@storageUnit.Climatization<br/>
+                                     @foreach (var promotion in storageUnit.Promotions)
+                                     {
+                                         <div>
+                                             <br/>
+                                             <p style="margin-bottom: 0;">Promotion</p>
+                                             <strong>Label:</strong> @promotion.Label<br/>
+                                             <strong>Discount:</strong> @promotion.Discount<br/>
+                                             <strong>StartDate:</strong> @promotion.DateStart<br/>
+                                             <strong>EndDate:</strong> @promotion.DateEnd<br/>
+                                         </div>
+                                     }
+                                 </td>
+                                 <td>
+                                     <div data-mdb-input-init class="form-outline mb-2">
+                                         <input type="date" class="form-control form-control-lg" required/>
+                                         <label class="form-label" >DateStart</label>
+                                     </div>
+                                 </td>
+                                 <td>
+                                     <div data-mdb-input-init class="form-outline mb-2">
+                                         <input type="date" class="form-control form-control-lg" required/>
+                                         <label class="form-label" >DateEnd</label>
+                                     </div>
+                                 </td>
+                                <td>
+                                    <button type="button" class="btn btn-success" @onclick="() =>HandleValidSubmit(storageUnit.Id)">Select</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if(showAdminConfirmationModal)
+{
+    <AuthenticationModal 
+      Title="Booking selected successfully"
+      Text="Booking selected successfully"
+      DialogType=AuthenticationModal.ModalDialogType.Ok
+      OnClose="@ClosePromotionConfirmationModal">
+    </AuthenticationModal>
+}
 
 @code {
+    BookingDto bookingDto;
+    private List<StorageUnitDto> storageUnits;
+    private bool showAdminErrorModal = false;
+    private bool showAdminConfirmationModal = false;
     
+    protected override void OnInitialized()
+    {
+        bookingDto = new BookingDto();
+        storageUnits = storageUnitLogic.GetStorageUnitsDto();
+    }
+    
+    private async Task HandleValidSubmit(string id)
+    {
+        bookingDto = new BookingDto();
+        //userLogic.AddBookingToUser(BookingDto);
+        showAdminConfirmationModal = true;
+        storageUnits = storageUnitLogic.GetStorageUnitsDto();
+    }
+  
+    private void ClosePromotionConfirmationModal()
+    {
+        showAdminConfirmationModal = false;
+    }
 }
