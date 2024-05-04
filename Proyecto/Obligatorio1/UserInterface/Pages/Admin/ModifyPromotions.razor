@@ -1,10 +1,7 @@
 @page "/ModifyPromotions"
 @using Logic
 @using Logic.DTOs
-@using Model;
-@using Model.Enums
 @layout MainLayout
-@inject SessionLogic SessionLogic
 @inject PromotionLogic promotionLogic
 
 <PageTitle>DepoQuick</PageTitle>
@@ -40,20 +37,20 @@
                         </table>
                     </div>
                     <div data-mdb-input-init class="form-outline mb-2">
-                        <input class="form-control form-control-lg" @bind="newPromotion.Label" placeholder="Enter new Label" required/>
-                        <label class="form-label" >Label</label>
+                        <input class="form-control form-control-lg" @bind="newLabel" placeholder="Enter new Label" required/>
+                        <label class="form-label" >New Label</label>
                     </div>
                     <div data-mdb-input-init class="form-outline mb-2">
-                        <input class="form-control form-control-lg" @bind="newPromotion.Discount" placeholder="Enter new discount" required/>
-                        <label class="form-label" >Discount</label>
+                        <input class="form-control form-control-lg" @bind="newDiscount" placeholder="Enter new discount" required/>
+                        <label class="form-label" >New Discount</label>
                     </div>
                     <div data-mdb-input-init class="form-outline mb-2">
-                        <input type="date" class="form-control form-control-lg" @bind="newPromotion.DateStart" required/>
-                        <label class="form-label" >DateStart</label>
+                        <input type="date" class="form-control form-control-lg" @bind="newDateStart" required/>
+                        <label class="form-label" >New DateStart</label>
                     </div>
                     <div data-mdb-input-init class="form-outline mb-2">
-                        <input type="date" class="form-control form-control-lg" @bind="newPromotion.DateEnd" required/>
-                        <label class="form-label" >DateEnd</label>
+                        <input type="date" class="form-control form-control-lg" @bind="newDateEnd" required/>
+                        <label class="form-label" >New DateEnd</label>
                     </div>
                     <div class="text-center text-lg-start pt-2">
                         <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Modify the Promotion</button>
@@ -74,10 +71,21 @@
     </AuthenticationModal>
 }
 @code {
-    private PromotionDto newPromotion = new PromotionDto();
-    private bool showAdminConfirmationModal = false;
+    PromotionDto newPromotion;
     private string oldLabel;
-    
+    private string newLabel;
+    private int newDiscount;
+    private DateTime newDateStart;
+    private DateTime newDateEnd;
+    private bool showAdminConfirmationModal = false;
+
+    protected override void OnInitialized()
+    {
+        newPromotion = new PromotionDto();
+        newDateStart = DateTime.Now;
+        newDateEnd = DateTime.Now;
+    }
+
     private void SetSelectedPromotion(string label)
     {
         oldLabel = label;
@@ -85,7 +93,8 @@
 
     private async Task HandleValidSubmit()
     {
-        //promotionLogic.ModifyPromotion(newPromotion, oldLabel); 
+        newPromotion = new PromotionDto(newLabel, newDiscount, newDateStart, newDateEnd);
+        promotionLogic.ModifyPromotion(newPromotion, oldLabel); 
         showAdminConfirmationModal = true;
     }
     
