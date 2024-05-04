@@ -2,22 +2,25 @@
 @using Logic
 @using Logic.DTOs
 @layout MainLayout
-@inject StorageUnitLogic storageUnitLogic
 @inject UserLogic userLogic
+@inject SessionLogic sessionLogic
+@inject StorageUnitLogic storageUnitLogic
 
 <PageTitle>DepoQuick</PageTitle>
 
 <section class="vh-75">
     <div class="container">
         <h2 class="mt-5 mb-4">Bookings</h2>
+        <h5>When applying range date of booking Total Price will update</h5>
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>StorageUnit data</th>
-                            <th>startDate</th>
-                            <th>endDate</th>
+                            <th>StartDate</th>
+                            <th>EndDate</th>
+                            <th>TotalPrice</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -44,18 +47,21 @@
                                  </td>
                                  <td>
                                      <div data-mdb-input-init class="form-outline mb-2">
-                                         <input type="date" class="form-control form-control-lg" required/>
-                                         <label class="form-label" >DateStart</label>
+                                         <input type="date" class="form-control form-control-lg" @bind="dateStart" required/>
                                      </div>
                                  </td>
                                  <td>
                                      <div data-mdb-input-init class="form-outline mb-2">
-                                         <input type="date" class="form-control form-control-lg" required/>
-                                         <label class="form-label" >DateEnd</label>
+                                         <input type="date" class="form-control form-control-lg" @bind="dateEnd" @onclick="() =>SetTotalPrice(storageUnit)" required/>
+                                     </div>
+                                 </td>
+                                 <td>
+                                     <div>
+                                         <label class="form-label">$@TotalPrice</label>
                                      </div>
                                  </td>
                                 <td>
-                                    <button type="button" class="btn btn-success" @onclick="() =>HandleValidSubmit(storageUnit.Id)">Select</button>
+                                    <button type="button" class="btn btn-success" @onclick="() =>HandleValidSubmit(storageUnit)">Select</button>
                                 </td>
                             </tr>
                         }
@@ -78,6 +84,10 @@
 
 @code {
     BookingDto bookingDto;
+    UserDto userDto;
+    private DateTime dateStart;
+    private DateTime dateEnd;
+    private int TotalPrice;
     private List<StorageUnitDto> storageUnits;
     private bool showAdminErrorModal = false;
     private bool showAdminConfirmationModal = false;
@@ -86,16 +96,25 @@
     {
         bookingDto = new BookingDto();
         storageUnits = storageUnitLogic.GetStorageUnitsDto();
+        TotalPrice = 0;
     }
-    
-    private async Task HandleValidSubmit(string id)
+
+    private async Task HandleValidSubmit(StorageUnitDto storageUnitDto)
     {
-        bookingDto = new BookingDto();
-        //userLogic.AddBookingToUser(BookingDto);
+        bookingDto = new BookingDto(false, dateStart, dateEnd, storageUnitDto, "");
+        userDto = new UserDto(sessionLogic.CurrentPerson.Name, sessionLogic.CurrentPerson.Surname, sessionLogic.CurrentPerson.Email, sessionLogic.CurrentPerson.Password, new List<BookingDto>());
+        //falta crear meotodo en userLogic que devuelva la lista de BookingsDto del usuario
+        //userLogic.AddBookingToUser(userDto, bookingDto);
         showAdminConfirmationModal = true;
         storageUnits = storageUnitLogic.GetStorageUnitsDto();
     }
-  
+
+    private void SetTotalPrice(StorageUnitDto storageUnitDto)
+    {
+        bookingDto = new BookingDto(false, dateStart, dateEnd, storageUnitDto, "");
+        //TotalPrice = storageUnitLogic.CalculateTotalPriceForBookingDays(storageUnitDto, bookingDto);
+    }
+
     private void ClosePromotionConfirmationModal()
     {
         showAdminConfirmationModal = false;
