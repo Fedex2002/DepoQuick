@@ -14,10 +14,10 @@ public class PromotionLogic
         _promotionRepositories = promotionRepositories;
     }
     
-    public void ModifyPromotion(PromotionDto promotionDto)
+    public void ModifyPromotion(PromotionDto promotionDto, string oldLabel)
     {
-        Promotion promotionInRepo= _promotionRepositories.GetFromRepository(promotionDto.Label);
-        if (_promotionRepositories.GetFromRepository(promotionDto.Label) == null)
+        Promotion promotionInRepo= _promotionRepositories.GetFromRepository(oldLabel);
+        if (_promotionRepositories.GetFromRepository(oldLabel) == null)
         {
             throw new LogicExceptions("Promotion does not exist");
         }
