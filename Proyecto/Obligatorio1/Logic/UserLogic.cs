@@ -13,13 +13,14 @@ public class UserLogic
         _personRepo = personRepo;
     }
     
-    public void AddBookingToUser(Person person, BookingDto bookingDto)
+    public void AddBookingToUser(UserDto userDto, BookingDto bookingDto)
     {
-        CheckIfPersonIsAUserAddBooking(person, bookingDto);
+        CheckIfPersonIsAUserAddBooking(userDto, bookingDto);
     }
 
-    private void CheckIfPersonIsAUserAddBooking(Person person, BookingDto bookingDto)
+    private void CheckIfPersonIsAUserAddBooking(UserDto userDto, BookingDto bookingDto)
     {
+        Person person = _personRepo.GetFromRepository(userDto.Email);
         if (person is User user)
         {
             Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);

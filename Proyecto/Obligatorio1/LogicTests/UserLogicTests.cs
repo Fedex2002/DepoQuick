@@ -42,7 +42,7 @@ public class UserLogicTests
     [TestMethod]
     public void WhenUserMakesABookingShouldAddItToHisListOfBookings()
     {
-        _userLogic.AddBookingToUser(_personRepo.GetFromRepository(_userDto.Email), _mybookingDto);
+        _userLogic.AddBookingToUser(_userDto, _mybookingDto);
     }
     
     [TestMethod]
