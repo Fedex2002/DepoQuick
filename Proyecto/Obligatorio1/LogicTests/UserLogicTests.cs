@@ -64,8 +64,8 @@ public class UserLogicTests
     [TestMethod]
     public void WhenUserBookingIsRejectedShouldEliminateBookingFromUserListOfBookings()
     {
-        _userLogic.AddBookingToUser(_personRepo.GetFromRepository(_userDto.Email), _mybookingDto);
-        _userLogic.RemoveBookingFromUser(_personRepo.GetFromRepository(_userDto.Email), _mybookingDto);
+        _userLogic.AddBookingToUser(_userDto, _mybookingDto);
+        _userLogic.RemoveBookingFromUser(_userDto, _mybookingDto);
     }
     
     [TestMethod]
