@@ -13,6 +13,10 @@ public class AdministratorLogicTests
     private PersonRepositories _personRepo;
     private AdministratorLogic _administratorLogic;
     private AdministratorDto _administratorDto;
+    private List<Booking> _bookings;
+    private Promotion _promotion;
+    private StorageUnit _storageUnit;
+    private List<Promotion> _promotions;
     private BookingDto _bookingDto;
 
     [TestInitialize]
@@ -20,6 +24,8 @@ public class AdministratorLogicTests
     {
         _personRepo = new PersonRepositories();
         _administratorLogic = new AdministratorLogic(_personRepo);
+        _bookings = new List<Booking>();
+        _promotions = new List<Promotion>();
         _administratorDto = new AdministratorDto("Franco", "Ramos", "francoramos1511@gmail.com", "PassWord921#");
     }
     
@@ -52,7 +58,12 @@ public class AdministratorLogicTests
     [TestMethod]
     public void WhenAdministratorIsTryingToApproveOrRejectBookingsShouldGetAListOfUsersDto()
     {
-        User user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<Booking>());
+        _promotion = new Promotion("Winter Discount", 25, new DateTime(2023,7,5), new DateTime(2026,8,15));
+        _promotions.Add(_promotion);
+        _storageUnit = new StorageUnit("12", AreaType.A, SizeType.Small, true, _promotions);
+        Booking booking = new Booking(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), _storageUnit, "");
+        _bookings.Add(booking);
+        User user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", _bookings);
         _personRepo.AddToRepository(user);
         List<UserDto> users = _administratorLogic.GetUsersDto();
         Assert.IsTrue(users.Count > 0);
