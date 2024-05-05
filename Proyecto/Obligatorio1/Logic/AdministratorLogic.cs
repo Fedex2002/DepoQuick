@@ -28,4 +28,12 @@ public class AdministratorLogic
             return new BookingDto(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, bookingDto.StorageUnitDto, rejectionMessage);
         }
     }
+    
+    public List<UserDto> GetUsersDto()
+    {
+        List<UserDto> users = new List<UserDto>();
+        UserDto userDto = new UserDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<BookingDto>());
+        users.Add(userDto);
+        return users;
+    }
 }
