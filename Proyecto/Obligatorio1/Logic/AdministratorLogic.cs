@@ -51,6 +51,18 @@ public class AdministratorLogic
     private List<BookingDto> GetUserBookingsDto(List<Booking> bookings)
     {
         List<BookingDto> bookingsDto = new List<BookingDto>();
+        foreach (var booking in bookings)
+        {
+            BookingDto bookingDto = new BookingDto(booking.GetApproved(), booking.GetDateStart(), booking.GetDateEnd(),
+                GetUserStorageUnitDto(booking.GetStorageUnit()), booking.GetRejectedMessage());
+            bookingsDto.Add(bookingDto);
+        }
         return bookingsDto;
+    }
+    
+    private StorageUnitDto GetUserStorageUnitDto(StorageUnit storageUnit)
+    {
+        return new StorageUnitDto(storageUnit.GetId(), storageUnit.GetArea(), storageUnit.GetSize(),
+            storageUnit.GetClimatization(), new List<PromotionDto>());
     }
 }
