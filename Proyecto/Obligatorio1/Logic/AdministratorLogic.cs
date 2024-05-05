@@ -70,6 +70,12 @@ public class AdministratorLogic
     private List<PromotionDto> GetUserPromotionsDto(List<Promotion> promotions)
     {
         List<PromotionDto> promotionsDto = new List<PromotionDto>();
+        foreach (var promotion in promotions)
+        {
+            PromotionDto promotionDto = new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(),
+                promotion.GetDateStart(), promotion.GetDateEnd());
+            promotionsDto.Add(promotionDto);
+        }
         return promotionsDto;
     }
 }
