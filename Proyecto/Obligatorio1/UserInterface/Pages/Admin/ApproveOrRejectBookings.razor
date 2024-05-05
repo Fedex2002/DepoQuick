@@ -2,57 +2,90 @@
 @using Logic
 @using Logic.DTOs
 @layout MainLayout
+@inject UserLogic userLogic
 @inject AdministratorLogic administratorLogic
 @inject NavigationManager NavigationManager
 
 <PageTitle>DepoQuick</PageTitle>
 
 <section class="vh-75">
-    <div class="container-fluid h-custom">
-        <div class="row d-flex justify-content-center align-items-center h-75">
-            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                <form>
-                    <div class="divider d-flex align-items-center my-4">
-                        <p class="text-center fw-bold mx-3 mb-0 fs-4" style="display: inline-block">Approve Or Reject Bookings</p>
-                    </div>
-                    <div data-mdb-input-init class="form-outline mb-2">
-                        <select multiple class="form-select form-select-lg" @bind="selectedBooking" required>
-                            @foreach (var user in allUsers)
-                            {
-                                foreach (var booking in user.Bookings)
-                                {
-                                    <option value="@booking">@user.Name - @booking.DateStart.ToShortDateString() to @booking.DateEnd.ToShortDateString()</option>
-                                }
-                            }
-                        </select>
-                        <label class="form-label">Bookings</label>
-                    </div>
-                    @if (!showRejectInput)
+    <div class="container">
+        <h2 class="mt-5 mb-4">Bookings</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>StorageUnit data</th>
+                            <th>User</th>
+                            <th>Total Price</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var user in allUsers)
                     {
-                        <div class="text-center text-lg-start pt-2">
-                            <button type="button" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="ToggleRejectInput">Reject the Booking</button>
-                        </div>
-                        <div class="text-center text-lg-start pt-2">
-                            <button type="button" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="AcceptBooking">Accept the Booking</button>
-                        </div>
+                        @foreach (var booking in user.Bookings)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>Id:</strong>@booking.StorageUnitDto.Id<br/>
+                                    <strong>Area:</strong>@booking.StorageUnitDto.Area<br/>
+                                    <strong>Size:</strong>@booking.StorageUnitDto.Size<br/>
+                                    <strong>Climatization:</strong>@booking.StorageUnitDto.Climatization<br/>
+                                    @foreach (var promotion in booking.StorageUnitDto.Promotions)
+                                    {
+                                        <div>
+                                            <br/>
+                                            <p style="margin-bottom: 0;">Promotion</p>
+                                            <strong>Label:</strong> @promotion.Label<br/>
+                                            <strong>Discount:</strong> @promotion.Discount<br/>
+                                            <strong>StartDate:</strong> @promotion.DateStart<br/>
+                                            <strong>EndDate:</strong> @promotion.DateEnd<br/>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <label class="form-label">@user.Name</label>
+                                </td>
+                                <td>
+                                    <label class="form-label">@totalPrice[booking.StorageUnitDto.Id]</label>
+                                </td>
+                                <td>
+                                    <label class="form-label">@dateStart[booking.StorageUnitDto.Id]</label>
+                                </td>
+                                <td>
+                                    <label class="form-label">@dateEnd[booking.StorageUnitDto.Id]</label>
+                                </td>
+                                <td>
+                                     @if (!showRejectInput)
+                                        {
+                                            <button type="button" class="btn btn-danger mb-2" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="ToggleRejectInput">Reject the Booking</button><br/>
+                                            <button type="button" class="btn btn-success" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => AcceptBooking(user, booking)">Accept the Booking</button>
+                                        }
+                                        @if (showRejectInput) 
+                                        { 
+                                            <div data-mdb-input-init class="form-outline mt-2 mb-2">
+                                                <input type="text" class="form-control form-control-lg" placeholder="Reason for rejection" @bind="RejectionReason" required/>
+                                                <label class="form-label">Rejection</label>
+                                            </div>
+                                            <div class="text-center text-lg-start pt-2">
+                                                <button type="button" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => RejectBooking(user, booking, RejectionReason)">Confirm the Rejection</button>
+                                            </div>
+                                            <p class="small fw-bold mt-2 pt-1 mb-0">Changed your decision? <a href="#" @onclick="RefreshPage" class="link-danger">Go Back</a></p>
+                                        }
+                                </td>
+                            </tr>
+                        }
                     }
-                    @if (showRejectInput) 
-                    {
-                        <div data-mdb-input-init class="form-outline mt-2 mb-2">
-                            <input type="text" class="form-control form-control-lg" placeholder="Reason for rejection" @bind="RejectionReason" required/>
-                            <label class="form-label">Rejection</label>
-                        </div>
-                        <div class="text-center text-lg-start pt-2">
-                            <button type="button" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => RejectBooking(RejectionReason)">Confirm the Rejection</button>
-                        </div>
-                        <p class="small fw-bold mt-2 pt-1 mb-0">Changed your decision? <a href="#" @onclick="RefreshPage" class="link-danger">Go Back</a></p>
-                    }
-                </form>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </section>
-
 @if (showAdminErrorModal)
 {
   <AuthenticationModal
@@ -76,6 +109,9 @@
     private bool showRejectInput = false;
     private List<UserDto> allUsers = new List<UserDto>();
     private BookingDto selectedBooking;
+    Dictionary<string, DateTime> dateStart = new Dictionary<string, DateTime>();
+    Dictionary<string, DateTime> dateEnd = new Dictionary<string, DateTime>();
+    Dictionary<string, double> totalPrice = new Dictionary<string, double>();
     private string RejectionReason;
     private bool showAdminErrorModal = false;
     private string Message = "";
@@ -86,6 +122,15 @@
     {
         base.OnInitialized();
         allUsers = administratorLogic.GetUsersDto();
+        foreach (var user in allUsers)
+        {
+            foreach (var bookingDto in user.Bookings)
+            {
+                totalPrice[bookingDto.StorageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
+                dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
+                dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
+            }
+        }
     }
 
     private void ToggleRejectInput()
@@ -93,11 +138,12 @@
         showRejectInput = !showRejectInput;
     }
     
-    private void AcceptBooking()
+    private void AcceptBooking(UserDto user, BookingDto booking)
     {
         try
         {
-            administratorLogic.ApproveBooking(selectedBooking);
+            //administratorLogic.ApproveBooking(user, booking);
+            Console.Write(booking.Approved);
             Message = "Booking has been approved successfully!";
             showAdminConfirmationModal = true;
         }
@@ -108,11 +154,11 @@
         }
     }
 
-    private void RejectBooking(string rejectionReason)
+    private void RejectBooking(UserDto user, BookingDto booking, string rejectionReason)
     {
         try
         {
-            administratorLogic.SetRejectionMessage(selectedBooking, rejectionReason);
+            administratorLogic.SetRejectionMessage(booking, rejectionReason);
             Message = "Booking has been rejected successfully!";
             showAdminConfirmationModal = true;
         }
