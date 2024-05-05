@@ -26,6 +26,8 @@ builder.Services.AddSingleton(storageUnitRepositories);
 builder.Services.AddSingleton(storageUnitLogic);
 UserLogic userLogic = new UserLogic(personRepositories);
 builder.Services.AddSingleton(userLogic);
+AdministratorLogic administratorLogic = new AdministratorLogic(personRepositories);
+builder.Services.AddSingleton(administratorLogic);
 
 var app = builder.Build();
 
