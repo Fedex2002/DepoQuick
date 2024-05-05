@@ -1,6 +1,7 @@
 using Repositories;
 using Logic;
 using Logic.DTOs;
+using Model;
 using Model.Enums;
 using Model.Exceptions;
 
@@ -51,6 +52,8 @@ public class AdministratorLogicTests
     [TestMethod]
     public void WhenAdministratorIsTryingToApproveOrRejectBookingsShouldGetAListOfUsersDto()
     {
+        User user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<Booking>());
+        _personRepo.AddToRepository(user);
         List<UserDto> users = _administratorLogic.GetUsersDto();
         Assert.IsTrue(users.Count > 0);
     }
