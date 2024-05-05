@@ -40,7 +40,8 @@ public class AdministratorLogic
         {
             if (person is User user)
             {
-                UserDto userDto = new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), GetUserBookingsDto(user.GetBookings()));
+                UserDto userDto = new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), 
+                    GetUserBookingsDto(user.GetBookings()));
                 usersDto.Add(userDto);
             }
         }
@@ -63,6 +64,12 @@ public class AdministratorLogic
     private StorageUnitDto GetUserStorageUnitDto(StorageUnit storageUnit)
     {
         return new StorageUnitDto(storageUnit.GetId(), storageUnit.GetArea(), storageUnit.GetSize(),
-            storageUnit.GetClimatization(), new List<PromotionDto>());
+            storageUnit.GetClimatization(), GetUserPromotionsDto(storageUnit.GetPromotions()));
+    }
+    
+    private List<PromotionDto> GetUserPromotionsDto(List<Promotion> promotions)
+    {
+        List<PromotionDto> promotionsDto = new List<PromotionDto>();
+        return promotionsDto;
     }
 }
