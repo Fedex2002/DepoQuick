@@ -103,8 +103,8 @@
         foreach (var storageUnitDto in storageUnitLogic.GetStorageUnitsDto())
         {
             pricePerDay[storageUnitDto.Id] = userLogic.CalculateStorageUnitPricePerDay(storageUnitDto);
-            dateStart[storageUnitDto.Id] = DateTime.Now;
-            dateEnd[storageUnitDto.Id] = DateTime.Now;
+            dateStart[storageUnitDto.Id] = DateTime.Today;
+            dateEnd[storageUnitDto.Id] = DateTime.Today;
             totalPrice[storageUnitDto.Id] = 0;
         }
     }
@@ -120,7 +120,6 @@
             userLogic.AddBookingToUser(userDto, bookingDto);
             showAdminConfirmationModal = true;
         }
-        storageUnits = storageUnitLogic.GetStorageUnitsDto(); //Esta linea pq esta?
     }
 
     private void SetTotalPrice(StorageUnitDto storageUnitDto)

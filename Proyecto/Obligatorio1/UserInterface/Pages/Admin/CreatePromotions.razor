@@ -71,8 +71,8 @@
   protected override void OnInitialized()
   {
       promotionDto = new PromotionDto();
-      dateStart = DateTime.Now;
-      dateEnd = DateTime.Now;
+      dateStart = DateTime.Today;
+      dateEnd = DateTime.Today;
   }
 
   private async Task HandleValidSubmit()
