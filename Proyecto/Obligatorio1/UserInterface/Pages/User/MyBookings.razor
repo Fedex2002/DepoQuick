@@ -83,21 +83,20 @@
     
     protected override void OnInitialized()
     {
-        //users = userLogic.GetUsersDto(); Metodo que devuelve todos los userDto   
-        @foreach (var user in users)
+        var currentUser = sessionLogic.CurrentPerson as UserDto;
+        if (currentUser != null)
         {
-            if (user == sessionLogic.CurrentPerson)
+            bookings = currentUser.Bookings;
+            Console.WriteLine("Bookings: " + bookings.Count);
+            foreach (var bookingDto in bookings)
             {
-                bookings = user.Bookings;
+                
+                totalPrice[bookingDto.StorageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
+                dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart; // Aquí deberías asignar la fecha de inicio de la reserva
+                dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; // Aquí deberías asignar la fecha de finalización de la reserva
+                active[bookingDto.StorageUnitDto.Id] = bookingDto.Approved;
+                rejectionMessage[bookingDto.StorageUnitDto.Id] = bookingDto.RejectedMessage;
             }
-        }
-        foreach (var bookingDto in bookings)
-        {
-            totalPrice[bookingDto.StorageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
-            dateStart[bookingDto.StorageUnitDto.Id] = DateTime.Now;
-            dateEnd[bookingDto.StorageUnitDto.Id] = DateTime.Now;
-            active[bookingDto.StorageUnitDto.Id] = bookingDto.Approved;
-            rejectionMessage[bookingDto.StorageUnitDto.Id] = bookingDto.RejectedMessage;
         }
     }
 }

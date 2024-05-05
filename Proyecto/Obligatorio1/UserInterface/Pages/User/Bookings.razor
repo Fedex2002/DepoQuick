@@ -114,10 +114,13 @@
         DateTime finalDateStart = dateStart[storageUnitDto.Id];
         DateTime finalDateEnd = dateEnd[storageUnitDto.Id];
         bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "");
-        userDto = new UserDto(sessionLogic.CurrentPerson.Name, sessionLogic.CurrentPerson.Surname, sessionLogic.CurrentPerson.Email, sessionLogic.CurrentPerson.Password, new List<BookingDto>());
-        userLogic.AddBookingToUser(userDto, bookingDto);
-        showAdminConfirmationModal = true;
-        storageUnits = storageUnitLogic.GetStorageUnitsDto();
+        if (sessionLogic.CurrentPerson is UserDto userDto)
+        {
+            userDto.Bookings.Add(bookingDto);
+            userLogic.AddBookingToUser(userDto, bookingDto);
+            showAdminConfirmationModal = true;
+        }
+        storageUnits = storageUnitLogic.GetStorageUnitsDto(); //Esta linea pq esta?
     }
 
     private void SetTotalPrice(StorageUnitDto storageUnitDto)
