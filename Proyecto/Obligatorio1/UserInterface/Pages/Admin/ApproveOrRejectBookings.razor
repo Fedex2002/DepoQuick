@@ -1,7 +1,9 @@
 @page "/ApproveOrRejectBookings"
 @using Logic
+@using Logic.DTOs
 @layout MainLayout
 @inject SessionLogic SessionLogic
+@inject UserLogic userLogic
 @inject NavigationManager NavigationManager
 
 <PageTitle>DepoQuick</PageTitle>
@@ -16,9 +18,13 @@
                     </div>
                     <div data-mdb-input-init class="form-outline mb-2">
                         <select multiple class="form-select form-select-lg" required>
-                            <option value="booking1">Booking 1</option>
-                            <option value="booking2">Booking 2</option>
-                            <option value="booking3">Booking 3</option>
+                            @foreach (var user in allUsers)
+                            {
+                                foreach (var booking in user.Bookings)
+                                {
+                                    <option value="@booking.Approved">@user.Name - @booking.DateStart.ToShortDateString() to @booking.DateEnd.ToShortDateString()</option>
+                                }
+                            }
                         </select>
                         <label class="form-label">Bookings</label>
                     </div>
@@ -31,17 +37,17 @@
                             <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Accept the Booking</button>
                         </div>
                     }
-                   @if (showRejectInput) 
-                        {
-                            <div data-mdb-input-init class="form-outline mt-2 mb-2">
-                                <input type="text" class="form-control form-control-lg" placeholder="Reason for rejection" required />
-                                <label class="form-label">Rejection</label>
-                            </div>
-                            <div class="text-center text-lg-start pt-2">
-                                <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Confirm the Rejection</button>
-                            </div>
-                            <p class="small fw-bold mt-2 pt-1 mb-0">Changed your decision? <a href="#" @onclick="RefreshPage" class="link-danger">Go Back</a></p>
-                        }
+                    @if (showRejectInput) 
+                    {
+                        <div data-mdb-input-init class="form-outline mt-2 mb-2">
+                            <input type="text" class="form-control form-control-lg" placeholder="Reason for rejection" required />
+                            <label class="form-label">Rejection</label>
+                        </div>
+                        <div class="text-center text-lg-start pt-2">
+                            <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Confirm the Rejection</button>
+                        </div>
+                        <p class="small fw-bold mt-2 pt-1 mb-0">Changed your decision? <a href="#" @onclick="RefreshPage" class="link-danger">Go Back</a></p>
+                    }
                 </form>
             </div>
         </div>
@@ -50,6 +56,18 @@
 
 @code {
     private bool showRejectInput = false;
+    private List<UserDto> allUsers = new List<UserDto>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        GetAllUsers();
+    }
+
+    private async Task GetAllUsers()
+    {
+        allUsers = userLogic.GetUsersDto();
+    }
 
     private void ToggleRejectInput()
     {
@@ -60,5 +78,4 @@
     {
         NavigationManager.NavigateTo("/ApproveOrRejectBookings");
     }
-
 }

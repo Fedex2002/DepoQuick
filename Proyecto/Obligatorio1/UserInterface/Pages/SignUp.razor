@@ -98,8 +98,8 @@
 
       if (!_adminRegistered)
       {
-        _adminRegistered = true;
         _person = new AdministratorDto(_name, _surname, _email, _password);
+        _adminRegistered = true;
         personLogic.SignUp(_person);
 
       }
