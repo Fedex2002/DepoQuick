@@ -17,22 +17,22 @@
                     <div class="mb-3">
                         <table class="table table-bordered">
                             <thead>
-                                <tr>
-                                    <th>Promotions</th>
-                                </tr>
+                            <tr>
+                                <th>Promotions</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (var promotion in promotionLogic.GetPromotionsDto())
-                                {
-                                    <tr>
-                                        <td>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="selectedPromotion" value="@promotion.Label" @onclick="() => SetSelectedPromotion(promotion.Label)" required />
-                                                <label class="form-check-label">@promotion.Label</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
+                            @foreach (var promotion in promotionLogic.GetPromotionsDto())
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="selectedPromotion" value="@promotion.Label" @onclick="() => SetSelectedPromotion(promotion.Label)" required />
+                                            <label class="form-check-label">@promotion.Label</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -61,6 +61,16 @@
     </div>
 </section>
 
+@if (showAdminErrorModal)
+{
+  <AuthenticationModal
+    Title="Promotion error"
+    Text="@errorMessage"
+    DialogType=AuthenticationModal.ModalDialogType.Ok
+    OnClose="@ClosePromotionErrorModal">
+  </AuthenticationModal>
+}
+
 @if(showAdminConfirmationModal)
 {
     <AuthenticationModal 
@@ -78,6 +88,8 @@
     private DateTime newDateStart;
     private DateTime newDateEnd;
     private bool showAdminConfirmationModal = false;
+    private bool showAdminErrorModal = false;
+    private string errorMessage = "";
 
     protected override void OnInitialized()
     {
@@ -93,14 +105,28 @@
 
     private async Task HandleValidSubmit()
     {
-        newPromotion = new PromotionDto(newLabel, newDiscount, newDateStart, newDateEnd);
-        promotionLogic.ModifyPromotion(newPromotion, oldLabel); 
-        showAdminConfirmationModal = true;
+        try
+        {
+            newPromotion = new PromotionDto(newLabel, newDiscount, newDateStart, newDateEnd);
+            promotionLogic.ModifyPromotion(newPromotion, oldLabel); 
+            showAdminConfirmationModal = true;
+            
+        }
+        catch (Exception e)
+        {
+            showAdminErrorModal = true;
+            errorMessage = e.Message;
+        }
     }
     
     private void ClosePromotionConfirmationModal()
     {
         showAdminConfirmationModal = false;
+    }
+    
+    private void ClosePromotionErrorModal()
+    {
+        showAdminErrorModal = false;
     }
 
 }
