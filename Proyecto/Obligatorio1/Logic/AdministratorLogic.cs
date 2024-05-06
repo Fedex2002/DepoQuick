@@ -13,10 +13,16 @@ public class AdministratorLogic
         _personRepositories = personRepositories;
     }
 
-    public BookingDto ApproveBooking(BookingDto bookingDto)
+    public void ApproveBooking(UserDto userDto, BookingDto bookingDto)
     {
-        return new BookingDto(true, bookingDto.DateStart, bookingDto.DateEnd, bookingDto.StorageUnitDto,
-            bookingDto.RejectedMessage);
+        Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+        Booking newBooking = new Booking(true, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+        Person person = _personRepositories.GetFromRepository(userDto.Email);
+        if (person is User user)
+        {
+            user.GetBookings().Remove(oldBooking);
+            user.GetBookings().Add(newBooking);
+        }
     }
 
     public BookingDto SetRejectionMessage(BookingDto bookingDto, string rejectionMessage)
@@ -77,5 +83,15 @@ public class AdministratorLogic
             promotionsDto.Add(promotionDto);
         }
         return promotionsDto;
+    }
+    
+    public StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
+    {
+        List<Promotion> promotions = new List<Promotion>();
+        foreach (var promotionDto in storageUnitDto.Promotions)
+        {
+            promotions.Add(new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd));
+        }
+        return new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions);
     }
 }
