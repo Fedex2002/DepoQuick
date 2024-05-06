@@ -20,7 +20,22 @@ public class AdministratorLogic
         Person person = _personRepositories.GetFromRepository(userDto.Email);
         if (person is User user)
         {
-            user.GetBookings().Remove(oldBooking);
+            List<Booking> bookingsToRemove = new List<Booking>();
+            foreach (var booking in user.GetBookings())
+            {
+                if (booking.GetApproved() == oldBooking.GetApproved() && 
+                    booking.GetDateStart() == oldBooking.GetDateStart() &&
+                    booking.GetDateEnd() == oldBooking.GetDateEnd() && 
+                    booking.GetStorageUnit().GetId() == oldBooking.GetStorageUnit().GetId() &&
+                    booking.GetRejectedMessage() == oldBooking.GetRejectedMessage())
+                {
+                    bookingsToRemove.Add(booking);
+                }
+            }
+            foreach (var bookingToRemove in bookingsToRemove)
+            {
+                user.GetBookings().Remove(bookingToRemove);
+            }
             user.GetBookings().Add(newBooking);
         }
     }
