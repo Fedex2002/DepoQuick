@@ -25,16 +25,19 @@ public class AdministratorLogic
         }
     }
 
-    public BookingDto SetRejectionMessage(BookingDto bookingDto, string rejectionMessage)
+    public void SetRejectionMessage(UserDto userDto, BookingDto bookingDto, string rejectionMessage)
     {
-        if (rejectionMessage.Length == 0)
+        if (rejectionMessage == "")
         {
-            throw new LogicExceptions("The rejection message cannot be empty");
+            throw new LogicExceptions("The rejection message can't be empty.");
         }
-        else
+        Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+        Booking newBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), rejectionMessage);
+        Person person = _personRepositories.GetFromRepository(userDto.Email);
+        if (person is User user)
         {
-            return new BookingDto(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd,
-                bookingDto.StorageUnitDto, rejectionMessage);
+            user.GetBookings().Remove(oldBooking);
+            user.GetBookings().Add(newBooking);
         }
     }
 

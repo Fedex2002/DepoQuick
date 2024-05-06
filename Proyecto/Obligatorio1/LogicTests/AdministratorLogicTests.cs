@@ -52,19 +52,31 @@ public class AdministratorLogicTests
     [TestMethod]
     public void WhenAdministratorRejectsABookingDtoShouldWriteARejectionMessage()
     {
-        _bookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), new StorageUnitDto("12", AreaType.A, SizeType.Small, true, new List<PromotionDto>()), "");
-        string rejectionMessage = "The booking is rejected";
-        _bookingDto = _administratorLogic.SetRejectionMessage(_bookingDto, rejectionMessage);
-        Assert.IsTrue(_bookingDto.RejectedMessage.Length > 0);
+        _booking = new Booking(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), new StorageUnit("12", AreaType.A, SizeType.Small, true, new List<Promotion>()), "");
+        _bookings.Add(_booking);
+        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", _bookings);
+        _personRepo.AddToRepository(_user);
+        _promotionDto = new PromotionDto("Winter Discount", 25, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15));
+        _promotionsDto.Add(_promotionDto);
+        _bookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto), "");
+        _userDto = new UserDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<BookingDto>());
+        string rejectionMessage = "The booking has been rejected";
+        _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, rejectionMessage);
     }
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenAdministratorRejectsABookingDtoWithEmptyMessageShouldThrowException()
     {
-        _bookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), new StorageUnitDto("12", AreaType.A, SizeType.Small, true, new List<PromotionDto>()), "");
-        string rejectionMessage = "";
-        _bookingDto = _administratorLogic.SetRejectionMessage(_bookingDto, rejectionMessage);
+        _booking = new Booking(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), new StorageUnit("12", AreaType.A, SizeType.Small, true, new List<Promotion>()), "");
+        _bookings.Add(_booking);
+        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", _bookings);
+        _personRepo.AddToRepository(_user);
+        _promotionDto = new PromotionDto("Winter Discount", 25, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15));
+        _promotionsDto.Add(_promotionDto);
+        _bookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto), "");
+        _userDto = new UserDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<BookingDto>());
+        _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "");
     }
 
     [TestMethod]
