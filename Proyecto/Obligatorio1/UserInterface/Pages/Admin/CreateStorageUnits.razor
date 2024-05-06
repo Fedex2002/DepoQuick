@@ -61,7 +61,7 @@
               </tr>
               </thead>
               <tbody>
-              @foreach (var promotion in promotionLogic.GetPromotionsDto())
+              @foreach (var promotion in promotions)
               {
                 <tr>
                   <td>
@@ -108,6 +108,7 @@
 @code {
   StorageUnitDto _storageUnitDto;
   private List<PromotionDto> promotions;
+  private PromotionDto promotion;
   private string id;
   private AreaType area;
   private SizeType size;
@@ -151,10 +152,12 @@
   
   private void AddToSelectedPromotions(string promotionLabel)
   {
-    PromotionDto promotion = promotionLogic.GetPromotionDtoFromLabel(promotionLabel);
-    if (promotionLogic.GetPromotionsDto().Contains(promotion))
+    promotion = promotionLogic.GetPromotionDtoFromLabel(promotionLabel);
+    bool exists = selectedPromotions.Any(p => p.Label == promotion.Label);
+
+    if (exists)
     {
-      selectedPromotions.Remove(promotion);
+      selectedPromotions.RemoveAll(p => p.Label == promotion.Label); 
     }
     else
     {
