@@ -13,22 +13,61 @@ public class AdministratorLogic
         _personRepositories = personRepositories;
     }
 
-    public BookingDto ApproveBooking(BookingDto bookingDto)
+    public void ApproveBooking(UserDto userDto, BookingDto bookingDto)
     {
-        return new BookingDto(true, bookingDto.DateStart, bookingDto.DateEnd, bookingDto.StorageUnitDto,
-            bookingDto.RejectedMessage);
+        Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+        Booking newBooking = new Booking(true, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+        Person person = _personRepositories.GetFromRepository(userDto.Email);
+        if (person is User user)
+        {
+            List<Booking> bookingsToRemove = new List<Booking>();
+            foreach (var booking in user.GetBookings())
+            {
+                if (booking.GetApproved() == oldBooking.GetApproved() && 
+                    booking.GetDateStart() == oldBooking.GetDateStart() &&
+                    booking.GetDateEnd() == oldBooking.GetDateEnd() && 
+                    booking.GetStorageUnit().GetId() == oldBooking.GetStorageUnit().GetId() &&
+                    booking.GetRejectedMessage() == oldBooking.GetRejectedMessage())
+                {
+                    bookingsToRemove.Add(booking);
+                }
+            }
+            foreach (var bookingToRemove in bookingsToRemove)
+            {
+                user.GetBookings().Remove(bookingToRemove);
+            }
+            user.GetBookings().Add(newBooking);
+        }
     }
 
-    public BookingDto SetRejectionMessage(BookingDto bookingDto, string rejectionMessage)
+    public void SetRejectionMessage(UserDto userDto, BookingDto bookingDto, string rejectionMessage)
     {
-        if (rejectionMessage.Length == 0)
+        if (rejectionMessage == "")
         {
-            throw new LogicExceptions("The rejection message cannot be empty");
+            throw new LogicExceptions("The rejection message can't be empty.");
         }
-        else
+        Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+        Booking newBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), rejectionMessage);
+        Person person = _personRepositories.GetFromRepository(userDto.Email);
+        if (person is User user)
         {
-            return new BookingDto(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd,
-                bookingDto.StorageUnitDto, rejectionMessage);
+            List<Booking> bookingsToRemove = new List<Booking>();
+            foreach (var booking in user.GetBookings())
+            {
+                if (booking.GetApproved() == oldBooking.GetApproved() && 
+                    booking.GetDateStart() == oldBooking.GetDateStart() &&
+                    booking.GetDateEnd() == oldBooking.GetDateEnd() && 
+                    booking.GetStorageUnit().GetId() == oldBooking.GetStorageUnit().GetId() &&
+                    booking.GetRejectedMessage() == oldBooking.GetRejectedMessage())
+                {
+                    bookingsToRemove.Add(booking);
+                }
+            }
+            foreach (var bookingToRemove in bookingsToRemove)
+            {
+                user.GetBookings().Remove(bookingToRemove);
+            }
+            user.GetBookings().Add(newBooking);
         }
     }
 
@@ -77,5 +116,15 @@ public class AdministratorLogic
             promotionsDto.Add(promotionDto);
         }
         return promotionsDto;
+    }
+    
+    public StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
+    {
+        List<Promotion> promotions = new List<Promotion>();
+        foreach (var promotionDto in storageUnitDto.Promotions)
+        {
+            promotions.Add(new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd));
+        }
+        return new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions);
     }
 }
