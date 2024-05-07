@@ -136,8 +136,8 @@
                 bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "");
                 if (sessionLogic.CurrentPerson is UserDto userDto)
                 {
-                    userDto.Bookings.Add(bookingDto);
                     userLogic.AddBookingToUser(userDto, bookingDto);
+                    userDto.Bookings.Add(bookingDto);
                     showUserConfirmationModal = true;
                 }
             }
@@ -146,10 +146,6 @@
         {
             errorMessage = e.Message;
             showUserErrorModal = true;
-            if (sessionLogic.CurrentPerson is UserDto userDto && userDto.Bookings.Contains(bookingDto))
-            {
-                userDto.Bookings.Remove(bookingDto);
-            }
         }
     }
 
