@@ -7,7 +7,7 @@ namespace Logic;
 
 public class PromotionLogic
 {
-    private PromotionsRepositories _promotionRepositories;
+    private readonly PromotionsRepositories _promotionRepositories;
     
     public PromotionLogic(PromotionsRepositories promotionRepositories)
     {
