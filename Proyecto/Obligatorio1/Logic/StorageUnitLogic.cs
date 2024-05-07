@@ -1,5 +1,4 @@
 using Model;
-using Model.Enums;
 using Logic.DTOs;
 using Repositories;
 using Model.Exceptions;
@@ -8,7 +7,7 @@ namespace Logic;
 
 public class StorageUnitLogic
 {
-    private StorageUnitRepositories _storageUnitRepositories;
+    private readonly StorageUnitRepositories _storageUnitRepositories;
     
     public StorageUnitLogic(StorageUnitRepositories storageUnitRepositories)
     {
