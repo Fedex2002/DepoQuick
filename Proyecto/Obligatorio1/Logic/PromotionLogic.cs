@@ -34,14 +34,19 @@ public class PromotionLogic
         Promotion promotion= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
         if (_promotionRepositories.GetFromRepository(promotionDto.Label) != null)
         {
-            throw new LogicExceptions("Promotion already exists");
+            IfPromotionExistsThrowException();
         }
         else
         {
             _promotionRepositories.AddToRepository(promotion);
         }
     }
-    
+
+    private static void IfPromotionExistsThrowException()
+    {
+        throw new LogicExceptions("Promotion already exists");
+    }
+
     public void RemovePromotion(PromotionDto promotionDto)
     {
         Promotion promotionInRepo= _promotionRepositories.GetFromRepository(promotionDto.Label);
