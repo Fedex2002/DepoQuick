@@ -53,25 +53,31 @@ public class PersonLogic
             Person person = _personRepositories.GetFromRepository(email);
             if (CheckIfPasswordIsCorrect(password, person.GetPassword()))
             {
-                if (person is Administrator)
-                {
-                    personDto= new AdministratorDto(person.GetName(), person.GetSurname(), person.GetEmail(), person.GetPassword());
-                }
-                else if (person is User user)
-                {
-                    personDto= new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), ChangeToBookingsDtos(user.GetBookings()));
-                }
-                else if (person != null)
-                {
-                    personDto = new PersonDto(person.GetName(), person.GetSurname(), person.GetEmail(),
-                        person.GetPassword());
-                }
-
+                personDto = CheckIfIsUserAdministratorOrPerson(person, personDto);
             }
         }
         else
         {
             throw new LogicExceptions("The email is not registered");
+        }
+
+        return personDto;
+    }
+
+    private PersonDto CheckIfIsUserAdministratorOrPerson(Person person, PersonDto personDto)
+    {
+        if (person is Administrator)
+        {
+            personDto= new AdministratorDto(person.GetName(), person.GetSurname(), person.GetEmail(), person.GetPassword());
+        }
+        else if (person is User user)
+        {
+            personDto= new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), ChangeToBookingsDtos(user.GetBookings()));
+        }
+        else if (person != null)
+        {
+            personDto = new PersonDto(person.GetName(), person.GetSurname(), person.GetEmail(),
+                person.GetPassword());
         }
 
         return personDto;
