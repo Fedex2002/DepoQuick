@@ -6,7 +6,7 @@ namespace Logic;
 
 public class AdministratorLogic
 {
-    private PersonRepositories _personRepositories;
+    private readonly PersonRepositories _personRepositories;
 
     public AdministratorLogic(PersonRepositories personRepositories)
     {
@@ -121,8 +121,8 @@ public class AdministratorLogic
         }
         return promotionsDto;
     }
-    
-    public StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
+
+    private StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
     {
         List<Promotion> promotions = new List<Promotion>();
         foreach (var promotionDto in storageUnitDto.Promotions)
