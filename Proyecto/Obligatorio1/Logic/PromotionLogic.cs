@@ -19,7 +19,7 @@ public class PromotionLogic
         Promotion promotionInRepo= _promotionRepositories.GetFromRepository(oldLabel);
         if (_promotionRepositories.GetFromRepository(oldLabel) == null)
         {
-            throw new LogicExceptions("Promotion does not exist");
+            IfPromotionDoesNotExistThrowException();
         }
         else
         {
