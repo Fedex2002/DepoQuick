@@ -22,7 +22,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var promotion in promotions)
+                        @foreach (var promotion in _promotions)
                         {
                             <tr>
                                 <td>@promotion.Label</td>
@@ -41,16 +41,16 @@
     </div>
 </section>
 
-@if (showAdminErrorModal)
+@if (_showAdminErrorModal)
 {
   <AuthenticationModal
     Title="Promotion does not exist"
-    Text="@errorMessage"
+    Text="@_errorMessage"
     DialogType=AuthenticationModal.ModalDialogType.Ok
     OnClose="@ClosePromotionErrorModal">
   </AuthenticationModal>
 }
-@if(showAdminConfirmationModal)
+@if(_showAdminConfirmationModal)
 {
     <AuthenticationModal 
       Title="Promotion deleted successfully"
@@ -61,41 +61,41 @@
 }
 
 @code {
-    PromotionDto promotionDto;
-    private List<PromotionDto> promotions;
-    private bool showAdminErrorModal = false;
-    private string errorMessage = "";
-    private bool showAdminConfirmationModal = false;
+    PromotionDto _promotionDto;
+    private List<PromotionDto> _promotions;
+    private bool _showAdminErrorModal = false;
+    private string _errorMessage = "";
+    private bool _showAdminConfirmationModal = false;
     
     protected override void OnInitialized()
     {
-        promotionDto = new PromotionDto();
-        promotions = promotionLogic.GetPromotionsDto();
+        _promotionDto = new PromotionDto();
+        _promotions = promotionLogic.GetPromotionsDto();
     }
     
     private async Task HandleValidSubmit(string label)
     {
         try
         {
-            promotionDto = promotionLogic.GetPromotionDtoFromLabel(label);
-            promotionLogic.RemovePromotion(promotionDto);
-            showAdminConfirmationModal = true;
-            promotions = promotionLogic.GetPromotionsDto();
+            _promotionDto = promotionLogic.GetPromotionDtoFromLabel(label);
+            promotionLogic.RemovePromotion(_promotionDto);
+            _showAdminConfirmationModal = true;
+            _promotions = promotionLogic.GetPromotionsDto();
         }
         catch (Exception e)
         {
-            showAdminErrorModal = true;
-            errorMessage = e.Message;
+            _showAdminErrorModal = true;
+            _errorMessage = e.Message;
         }
     }
     
     private void ClosePromotionErrorModal()
     {
-        showAdminErrorModal = false;
+        _showAdminErrorModal = false;
     }
   
     private void ClosePromotionConfirmationModal()
     {
-        showAdminConfirmationModal = false;
+        _showAdminConfirmationModal = false;
     }
 }
