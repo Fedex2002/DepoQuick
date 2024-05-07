@@ -60,14 +60,7 @@ public class AdministratorLogic
             List<Booking> bookingsToRemove = new List<Booking>();
             foreach (var booking in user.GetBookings())
             {
-                if (booking.GetApproved() == oldBooking.GetApproved() && 
-                    booking.GetDateStart() == oldBooking.GetDateStart() &&
-                    booking.GetDateEnd() == oldBooking.GetDateEnd() && 
-                    booking.GetStorageUnit().GetId() == oldBooking.GetStorageUnit().GetId() &&
-                    booking.GetRejectedMessage() == oldBooking.GetRejectedMessage())
-                {
-                    bookingsToRemove.Add(booking);
-                }
+                CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(booking, oldBooking, bookingsToRemove);
             }
             foreach (var bookingToRemove in bookingsToRemove)
             {
