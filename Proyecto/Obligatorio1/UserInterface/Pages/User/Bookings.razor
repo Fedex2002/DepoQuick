@@ -146,6 +146,10 @@
         {
             errorMessage = e.Message;
             showUserErrorModal = true;
+            if (sessionLogic.CurrentPerson is UserDto userDto && userDto.Bookings.Contains(bookingDto))
+            {
+                userDto.Bookings.Remove(bookingDto);
+            }
         }
     }
 
