@@ -22,21 +22,27 @@ public class AdministratorLogic
         {
             List<Booking> bookingsToRemove = new List<Booking>();
             foreach (var booking in user.GetBookings())
-            {
-                if (booking.GetApproved() == oldBooking.GetApproved() && 
-                    booking.GetDateStart() == oldBooking.GetDateStart() &&
-                    booking.GetDateEnd() == oldBooking.GetDateEnd() && 
-                    booking.GetStorageUnit().GetId() == oldBooking.GetStorageUnit().GetId() &&
-                    booking.GetRejectedMessage() == oldBooking.GetRejectedMessage())
-                {
-                    bookingsToRemove.Add(booking);
-                }
+            { 
+                CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(booking, oldBooking, bookingsToRemove);
             }
             foreach (var bookingToRemove in bookingsToRemove)
             {
                 user.GetBookings().Remove(bookingToRemove);
             }
             user.GetBookings().Add(newBooking);
+        }
+    }
+
+    private static void CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(Booking booking, Booking oldBooking,
+        List<Booking> bookingsToRemove)
+    {
+        if (booking.GetApproved() == oldBooking.GetApproved() && 
+            booking.GetDateStart() == oldBooking.GetDateStart() &&
+            booking.GetDateEnd() == oldBooking.GetDateEnd() && 
+            booking.GetStorageUnit().GetId() == oldBooking.GetStorageUnit().GetId() &&
+            booking.GetRejectedMessage() == oldBooking.GetRejectedMessage())
+        {
+            bookingsToRemove.Add(booking);
         }
     }
 
