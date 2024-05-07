@@ -53,25 +53,31 @@ public class PersonLogic
             Person person = _personRepositories.GetFromRepository(email);
             if (CheckIfPasswordIsCorrect(password, person.GetPassword()))
             {
-                if (person is Administrator)
-                {
-                    personDto= new AdministratorDto(person.GetName(), person.GetSurname(), person.GetEmail(), person.GetPassword());
-                }
-                else if (person is User user)
-                {
-                    personDto= new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), ChangeToBookingsDtos(user.GetBookings()));
-                }
-                else if (person != null)
-                {
-                    personDto = new PersonDto(person.GetName(), person.GetSurname(), person.GetEmail(),
-                        person.GetPassword());
-                }
-
+                personDto = CheckIfIsUserAdministratorOrPerson(person, personDto);
             }
         }
         else
         {
             throw new LogicExceptions("The email is not registered");
+        }
+
+        return personDto;
+    }
+
+    private PersonDto CheckIfIsUserAdministratorOrPerson(Person person, PersonDto personDto)
+    {
+        if (person is Administrator)
+        {
+            personDto= new AdministratorDto(person.GetName(), person.GetSurname(), person.GetEmail(), person.GetPassword());
+        }
+        else if (person is User user)
+        {
+            personDto= new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), ChangeToBookingsDtos(user.GetBookings()));
+        }
+        else if (person != null)
+        {
+            personDto = new PersonDto(person.GetName(), person.GetSurname(), person.GetEmail(),
+                person.GetPassword());
         }
 
         return personDto;
@@ -86,26 +92,31 @@ public class PersonLogic
     {
         if (!CheckIfEmailIsRegistered(personDto.Email))
         {
-            if (personDto is UserDto userDto)
-            {
-                User user = new User(userDto.Name, userDto.Surname, userDto.Email, userDto.Password, new List<Booking>());
-                _personRepositories.AddToRepository(user);
-            }
-            else 
-            {
-                if(personDto is AdministratorDto adminDto)
-                {
-                    Administrator admin = new Administrator(adminDto.Name, adminDto.Surname, adminDto.Email, adminDto.Password);
-                    _personRepositories.AddToRepository(admin);
-                }
-            }
+            CheckIfIsUserOrAdministratorAndAddToTheRepository(personDto);
         }
         else
         {
             throw new LogicExceptions("The email is already registered");
         }
     }
-    
+
+    private void CheckIfIsUserOrAdministratorAndAddToTheRepository(PersonDto personDto)
+    {
+        if (personDto is UserDto userDto)
+        {
+            User user = new User(userDto.Name, userDto.Surname, userDto.Email, userDto.Password, new List<Booking>());
+            _personRepositories.AddToRepository(user);
+        }
+        else 
+        {
+            if(personDto is AdministratorDto adminDto)
+            {
+                Administrator admin = new Administrator(adminDto.Name, adminDto.Surname, adminDto.Email, adminDto.Password);
+                _personRepositories.AddToRepository(admin);
+            }
+        }
+    }
+
     public List<BookingDto> ChangeToBookingsDtos(List<Booking> bookings)
     {
         List<BookingDto> bookingDtos = new List<BookingDto>();

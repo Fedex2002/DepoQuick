@@ -19,7 +19,7 @@ public class PromotionLogic
         Promotion promotionInRepo= _promotionRepositories.GetFromRepository(oldLabel);
         if (_promotionRepositories.GetFromRepository(oldLabel) == null)
         {
-            throw new LogicExceptions("Promotion does not exist");
+            IfPromotionDoesNotExistThrowException();
         }
         else
         {
@@ -34,27 +34,37 @@ public class PromotionLogic
         Promotion promotion= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
         if (_promotionRepositories.GetFromRepository(promotionDto.Label) != null)
         {
-            throw new LogicExceptions("Promotion already exists");
+            IfPromotionExistsThrowException();
         }
         else
         {
             _promotionRepositories.AddToRepository(promotion);
         }
     }
-    
+
+    private static void IfPromotionExistsThrowException()
+    {
+        throw new LogicExceptions("Promotion already exists");
+    }
+
     public void RemovePromotion(PromotionDto promotionDto)
     {
         Promotion promotionInRepo= _promotionRepositories.GetFromRepository(promotionDto.Label);
         if (_promotionRepositories.GetFromRepository(promotionDto.Label) == null)
         {
-            throw new LogicExceptions("Promotion does not exist");
+            IfPromotionDoesNotExistThrowException();
         }
         else
         {
             _promotionRepositories.RemoveFromRepository(promotionInRepo);
         }
     }
-    
+
+    private static void IfPromotionDoesNotExistThrowException()
+    {
+        throw new LogicExceptions("Promotion does not exist");
+    }
+
     public List<PromotionDto> GetPromotionsDto()
     {
         List<PromotionDto> promotionsDto = new List<PromotionDto>();

@@ -22,15 +22,8 @@ public class AdministratorLogic
         {
             List<Booking> bookingsToRemove = new List<Booking>();
             foreach (var booking in user.GetBookings())
-            {
-                if (booking.GetApproved() == oldBooking.GetApproved() && 
-                    booking.GetDateStart() == oldBooking.GetDateStart() &&
-                    booking.GetDateEnd() == oldBooking.GetDateEnd() && 
-                    booking.GetStorageUnit().GetId() == oldBooking.GetStorageUnit().GetId() &&
-                    booking.GetRejectedMessage() == oldBooking.GetRejectedMessage())
-                {
-                    bookingsToRemove.Add(booking);
-                }
+            { 
+                CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(booking, oldBooking, bookingsToRemove);
             }
             foreach (var bookingToRemove in bookingsToRemove)
             {
@@ -40,12 +33,22 @@ public class AdministratorLogic
         }
     }
 
+    private static void CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(Booking booking, Booking oldBooking,
+        List<Booking> bookingsToRemove)
+    {
+        if (booking.GetApproved() == oldBooking.GetApproved() && 
+            booking.GetDateStart() == oldBooking.GetDateStart() &&
+            booking.GetDateEnd() == oldBooking.GetDateEnd() && 
+            booking.GetStorageUnit().GetId() == oldBooking.GetStorageUnit().GetId() &&
+            booking.GetRejectedMessage() == oldBooking.GetRejectedMessage())
+        {
+            bookingsToRemove.Add(booking);
+        }
+    }
+
     public void SetRejectionMessage(UserDto userDto, BookingDto bookingDto, string rejectionMessage)
     {
-        if (rejectionMessage == "")
-        {
-            throw new LogicExceptions("The rejection message can't be empty.");
-        }
+        IfRejectionMessageIsEmptyThrowException(rejectionMessage);
         Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
         Booking newBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), rejectionMessage);
         Person person = _personRepositories.GetFromRepository(userDto.Email);
@@ -54,20 +57,21 @@ public class AdministratorLogic
             List<Booking> bookingsToRemove = new List<Booking>();
             foreach (var booking in user.GetBookings())
             {
-                if (booking.GetApproved() == oldBooking.GetApproved() && 
-                    booking.GetDateStart() == oldBooking.GetDateStart() &&
-                    booking.GetDateEnd() == oldBooking.GetDateEnd() && 
-                    booking.GetStorageUnit().GetId() == oldBooking.GetStorageUnit().GetId() &&
-                    booking.GetRejectedMessage() == oldBooking.GetRejectedMessage())
-                {
-                    bookingsToRemove.Add(booking);
-                }
+                CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(booking, oldBooking, bookingsToRemove);
             }
             foreach (var bookingToRemove in bookingsToRemove)
             {
                 user.GetBookings().Remove(bookingToRemove);
             }
             user.GetBookings().Add(newBooking);
+        }
+    }
+
+    private static void IfRejectionMessageIsEmptyThrowException(string rejectionMessage)
+    {
+        if (rejectionMessage == "")
+        {
+            throw new LogicExceptions("The rejection message can't be empty.");
         }
     }
 

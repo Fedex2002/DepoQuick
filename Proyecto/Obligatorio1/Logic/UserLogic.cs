@@ -27,14 +27,7 @@ public class UserLogic
         {
             foreach (var booking in user.GetBookings())
             {
-                if (booking.GetStorageUnit().GetId() == newBooking.GetStorageUnit().GetId() 
-                    && booking.GetStorageUnit().GetArea() == newBooking.GetStorageUnit().GetArea() 
-                    && booking.GetStorageUnit().GetSize() == newBooking.GetStorageUnit().GetSize() 
-                    && booking.GetStorageUnit().GetClimatization() == newBooking.GetStorageUnit().GetClimatization() 
-                    && booking.GetStorageUnit().GetPromotions().SequenceEqual(newBooking.GetStorageUnit().GetPromotions()))
-                {
-                    exists = true;
-                }
+                exists = IfStorageUnitInOldBookingAndBookingAreTheSameSetExistsToTrue(booking, newBooking, exists);
             }
             if (!exists)
             {
@@ -42,11 +35,31 @@ public class UserLogic
             }
             else
             {
-                throw new LogicExceptions("Booking for this StorageUnit already exists");
+                IfUserAlreadyBookTheStorageUnitThrowException();
             }
         }
     }
-    
+
+    private static void IfUserAlreadyBookTheStorageUnitThrowException()
+    {
+        throw new LogicExceptions("Booking for this StorageUnit already exists");
+    }
+
+    private static bool IfStorageUnitInOldBookingAndBookingAreTheSameSetExistsToTrue(Booking booking, Booking newBooking,
+        bool exists)
+    {
+        if (booking.GetStorageUnit().GetId() == newBooking.GetStorageUnit().GetId() 
+            && booking.GetStorageUnit().GetArea() == newBooking.GetStorageUnit().GetArea() 
+            && booking.GetStorageUnit().GetSize() == newBooking.GetStorageUnit().GetSize() 
+            && booking.GetStorageUnit().GetClimatization() == newBooking.GetStorageUnit().GetClimatization() 
+            && booking.GetStorageUnit().GetPromotions().SequenceEqual(newBooking.GetStorageUnit().GetPromotions()))
+        {
+            exists = true;
+        }
+
+        return exists;
+    }
+
     public bool CheckIfBookingIsApproved(BookingDto bookingDto)
     {
         return bookingDto.Approved;
