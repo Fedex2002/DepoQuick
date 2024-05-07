@@ -22,13 +22,13 @@
           </div>
 
           <div data-mdb-input-init class="form-outline mb-4">
-            <input type="email" class="form-control form-control-lg" placeholder="Enter email address" @bind="email" required/>
-            <label class="form-label" for="UserEmail">Email address</label>
+            <input type="email" class="form-control form-control-lg" placeholder="Enter email address" @bind="_email" required/>
+            <label class="form-label">Email address</label>
           </div>
           
           <div data-mdb-input-init class="form-outline mb-3">
-            <input type="password" class="form-control form-control-lg" placeholder="Enter password" @bind="password" required/>
-            <label class="form-label" for="UserPassword">Password</label>
+            <input type="password" class="form-control form-control-lg" placeholder="Enter password" @bind="_password" required/>
+            <label class="form-label">Password</label>
           </div>
           
           <div class="text-center text-lg-start mt-4 pt-2">
@@ -48,11 +48,11 @@
   </div>
 </section>
 
-@if (showUserErrorModal)
+@if (_showUserErrorModal)
 {
             <AuthenticationModal 
                         Title="Login Error" 
-                        Text="@errorMessage" 
+                        Text="@_errorMessage" 
                         DialogType=AuthenticationModal.ModalDialogType.Ok
                         OnClose="@CloseUserErrorModal">
             </AuthenticationModal>
@@ -60,10 +60,10 @@
 
 @code {
   PersonDto person;
-  private string email;
-  private string password;
-  private bool showUserErrorModal = false;
-  private string errorMessage = "";
+  private string _email;
+  private string _password;
+  private bool _showUserErrorModal = false;
+  private string _errorMessage = "";
   
   protected override void OnInitialized()
   {
@@ -74,20 +74,20 @@
   {
     try
     {
-      sessionLogic.Login(email,password);
+      sessionLogic.Login(_email,_password);
       person = sessionLogic.CurrentPerson;
       GoToIndex();
     }
     catch (Exception e)
     {
-      showUserErrorModal = true;
-      errorMessage = e.Message;
+      _showUserErrorModal = true;
+      _errorMessage = e.Message;
     }
   }
     
   private void CloseUserErrorModal()
   {
-    showUserErrorModal = false;
+    _showUserErrorModal = false;
   }
     
   private void GoToIndex()
