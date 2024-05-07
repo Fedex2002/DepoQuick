@@ -27,7 +27,11 @@ public class UserLogic
         {
             foreach (var booking in user.GetBookings())
             {
-                if (booking.GetApproved() == newBooking.GetApproved() && booking.GetDateStart() == newBooking.GetDateStart() && booking.GetDateEnd() == newBooking.GetDateEnd() && booking.GetStorageUnit().GetId() == newBooking.GetStorageUnit().GetId() && booking.GetRejectedMessage() == newBooking.GetRejectedMessage())
+                if (booking.GetStorageUnit().GetId() == newBooking.GetStorageUnit().GetId() 
+                    && booking.GetStorageUnit().GetArea() == newBooking.GetStorageUnit().GetArea() 
+                    && booking.GetStorageUnit().GetSize() == newBooking.GetStorageUnit().GetSize() 
+                    && booking.GetStorageUnit().GetClimatization() == newBooking.GetStorageUnit().GetClimatization() 
+                    && booking.GetStorageUnit().GetPromotions().SequenceEqual(newBooking.GetStorageUnit().GetPromotions()))
                 {
                     exists = true;
                 }
