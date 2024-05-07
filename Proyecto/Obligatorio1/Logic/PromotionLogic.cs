@@ -52,14 +52,19 @@ public class PromotionLogic
         Promotion promotionInRepo= _promotionRepositories.GetFromRepository(promotionDto.Label);
         if (_promotionRepositories.GetFromRepository(promotionDto.Label) == null)
         {
-            throw new LogicExceptions("Promotion does not exist");
+            IfPromotionDoesNotExistThrowException();
         }
         else
         {
             _promotionRepositories.RemoveFromRepository(promotionInRepo);
         }
     }
-    
+
+    private static void IfPromotionDoesNotExistThrowException()
+    {
+        throw new LogicExceptions("Promotion does not exist");
+    }
+
     public List<PromotionDto> GetPromotionsDto()
     {
         List<PromotionDto> promotionsDto = new List<PromotionDto>();
