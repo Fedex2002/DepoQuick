@@ -10,18 +10,17 @@ namespace LogicTests;
 [TestClass]
 public class AdministratorLogicTests
 {
-    private PersonRepositories _personRepo;
-    private AdministratorLogic _administratorLogic;
-    private List<Booking> _bookings;
-    private Promotion _promotion;
-    private PromotionDto _promotionDto;
-    private List<PromotionDto> _promotionsDto;
-    private StorageUnit _storageUnit;
-    private List<Promotion> _promotions;
-    private BookingDto _bookingDto;
-    private Booking _booking;
-    private UserDto _userDto;
-    private User _user;
+    private PersonRepositories? _personRepo;
+    private AdministratorLogic? _administratorLogic;
+    private List<Booking>? _bookings;
+    private Promotion? _promotion;
+    private PromotionDto? _promotionDto;
+    private List<PromotionDto>? _promotionsDto;
+    private List<Promotion>? _promotions;
+    private BookingDto? _bookingDto;
+    private Booking? _booking;
+    private UserDto? _userDto;
+    private User? _user;
 
     [TestInitialize]
     public void TestInitialize()
