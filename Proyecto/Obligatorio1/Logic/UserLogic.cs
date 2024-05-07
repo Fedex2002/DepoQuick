@@ -20,11 +20,26 @@ public class UserLogic
 
     private void CheckIfPersonIsAUserAddBooking(UserDto userDto, BookingDto bookingDto)
     {
-        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
         Person person = _personRepo.GetFromRepository(userDto.Email);
+        bool exists = false;
         if (person is User user)
         {
-            user.GetBookings().Add(booking);
+            foreach (var booking in user.GetBookings())
+            {
+                if (booking.GetApproved() == newBooking.GetApproved() && booking.GetDateStart() == newBooking.GetDateStart() && booking.GetDateEnd() == newBooking.GetDateEnd() && booking.GetStorageUnit().GetId() == newBooking.GetStorageUnit().GetId() && booking.GetRejectedMessage() == newBooking.GetRejectedMessage())
+                {
+                    exists = true;
+                }
+            }
+            if (!exists)
+            {
+                user.GetBookings().Add(newBooking);
+            }
+            else
+            {
+                throw new LogicExceptions("Booking for this StorageUnit already exists");
+            }
         }
     }
     
