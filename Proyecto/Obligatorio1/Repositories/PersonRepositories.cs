@@ -5,7 +5,7 @@ using Model.Exceptions;
 namespace Repositories;
 public class PersonRepositories : IRepositories<Person>
 {
-    private List<Person> _persons = new List<Person>();
+    private readonly List<Person> _persons = new List<Person>();
     
      public void AddToRepository(Person person)
      {
