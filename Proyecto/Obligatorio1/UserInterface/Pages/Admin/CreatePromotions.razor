@@ -1,0 +1,104 @@
+@page "/CreatePromotions"
+@using Logic
+@using Logic.DTOs
+@layout MainLayout
+@inject PromotionLogic promotionLogic
+
+<PageTitle>DepoQuick</PageTitle>
+
+<section class="vh-75">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-75">
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <form @onsubmit="HandleValidSubmit">
+          <div class="divider d-flex align-items-center my-4">
+            <p class="text-center fw-bold mx-3 mb-0 fs-4">Create Promotion</p>
+          </div>
+          <div data-mdb-input-init class="form-outline mb-2">
+            <input class="form-control form-control-lg" placeholder="Enter Label" @bind="label" required/>
+            <label class="form-label" >Label</label>
+          </div>
+          <div data-mdb-input-init class="form-outline mb-2">
+            <input class="form-control form-control-lg" placeholder="Enter discount" @bind="discount" required/>
+            <label class="form-label" >Discount</label>
+          </div>
+          <div data-mdb-input-init class="form-outline mb-2">
+            <input type="date" class="form-control form-control-lg" @bind="dateStart" required/>
+            <label class="form-label" >DateStart</label>
+          </div>
+          <div data-mdb-input-init class="form-outline mb-2">
+            <input type="date" class="form-control form-control-lg" @bind="dateEnd" required/>
+            <label class="form-label" >DateEnd</label>
+          </div>
+          <div class="text-center text-lg-start pt-2">
+            <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" >Create the Promotion</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+@if (showAdminErrorModal)
+{
+  <AuthenticationModal
+    Title="Promotion error"
+    Text="@errorMessage"
+    DialogType=AuthenticationModal.ModalDialogType.Ok
+    OnClose="@ClosePromotionErrorModal">
+  </AuthenticationModal>
+}
+@if(showAdminConfirmationModal)
+{
+    <AuthenticationModal 
+      Title="Promotion created successfully"
+      Text="Promotion created successfully"
+      DialogType=AuthenticationModal.ModalDialogType.Ok
+      OnClose="@ClosePromotionConfirmationModal">
+    </AuthenticationModal>
+}
+
+@code {
+  PromotionDto promotionDto;
+  private string label;
+  private int discount;
+  private DateTime dateStart;
+  private DateTime dateEnd;
+  private bool showAdminErrorModal = false;
+  private string errorMessage = "";
+  private bool showAdminConfirmationModal = false;
+
+  protected override void OnInitialized()
+  {
+      promotionDto = new PromotionDto();
+      dateStart = DateTime.Today;
+      dateEnd = DateTime.Today;
+  }
+
+  private async Task HandleValidSubmit()
+  {
+    try
+    {
+      promotionDto = new PromotionDto(label, discount, dateStart, dateEnd);
+      promotionLogic.CreatePromotion(promotionDto);
+      showAdminConfirmationModal = true;
+    }
+    catch (Exception e)
+    {
+      showAdminErrorModal = true;
+      errorMessage = e.Message;
+    }
+  }
+  
+  private void ClosePromotionErrorModal()
+  {
+    showAdminErrorModal = false;
+    StateHasChanged();
+  }
+  
+  private void ClosePromotionConfirmationModal()
+  {
+    showAdminConfirmationModal = false;
+    StateHasChanged();
+  }
+}

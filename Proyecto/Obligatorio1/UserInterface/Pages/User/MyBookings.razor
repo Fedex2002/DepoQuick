@@ -1,0 +1,100 @@
+@page "/MyBookings"
+@using Logic
+@using Logic.DTOs
+@using Repositories
+@layout MainLayout
+@inject UserLogic userLogic
+@inject SessionLogic sessionLogic
+
+<PageTitle>DepoQuick</PageTitle>
+
+<section class="vh-75">
+    <div class="container">
+        <h2 class="mt-5 mb-4">My Bookings</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>StorageUnit data</th>
+                            <th>Total Price</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Active</th>
+                            <th>Rejection Message</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var booking in bookings)
+                    {
+                        <tr>
+                        <td>
+                            <strong>Id:</strong>@booking.StorageUnitDto.Id<br/>
+                            <strong>Area:</strong>@booking.StorageUnitDto.Area<br/>
+                            <strong>Size:</strong>@booking.StorageUnitDto.Size<br/>
+                            <strong>Climatization:</strong>@booking.StorageUnitDto.Climatization<br/>
+                            @foreach (var promotion in booking.StorageUnitDto.Promotions)
+                            {
+                                <div>
+                                    <br/>
+                                    <p style="margin-bottom: 0;">Promotion</p>
+                                    <strong>Label:</strong> @promotion.Label<br/>
+                                    <strong>Discount:</strong> @promotion.Discount<br/>
+                                    <strong>StartDate:</strong> @promotion.DateStart<br/>
+                                    <strong>EndDate:</strong> @promotion.DateEnd<br/>
+                                </div>
+                            }
+                        </td>
+                        <td>
+                            <label class="form-label">$@totalPrice[booking.StorageUnitDto.Id]</label>
+                        </td>
+                        <td>
+                            <label class="form-label">@dateStart[booking.StorageUnitDto.Id]</label>
+                        </td>
+                        <td>
+                            <label class="form-label">@dateEnd[booking.StorageUnitDto.Id]</label>
+                        </td>
+                        <td>
+                            <label class="form-label">@active[booking.StorageUnitDto.Id]</label>
+                        </td>
+                        <td>
+                            <label class="form-label">@rejectionMessage[booking.StorageUnitDto.Id]</label>
+                        </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    BookingDto bookingDto;
+    Dictionary<string, DateTime> dateStart = new Dictionary<string, DateTime>();
+    Dictionary<string, DateTime> dateEnd = new Dictionary<string, DateTime>();
+    Dictionary<string, double> totalPrice = new Dictionary<string, double>();
+    Dictionary<string, bool> active = new Dictionary<string, bool>();
+    Dictionary<string, string> rejectionMessage = new Dictionary<string, string>();
+    private List<StorageUnitDto> storageUnits;
+    private List<UserDto> users;
+    private List<BookingDto> bookings;
+    
+    protected override void OnInitialized()
+    {
+        var currentUser = sessionLogic.CurrentPerson as UserDto;
+        if (currentUser != null)
+        {
+            bookings = currentUser.Bookings;
+            foreach (var bookingDto in bookings)
+            {
+                totalPrice[bookingDto.StorageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
+                dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
+                dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
+                active[bookingDto.StorageUnitDto.Id] = bookingDto.Approved;
+                rejectionMessage[bookingDto.StorageUnitDto.Id] = bookingDto.RejectedMessage;
+            }
+        }
+    }
+}

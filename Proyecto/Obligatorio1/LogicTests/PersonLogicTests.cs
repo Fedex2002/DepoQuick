@@ -114,7 +114,8 @@ public class PersonLogicTests
         Assert.AreEqual(user.GetEmail(), loggedInPersonDto.Email);
         Assert.AreEqual(user.GetPassword(), loggedInPersonDto.Password);
     }
-    
+
+
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPersonIsTryingToLoginAndDoesNotExistShouldReturnException()

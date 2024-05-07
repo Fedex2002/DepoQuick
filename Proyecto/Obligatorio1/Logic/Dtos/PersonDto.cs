@@ -11,7 +11,7 @@ public class PersonDto
     public PersonDto()
     {
     }
-    
+
     public PersonDto(string name, string surname, string email, string password)
     {
         Name = name;

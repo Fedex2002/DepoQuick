@@ -1,4 +1,5 @@
 using Model;
+using Model.Enums;
 using Logic.DTOs;
 using Repositories;
 using Model.Exceptions;
@@ -20,12 +21,17 @@ public class StorageUnitLogic
         StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions);
         if (_storageUnitRepositories.GetFromRepository(storageUnitDto.Id) != null)
         {
-            throw new LogicExceptions("Storage unit already exists");
+            IfStorageUnitAlreadyExistsThrowException();
         }
         else
         {
             _storageUnitRepositories.AddToRepository(storageUnit);
         }
+    }
+
+    private static void IfStorageUnitAlreadyExistsThrowException()
+    {
+        throw new LogicExceptions("Storage unit already exists");
     }
 
     public List<Promotion> CreateListPromotions(StorageUnitDto storageUnitDto)
@@ -39,11 +45,46 @@ public class StorageUnitLogic
         StorageUnit storageUnitInRepo= _storageUnitRepositories.GetFromRepository(storageUnitDto.Id);
         if (_storageUnitRepositories.GetFromRepository(storageUnitDto.Id) == null)
         {
-            throw new LogicExceptions("Storage unit does not exist");
+            IfStorageUnitDoesNotExistThrowException();
         }
         else
         {
             _storageUnitRepositories.RemoveFromRepository(storageUnitInRepo);
         }
+    }
+
+    private static void IfStorageUnitDoesNotExistThrowException()
+    {
+        throw new LogicExceptions("Storage unit does not exist");
+    }
+
+    public List<StorageUnitDto> GetStorageUnitsDto()
+    {
+        List<StorageUnitDto> storageUnitsDto = new List<StorageUnitDto>();
+        foreach (var storageUnit in _storageUnitRepositories.GetAllFromRepository())
+        {
+            StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.GetId(), storageUnit.GetArea(), storageUnit.GetSize(), storageUnit.GetClimatization(), ChangeToPromotionsDto(storageUnit.GetPromotions()));
+            storageUnitsDto.Add(storageUnitDto);
+        }
+        return storageUnitsDto;
+    }
+    
+    public List<PromotionDto> ChangeToPromotionsDto(List<Promotion> promotions)
+    {
+        List<PromotionDto> promotionsDto = new List<PromotionDto>();
+        foreach(var promotion in promotions)
+        {
+            PromotionDto promotionDto = new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(), promotion.GetDateStart(), promotion.GetDateEnd());
+            promotionsDto.Add(promotionDto);
+        }
+
+        return promotionsDto;
+    }
+    
+    public StorageUnitDto GetStorageUnitDtoFromId(string id)
+    {
+        StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(id);
+        StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.GetId(), storageUnit.GetArea(), storageUnit.GetSize(), storageUnit.GetClimatization(), ChangeToPromotionsDto(storageUnit.GetPromotions()));
+        return storageUnitDto;
     }
 }

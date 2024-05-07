@@ -1,0 +1,177 @@
+@page "/Bookings"
+@using Logic
+@using Logic.DTOs
+@layout MainLayout
+@inject UserLogic userLogic
+@inject SessionLogic sessionLogic
+@inject StorageUnitLogic storageUnitLogic
+
+<PageTitle>DepoQuick</PageTitle>
+
+<section class="vh-75">
+    <div class="container">
+        <h2 class="mt-5 mb-4">Bookings</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>StorageUnit data</th>
+                            <th>Price per day</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Total Price</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var storageUnit in storageUnits)
+                        {
+                             <tr>
+                                 <td>
+                                     <strong>Id:</strong>@storageUnit.Id<br/>
+                                     <strong>Area:</strong>@storageUnit.Area<br/>
+                                     <strong>Size:</strong>@storageUnit.Size<br/>
+                                     <strong>Climatization:</strong>@storageUnit.Climatization<br/>
+                                     @foreach (var promotion in storageUnit.Promotions)
+                                     {
+                                         <div>
+                                             <br/>
+                                             <p style="margin-bottom: 0;">Promotion</p>
+                                             <strong>Label:</strong> @promotion.Label<br/>
+                                             <strong>Discount:</strong> @promotion.Discount<br/>
+                                             <strong>StartDate:</strong> @promotion.DateStart<br/>
+                                             <strong>EndDate:</strong> @promotion.DateEnd<br/>
+                                         </div>
+                                     }
+                                 </td>
+                                 <td>
+                                     <label class="form-label">$@pricePerDay[storageUnit.Id]</label>
+                                 </td>
+                                 <td>
+                                     <div data-mdb-input-init class="form-outline mb-2">
+                                         <input type="date" class="form-control form-control-lg" @bind="dateStart[storageUnit.Id]" required/>
+                                     </div>
+                                 </td>
+                                 <td>
+                                     <div data-mdb-input-init class="form-outline mb-2">
+                                         <input type="date" class="form-control form-control-lg" @bind="dateEnd[storageUnit.Id]" required/>
+                                     </div>
+                                 </td>
+                                 <td>
+                                     <div>
+                                         <label class="form-label">$@totalPrice[storageUnit.Id]</label>
+                                     </div>
+                                 </td>
+                                 <td>
+                                     <button type="button" class="btn btn-primary mb-2" @onclick="() => SetTotalPrice(storageUnit)">Calculate Total Price</button><br/>
+                                     <button type="button" class="btn btn-success" @onclick="() => HandleValidSubmit(storageUnit)">Select Storage Unit</button>
+                                 </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (showUserErrorModal)
+{
+  <AuthenticationModal
+    Title="Booking error"
+    Text="@errorMessage"
+    DialogType=AuthenticationModal.ModalDialogType.Ok
+    OnClose="@CloseBookingErrorModal">
+  </AuthenticationModal>
+}
+@if(showUserConfirmationModal)
+{
+    <AuthenticationModal 
+      Title="Booking selected successfully"
+      Text="Booking selected successfully"
+      DialogType=AuthenticationModal.ModalDialogType.Ok
+      OnClose="@CloseBookingConfirmationModal">
+    </AuthenticationModal>
+}
+
+@code {
+    BookingDto bookingDto;
+    UserDto userDto;
+    Dictionary<string, DateTime> dateStart = new Dictionary<string, DateTime>();
+    Dictionary<string, DateTime> dateEnd = new Dictionary<string, DateTime>();
+    Dictionary<string, double> pricePerDay = new Dictionary<string, double>();
+    Dictionary<string, double> totalPrice = new Dictionary<string, double>();
+    private List<StorageUnitDto> storageUnits;
+    private bool showUserErrorModal;
+    private string errorMessage = "";
+    private bool showUserConfirmationModal;
+    
+    protected override void OnInitialized()
+    {
+        bookingDto = new BookingDto();
+        storageUnits = storageUnitLogic.GetStorageUnitsDto();
+        foreach (var storageUnitDto in storageUnitLogic.GetStorageUnitsDto())
+        {
+            pricePerDay[storageUnitDto.Id] = userLogic.CalculateStorageUnitPricePerDay(storageUnitDto);
+            dateStart[storageUnitDto.Id] = DateTime.Today;
+            dateEnd[storageUnitDto.Id] = DateTime.Today;
+            totalPrice[storageUnitDto.Id] = 0;
+        }
+    }
+
+    private async Task HandleValidSubmit(StorageUnitDto storageUnitDto)
+    {
+        try
+        {
+            if (totalPrice[storageUnitDto.Id] == 0)
+            {
+                showUserErrorModal = true;
+                errorMessage = "Please calculate the total price before selecting the storage unit";
+            }
+            else
+            {
+                DateTime finalDateStart = dateStart[storageUnitDto.Id];
+                DateTime finalDateEnd = dateEnd[storageUnitDto.Id];
+                bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "");
+                if (sessionLogic.CurrentPerson is UserDto userDto)
+                {
+                    userLogic.AddBookingToUser(userDto, bookingDto);
+                    userDto.Bookings.Add(bookingDto);
+                    showUserConfirmationModal = true;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+            showUserErrorModal = true;
+        }
+    }
+
+    private void SetTotalPrice(StorageUnitDto storageUnitDto)
+    {
+        try
+        {
+            DateTime finalDateStart = dateStart[storageUnitDto.Id];
+            DateTime finalDateEnd = dateEnd[storageUnitDto.Id];
+            bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "");
+            totalPrice[storageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+            showUserErrorModal = true;
+        }
+    }
+
+    private void CloseBookingErrorModal()
+    {
+        showUserErrorModal = false;
+    }
+
+    private void CloseBookingConfirmationModal()
+    {
+        showUserConfirmationModal = false;
+    }
+}

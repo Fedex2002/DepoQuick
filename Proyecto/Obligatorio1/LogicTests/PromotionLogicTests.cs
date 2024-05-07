@@ -35,8 +35,8 @@ public class PromotionLogicTests
     public void WhenModifyingPromotionShouldEliminateTheOldOneAndAddTheNewOne()
     {
         _promotionRepo.AddToRepository(_promotion);
-        _promotionDto= new PromotionDto("Winter discount", 50, new DateTime(2025, 7, 15), new DateTime(2025, 10, 15));
-        _promotionLogic.ModifyPromotion(_promotionDto);
+        _promotionDto= new PromotionDto("Summer discount", 50, new DateTime(2025, 7, 15), new DateTime(2025, 10, 15));
+        _promotionLogic.ModifyPromotion(_promotionDto, "Winter discount");
         Assert.AreEqual(_promotionDto.Label, _promotionRepo.GetFromRepository(_promotionDto.Label).GetLabel());
         Assert.AreEqual(_promotionDto.Discount, _promotionRepo.GetFromRepository(_promotionDto.Label).GetDiscount());
         Assert.AreEqual(_promotionDto.DateStart, _promotionRepo.GetFromRepository(_promotionDto.Label).GetDateStart());
@@ -47,7 +47,7 @@ public class PromotionLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenTryingToModifyANonExistingPromotionShouldThrowException()
     {
-        _promotionLogic.ModifyPromotion(_promotionDto);
+        _promotionLogic.ModifyPromotion(_promotionDto, "Winter discount");
     }
     
     [TestMethod]
@@ -81,5 +81,21 @@ public class PromotionLogicTests
     public void WhenTryingToEliminateANonExistingPromotionShouldThrowException()
     {
         _promotionLogic.RemovePromotion(_promotionDto);
+    }
+    
+    [TestMethod]
+    public void WhenGettingPromotionsDtoShouldReturnAListOfPromotionsDto()
+    {
+        _promotionRepo.AddToRepository(_promotion);
+        List<PromotionDto> promotionsDto = _promotionLogic.GetPromotionsDto();
+        Assert.IsNotNull(promotionsDto);
+    }
+
+    [TestMethod]
+    public void WhenGettingPromotionsDtoFromLabelShouldReturnIt()
+    {
+        _promotionRepo.AddToRepository(_promotion);
+        PromotionDto promotionDto = _promotionLogic.GetPromotionDtoFromLabel(_promotion.GetLabel());
+        Assert.AreEqual(_promotion.GetLabel(), promotionDto.Label);
     }
 }

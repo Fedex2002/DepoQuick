@@ -14,12 +14,12 @@ public class PromotionLogic
         _promotionRepositories = promotionRepositories;
     }
     
-    public void ModifyPromotion(PromotionDto promotionDto)
+    public void ModifyPromotion(PromotionDto promotionDto, string oldLabel)
     {
-        Promotion promotionInRepo= _promotionRepositories.GetFromRepository(promotionDto.Label);
-        if (_promotionRepositories.GetFromRepository(promotionDto.Label) == null)
+        Promotion promotionInRepo= _promotionRepositories.GetFromRepository(oldLabel);
+        if (_promotionRepositories.GetFromRepository(oldLabel) == null)
         {
-            throw new LogicExceptions("Promotion does not exist");
+            IfPromotionDoesNotExistThrowException();
         }
         else
         {
@@ -34,24 +34,52 @@ public class PromotionLogic
         Promotion promotion= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
         if (_promotionRepositories.GetFromRepository(promotionDto.Label) != null)
         {
-            throw new LogicExceptions("Promotion already exists");
+            IfPromotionExistsThrowException();
         }
         else
         {
             _promotionRepositories.AddToRepository(promotion);
         }
     }
-    
+
+    private static void IfPromotionExistsThrowException()
+    {
+        throw new LogicExceptions("Promotion already exists");
+    }
+
     public void RemovePromotion(PromotionDto promotionDto)
     {
         Promotion promotionInRepo= _promotionRepositories.GetFromRepository(promotionDto.Label);
         if (_promotionRepositories.GetFromRepository(promotionDto.Label) == null)
         {
-            throw new LogicExceptions("Promotion does not exist");
+            IfPromotionDoesNotExistThrowException();
         }
         else
         {
             _promotionRepositories.RemoveFromRepository(promotionInRepo);
         }
+    }
+
+    private static void IfPromotionDoesNotExistThrowException()
+    {
+        throw new LogicExceptions("Promotion does not exist");
+    }
+
+    public List<PromotionDto> GetPromotionsDto()
+    {
+        List<PromotionDto> promotionsDto = new List<PromotionDto>();
+        foreach (var promotion in _promotionRepositories.GetAllFromRepository())
+        {
+            promotionsDto.Add(new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(), promotion.GetDateStart(), promotion.GetDateEnd()));
+        }
+        
+        return promotionsDto;
+    }
+    
+    public PromotionDto GetPromotionDtoFromLabel(string label)
+    {
+        Promotion promotion= _promotionRepositories.GetFromRepository(label);
+        PromotionDto promotionDto = new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(), promotion.GetDateStart(), promotion.GetDateEnd());
+        return promotionDto;
     }
 }

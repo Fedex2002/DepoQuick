@@ -1,0 +1,101 @@
+@page "/DeletePromotions"
+@using Logic
+@using Logic.DTOs
+@layout MainLayout
+@inject PromotionLogic promotionLogic
+
+<PageTitle>DepoQuick</PageTitle>
+
+<section class="vh-75">
+    <div class="container">
+        <h2 class="mt-5 mb-4">Delete Promotions</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Promotion Label</th>
+                            <th>Discount</th>
+                            <th>Date Start</th>
+                            <th>Date End</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var promotion in promotions)
+                        {
+                            <tr>
+                                <td>@promotion.Label</td>
+                                <td>@promotion.Discount%</td>
+                                <td>@promotion.DateStart.ToShortDateString()</td>
+                                <td>@promotion.DateEnd.ToShortDateString()</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" @onclick="() =>HandleValidSubmit(promotion.Label)">Delete</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (showAdminErrorModal)
+{
+  <AuthenticationModal
+    Title="Promotion does not exist"
+    Text="@errorMessage"
+    DialogType=AuthenticationModal.ModalDialogType.Ok
+    OnClose="@ClosePromotionErrorModal">
+  </AuthenticationModal>
+}
+@if(showAdminConfirmationModal)
+{
+    <AuthenticationModal 
+      Title="Promotion deleted successfully"
+      Text="Promotion deleted successfully"
+      DialogType=AuthenticationModal.ModalDialogType.Ok
+      OnClose="@ClosePromotionConfirmationModal">
+    </AuthenticationModal>
+}
+
+@code {
+    PromotionDto promotionDto;
+    private List<PromotionDto> promotions;
+    private bool showAdminErrorModal = false;
+    private string errorMessage = "";
+    private bool showAdminConfirmationModal = false;
+    
+    protected override void OnInitialized()
+    {
+        promotionDto = new PromotionDto();
+        promotions = promotionLogic.GetPromotionsDto();
+    }
+    
+    private async Task HandleValidSubmit(string label)
+    {
+        try
+        {
+            promotionDto = promotionLogic.GetPromotionDtoFromLabel(label);
+            promotionLogic.RemovePromotion(promotionDto);
+            showAdminConfirmationModal = true;
+            promotions = promotionLogic.GetPromotionsDto();
+        }
+        catch (Exception e)
+        {
+            showAdminErrorModal = true;
+            errorMessage = e.Message;
+        }
+    }
+    
+    private void ClosePromotionErrorModal()
+    {
+        showAdminErrorModal = false;
+    }
+  
+    private void ClosePromotionConfirmationModal()
+    {
+        showAdminConfirmationModal = false;
+    }
+}
