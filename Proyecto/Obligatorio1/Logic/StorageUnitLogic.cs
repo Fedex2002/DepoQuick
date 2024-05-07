@@ -21,12 +21,17 @@ public class StorageUnitLogic
         StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions);
         if (_storageUnitRepositories.GetFromRepository(storageUnitDto.Id) != null)
         {
-            throw new LogicExceptions("Storage unit already exists");
+            IfStorageUnitAlreadyExistsThrowException();
         }
         else
         {
             _storageUnitRepositories.AddToRepository(storageUnit);
         }
+    }
+
+    private static void IfStorageUnitAlreadyExistsThrowException()
+    {
+        throw new LogicExceptions("Storage unit already exists");
     }
 
     public List<Promotion> CreateListPromotions(StorageUnitDto storageUnitDto)
