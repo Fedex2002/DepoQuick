@@ -7,7 +7,7 @@ public class Booking
     private DateTime _dateStart;
     private DateTime _dateEnd;
     private StorageUnit _storageUnit;
-    private string _rejectedMessage { get; set; }
+    private string RejectedMessage { get; set; }
     
     public Booking()
     {
@@ -21,7 +21,7 @@ public class Booking
         _dateEnd = DateTime.MaxValue;
         SetDate(dateStart, dateEnd);
         _storageUnit = storageUnit;
-        _rejectedMessage = "";
+        RejectedMessage = "";
         SetRejectedBooking(rejectedMessage);
     }
     
@@ -42,7 +42,7 @@ public class Booking
     
     public string GetRejectedMessage()
     {
-        return _rejectedMessage;
+        return RejectedMessage;
     }
     
     public StorageUnit GetStorageUnit()
@@ -52,7 +52,7 @@ public class Booking
     
     private void SetRejectedBooking(string rejectedMessage)
     {
-        _rejectedMessage = rejectedMessage;
+        RejectedMessage = rejectedMessage;
         IfHasInvalidRejectionThrowException();
     }
 
@@ -76,14 +76,14 @@ public class Booking
 
     private double TotalPriceWithDiscountForBookingDays()
     {
-        double totalPrice = _storageUnit.CalculateStorageUnitPricePerDay() * GetCountOfDays();;
+        double totalPrice = _storageUnit.CalculateStorageUnitPricePerDay() * GetCountOfDays();
         return CheckDiscount(totalPrice);
     }
 
     private double CheckDiscount(double totalPrice)
     {
-        double discount = 0;
-        double totalPriceWithDiscount = 0;
+        double discount;
+        double totalPriceWithDiscount;
         if (GetCountOfDays() >= 7 && GetCountOfDays() <= 14)
         {
             discount = 5;
@@ -109,7 +109,7 @@ public class Booking
     
     public bool CheckRejection()
     {
-        return _rejectedMessage.Length <= 300;
+        return RejectedMessage.Length <= 300;
     }
 
     private void SetApproved(bool approved)
