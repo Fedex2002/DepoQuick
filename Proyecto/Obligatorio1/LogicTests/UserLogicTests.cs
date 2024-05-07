@@ -86,4 +86,12 @@ public class UserLogicTests
     {
         Assert.AreEqual(70, _userLogic.CalculateStorageUnitPricePerDay(_storageUnitDto));
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenUserTriesToBookTheSameStorageUnitTwiceShouldThrowException()
+    {
+        _userLogic.AddBookingToUser(_userDto, _mybookingDto);
+        _userLogic.AddBookingToUser(_userDto, _mybookingDto);
+    }
 }
