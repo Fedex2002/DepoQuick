@@ -35,9 +35,14 @@ public class UserLogic
             }
             else
             {
-                throw new LogicExceptions("Booking for this StorageUnit already exists");
+                IfUserAlreadyBookTheStorageUnitThrowException();
             }
         }
+    }
+
+    private static void IfUserAlreadyBookTheStorageUnitThrowException()
+    {
+        throw new LogicExceptions("Booking for this StorageUnit already exists");
     }
 
     private static bool IfStorageUnitInOldBookingAndBookingAreTheSameSetExistsToTrue(Booking booking, Booking newBooking,
