@@ -48,10 +48,7 @@ public class AdministratorLogic
 
     public void SetRejectionMessage(UserDto userDto, BookingDto bookingDto, string rejectionMessage)
     {
-        if (rejectionMessage == "")
-        {
-            throw new LogicExceptions("The rejection message can't be empty.");
-        }
+        IfRejectionMessageIsEmptyThrowException(rejectionMessage);
         Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
         Booking newBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), rejectionMessage);
         Person person = _personRepositories.GetFromRepository(userDto.Email);
@@ -67,6 +64,14 @@ public class AdministratorLogic
                 user.GetBookings().Remove(bookingToRemove);
             }
             user.GetBookings().Add(newBooking);
+        }
+    }
+
+    private static void IfRejectionMessageIsEmptyThrowException(string rejectionMessage)
+    {
+        if (rejectionMessage == "")
+        {
+            throw new LogicExceptions("The rejection message can't be empty.");
         }
     }
 
