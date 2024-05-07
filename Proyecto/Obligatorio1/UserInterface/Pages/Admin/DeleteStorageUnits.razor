@@ -23,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var storageUnit in storageUnits)
+                        @foreach (var storageUnit in _storageUnits)
                         {
                             <tr>
                                 <td>@storageUnit.Id</td>
@@ -53,7 +53,7 @@
     </div>
 </section>
 
-@if(showAdminConfirmationModal)
+@if(_showAdminConfirmationModal)
 {
     <AuthenticationModal 
       Title="StorageUnit deleted successfully"
@@ -64,27 +64,27 @@
 }
 
 @code {
-    StorageUnitDto storageUnitDto;
-    private List<StorageUnitDto> storageUnits;
-    private bool showAdminErrorModal = false;
-    private bool showAdminConfirmationModal = false;
+    StorageUnitDto _storageUnitDto;
+    private List<StorageUnitDto> _storageUnits;
+    private bool _showAdminErrorModal = false;
+    private bool _showAdminConfirmationModal = false;
     
     protected override void OnInitialized()
     {
-        storageUnitDto = new StorageUnitDto();
-        storageUnits = storageUnitLogic.GetStorageUnitsDto();
+        _storageUnitDto = new StorageUnitDto();
+        _storageUnits = storageUnitLogic.GetStorageUnitsDto();
     }
     
     private async Task HandleValidSubmit(string id)
     {
-        storageUnitDto = storageUnitLogic.GetStorageUnitDtoFromId(id);
-        storageUnitLogic.RemoveStorageUnit(storageUnitDto);
-        showAdminConfirmationModal = true;
-        storageUnits = storageUnitLogic.GetStorageUnitsDto();
+        _storageUnitDto = storageUnitLogic.GetStorageUnitDtoFromId(id);
+        storageUnitLogic.RemoveStorageUnit(_storageUnitDto);
+        _showAdminConfirmationModal = true;
+        _storageUnits = storageUnitLogic.GetStorageUnitsDto();
     }
   
     private void ClosePromotionConfirmationModal()
     {
-        showAdminConfirmationModal = false;
+        _showAdminConfirmationModal = false;
     }
 }
