@@ -76,13 +76,22 @@
     </div>
 </section>
 
-@if(showAdminConfirmationModal)
+@if (showUserErrorModal)
+{
+  <AuthenticationModal
+    Title="Booking error"
+    Text="@errorMessage"
+    DialogType=AuthenticationModal.ModalDialogType.Ok
+    OnClose="@CloseBookingErrorModal">
+  </AuthenticationModal>
+}
+@if(showUserConfirmationModal)
 {
     <AuthenticationModal 
       Title="Booking selected successfully"
       Text="Booking selected successfully"
       DialogType=AuthenticationModal.ModalDialogType.Ok
-      OnClose="@ClosePromotionConfirmationModal">
+      OnClose="@CloseBookingConfirmationModal">
     </AuthenticationModal>
 }
 
@@ -94,7 +103,9 @@
     Dictionary<string, double> pricePerDay = new Dictionary<string, double>();
     Dictionary<string, double> totalPrice = new Dictionary<string, double>();
     private List<StorageUnitDto> storageUnits;
-    private bool showAdminConfirmationModal;
+    private bool showUserErrorModal;
+    private string errorMessage = "";
+    private bool showUserConfirmationModal;
     
     protected override void OnInitialized()
     {
@@ -111,27 +122,56 @@
 
     private async Task HandleValidSubmit(StorageUnitDto storageUnitDto)
     {
-        DateTime finalDateStart = dateStart[storageUnitDto.Id];
-        DateTime finalDateEnd = dateEnd[storageUnitDto.Id];
-        bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "");
-        if (sessionLogic.CurrentPerson is UserDto userDto)
+        try
         {
-            userDto.Bookings.Add(bookingDto);
-            userLogic.AddBookingToUser(userDto, bookingDto);
-            showAdminConfirmationModal = true;
+            if (totalPrice[storageUnitDto.Id] == 0)
+            {
+                showUserErrorModal = true;
+                errorMessage = "Please calculate the total price before selecting the storage unit";
+            }
+            else
+            {
+                DateTime finalDateStart = dateStart[storageUnitDto.Id];
+                DateTime finalDateEnd = dateEnd[storageUnitDto.Id];
+                bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "");
+                if (sessionLogic.CurrentPerson is UserDto userDto)
+                {
+                    userDto.Bookings.Add(bookingDto);
+                    userLogic.AddBookingToUser(userDto, bookingDto);
+                    showUserConfirmationModal = true;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+            showUserErrorModal = true;
         }
     }
 
     private void SetTotalPrice(StorageUnitDto storageUnitDto)
     {
-        DateTime finalDateStart = dateStart[storageUnitDto.Id];
-        DateTime finalDateEnd = dateEnd[storageUnitDto.Id];
-        bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "");
-        totalPrice[storageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
+        try
+        {
+            DateTime finalDateStart = dateStart[storageUnitDto.Id];
+            DateTime finalDateEnd = dateEnd[storageUnitDto.Id];
+            bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "");
+            totalPrice[storageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+            showUserErrorModal = true;
+        }
     }
 
-    private void ClosePromotionConfirmationModal()
+    private void CloseBookingErrorModal()
     {
-        showAdminConfirmationModal = false;
+        showUserErrorModal = false;
+    }
+
+    private void CloseBookingConfirmationModal()
+    {
+        showUserConfirmationModal = false;
     }
 }
