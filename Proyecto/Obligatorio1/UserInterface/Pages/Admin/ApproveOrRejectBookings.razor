@@ -25,7 +25,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach (var user in allUsers)
+                    @foreach (var user in _allUsers)
                     {
                         @foreach (var booking in user.Bookings)
                         {
@@ -51,29 +51,29 @@
                                     <label class="form-label">@user.Name</label>
                                 </td>
                                 <td>
-                                    <label class="form-label">@totalPrice[booking.StorageUnitDto.Id]</label>
+                                    <label class="form-label">@_totalPrice[booking.StorageUnitDto.Id]</label>
                                 </td>
                                 <td>
-                                    <label class="form-label">@dateStart[booking.StorageUnitDto.Id]</label>
+                                    <label class="form-label">@_dateStart[booking.StorageUnitDto.Id]</label>
                                 </td>
                                 <td>
-                                    <label class="form-label">@dateEnd[booking.StorageUnitDto.Id]</label>
+                                    <label class="form-label">@_dateEnd[booking.StorageUnitDto.Id]</label>
                                 </td>
                                 <td>
-                                    @if (!showRejectInput || selectedBooking != booking)
+                                    @if (!_showRejectInput || _selectedBooking != booking)
                                     {
                                         <button type="button" class="btn btn-danger mb-2" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => ToggleRejectInput(booking)">Reject the Booking</button>
                                         <br/>
                                         <button type="button" class="btn btn-success" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => AcceptBooking(user, booking)">Accept the Booking</button>
                                     }
-                                    @if (showRejectInput && selectedBooking == booking)
+                                    @if (_showRejectInput && _selectedBooking == booking)
                                     {
                                         <div data-mdb-input-init class="form-outline mt-2 mb-2">
-                                            <input type="text" class="form-control form-control-lg" placeholder="Reason for rejection" @bind="RejectionReason" required/>
+                                            <input type="text" class="form-control form-control-lg" placeholder="Reason for rejection" @bind="_rejectionReason" required/>
                                             <label class="form-label">Rejection</label>
                                         </div>
                                         <div class="text-center text-lg-start pt-2">
-                                            <button type="button" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => RejectBooking(user, booking, RejectionReason)">Confirm the Rejection</button>
+                                            <button type="button" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => RejectBooking(user, booking, _rejectionReason)">Confirm the Rejection</button>
                                         </div>
                                         <p class="small fw-bold mt-2 pt-1 mb-0">Changed your decision? <a href="#" @onclick="RefreshPage" class="link-danger">Go Back</a></p>
                                     }
@@ -87,57 +87,57 @@
         </div>
     </div>
 </section>
-@if (showAdminErrorModal)
+@if (_showAdminErrorModal)
 {
   <AuthenticationModal
     Title="Booking error"
-    Text="@errorMessage"
+    Text="@_errorMessage"
     DialogType=AuthenticationModal.ModalDialogType.Ok
     OnClose="@ClosePromotionErrorModal">
   </AuthenticationModal>
 }
-@if(showAdminConfirmationModal)
+@if(_showAdminConfirmationModal)
 {
     <AuthenticationModal 
-      Title="@Message"
-      Text="@Message"
+      Title="@_message"
+      Text="@_message"
       DialogType=AuthenticationModal.ModalDialogType.Ok
       OnClose="@ClosePromotionConfirmationModal">
     </AuthenticationModal>
 }
 
 @code {
-    private bool showRejectInput = false;
-    private List<UserDto> allUsers = new List<UserDto>();
-    private BookingDto selectedBooking;
-    Dictionary<string, DateTime> dateStart = new Dictionary<string, DateTime>();
-    Dictionary<string, DateTime> dateEnd = new Dictionary<string, DateTime>();
-    Dictionary<string, double> totalPrice = new Dictionary<string, double>();
-    private string RejectionReason;
-    private bool showAdminErrorModal = false;
-    private string Message = "";
-    private string errorMessage = "";
-    private bool showAdminConfirmationModal = false;
+    private bool _showRejectInput = false;
+    private List<UserDto> _allUsers = new List<UserDto>();
+    private BookingDto _selectedBooking;
+    readonly Dictionary<string, DateTime> _dateStart = new Dictionary<string, DateTime>();
+    readonly Dictionary<string, DateTime> _dateEnd = new Dictionary<string, DateTime>();
+    readonly Dictionary<string, double> _totalPrice = new Dictionary<string, double>();
+    private string _rejectionReason;
+    private bool _showAdminErrorModal = false;
+    private string _message = "";
+    private string _errorMessage = "";
+    private bool _showAdminConfirmationModal = false;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        allUsers = administratorLogic.GetUsersDto();
-        foreach (var user in allUsers)
+        _allUsers = administratorLogic.GetUsersDto();
+        foreach (var user in _allUsers)
         {
             foreach (var bookingDto in user.Bookings)
             {
-                totalPrice[bookingDto.StorageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
-                dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
-                dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
+                _totalPrice[bookingDto.StorageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
+                _dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
+                _dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
             }
         }
     }
 
     private void ToggleRejectInput(BookingDto bookingDto)
     {
-        selectedBooking = bookingDto;
-        showRejectInput = !showRejectInput;
+        _selectedBooking = bookingDto;
+        _showRejectInput = !_showRejectInput;
     }
     
     private void AcceptBooking(UserDto userDto, BookingDto bookingDto)
@@ -145,13 +145,13 @@
         try
         {
             administratorLogic.ApproveBooking(userDto, bookingDto);
-            Message = "Booking has been approved successfully!";
-            showAdminConfirmationModal = true;
+            _message = "Booking has been approved successfully!";
+            _showAdminConfirmationModal = true;
         }
         catch (Exception e)
         {
-            showAdminErrorModal = true;
-            errorMessage = e.Message;
+            _showAdminErrorModal = true;
+            _errorMessage = e.Message;
         }
     }
 
@@ -160,13 +160,13 @@
         try
         {
             administratorLogic.SetRejectionMessage(userDto, bookingDto, rejectionReason);
-            Message = "Booking has been rejected successfully!";
-            showAdminConfirmationModal = true;
+            _message = "Booking has been rejected successfully!";
+            _showAdminConfirmationModal = true;
         }
         catch (Exception e)
         {
-            showAdminErrorModal = true;
-            errorMessage = e.Message;
+            _showAdminErrorModal = true;
+            _errorMessage = e.Message;
         }
     }
     
@@ -177,11 +177,11 @@
     
     private void ClosePromotionErrorModal()
     {
-        showAdminErrorModal = false;
+        _showAdminErrorModal = false;
     }
   
     private void ClosePromotionConfirmationModal()
     {
-        showAdminConfirmationModal = false;
+        _showAdminConfirmationModal = false;
     }
 }

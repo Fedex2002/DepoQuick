@@ -18,12 +18,12 @@
           </div>
           
           <div data-mdb-input-init class="form-outline mb-2">
-            <input class="form-control form-control-lg" placeholder="Enter Id" @bind="id" required/>
+            <input class="form-control form-control-lg" placeholder="Enter Id" @bind="_id" required/>
             <label class="form-label" >Id</label>
           </div>
           
           <div data-mdb-input-init class="form-outline mb-2">
-            <select class="form-select form-select-lg" @bind="area" required>
+            <select class="form-select form-select-lg" @bind="_area" required>
               <option value="" selected disabled>Choose an area</option>
               @foreach (AreaType areaType in Enum.GetValues(typeof(AreaType)))
               {
@@ -34,7 +34,7 @@
           </div>
           
           <div data-mdb-input-init class="form-outline mb-2">
-            <select class="form-select form-select-lg" @bind="size" required>
+            <select class="form-select form-select-lg" @bind="_size" required>
                 <option value="" selected disabled>Choose a size</option>
                 @foreach (SizeType sizeType in Enum.GetValues(typeof(SizeType)))
                 {
@@ -45,7 +45,7 @@
           </div>
 
           <div data-mdb-input-init class="form-outline mb-2">
-              <select class="form-select form-select-lg" @bind="selectedClimatization" required>
+              <select class="form-select form-select-lg" @bind="_selectedClimatization" required>
                   <option value="" selected disabled>Select if has climatization</option>
                   <option value="true">Yes</option>
                   <option value="false">No</option>
@@ -61,7 +61,7 @@
               </tr>
               </thead>
               <tbody>
-              @foreach (var promotion in promotions)
+              @foreach (var promotion in _promotions)
               {
                 <tr>
                   <td>
@@ -85,16 +85,16 @@
   </div>
 </section>
 
-@if (showAdminErrorModal)
+@if (_showAdminErrorModal)
 {
   <AuthenticationModal
     Title="StorageUnit already exists"
-    Text="@errorMessage"
+    Text="@_errorMessage"
     DialogType=AuthenticationModal.ModalDialogType.Ok
     OnClose="@CloseStorageUnitErrorModal">
   </AuthenticationModal>
 }
-@if(showAdminConfirmationModal)
+@if(_showAdminConfirmationModal)
 {
     <AuthenticationModal 
       Title="StorageUnit created successfully"
@@ -107,71 +107,71 @@
 
 @code {
   StorageUnitDto _storageUnitDto;
-  private List<PromotionDto> promotions;
-  private PromotionDto promotion;
-  private string id;
-  private AreaType area;
-  private SizeType size;
-  private string selectedClimatization;
-  private bool climatization;
-  private bool showAdminErrorModal = false;
-  private string errorMessage = "";
-  private bool showAdminConfirmationModal = false;
-  private List<PromotionDto> selectedPromotions;
+  private List<PromotionDto> _promotions;
+  private PromotionDto _promotion;
+  private string _id;
+  private AreaType _area;
+  private SizeType _size;
+  private string _selectedClimatization;
+  private bool _climatization;
+  private bool _showAdminErrorModal = false;
+  private string _errorMessage = "";
+  private bool _showAdminConfirmationModal = false;
+  private List<PromotionDto> _selectedPromotions;
   
   protected override void OnInitialized()
   {
     _storageUnitDto = new StorageUnitDto();
-    selectedPromotions = new List<PromotionDto>();
-    promotions = promotionLogic.GetPromotionsDto();
+    _selectedPromotions = new List<PromotionDto>();
+    _promotions = promotionLogic.GetPromotionsDto();
   }
   
   private async Task HandleValidSubmit()
   {
     try
     {
-      if (selectedClimatization.Equals("true"))
+      if (_selectedClimatization.Equals("true"))
       {
-        climatization = true;
+        _climatization = true;
       }
       else
       {
-        climatization = false;
+        _climatization = false;
       }
-      _storageUnitDto = new StorageUnitDto(id, area, size, climatization, selectedPromotions);
+      _storageUnitDto = new StorageUnitDto(_id, _area, _size, _climatization, _selectedPromotions);
       storageUnitLogic.CreateStorageUnit(_storageUnitDto);
-      showAdminConfirmationModal = true;
+      _showAdminConfirmationModal = true;
       
     }
     catch (Exception e)
     {
-      showAdminErrorModal = true;
-      errorMessage = e.Message;
+      _showAdminErrorModal = true;
+      _errorMessage = e.Message;
     }
   }
   
   private void AddToSelectedPromotions(string promotionLabel)
   {
-    promotion = promotionLogic.GetPromotionDtoFromLabel(promotionLabel);
-    bool exists = selectedPromotions.Any(p => p.Label == promotion.Label);
+    _promotion = promotionLogic.GetPromotionDtoFromLabel(promotionLabel);
+    bool exists = _selectedPromotions.Any(p => p.Label == _promotion.Label);
 
     if (exists)
     {
-      selectedPromotions.RemoveAll(p => p.Label == promotion.Label); 
+      _selectedPromotions.RemoveAll(p => p.Label == _promotion.Label); 
     }
     else
     {
-      selectedPromotions.Add(promotion);
+      _selectedPromotions.Add(_promotion);
     }
   }
   
   private void CloseStorageUnitErrorModal()
   {
-    showAdminErrorModal = false;
+    _showAdminErrorModal = false;
   }
   
   private void CloseStorageUnitConfirmationModal()
   {
-    showAdminConfirmationModal = false;
+    _showAdminConfirmationModal = false;
   }
 }

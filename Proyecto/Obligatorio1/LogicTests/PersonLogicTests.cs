@@ -14,7 +14,6 @@ public class PersonLogicTests
     private PersonRepositories _personRepo;
     private PersonLogic _personLogic;
     private Person _person;
-    private UserDto _userDto;
     private PersonDto _personDto;
     private List<BookingDto> _bookingsDto;
     
@@ -26,7 +25,6 @@ public class PersonLogicTests
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#");
         _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#");
         _bookingsDto = new List<BookingDto>();
-        _userDto = new UserDto("User", "User", "emailuser@gmail.com","PassWord921#",_bookingsDto);
         _personRepo.AddToRepository(_person); 
     }
     

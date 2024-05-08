@@ -6,7 +6,7 @@ namespace Logic;
 
 public class UserLogic
 {
-    private PersonRepositories _personRepo;
+    private readonly PersonRepositories _personRepo;
     
     public UserLogic(PersonRepositories personRepo)
     {

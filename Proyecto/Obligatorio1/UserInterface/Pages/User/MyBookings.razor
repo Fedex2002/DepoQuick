@@ -26,7 +26,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach (var booking in bookings)
+                    @foreach (var booking in _bookings)
                     {
                         <tr>
                         <td>
@@ -47,19 +47,19 @@
                             }
                         </td>
                         <td>
-                            <label class="form-label">$@totalPrice[booking.StorageUnitDto.Id]</label>
+                            <label class="form-label">$@_totalPrice[booking.StorageUnitDto.Id]</label>
                         </td>
                         <td>
-                            <label class="form-label">@dateStart[booking.StorageUnitDto.Id]</label>
+                            <label class="form-label">@_dateStart[booking.StorageUnitDto.Id]</label>
                         </td>
                         <td>
-                            <label class="form-label">@dateEnd[booking.StorageUnitDto.Id]</label>
+                            <label class="form-label">@_dateEnd[booking.StorageUnitDto.Id]</label>
                         </td>
                         <td>
-                            <label class="form-label">@active[booking.StorageUnitDto.Id]</label>
+                            <label class="form-label">@_active[booking.StorageUnitDto.Id]</label>
                         </td>
                         <td>
-                            <label class="form-label">@rejectionMessage[booking.StorageUnitDto.Id]</label>
+                            <label class="form-label">@_rejectionMessage[booking.StorageUnitDto.Id]</label>
                         </td>
                         </tr>
                     }
@@ -71,29 +71,29 @@
 </section>
 
 @code {
-    BookingDto bookingDto;
-    Dictionary<string, DateTime> dateStart = new Dictionary<string, DateTime>();
-    Dictionary<string, DateTime> dateEnd = new Dictionary<string, DateTime>();
-    Dictionary<string, double> totalPrice = new Dictionary<string, double>();
-    Dictionary<string, bool> active = new Dictionary<string, bool>();
-    Dictionary<string, string> rejectionMessage = new Dictionary<string, string>();
-    private List<StorageUnitDto> storageUnits;
-    private List<UserDto> users;
-    private List<BookingDto> bookings;
+    BookingDto _bookingDto;
+    readonly Dictionary<string, DateTime> _dateStart = new Dictionary<string, DateTime>();
+    readonly Dictionary<string, DateTime> _dateEnd = new Dictionary<string, DateTime>();
+    readonly Dictionary<string, double> _totalPrice = new Dictionary<string, double>();
+    readonly Dictionary<string, bool> _active = new Dictionary<string, bool>();
+    readonly Dictionary<string, string> _rejectionMessage = new Dictionary<string, string>();
+    private List<StorageUnitDto> _storageUnits;
+    private List<UserDto> _users;
+    private List<BookingDto> _bookings;
     
     protected override void OnInitialized()
     {
         var currentUser = sessionLogic.CurrentPerson as UserDto;
         if (currentUser != null)
         {
-            bookings = currentUser.Bookings;
-            foreach (var bookingDto in bookings)
+            _bookings = currentUser.Bookings;
+            foreach (var bookingDto in _bookings)
             {
-                totalPrice[bookingDto.StorageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
-                dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
-                dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
-                active[bookingDto.StorageUnitDto.Id] = bookingDto.Approved;
-                rejectionMessage[bookingDto.StorageUnitDto.Id] = bookingDto.RejectedMessage;
+                _totalPrice[bookingDto.StorageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
+                _dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
+                _dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
+                _active[bookingDto.StorageUnitDto.Id] = bookingDto.Approved;
+                _rejectionMessage[bookingDto.StorageUnitDto.Id] = bookingDto.RejectedMessage;
             }
         }
     }

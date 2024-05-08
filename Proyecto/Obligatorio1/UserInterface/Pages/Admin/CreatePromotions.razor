@@ -15,19 +15,19 @@
             <p class="text-center fw-bold mx-3 mb-0 fs-4">Create Promotion</p>
           </div>
           <div data-mdb-input-init class="form-outline mb-2">
-            <input class="form-control form-control-lg" placeholder="Enter Label" @bind="label" required/>
+            <input class="form-control form-control-lg" placeholder="Enter Label" @bind="_label" required/>
             <label class="form-label" >Label</label>
           </div>
           <div data-mdb-input-init class="form-outline mb-2">
-            <input class="form-control form-control-lg" placeholder="Enter discount" @bind="discount" required/>
+            <input class="form-control form-control-lg" placeholder="Enter discount" @bind="_discount" required/>
             <label class="form-label" >Discount</label>
           </div>
           <div data-mdb-input-init class="form-outline mb-2">
-            <input type="date" class="form-control form-control-lg" @bind="dateStart" required/>
+            <input type="date" class="form-control form-control-lg" @bind="_dateStart" required/>
             <label class="form-label" >DateStart</label>
           </div>
           <div data-mdb-input-init class="form-outline mb-2">
-            <input type="date" class="form-control form-control-lg" @bind="dateEnd" required/>
+            <input type="date" class="form-control form-control-lg" @bind="_dateEnd" required/>
             <label class="form-label" >DateEnd</label>
           </div>
           <div class="text-center text-lg-start pt-2">
@@ -39,16 +39,16 @@
   </div>
 </section>
 
-@if (showAdminErrorModal)
+@if (_showAdminErrorModal)
 {
   <AuthenticationModal
     Title="Promotion error"
-    Text="@errorMessage"
+    Text="@_errorMessage"
     DialogType=AuthenticationModal.ModalDialogType.Ok
     OnClose="@ClosePromotionErrorModal">
   </AuthenticationModal>
 }
-@if(showAdminConfirmationModal)
+@if(_showAdminConfirmationModal)
 {
     <AuthenticationModal 
       Title="Promotion created successfully"
@@ -59,46 +59,46 @@
 }
 
 @code {
-  PromotionDto promotionDto;
-  private string label;
-  private int discount;
-  private DateTime dateStart;
-  private DateTime dateEnd;
-  private bool showAdminErrorModal = false;
-  private string errorMessage = "";
-  private bool showAdminConfirmationModal = false;
+  PromotionDto _promotionDto;
+  private string _label;
+  private int _discount;
+  private DateTime _dateStart;
+  private DateTime _dateEnd;
+  private bool _showAdminErrorModal = false;
+  private string _errorMessage = "";
+  private bool _showAdminConfirmationModal = false;
 
   protected override void OnInitialized()
   {
-      promotionDto = new PromotionDto();
-      dateStart = DateTime.Today;
-      dateEnd = DateTime.Today;
+      _promotionDto = new PromotionDto();
+      _dateStart = DateTime.Today;
+      _dateEnd = DateTime.Today;
   }
 
   private async Task HandleValidSubmit()
   {
     try
     {
-      promotionDto = new PromotionDto(label, discount, dateStart, dateEnd);
-      promotionLogic.CreatePromotion(promotionDto);
-      showAdminConfirmationModal = true;
+      _promotionDto = new PromotionDto(_label, _discount, _dateStart, _dateEnd);
+      promotionLogic.CreatePromotion(_promotionDto);
+      _showAdminConfirmationModal = true;
     }
     catch (Exception e)
     {
-      showAdminErrorModal = true;
-      errorMessage = e.Message;
+      _showAdminErrorModal = true;
+      _errorMessage = e.Message;
     }
   }
   
   private void ClosePromotionErrorModal()
   {
-    showAdminErrorModal = false;
+    _showAdminErrorModal = false;
     StateHasChanged();
   }
   
   private void ClosePromotionConfirmationModal()
   {
-    showAdminConfirmationModal = false;
+    _showAdminConfirmationModal = false;
     StateHasChanged();
   }
 }

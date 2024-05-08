@@ -1,9 +1,6 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Logic;
-using Model;
 using Repositories;
-using RepositoriesInterface;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

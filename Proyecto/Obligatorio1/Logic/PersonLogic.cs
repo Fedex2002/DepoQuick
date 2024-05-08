@@ -7,7 +7,7 @@ namespace Logic;
 
 public class PersonLogic
 {
-    private PersonRepositories _personRepositories;
+    private readonly PersonRepositories _personRepositories;
     
     public PersonLogic(PersonRepositories personRepositories)
     {
@@ -123,9 +123,9 @@ public class PersonLogic
         foreach (var booking in bookings)
         {
             List<PromotionDto> promotionDtos = new List<PromotionDto>();
-            foreach (var Promotion in booking.GetStorageUnit().GetPromotions())
+            foreach (var promotion in booking.GetStorageUnit().GetPromotions())
             {
-                promotionDtos.Add(new PromotionDto(Promotion.GetLabel(), Promotion.GetDiscount(), Promotion.GetDateStart(), Promotion.GetDateEnd()));
+                promotionDtos.Add(new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(), promotion.GetDateStart(), promotion.GetDateEnd()));
             }
             StorageUnitDto storageUnitDto = new StorageUnitDto(booking.GetStorageUnit().GetId(), booking.GetStorageUnit().GetArea(), booking.GetStorageUnit().GetSize(), booking.GetStorageUnit().GetClimatization(), promotionDtos);
             bookingDtos.Add(new BookingDto(booking.GetApproved(), booking.GetDateStart(), booking.GetDateEnd(), storageUnitDto, booking.GetRejectedMessage()));

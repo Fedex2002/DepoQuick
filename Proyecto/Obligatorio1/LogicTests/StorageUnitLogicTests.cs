@@ -10,12 +10,12 @@ namespace LogicTests;
 [TestClass]
 public class StorageUnitLogicTests
 {
-    private StorageUnitRepositories? _storageUnitRepo;
-    private StorageUnitLogic? _storageUnitLogic;
-    private StorageUnitDto? _storageUnitDto;
-    private List<Promotion>? _promotions;
-    private List<PromotionDto>? _promotionsDto;
-    private Promotion? _promotion;
+    private StorageUnitRepositories _storageUnitRepo;
+    private StorageUnitLogic _storageUnitLogic;
+    private StorageUnitDto _storageUnitDto;
+    private List<Promotion> _promotions;
+    private List<PromotionDto> _promotionsDto;
+    private Promotion _promotion;
     private PromotionDto _promotionDto;
     [TestInitialize]
     public void TestInitialize()
