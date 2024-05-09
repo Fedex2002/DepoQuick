@@ -1,0 +1,102 @@
+@page "/Login"
+@layout LoginLayout
+@using Logic
+@using Logic.DTOs
+@inherits LayoutComponentBase
+@inject SessionLogic sessionLogic
+@inject NavigationManager NavigationManager
+
+<PageTitle>DepoQuick</PageTitle>
+
+<section class="vh-100">
+
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5 justify-content-center align-items-center">
+        <img src="logo.png" class="img-fluid logo" alt="Logo Depo Quick">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <form @onsubmit="HandleValidSubmit">
+          <div class="divider d-flex align-items-center my-4">
+            <p class="text-center fw-bold mx-3 mb-0 fs-4">Sign in with:</p>
+          </div>
+
+          <div data-mdb-input-init class="form-outline mb-4">
+            <input type="email" class="form-control form-control-lg" placeholder="Enter email address" @bind="_email" required/>
+            <label class="form-label">Email address</label>
+          </div>
+          
+          <div data-mdb-input-init class="form-outline mb-3">
+            <input type="password" class="form-control form-control-lg" placeholder="Enter password" @bind="_password" required/>
+            <label class="form-label">Password</label>
+          </div>
+          
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+            <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#" @onclick="GoToSignUp"
+                                                                              class="link-danger">Register</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div
+    class="footer d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-warning">
+    <div class="text-white mb-3 mb-md-0">
+      Copyright © 2023. All rights reserved.
+    </div>
+  </div>
+</section>
+
+@if (_showUserErrorModal)
+{
+            <AuthenticationModal 
+                        Title="Login Error" 
+                        Text="@_errorMessage" 
+                        DialogType=AuthenticationModal.ModalDialogType.Ok
+                        OnClose="@CloseUserErrorModal">
+            </AuthenticationModal>
+}
+
+@code {
+  PersonDto person;
+  private string _email;
+  private string _password;
+  private bool _showUserErrorModal = false;
+  private string _errorMessage = "";
+  
+  protected override void OnInitialized()
+  {
+    person = new PersonDto();
+  }
+    
+  private async Task HandleValidSubmit()
+  {
+    try
+    {
+      sessionLogic.Login(_email,_password);
+      person = sessionLogic.CurrentPerson;
+      GoToIndex();
+    }
+    catch (Exception e)
+    {
+      _showUserErrorModal = true;
+      _errorMessage = e.Message;
+    }
+  }
+    
+  private void CloseUserErrorModal()
+  {
+    _showUserErrorModal = false;
+  }
+    
+  private void GoToIndex()
+  {
+    NavigationManager.NavigateTo("/Index", true);
+  }
+
+  private void GoToSignUp()
+  {
+    NavigationManager.NavigateTo("/");
+  }
+}
