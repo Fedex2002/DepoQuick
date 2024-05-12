@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Model;
 using Model.Enums;
 using Logic.DTOs;
@@ -87,4 +88,20 @@ public class StorageUnitLogic
         StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.GetId(), storageUnit.GetArea(), storageUnit.GetSize(), storageUnit.GetClimatization(), ChangeToPromotionsDto(storageUnit.GetPromotions()));
         return storageUnitDto;
     }
+    
+    public void DeletePromotionFromAllStorageUnits(PromotionDto promotionDto)
+    {
+        foreach (var storageUnit in _storageUnitRepositories.GetAllFromRepository())
+        {
+            var promotions = storageUnit.GetPromotions().ToList();
+            foreach (var promotion in promotions)
+            {
+                if (promotion.GetLabel() == promotionDto.Label)
+                {
+                    storageUnit.GetPromotions().Remove(promotion);
+                }
+            }
+        }
+    }
+    
 }
