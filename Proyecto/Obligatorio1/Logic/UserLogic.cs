@@ -63,9 +63,17 @@ public class UserLogic
     private bool CheckIfPromotionsOfInStorageUnitOfOldBookingAndNewBookingAreTheSame(Booking oldBooking, Booking newBooking)
     {
         bool same = false;
-        foreach (var promotion in oldBooking.GetStorageUnit().GetPromotions()) 
-        { 
-            same = CheckIfPromotionIsTheSame(promotion, newBooking.GetStorageUnit().GetPromotions());
+        if ((oldBooking.GetStorageUnit().GetPromotions() == null || oldBooking.GetStorageUnit().GetPromotions().Count == 0) &&
+            (newBooking.GetStorageUnit().GetPromotions() == null || newBooking.GetStorageUnit().GetPromotions().Count == 0))
+        {
+            same = true;
+        }
+        else
+        {
+            foreach (var promotion in oldBooking.GetStorageUnit().GetPromotions()) 
+            { 
+                same = CheckIfPromotionIsTheSame(promotion, newBooking.GetStorageUnit().GetPromotions());
+            }
         }
         return same;
     }
