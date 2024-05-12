@@ -30,7 +30,9 @@ public class UserLogicTests
         _userLogic = new UserLogic(_personRepo);
         _personRepo.AddToRepository(_person);
         _userDto = new UserDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<BookingDto>());
-        _storageUnitDto = new StorageUnitDto("",AreaType.A, SizeType.Small, true,new List<PromotionDto>());
+        _promotionDto = new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _promotionsDto.Add(_promotionDto);
+        _storageUnitDto = new StorageUnitDto("",AreaType.A, SizeType.Small, true, _promotionsDto);
         _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "");
     }
     
@@ -78,19 +80,29 @@ public class UserLogicTests
     [TestMethod]
     public void WhenUserSelectsStartDayAndEndDayOfBookingShouldShowTotalPrice()
     {
-        Assert.AreEqual(2835, _userLogic.CalculateTotalPriceOfBooking(_mybookingDto));
+        Assert.AreEqual(2126.25, _userLogic.CalculateTotalPriceOfBooking(_mybookingDto));
     }
     
     [TestMethod]
     public void WhenUserEntersPageBookingsShouldShowPricePerDayOfStorageUnit()
     {
-        Assert.AreEqual(70, _userLogic.CalculateStorageUnitPricePerDay(_storageUnitDto));
+        Assert.AreEqual(52.5, _userLogic.CalculateStorageUnitPricePerDay(_storageUnitDto));
     }
 
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
-    public void WhenUserTriesToBookTheSameStorageUnitTwiceShouldThrowException()
+    public void WhenUserTriesToBookTheSameStorageUnitWithPromotionTwiceShouldThrowException()
     {
+        _userLogic.AddBookingToUser(_userDto, _mybookingDto);
+        _userLogic.AddBookingToUser(_userDto, _mybookingDto);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenUserTriesToBookTheSameStorageUnitWithoutPromotionTwiceShouldThrowException()
+    {
+        _storageUnitDto = new StorageUnitDto("",AreaType.A, SizeType.Small, true, new List<PromotionDto>());
+        _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "");
         _userLogic.AddBookingToUser(_userDto, _mybookingDto);
         _userLogic.AddBookingToUser(_userDto, _mybookingDto);
     }

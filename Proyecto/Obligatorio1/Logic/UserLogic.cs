@@ -25,9 +25,9 @@ public class UserLogic
         bool exists = false;
         if (person is User user)
         {
-            foreach (var booking in user.GetBookings())
+            foreach (var oldBooking in user.GetBookings())
             {
-                exists = IfStorageUnitInOldBookingAndBookingAreTheSameSetExistsToTrue(booking, newBooking, exists);
+                exists = IfStorageUnitInOldBookingAndNewBookingAreTheSameSetExistsToTrue(oldBooking, newBooking, exists);
             }
             if (!exists)
             {
@@ -45,19 +45,50 @@ public class UserLogic
         throw new LogicExceptions("Booking for this StorageUnit already exists");
     }
 
-    private static bool IfStorageUnitInOldBookingAndBookingAreTheSameSetExistsToTrue(Booking booking, Booking newBooking,
+    private bool IfStorageUnitInOldBookingAndNewBookingAreTheSameSetExistsToTrue(Booking oldBooking, Booking newBooking,
         bool exists)
     {
-        if (booking.GetStorageUnit().GetId() == newBooking.GetStorageUnit().GetId() 
-            && booking.GetStorageUnit().GetArea() == newBooking.GetStorageUnit().GetArea() 
-            && booking.GetStorageUnit().GetSize() == newBooking.GetStorageUnit().GetSize() 
-            && booking.GetStorageUnit().GetClimatization() == newBooking.GetStorageUnit().GetClimatization() 
-            && booking.GetStorageUnit().GetPromotions().SequenceEqual(newBooking.GetStorageUnit().GetPromotions()))
+        if (oldBooking.GetStorageUnit().GetId() == newBooking.GetStorageUnit().GetId() 
+            && oldBooking.GetStorageUnit().GetArea() == newBooking.GetStorageUnit().GetArea() 
+            && oldBooking.GetStorageUnit().GetSize() == newBooking.GetStorageUnit().GetSize() 
+            && oldBooking.GetStorageUnit().GetClimatization() == newBooking.GetStorageUnit().GetClimatization() 
+            && CheckIfPromotionsOfInStorageUnitOfOldBookingAndNewBookingAreTheSame(oldBooking, newBooking))
         {
             exists = true;
         }
 
         return exists;
+    }
+    
+    private bool CheckIfPromotionsOfInStorageUnitOfOldBookingAndNewBookingAreTheSame(Booking oldBooking, Booking newBooking)
+    {
+        bool same = false;
+        if ((oldBooking.GetStorageUnit().GetPromotions() == null || oldBooking.GetStorageUnit().GetPromotions().Count == 0) &&
+            (newBooking.GetStorageUnit().GetPromotions() == null || newBooking.GetStorageUnit().GetPromotions().Count == 0))
+        {
+            same = true;
+        }
+        else
+        {
+            foreach (var promotion in oldBooking.GetStorageUnit().GetPromotions()) 
+            { 
+                same = CheckIfPromotionIsTheSame(promotion, newBooking.GetStorageUnit().GetPromotions());
+            }
+        }
+        return same;
+    }
+    
+    private bool CheckIfPromotionIsTheSame(Promotion promotion, List<Promotion> promotions)
+    {
+        bool same = false;
+        foreach (var promotion1 in promotions)
+        {
+            if (promotion.GetLabel() == promotion1.GetLabel() && promotion.GetDiscount() == promotion1.GetDiscount() && promotion.GetDateStart() == promotion1.GetDateStart() && promotion.GetDateEnd() == promotion1.GetDateEnd())
+            {
+                same = true;
+            }
+        }
+        return same;
     }
 
     public bool CheckIfBookingIsApproved(BookingDto bookingDto)
