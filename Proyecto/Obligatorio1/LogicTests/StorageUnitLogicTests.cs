@@ -107,6 +107,6 @@ public class StorageUnitLogicTests
     public void WhenPromotionIsDeletedShouldDeleteItFromAllStorageUnits()
     {
         _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
-        _storageUnitLogic.DeletePromotionFromStorageUnit(_promotionDto);
+        _storageUnitLogic.DeletePromotionFromAllStorageUnits(_promotionDto);
     }
 }
