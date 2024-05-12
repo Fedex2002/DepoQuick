@@ -30,7 +30,9 @@ public class UserLogicTests
         _userLogic = new UserLogic(_personRepo);
         _personRepo.AddToRepository(_person);
         _userDto = new UserDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<BookingDto>());
-        _storageUnitDto = new StorageUnitDto("",AreaType.A, SizeType.Small, true,new List<PromotionDto>());
+        _promotionDto = new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _promotionsDto.Add(_promotionDto);
+        _storageUnitDto = new StorageUnitDto("",AreaType.A, SizeType.Small, true, _promotionsDto);
         _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "");
     }
     
