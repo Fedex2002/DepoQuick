@@ -3,6 +3,7 @@
 @using Logic.DTOs
 @layout MainLayout
 @inject PromotionLogic promotionLogic
+@inject StorageUnitLogic storageUnitLogic
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -79,6 +80,7 @@
         {
             promotionDto = promotionLogic.GetPromotionDtoFromLabel(label);
             promotionLogic.RemovePromotion(promotionDto);
+            storageUnitLogic.DeletePromotionFromAllStorageUnits(promotionDto);
             showAdminConfirmationModal = true;
             promotions = promotionLogic.GetPromotionsDto();
         }
