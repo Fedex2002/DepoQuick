@@ -20,30 +20,28 @@ public class AdministratorLogic
         Person person = _personRepositories.GetFromRepository(userDto.Email);
         if (person is User user)
         {
-            List<Booking> bookingsToRemove = new List<Booking>();
-            foreach (var booking in user.GetBookings())
+            var userBookings = user.GetBookings().ToList();
+            foreach (var booking in userBookings)
             { 
-                CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(booking, oldBooking, bookingsToRemove);
-            }
-            foreach (var bookingToRemove in bookingsToRemove)
-            {
-                user.GetBookings().Remove(bookingToRemove);
+                user.GetBookings().Remove(CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(booking, oldBooking));
             }
             user.GetBookings().Add(newBooking);
         }
     }
 
-    private static void CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(Booking booking, Booking oldBooking,
-        List<Booking> bookingsToRemove)
+    private Booking CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(Booking booking, Booking oldBooking)
     {
+        Booking ret = new Booking();
         if (booking.GetApproved() == oldBooking.GetApproved() && 
             booking.GetDateStart() == oldBooking.GetDateStart() &&
             booking.GetDateEnd() == oldBooking.GetDateEnd() && 
             booking.GetStorageUnit().GetId() == oldBooking.GetStorageUnit().GetId() &&
             booking.GetRejectedMessage() == oldBooking.GetRejectedMessage())
         {
-            bookingsToRemove.Add(booking);
+            ret = booking;
         }
+
+        return ret;
     }
 
     public void SetRejectionMessage(UserDto userDto, BookingDto bookingDto, string rejectionMessage)
@@ -54,14 +52,10 @@ public class AdministratorLogic
         Person person = _personRepositories.GetFromRepository(userDto.Email);
         if (person is User user)
         {
-            List<Booking> bookingsToRemove = new List<Booking>();
-            foreach (var booking in user.GetBookings())
+            var userBookings = user.GetBookings().ToList();
+            foreach (var booking in userBookings)
             {
-                CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(booking, oldBooking, bookingsToRemove);
-            }
-            foreach (var bookingToRemove in bookingsToRemove)
-            {
-                user.GetBookings().Remove(bookingToRemove);
+                user.GetBookings().Remove(CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(booking, oldBooking));
             }
             user.GetBookings().Add(newBooking);
         }
