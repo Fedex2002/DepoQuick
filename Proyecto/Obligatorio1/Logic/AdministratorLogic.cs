@@ -21,7 +21,7 @@ public class AdministratorLogic
         }
         else if (bookingDto.RejectedMessage != "")
         {
-            throw new LogicExceptions("Booking is already rejected");
+            IfBookingRejectedMessageIsNotEmptyThrowException();
         }
         else
         {
@@ -40,6 +40,11 @@ public class AdministratorLogic
         }
     }
 
+    private static void IfBookingRejectedMessageIsNotEmptyThrowException()
+    {
+        throw new LogicExceptions("Booking is already rejected");
+    }
+
     private void CheckIfOldBookingAndBookingAreTheSameThenRemove(List<Booking> userBookings, Booking booking, Booking oldBooking)
     {
         if (booking.GetStorageUnit().GetId() == oldBooking.GetStorageUnit().GetId())
@@ -52,7 +57,7 @@ public class AdministratorLogic
     {
         if (bookingDto.RejectedMessage != "")
         {
-            throw new LogicExceptions("Booking is already rejected");
+            IfBookingRejectedMessageIsNotEmptyThrowException();
         }
         else if (bookingDto.Approved)
         {
