@@ -29,26 +29,19 @@ public class AdministratorLogic
                 var userBookings = user.GetBookings().ToList();
                 foreach (var booking in userBookings)
                 { 
-                    user.GetBookings().Remove(CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(booking, oldBooking));
+                    CheckIfOldBookingAndBookingAreTheSameThenRemove(user.GetBookings(), booking, oldBooking);
                 }
                 user.GetBookings().Add(newBooking);
             }
         }
     }
 
-    private Booking CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(Booking booking, Booking oldBooking)
+    private void CheckIfOldBookingAndBookingAreTheSameThenRemove(List<Booking> userBookings, Booking booking, Booking oldBooking)
     {
-        Booking ret = new Booking();
-        if (booking.GetApproved() == oldBooking.GetApproved() && 
-            booking.GetDateStart() == oldBooking.GetDateStart() &&
-            booking.GetDateEnd() == oldBooking.GetDateEnd() && 
-            booking.GetStorageUnit().GetId() == oldBooking.GetStorageUnit().GetId() &&
-            booking.GetRejectedMessage() == oldBooking.GetRejectedMessage())
+        if (booking.GetStorageUnit().GetId() == oldBooking.GetStorageUnit().GetId())
         {
-            ret = booking;
+            userBookings.Remove(booking);
         }
-
-        return ret;
     }
 
     public void SetRejectionMessage(UserDto userDto, BookingDto bookingDto, string rejectionMessage)
@@ -68,7 +61,7 @@ public class AdministratorLogic
                 var userBookings = user.GetBookings().ToList();
                 foreach (var booking in userBookings)
                 {
-                    user.GetBookings().Remove(CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(booking, oldBooking));
+                   CheckIfOldBookingAndBookingAreTheSameThenRemove(user.GetBookings(), booking, oldBooking);
                 }
                 user.GetBookings().Add(newBooking);
             }
