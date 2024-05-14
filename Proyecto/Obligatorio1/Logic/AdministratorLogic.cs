@@ -19,6 +19,10 @@ public class AdministratorLogic
         {
             throw new LogicExceptions("Booking is already approved");
         }
+        else if (bookingDto.RejectedMessage != "")
+        {
+            throw new LogicExceptions("Booking is already rejected");
+        }
         else
         {
             Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
@@ -49,6 +53,10 @@ public class AdministratorLogic
         if (bookingDto.RejectedMessage != "")
         {
             throw new LogicExceptions("Booking is already rejected");
+        }
+        else if (bookingDto.Approved)
+        {
+            throw new LogicExceptions("Booking is already approved");
         }
         else
         {
