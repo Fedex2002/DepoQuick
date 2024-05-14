@@ -39,7 +39,7 @@ public class AdministratorLogicTests
         _personRepo.AddToRepository(_user);
         _promotionDto = new PromotionDto("Winter Discount", 25, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15));
         _promotionsDto.Add(_promotionDto);
-        _bookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto), "");
+        _bookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto), "");
         _userDto = new UserDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<BookingDto>());
     }
     
@@ -68,5 +68,23 @@ public class AdministratorLogicTests
     {
         List<UserDto> users = _administratorLogic.GetUsersDto();
         Assert.IsTrue(users.Count > 0);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenAdministratorAlreadyApprovedABookingShouldThrowException()
+    {   
+        _administratorLogic.ApproveBooking(_userDto, _bookingDto);
+        _bookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto), "");
+        _administratorLogic.ApproveBooking(_userDto, _bookingDto);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenAdministratorAlreadyRejectedABookingShouldThrowException()
+    {
+        _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "Rejected");
+        _bookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto), "Rejected");
+        _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "Rejected");
     }
 }
