@@ -17,7 +17,7 @@ public class AdministratorLogic
     {
         if (bookingDto.Approved)
         {
-            throw new LogicExceptions("Booking is already approved");
+            IfBookingIsAlreadyApprovedThrowException();
         }
         else if (bookingDto.RejectedMessage != "")
         {
@@ -38,6 +38,11 @@ public class AdministratorLogic
                 user.GetBookings().Add(newBooking);
             }
         }
+    }
+
+    private static void IfBookingIsAlreadyApprovedThrowException()
+    {
+        throw new LogicExceptions("Booking is already approved");
     }
 
     private static void IfBookingRejectedMessageIsNotEmptyThrowException()
@@ -61,7 +66,7 @@ public class AdministratorLogic
         }
         else if (bookingDto.Approved)
         {
-            throw new LogicExceptions("Booking is already approved");
+            IfBookingIsAlreadyApprovedThrowException();
         }
         else
         {
