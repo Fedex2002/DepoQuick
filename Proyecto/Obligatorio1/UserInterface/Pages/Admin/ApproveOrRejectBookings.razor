@@ -145,6 +145,7 @@
         try
         {
             administratorLogic.ApproveBooking(userDto, bookingDto);
+            OnInitialized();
             Message = "Booking has been approved successfully!";
             showAdminConfirmationModal = true;
         }
@@ -160,6 +161,7 @@
         try
         {
             administratorLogic.SetRejectionMessage(userDto, bookingDto, rejectionReason);
+            OnInitialized();
             Message = "Booking has been rejected successfully!";
             showAdminConfirmationModal = true;
         }
