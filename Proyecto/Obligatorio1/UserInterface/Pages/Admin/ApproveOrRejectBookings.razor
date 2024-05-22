@@ -10,19 +10,23 @@
 
 <section class="vh-75">
     <div class="container">
-        <h2 class="mt-5 mb-4">Bookings</h2>
+        <div class="d-flex justify-content-between align-items-center mt-5 mb-4">
+            <h2 class="mb-0">Approve or Reject Bookings</h2>
+            <button type="button" class="btn btn-primary btn-lg">Export Bookings Report</button>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-striped">
                     <thead>
-                        <tr>
-                            <th>StorageUnit data</th>
-                            <th>User</th>
-                            <th>Total Price</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th></th>
-                        </tr>
+                    <tr>
+                        <th>StorageUnit data</th>
+                        <th>User</th>
+                        <th>Total Price</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
                     </thead>
                     <tbody>
                     @foreach (var user in allUsers)
@@ -42,8 +46,8 @@
                                             <p style="margin-bottom: 0;">Promotion</p>
                                             <strong>Label:</strong> @promotion.Label<br/>
                                             <strong>Discount:</strong> @promotion.Discount<br/>
-                                            <strong>StartDate:</strong> @promotion.DateStart<br/>
-                                            <strong>EndDate:</strong> @promotion.DateEnd<br/>
+                                            <strong>StartDate:</strong> @promotion.DateStart.ToShortDateString()<br/>
+                                            <strong>EndDate:</strong> @promotion.DateEnd.ToShortDateString()<br/>
                                         </div>
                                     }
                                 </td>
@@ -54,10 +58,12 @@
                                     <label class="form-label">@totalPrice[booking.StorageUnitDto.Id]</label>
                                 </td>
                                 <td>
-                                    <label class="form-label">@dateStart[booking.StorageUnitDto.Id]</label>
+                                    <label class="form-label">@dateStart[booking.StorageUnitDto.Id].ToShortDateString()</label>
                                 </td>
                                 <td>
-                                    <label class="form-label">@dateEnd[booking.StorageUnitDto.Id]</label>
+                                    <label class="form-label">@dateEnd[booking.StorageUnitDto.Id].ToShortDateString()</label>
+                                </td>
+                                <td>
                                 </td>
                                 <td>
                                     @if (!showRejectInput || selectedBooking != booking)
@@ -87,6 +93,7 @@
         </div>
     </div>
 </section>
+
 @if (showAdminErrorModal)
 {
   <AuthenticationModal

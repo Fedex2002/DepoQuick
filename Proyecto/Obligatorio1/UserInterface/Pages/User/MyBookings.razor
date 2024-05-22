@@ -22,6 +22,7 @@
                             <th>End Date</th>
                             <th>Active</th>
                             <th>Rejection Message</th>
+                            <th>Status</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -41,8 +42,8 @@
                                     <p style="margin-bottom: 0;">Promotion</p>
                                     <strong>Label:</strong> @promotion.Label<br/>
                                     <strong>Discount:</strong> @promotion.Discount<br/>
-                                    <strong>StartDate:</strong> @promotion.DateStart<br/>
-                                    <strong>EndDate:</strong> @promotion.DateEnd<br/>
+                                    <strong>StartDate:</strong> @promotion.DateStart.ToShortDateString()<br/>
+                                    <strong>EndDate:</strong> @promotion.DateEnd.ToShortDateString()<br/>
                                 </div>
                             }
                         </td>
@@ -50,16 +51,21 @@
                             <label class="form-label">$@totalPrice[booking.StorageUnitDto.Id]</label>
                         </td>
                         <td>
-                            <label class="form-label">@dateStart[booking.StorageUnitDto.Id]</label>
+                            <label class="form-label">@dateStart[booking.StorageUnitDto.Id].ToShortDateString()</label>
                         </td>
                         <td>
-                            <label class="form-label">@dateEnd[booking.StorageUnitDto.Id]</label>
+                            <label class="form-label">@dateEnd[booking.StorageUnitDto.Id].ToShortDateString()</label>
                         </td>
                         <td>
                             <label class="form-label">@active[booking.StorageUnitDto.Id]</label>
                         </td>
                         <td>
                             <label class="form-label">@rejectionMessage[booking.StorageUnitDto.Id]</label>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                             <button type="submit" class="btn btn-success btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Pay Booking</button>
                         </td>
                         </tr>
                     }
