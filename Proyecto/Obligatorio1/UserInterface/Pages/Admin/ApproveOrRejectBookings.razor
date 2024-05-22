@@ -29,16 +29,6 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @{
-                        foreach (var user in allUsers)
-                        {
-                            if (user.Bookings.Any())
-                            {
-                                hasBookings = true;
-                                break;
-                            }
-                        }
-                    }
                     @if (!hasBookings)
                     {
                         <tr>
@@ -157,6 +147,11 @@
                 totalPrice[bookingDto.StorageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
                 dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
                 dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
+            }
+            if (user.Bookings.Any())
+            {
+                hasBookings = true;
+                break;
             }
         }
     }

@@ -36,6 +36,17 @@
                                     <strong>Area:</strong>@storageUnit.Area<br/>
                                     <strong>Size:</strong>@storageUnit.Size<br/>
                                     <strong>Climatization:</strong>@storageUnit.Climatization<br/>
+                                    @foreach (var promotion in storageUnit.Promotions)
+                                    {
+                                        <div>
+                                            <br/>
+                                            <p style="margin-bottom: 0;">Promotion</p>
+                                            <strong>Label:</strong> @promotion.Label<br/>
+                                            <strong>Discount:</strong> @promotion.Discount<br/>
+                                            <strong>StartDate:</strong> @promotion.DateStart.ToShortDateString()<br/>
+                                            <strong>EndDate:</strong> @promotion.DateEnd.ToShortDateString()<br/>
+                                        </div>
+                                    }
                                 </td>
                                 <td>
                                     <input type="date" class="form-control form-control-lg" @bind="dateStart" required/>
