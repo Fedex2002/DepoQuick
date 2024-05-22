@@ -23,19 +23,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var promotion in promotions)
+                        @if (promotions.Count == 0)
                         {
                             <tr>
-                                <td>@promotion.Label</td>
-                                <td>@promotion.Discount%</td>
-                                <td>@promotion.DateStart.ToShortDateString()</td>
-                                <td>@promotion.DateEnd.ToShortDateString()</td>
-                                <td>
-                                    <button type="button" class="btn btn-danger" @onclick="() =>HandleValidSubmit(promotion.Label)">Delete</button>
-                                </td>
+                                <td colspan="5">No promotions found</td>
                             </tr>
                         }
-                    </tbody>
+                        else
+                        {
+                            @foreach (var promotion in promotions)
+                            {
+                                <tr>
+                                    <td>@promotion.Label</td>
+                                    <td>@promotion.Discount%</td>
+                                    <td>@promotion.DateStart.ToShortDateString()</td>
+                                    <td>@promotion.DateEnd.ToShortDateString()</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" @onclick="() => HandleValidSubmit(promotion.Label)">Delete</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                     </tbody>
                 </table>
             </div>
         </div>

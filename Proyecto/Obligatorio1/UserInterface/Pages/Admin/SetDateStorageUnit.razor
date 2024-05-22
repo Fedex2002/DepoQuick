@@ -20,27 +20,36 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach (var storageUnit in storageUnits)
+                    @if (storageUnits.Count == 0)
                     {
                         <tr>
-                            <td>
-                                <strong>Id:</strong>@storageUnit.Id<br/>
-                                <strong>Area:</strong>@storageUnit.Area<br/>
-                                <strong>Size:</strong>@storageUnit.Size<br/>
-                                <strong>Climatization:</strong>@storageUnit.Climatization<br/>
-                            </td>
-                            <td>
-                                <input type="date" class="form-control form-control-lg" @bind="dateStart" required/>
-                                <label class="form-label" >DateStart</label>
-                            </td>
-                            <td>
-                                <input type="date" class="form-control form-control-lg" @bind="dateEnd" required/>
-                                <label class="form-label" >DateEnd</label>
-                            </td>
-                            <td>
-                                <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Set possible booking date</button>
-                            </td>
+                            <td colspan="4">No storage units found</td>
                         </tr>
+                    }
+                    else
+                    {
+                        @foreach (var storageUnit in storageUnits)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>Id:</strong>@storageUnit.Id<br/>
+                                    <strong>Area:</strong>@storageUnit.Area<br/>
+                                    <strong>Size:</strong>@storageUnit.Size<br/>
+                                    <strong>Climatization:</strong>@storageUnit.Climatization<br/>
+                                </td>
+                                <td>
+                                    <input type="date" class="form-control form-control-lg" @bind="dateStart" required/>
+                                    <label class="form-label">DateStart</label>
+                                </td>
+                                <td>
+                                    <input type="date" class="form-control form-control-lg" @bind="dateEnd" required/>
+                                    <label class="form-label">DateEnd</label>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Set possible booking date</button>
+                                </td>
+                            </tr>
+                        }
                     }
                     </tbody>
                 </table>

@@ -23,28 +23,37 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var storageUnit in storageUnits)
+                        @if (storageUnits.Count == 0)
                         {
                             <tr>
-                                <td>@storageUnit.Id</td>
-                                <td>@storageUnit.Area</td>
-                                <td>@storageUnit.Size</td>
-                                <td>@storageUnit.Climatization</td>
-                                <td>
-                                    @foreach (var promotion in storageUnit.Promotions)
-                                    {
-                                        <div>
-                                            <strong>Label:</strong> @promotion.Label<br />
-                                            <strong>Discount:</strong> @promotion.Discount<br />
-                                            <strong>StartDate:</strong> @promotion.DateStart<br />
-                                            <strong>EndDate:</strong> @promotion.DateEnd<br />
-                                        </div>
-                                    }
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-danger" @onclick="() =>HandleValidSubmit(storageUnit.Id)">Delete</button>
-                                </td>
+                                <td colspan="6">No storage units found</td>
                             </tr>
+                        }
+                        else
+                        {
+                            @foreach (var storageUnit in storageUnits)
+                            {
+                                <tr>
+                                    <td>@storageUnit.Id</td>
+                                    <td>@storageUnit.Area</td>
+                                    <td>@storageUnit.Size</td>
+                                    <td>@storageUnit.Climatization</td>
+                                    <td>
+                                        @foreach (var promotion in storageUnit.Promotions)
+                                        {
+                                            <div>
+                                                <strong>Label:</strong> @promotion.Label<br/>
+                                                <strong>Discount:</strong> @promotion.Discount<br/>
+                                                <strong>StartDate:</strong> @promotion.DateStart<br/>
+                                                <strong>EndDate:</strong> @promotion.DateEnd<br/>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" @onclick="() => HandleValidSubmit(storageUnit.Id)">Delete</button>
+                                    </td>
+                                </tr>
+                            }
                         }
                     </tbody>
                 </table>

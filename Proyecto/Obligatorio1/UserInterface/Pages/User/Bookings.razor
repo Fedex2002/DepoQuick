@@ -25,8 +25,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var storageUnit in storageUnits)
-                        {
+                     @if (storageUnits.Count == 0)
+                     {
+                         <tr>
+                             <td colspan="6">No possible bookings found</td>
+                         </tr>
+                     }
+                     else
+                     {
+                         @foreach (var storageUnit in storageUnits) 
+                         { 
                              <tr>
                                  <td>
                                      <strong>Id:</strong>@storageUnit.Id<br/>
@@ -67,8 +75,9 @@
                                      <button type="button" class="btn btn-primary mb-2" @onclick="() => SetTotalPrice(storageUnit)">Calculate Total Price</button><br/>
                                      <button type="button" class="btn btn-success" @onclick="() => HandleValidSubmit(storageUnit)">Select Storage Unit</button>
                                  </td>
-                            </tr>
+                             </tr>
                         }
+                     }
                     </tbody>
                 </table>
             </div>

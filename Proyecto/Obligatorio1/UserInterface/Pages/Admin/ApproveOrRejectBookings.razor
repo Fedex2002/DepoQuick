@@ -29,62 +29,81 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach (var user in allUsers)
-                    {
-                        @foreach (var booking in user.Bookings)
+                    @{
+                        foreach (var user in allUsers)
                         {
-                            <tr>
-                                <td>
-                                    <strong>Id:</strong>@booking.StorageUnitDto.Id<br/>
-                                    <strong>Area:</strong>@booking.StorageUnitDto.Area<br/>
-                                    <strong>Size:</strong>@booking.StorageUnitDto.Size<br/>
-                                    <strong>Climatization:</strong>@booking.StorageUnitDto.Climatization<br/>
-                                    @foreach (var promotion in booking.StorageUnitDto.Promotions)
-                                    {
-                                        <div>
+                            if (user.Bookings.Any())
+                            {
+                                hasBookings = true;
+                                break;
+                            }
+                        }
+                    }
+                    @if (!hasBookings)
+                    {
+                        <tr>
+                            <td colspan="7">No bookings found</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var user in allUsers)
+                        {
+                            @foreach (var booking in user.Bookings)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>Id:</strong>@booking.StorageUnitDto.Id<br/>
+                                        <strong>Area:</strong>@booking.StorageUnitDto.Area<br/>
+                                        <strong>Size:</strong>@booking.StorageUnitDto.Size<br/>
+                                        <strong>Climatization:</strong>@booking.StorageUnitDto.Climatization<br/>
+                                        @foreach (var promotion in booking.StorageUnitDto.Promotions)
+                                        {
+                                            <div>
+                                                <br/>
+                                                <p style="margin-bottom: 0;">Promotion</p>
+                                                <strong>Label:</strong> @promotion.Label<br/>
+                                                <strong>Discount:</strong> @promotion.Discount<br/>
+                                                <strong>StartDate:</strong> @promotion.DateStart.ToShortDateString()<br/>
+                                                <strong>EndDate:</strong> @promotion.DateEnd.ToShortDateString()<br/>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        <label class="form-label">@user.Name</label>
+                                    </td>
+                                    <td>
+                                        <label class="form-label">@totalPrice[booking.StorageUnitDto.Id]</label>
+                                    </td>
+                                    <td>
+                                        <label class="form-label">@dateStart[booking.StorageUnitDto.Id].ToShortDateString()</label>
+                                    </td>
+                                    <td>
+                                        <label class="form-label">@dateEnd[booking.StorageUnitDto.Id].ToShortDateString()</label>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        @if (!showRejectInput || selectedBooking != booking)
+                                        {
+                                            <button type="button" class="btn btn-danger mb-2" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => ToggleRejectInput(booking)">Reject the Booking</button>
                                             <br/>
-                                            <p style="margin-bottom: 0;">Promotion</p>
-                                            <strong>Label:</strong> @promotion.Label<br/>
-                                            <strong>Discount:</strong> @promotion.Discount<br/>
-                                            <strong>StartDate:</strong> @promotion.DateStart.ToShortDateString()<br/>
-                                            <strong>EndDate:</strong> @promotion.DateEnd.ToShortDateString()<br/>
-                                        </div>
-                                    }
-                                </td>
-                                <td>
-                                    <label class="form-label">@user.Name</label>
-                                </td>
-                                <td>
-                                    <label class="form-label">@totalPrice[booking.StorageUnitDto.Id]</label>
-                                </td>
-                                <td>
-                                    <label class="form-label">@dateStart[booking.StorageUnitDto.Id].ToShortDateString()</label>
-                                </td>
-                                <td>
-                                    <label class="form-label">@dateEnd[booking.StorageUnitDto.Id].ToShortDateString()</label>
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                    @if (!showRejectInput || selectedBooking != booking)
-                                    {
-                                        <button type="button" class="btn btn-danger mb-2" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => ToggleRejectInput(booking)">Reject the Booking</button>
-                                        <br/>
-                                        <button type="button" class="btn btn-success" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => AcceptBooking(user, booking)">Accept the Booking</button>
-                                    }
-                                    @if (showRejectInput && selectedBooking == booking)
-                                    {
-                                        <div data-mdb-input-init class="form-outline mt-2 mb-2">
-                                            <input type="text" class="form-control form-control-lg" placeholder="Reason for rejection" @bind="RejectionReason" required/>
-                                            <label class="form-label">Rejection</label>
-                                        </div>
-                                        <div class="text-center text-lg-start pt-2">
-                                            <button type="button" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => RejectBooking(user, booking, RejectionReason)">Confirm the Rejection</button>
-                                        </div>
-                                        <p class="small fw-bold mt-2 pt-1 mb-0">Changed your decision? <a href="#" @onclick="RefreshPage" class="link-danger">Go Back</a></p>
-                                    }
-                                </td>
-                            </tr>
+                                            <button type="button" class="btn btn-success" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => AcceptBooking(user, booking)">Accept the Booking</button>
+                                        }
+                                        @if (showRejectInput && selectedBooking == booking)
+                                        {
+                                            <div data-mdb-input-init class="form-outline mt-2 mb-2">
+                                                <input type="text" class="form-control form-control-lg" placeholder="Reason for rejection" @bind="RejectionReason" required/>
+                                                <label class="form-label">Rejection</label>
+                                            </div>
+                                            <div class="text-center text-lg-start pt-2">
+                                                <button type="button" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => RejectBooking(user, booking, RejectionReason)">Confirm the Rejection</button>
+                                            </div>
+                                            <p class="small fw-bold mt-2 pt-1 mb-0">Changed your decision? <a href="#" @onclick="RefreshPage" class="link-danger">Go Back</a></p>
+                                        }
+                                    </td>
+                                </tr>
+                            }
                         }
                     }
                     </tbody>
@@ -114,6 +133,7 @@
 }
 
 @code {
+    private bool hasBookings = false;
     private bool showRejectInput = false;
     private List<UserDto> allUsers = new List<UserDto>();
     private BookingDto selectedBooking;

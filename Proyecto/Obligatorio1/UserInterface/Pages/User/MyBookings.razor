@@ -27,47 +27,56 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach (var booking in bookings)
+                    @if (bookings.Count == 0)
                     {
                         <tr>
-                        <td>
-                            <strong>Id:</strong>@booking.StorageUnitDto.Id<br/>
-                            <strong>Area:</strong>@booking.StorageUnitDto.Area<br/>
-                            <strong>Size:</strong>@booking.StorageUnitDto.Size<br/>
-                            <strong>Climatization:</strong>@booking.StorageUnitDto.Climatization<br/>
-                            @foreach (var promotion in booking.StorageUnitDto.Promotions)
-                            {
-                                <div>
-                                    <br/>
-                                    <p style="margin-bottom: 0;">Promotion</p>
-                                    <strong>Label:</strong> @promotion.Label<br/>
-                                    <strong>Discount:</strong> @promotion.Discount<br/>
-                                    <strong>StartDate:</strong> @promotion.DateStart.ToShortDateString()<br/>
-                                    <strong>EndDate:</strong> @promotion.DateEnd.ToShortDateString()<br/>
-                                </div>
-                            }
-                        </td>
-                        <td>
-                            <label class="form-label">$@totalPrice[booking.StorageUnitDto.Id]</label>
-                        </td>
-                        <td>
-                            <label class="form-label">@dateStart[booking.StorageUnitDto.Id].ToShortDateString()</label>
-                        </td>
-                        <td>
-                            <label class="form-label">@dateEnd[booking.StorageUnitDto.Id].ToShortDateString()</label>
-                        </td>
-                        <td>
-                            <label class="form-label">@active[booking.StorageUnitDto.Id]</label>
-                        </td>
-                        <td>
-                            <label class="form-label">@rejectionMessage[booking.StorageUnitDto.Id]</label>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                             <button type="submit" class="btn btn-success btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Pay Booking</button>
-                        </td>
+                            <td colspan="8">No bookings found</td>
                         </tr>
+                    }
+                    else
+                    {
+                        @foreach (var booking in bookings)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>Id:</strong>@booking.StorageUnitDto.Id<br/>
+                                    <strong>Area:</strong>@booking.StorageUnitDto.Area<br/>
+                                    <strong>Size:</strong>@booking.StorageUnitDto.Size<br/>
+                                    <strong>Climatization:</strong>@booking.StorageUnitDto.Climatization<br/>
+                                    @foreach (var promotion in booking.StorageUnitDto.Promotions)
+                                    {
+                                        <div>
+                                            <br/>
+                                            <p style="margin-bottom: 0;">Promotion</p>
+                                            <strong>Label:</strong> @promotion.Label<br/>
+                                            <strong>Discount:</strong> @promotion.Discount<br/>
+                                            <strong>StartDate:</strong> @promotion.DateStart.ToShortDateString()<br/>
+                                            <strong>EndDate:</strong> @promotion.DateEnd.ToShortDateString()<br/>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <label class="form-label">$@totalPrice[booking.StorageUnitDto.Id]</label>
+                                </td>
+                                <td>
+                                    <label class="form-label">@dateStart[booking.StorageUnitDto.Id].ToShortDateString()</label>
+                                </td>
+                                <td>
+                                    <label class="form-label">@dateEnd[booking.StorageUnitDto.Id].ToShortDateString()</label>
+                                </td>
+                                <td>
+                                    <label class="form-label">@active[booking.StorageUnitDto.Id]</label>
+                                </td>
+                                <td>
+                                    <label class="form-label">@rejectionMessage[booking.StorageUnitDto.Id]</label>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-success btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Pay Booking</button>
+                                </td>
+                            </tr>
+                        }
                     }
                     </tbody>
                 </table>
