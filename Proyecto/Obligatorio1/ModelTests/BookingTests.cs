@@ -86,4 +86,10 @@ public class BookingTests
     {
         Assert.AreEqual("Reservado", _mybooking.Status);
     }
+    
+    [TestMethod]
+    public void WhenCreatingBookingPaymentShouldBeFalse()
+    {
+        Assert.IsFalse(_mybooking.Payment);
+    }
 }
