@@ -3,7 +3,7 @@ namespace Model;
 
 public class Promotion
 {
-    private string _label;
+    private string _label = "";
     private int _discount;
     private DateTime _dateStart;
     private DateTime _dateEnd;
@@ -13,8 +13,7 @@ public class Promotion
     }
     public Promotion(string label, int discount, DateTime dateStart, DateTime dateEnd)
     {
-        _label = "";
-        SetLabel(label);
+        Label = label;
         _discount = 0;
         SetDiscount(discount);
         _dateStart = DateTime.MinValue;
@@ -24,8 +23,20 @@ public class Promotion
 
     public bool ValidateLabel()
     {
-        return _label.Length <= 20;
+        return Label.Length <= 20;
     }
+    
+    public string Label
+    {
+        get => _label;
+        set
+        {
+            _label = value;
+            IfHasInvalidLabelThrowException();
+        }
+    }
+    
+    
     
     public bool ValidateDiscount()
     {
