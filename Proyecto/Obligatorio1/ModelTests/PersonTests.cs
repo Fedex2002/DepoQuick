@@ -27,7 +27,7 @@ public class PersonTests
         Assert.AreEqual("Franco", _myperson.Name);
         Assert.AreEqual("Ramos", _myperson.Surname);
         Assert.AreEqual("francoramos1511@gmail.com", _myperson.Email);
-        Assert.AreEqual("FrancoRamos2023#", _myperson.GetPassword());
+        Assert.AreEqual("FrancoRamos2023#", _myperson.Password);
     }
     
     [TestMethod]

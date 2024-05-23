@@ -20,8 +20,7 @@ public class Person
         Name = name;
         Surname = surname;
         Email = email;
-        _password = "";
-        SetPassword(password);
+        Password = password;
     }
     
     public string Name
@@ -49,6 +48,17 @@ public class Person
             IfHasInvalidEmailThrowException();
         }
     }
+    
+    public string Password
+    {
+        get => _password;
+        set
+        {
+            _password = value;
+            IfHasInvalidPasswordThrowException();
+        }
+    }
+    
     
     
     public bool ValidatePassword()
@@ -149,19 +159,6 @@ public class Person
         return ret;
     }
     
-    
-    
-    public string GetPassword()
-    {
-        return _password;
-    }
-    
-    private void SetPassword(string password)
-    {
-        _password = password;
-        IfHasInvalidPasswordThrowException();
-    }
-
     private void IfHasInvalidPasswordThrowException()
     {
         if(!ValidatePassword())
