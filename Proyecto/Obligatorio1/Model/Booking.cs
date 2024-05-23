@@ -4,8 +4,8 @@ namespace Model;
 public class Booking
 {
     private bool _approved;
-    private DateTime _dateStart;
-    private DateTime _dateEnd;
+    private DateTime _dateStart = DateTime.MinValue;
+    private DateTime _dateEnd = DateTime.MaxValue;
     private StorageUnit _storageUnit;
     private string _rejectedMessage { get; set; }
     
@@ -16,9 +16,8 @@ public class Booking
     public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedMessage)
     {
         Approved = approved;
-        _dateStart = DateTime.MinValue;
-        _dateEnd = DateTime.MaxValue;
-        SetDate(dateStart, dateEnd);
+        DateStart = dateStart;
+        DateEnd = dateEnd;
         _storageUnit = storageUnit;
         _rejectedMessage = "";
         SetRejectedBooking(rejectedMessage);
@@ -31,15 +30,27 @@ public class Booking
         set => _approved = value;
     }
     
-    public DateTime GetDateStart()
+    
+    public DateTime DateStart
     {
-        return _dateStart;
+        get => _dateStart;
+        set
+        {
+            _dateStart = value;
+            IfHasInvalidDateThrowException();
+        }
+    }
+
+    public DateTime DateEnd
+    {
+        get => _dateEnd;
+        set
+        {
+            _dateEnd = value;
+            IfHasInvalidDateThrowException();
+        }
     }
     
-    public DateTime GetDateEnd()
-    {
-        return _dateEnd;
-    }
     
     public string GetRejectedMessage()
     {
@@ -118,13 +129,6 @@ public class Booking
         return _dateStart < _dateEnd;
     }
     
-    private void SetDate(DateTime dateStart, DateTime dateEnd)
-    {
-        _dateStart = dateStart;
-        _dateEnd = dateEnd;
-        IfHasInvalidDateThrowException();
-    }
-
     private void IfHasInvalidDateThrowException()
     {
         if (!CheckDate())
