@@ -1,0 +1,74 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "UserInterface/1.0.0": {
+        "dependencies": {
+          "Logic": "1.0.0",
+          "Repositories": "1.0.0"
+        },
+        "runtime": {
+          "UserInterface.dll": {}
+        }
+      },
+      "Logic/1.0.0": {
+        "dependencies": {
+          "Repositories": "1.0.0"
+        },
+        "runtime": {
+          "Logic.dll": {}
+        }
+      },
+      "Model/1.0.0": {
+        "runtime": {
+          "Model.dll": {}
+        }
+      },
+      "Repositories/1.0.0": {
+        "dependencies": {
+          "Model": "1.0.0",
+          "RepositoriesInterface": "1.0.0"
+        },
+        "runtime": {
+          "Repositories.dll": {}
+        }
+      },
+      "RepositoriesInterface/1.0.0": {
+        "runtime": {
+          "RepositoriesInterface.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "UserInterface/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Logic/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Model/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Repositories/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "RepositoriesInterface/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
