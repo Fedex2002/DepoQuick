@@ -19,7 +19,7 @@ public class StorageUnit
         Area = area;
         Size = size;
        Climatization = climatization; 
-        this._promotions = promotions;
+       Promotions = promotions;
     }
     
     public string Id
@@ -45,10 +45,10 @@ public class StorageUnit
         get => _climatization;
         set => _climatization = value;
     }
-    
-    public List<Promotion> GetPromotions()
+    public List<Promotion>? Promotions
     {
-        return _promotions;
+        get => _promotions;
+        set => _promotions = value;
     }
     
     public double CalculateStorageUnitPricePerDay()

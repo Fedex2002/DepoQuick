@@ -36,7 +36,7 @@ public class StorageUnitTests
         Assert.AreEqual(AreaType.A, _mystorageunit.Area);
         Assert.AreEqual(SizeType.Small, _mystorageunit.Size);
         Assert.AreEqual(true, _mystorageunit.Climatization);
-        Assert.AreEqual(_promotions, _mystorageunit.GetPromotions());
+        Assert.AreEqual(_promotions, _mystorageunit.Promotions);
         Assert.AreEqual(id,_mystorageunit.Id);
     }
  
