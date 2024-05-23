@@ -14,8 +14,7 @@ public class Promotion
     public Promotion(string label, int discount, DateTime dateStart, DateTime dateEnd)
     {
         Label = label;
-        _discount = 0;
-        SetDiscount(discount);
+        Discount = discount;
         _dateStart = DateTime.MinValue;
         _dateEnd = DateTime.MaxValue;
         SetDate(dateStart, dateEnd);
@@ -35,9 +34,18 @@ public class Promotion
             IfHasInvalidLabelThrowException();
         }
     }
-    
-    
-    
+
+    public int Discount
+    {
+        get => _discount;
+        set
+        {
+            _discount = value;
+            IfHasInvalidDiscountThrowException();
+        }
+    }
+
+
     public bool ValidateDiscount()
     {
         return _discount >= 5 && _discount <= 75;
@@ -48,15 +56,7 @@ public class Promotion
         return _dateStart < _dateEnd;
     }
     
-    public string GetLabel()
-    {
-        return _label;
-    }
-    
-    public int GetDiscount()
-    {
-        return _discount;
-    }
+
     
     public DateTime GetDateStart()
     {
@@ -67,12 +67,7 @@ public class Promotion
     {
         return _dateEnd;
     }
-
-    private void SetLabel(string label)
-    {
-        _label = label;
-        IfHasInvalidLabelThrowException();
-    }
+    
 
     private void IfHasInvalidLabelThrowException()
     {
@@ -82,11 +77,7 @@ public class Promotion
         }
     }
     
-    private void SetDiscount(int discount)
-    {
-        _discount = discount;
-        IfHasInvalidDiscountThrowException();
-    }
+
 
     private void IfHasInvalidDiscountThrowException()
     {
