@@ -6,10 +6,10 @@ namespace Model;
 
 public class Person
 {
-    private string _name { get; set; }
-    private string _surname { get; set; }
-    private string _email { get; set; }
-    private string _password { get; set; }
+    private string _name;
+    private string _surname;
+    private string _email;
+    private string _password;
 
     public Person()
     {
@@ -17,14 +17,49 @@ public class Person
     }
     public Person(string name, string surname, string email, string password)
     {
-        _name = "";
-        _surname = "";
-        SetNameAndSurname(name, surname);
-        _email = "";
-        SetEmail(email);
-        _password = "";
-        SetPassword(password);
+        Name = name;
+        Surname = surname;
+        Email = email;
+        Password = password;
     }
+    
+    public string Name
+    {
+        get => _name;
+        set => _name = value;
+    }
+    
+    public string Surname
+    {
+        get => _surname;
+        set
+        {
+            _surname = value;
+            IfHasInvalidNameOrSurnameThrowException();
+        }
+    }
+    
+    public string Email
+    {
+        get => _email;
+        set
+        {
+            _email = value;
+            IfHasInvalidEmailThrowException();
+        }
+    }
+    
+    public string Password
+    {
+        get => _password;
+        set
+        {
+            _password = value;
+            IfHasInvalidPasswordThrowException();
+        }
+    }
+    
+    
     
     public bool ValidatePassword()
     {
@@ -123,33 +158,7 @@ public class Person
 
         return ret;
     }
-
-    public string GetName()
-    {
-        return _name;
-    }
     
-    public string GetSurname()
-    {
-        return _surname;
-    }
-    
-    public string GetEmail()
-    {
-        return _email;
-    }
-    
-    public string GetPassword()
-    {
-        return _password;
-    }
-    
-    private void SetPassword(string password)
-    {
-        _password = password;
-        IfHasInvalidPasswordThrowException();
-    }
-
     private void IfHasInvalidPasswordThrowException()
     {
         if(!ValidatePassword())
@@ -157,26 +166,13 @@ public class Person
             throw new PersonExceptions("Password is not valid");
         }
     }
-
-    private void SetEmail(string email)
-    {
-        _email = email;
-        IfHasInvalidEmailThrowException();
-    }
-
+    
     private void IfHasInvalidEmailThrowException()
     {
         if(!ValidateEmail())
         {
             throw new PersonExceptions("Email is not valid");
         }
-    }
-
-    private void SetNameAndSurname(string name, string surname)
-    {
-        _name = name;
-        _surname = surname;
-        IfHasInvalidNameOrSurnameThrowException(); 
     }
 
     private void IfHasInvalidNameOrSurnameThrowException()

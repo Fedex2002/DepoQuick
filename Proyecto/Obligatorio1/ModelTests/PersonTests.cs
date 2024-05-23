@@ -24,10 +24,10 @@ public class PersonTests
     public void CreatingPersonWithValuesShouldReturnValues()
     {
         _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023#");
-        Assert.AreEqual("Franco", _myperson.GetName());
-        Assert.AreEqual("Ramos", _myperson.GetSurname());
-        Assert.AreEqual("francoramos1511@gmail.com", _myperson.GetEmail());
-        Assert.AreEqual("FrancoRamos2023#", _myperson.GetPassword());
+        Assert.AreEqual("Franco", _myperson.Name);
+        Assert.AreEqual("Ramos", _myperson.Surname);
+        Assert.AreEqual("francoramos1511@gmail.com", _myperson.Email);
+        Assert.AreEqual("FrancoRamos2023#", _myperson.Password);
     }
     
     [TestMethod]
