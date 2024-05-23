@@ -7,6 +7,7 @@ public class Booking
     private DateTime _dateStart = DateTime.MinValue;
     private DateTime _dateEnd = DateTime.MaxValue;
     private StorageUnit _storageUnit;
+    private string _status = "Reservado";
     private string _rejectedMessage { get; set; }
     
     public Booking()
@@ -66,7 +67,13 @@ public class Booking
             IfHasInvalidRejectionThrowException();
         }
     }
-    
+
+    public string Status
+    {
+        get => _status;
+        set => _status = value;
+    }
+
 
     private void IfHasInvalidRejectionThrowException()
     {
