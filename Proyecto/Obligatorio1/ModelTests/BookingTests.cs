@@ -31,7 +31,7 @@ public class BookingTests
     [TestMethod]
     public void CreatingBookingWithValidations_ShouldReturnValidValues()
     {
-        Assert.AreEqual(false, _mybooking.GetApproved());
+        Assert.AreEqual(false, _mybooking.Approved);
         Assert.AreEqual(new DateTime(2024, 7, 1), _mybooking.GetDateStart());
         Assert.AreEqual(new DateTime(2024, 8, 15), _mybooking.GetDateEnd());
         Assert.AreEqual("Rejected", _mybooking.GetRejectedMessage());

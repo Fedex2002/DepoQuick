@@ -15,8 +15,7 @@ public class Booking
     
     public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedMessage)
     {
-        _approved = false;
-        SetApproved(approved);
+        Approved = approved;
         _dateStart = DateTime.MinValue;
         _dateEnd = DateTime.MaxValue;
         SetDate(dateStart, dateEnd);
@@ -25,9 +24,11 @@ public class Booking
         SetRejectedBooking(rejectedMessage);
     }
     
-    public bool GetApproved()
+    
+    public bool Approved
     {
-        return _approved;
+        get => _approved;
+        set => _approved = value;
     }
     
     public DateTime GetDateStart()
@@ -110,11 +111,6 @@ public class Booking
     public bool CheckRejection()
     {
         return _rejectedMessage.Length <= 300;
-    }
-
-    private void SetApproved(bool approved)
-    {
-        _approved = approved;
     }
 
     public bool CheckDate()
