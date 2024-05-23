@@ -17,7 +17,7 @@ public class StorageUnit
     {
         Id = id;
         Area = area;
-        this._size = size;
+        Size = size;
         this._climatization = climatization; 
         this._promotions = promotions;
     }
@@ -33,14 +33,15 @@ public class StorageUnit
         get => _area;
         set => _area = value;
     }
-
     
-    
-    public SizeType GetSize()
+    public SizeType Size
     {
-        return _size;
+        get => _size;
+        set => _size = value;
     }
     
+    
+ 
     public bool GetClimatization()
     {
         return _climatization;
