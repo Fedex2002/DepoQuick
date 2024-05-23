@@ -2,7 +2,7 @@ namespace Model;
 
 public class User : Person
 {
-    private readonly List<Booking> _bookings;
+    private  List<Booking> _bookings;
     public User()
     {
     }
