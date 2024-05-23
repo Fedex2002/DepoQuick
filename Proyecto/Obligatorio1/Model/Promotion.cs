@@ -5,8 +5,8 @@ public class Promotion
 {
     private string _label = "";
     private int _discount;
-    private DateTime _dateStart;
-    private DateTime _dateEnd;
+    private DateTime _dateStart = DateTime.MinValue;
+    private DateTime _dateEnd = DateTime.MaxValue;
     public Promotion()
     {
         
@@ -15,15 +15,11 @@ public class Promotion
     {
         Label = label;
         Discount = discount;
-        _dateStart = DateTime.MinValue;
-        _dateEnd = DateTime.MaxValue;
-        SetDate(dateStart, dateEnd);
+        DateStart = dateStart;
+        DateEnd = dateEnd;
     }
 
-    public bool ValidateLabel()
-    {
-        return Label.Length <= 20;
-    }
+ 
     
     public string Label
     {
@@ -34,6 +30,28 @@ public class Promotion
             IfHasInvalidLabelThrowException();
         }
     }
+    
+    public DateTime DateStart
+    {
+        get => _dateStart;
+        set
+        {
+            _dateStart = value;
+            IfHasInvalidDateThrowException();
+        }
+    }
+    
+    
+    public DateTime DateEnd
+    {
+        get => _dateEnd;
+        set
+        {
+            _dateEnd = value;
+            IfHasInvalidDateThrowException();
+        }
+    }
+    
 
     public int Discount
     {
@@ -45,6 +63,11 @@ public class Promotion
         }
     }
 
+    
+    public bool ValidateLabel()
+    {
+        return Label.Length <= 20;
+    }
 
     public bool ValidateDiscount()
     {
@@ -56,17 +79,6 @@ public class Promotion
         return _dateStart < _dateEnd;
     }
     
-
-    
-    public DateTime GetDateStart()
-    {
-        return _dateStart;
-    }
-    
-    public DateTime GetDateEnd()
-    {
-        return _dateEnd;
-    }
     
 
     private void IfHasInvalidLabelThrowException()
@@ -87,12 +99,7 @@ public class Promotion
         }
     }
     
-    private void SetDate(DateTime dateStart, DateTime dateEnd)
-    {
-        _dateStart = dateStart;
-        _dateEnd = dateEnd;
-        IfHasInvalidDateThrowException();
-    }
+
 
     private void IfHasInvalidDateThrowException()
     {
