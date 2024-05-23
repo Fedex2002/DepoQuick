@@ -18,7 +18,7 @@ public class StorageUnit
         Id = id;
         Area = area;
         Size = size;
-        this._climatization = climatization; 
+       Climatization = climatization; 
         this._promotions = promotions;
     }
     
@@ -40,11 +40,10 @@ public class StorageUnit
         set => _size = value;
     }
     
-    
- 
-    public bool GetClimatization()
+    public bool Climatization
     {
-        return _climatization;
+        get => _climatization;
+        set => _climatization = value;
     }
     
     public List<Promotion> GetPromotions()
