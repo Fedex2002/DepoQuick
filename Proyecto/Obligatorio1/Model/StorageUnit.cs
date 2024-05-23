@@ -15,11 +15,17 @@ public class StorageUnit
     
     public StorageUnit(string id,AreaType area, SizeType size, bool climatization, List<Promotion> promotions)
     {
-        this._id = id;
+        Id = id;
         this._area = area;
         this._size = size;
         this._climatization = climatization; 
         this._promotions = promotions;
+    }
+    
+    public string Id
+    {
+        get => _id;
+        set => _id = value;
     }
        
     public AreaType GetArea()
@@ -27,10 +33,6 @@ public class StorageUnit
         return _area;
     }
     
-    public string GetId()
-    {
-        return _id;
-    }
     
     public SizeType GetSize()
     {
