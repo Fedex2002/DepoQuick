@@ -8,6 +8,7 @@ public class Booking
     private DateTime _dateEnd = DateTime.MaxValue;
     private StorageUnit _storageUnit;
     private string _status = "Reservado";
+    private bool _payment;
     private string _rejectedMessage { get; set; }
     
     public Booking()
@@ -72,6 +73,12 @@ public class Booking
     {
         get => _status;
         set => _status = value;
+    }
+    
+    public bool Payment
+    {
+        get => _payment;
+        set => _payment = value;
     }
 
 
