@@ -81,4 +81,9 @@ public class BookingTests
         _mybooking = new Booking(false, new DateTime(2024, 5, 15), new DateTime(2024, 5, 14), _mystorageunit, "");
     }
     
+    [TestMethod]
+    public void WhenCreatingBookingStatusShouldBePending()
+    {
+        Assert.AreEqual("Reservado", _mybooking.Status);
+    }
 }
