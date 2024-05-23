@@ -20,8 +20,8 @@ public class PersonRepositoryTest
     public void WhenAddingNewPersonShouldAddItToRepository()
     {
         _personRepo.AddToRepository(_person);
-        Person personInRepo = _personRepo.GetFromRepository(_person.GetEmail());
-        Assert.AreEqual(_person.GetEmail(), personInRepo.GetEmail());
+        Person personInRepo = _personRepo.GetFromRepository(_person.Email);
+        Assert.AreEqual(_person.Email, personInRepo.Email);
     }
     
     [TestMethod]
@@ -38,7 +38,7 @@ public class PersonRepositoryTest
     {
         _personRepo.AddToRepository(_person);
         _personRepo.RemoveFromRepository(_person);
-        Assert.IsFalse(_personRepo.ExistsInRepository(_person.GetEmail()));
+        Assert.IsFalse(_personRepo.ExistsInRepository(_person.Email));
     }
 
     [TestMethod]
