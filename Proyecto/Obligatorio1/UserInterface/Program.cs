@@ -1,11 +1,30 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using Logic;
+using Repositories;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+PersonRepositories personRepositories = new PersonRepositories();
+PersonLogic personLogic = new PersonLogic(personRepositories);
+builder.Services.AddSingleton(personRepositories);
+builder.Services.AddSingleton(personLogic);
+SessionLogic sessionLogic = new SessionLogic(personLogic);
+builder.Services.AddSingleton(sessionLogic);
+PromotionsRepositories promotionsRepositories = new PromotionsRepositories();
+PromotionLogic promotionLogic = new PromotionLogic(promotionsRepositories);
+builder.Services.AddSingleton(promotionsRepositories);
+builder.Services.AddSingleton(promotionLogic);
+StorageUnitRepositories storageUnitRepositories = new StorageUnitRepositories();
+StorageUnitLogic storageUnitLogic = new StorageUnitLogic(storageUnitRepositories);
+builder.Services.AddSingleton(storageUnitRepositories);
+builder.Services.AddSingleton(storageUnitLogic);
+UserLogic userLogic = new UserLogic(personRepositories);
+builder.Services.AddSingleton(userLogic);
+AdministratorLogic administratorLogic = new AdministratorLogic(personRepositories);
+builder.Services.AddSingleton(administratorLogic);
 
 var app = builder.Build();
 

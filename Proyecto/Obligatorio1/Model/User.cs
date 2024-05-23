@@ -2,18 +2,19 @@ namespace Model;
 
 public class User : Person
 {
-    private List<Booking> _bookings;
+    private  List<Booking> _bookings;
     public User()
     {
     }
     
     public User(string name, string surname, string email, string password, List<Booking> bookings) : base(name, surname, email, password)
     {
-        _bookings = bookings;
+        Bookings = bookings;
     }
     
-    public List<Booking> GetBookings()
+    public List<Booking> Bookings
     {
-        return _bookings;
+        get => _bookings;
+        set => _bookings = value ?? new List<Booking>();
     }
 }
