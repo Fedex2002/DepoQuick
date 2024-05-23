@@ -1,0 +1,177 @@
+@page "/CreateStorageUnits"
+@using Logic
+@using Logic.DTOs
+@using Model.Enums
+@layout MainLayout
+@inject StorageUnitLogic storageUnitLogic
+@inject PromotionLogic promotionLogic
+
+<PageTitle>DepoQuick</PageTitle>
+
+<section class="vh-75">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-75">
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <form @onsubmit="HandleValidSubmit">
+          <div class="divider d-flex align-items-center my-4">
+            <p class="text-center fw-bold mx-3 mb-0 fs-4">Create Storage Unit</p>
+          </div>
+          
+          <div data-mdb-input-init class="form-outline mb-2">
+            <input class="form-control form-control-lg" placeholder="Enter Id" @bind="_id" required/>
+            <label class="form-label" >Id</label>
+          </div>
+          
+          <div data-mdb-input-init class="form-outline mb-2">
+            <select class="form-select form-select-lg" @bind="_area" required>
+              <option value="" selected disabled>Choose an area</option>
+              @foreach (AreaType areaType in Enum.GetValues(typeof(AreaType)))
+              {
+                <option value="@areaType">@areaType</option>
+              }
+            </select>
+            <label class="form-label" >Area</label>
+          </div>
+          
+          <div data-mdb-input-init class="form-outline mb-2">
+            <select class="form-select form-select-lg" @bind="_size" required>
+                <option value="" selected disabled>Choose a size</option>
+                @foreach (SizeType sizeType in Enum.GetValues(typeof(SizeType)))
+                {
+                    <option value="@sizeType">@sizeType</option>
+                }
+            </select>
+            <label class="form-label">Size</label>
+          </div>
+
+          <div data-mdb-input-init class="form-outline mb-2">
+              <select class="form-select form-select-lg" @bind="_selectedClimatization" required>
+                  <option value="" selected disabled>Select if has climatization</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+              </select>
+              <label class="form-label">Climatization</label>
+          </div>
+          
+          <div class="mb-3">
+            <table class="table table-bordered">
+              <thead>
+              <tr>
+                <th>Promotions</th>
+              </tr>
+              </thead>
+              <tbody>
+              @foreach (var promotion in _promotions)
+              {
+                <tr>
+                  <td>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="@promotion.Label" @onclick="() =>AddToSelectedPromotions(promotion.Label)"/>
+                      <label class="form-check-label">@promotion.Label</label>
+                    </div>
+                  </td>
+                </tr>
+              }
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="text-center text-lg-start pt-2">
+            <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Create the Storage Unit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+@if (_showAdminErrorModal)
+{
+  <AuthenticationModal
+    Title="StorageUnit already exists"
+    Text="@_errorMessage"
+    DialogType=AuthenticationModal.ModalDialogType.Ok
+    OnClose="@CloseStorageUnitErrorModal">
+  </AuthenticationModal>
+}
+@if(_showAdminConfirmationModal)
+{
+    <AuthenticationModal 
+      Title="StorageUnit created successfully"
+      Text="StorageUnit created successfully"
+      DialogType=AuthenticationModal.ModalDialogType.Ok
+      OnClose="@CloseStorageUnitConfirmationModal">
+    </AuthenticationModal>
+}
+
+
+@code {
+  StorageUnitDto _storageUnitDto;
+  private List<PromotionDto> _promotions;
+  private PromotionDto _promotion;
+  private string _id;
+  private AreaType _area;
+  private SizeType _size;
+  private string _selectedClimatization;
+  private bool _climatization;
+  private bool _showAdminErrorModal = false;
+  private string _errorMessage = "";
+  private bool _showAdminConfirmationModal = false;
+  private List<PromotionDto> _selectedPromotions;
+  
+  protected override void OnInitialized()
+  {
+    _storageUnitDto = new StorageUnitDto();
+    _selectedPromotions = new List<PromotionDto>();
+    _promotions = promotionLogic.GetPromotionsDto();
+  }
+  
+  private async Task HandleValidSubmit()
+  {
+    try
+    {
+      if (_selectedClimatization.Equals("true"))
+      {
+        _climatization = true;
+      }
+      else
+      {
+        _climatization = false;
+      }
+      _storageUnitDto = new StorageUnitDto(_id, _area, _size, _climatization, _selectedPromotions);
+      storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+      _showAdminConfirmationModal = true;
+      
+    }
+    catch (Exception e)
+    {
+      _showAdminErrorModal = true;
+      _errorMessage = e.Message;
+    }
+  }
+  
+  private void AddToSelectedPromotions(string promotionLabel)
+  {
+    _promotion = promotionLogic.GetPromotionDtoFromLabel(promotionLabel);
+    bool exists = _selectedPromotions.Any(p => p.Label == _promotion.Label);
+
+    if (exists)
+    {
+      _selectedPromotions.RemoveAll(p => p.Label == _promotion.Label); 
+    }
+    else
+    {
+      _selectedPromotions.Add(_promotion);
+    }
+  }
+  
+  private void CloseStorageUnitErrorModal()
+  {
+    _showAdminErrorModal = false;
+  }
+  
+  private void CloseStorageUnitConfirmationModal()
+  {
+    _showAdminConfirmationModal = false;
+  }
+}

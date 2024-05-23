@@ -6,10 +6,12 @@ namespace Model;
 
 public class Person
 {
+
     private string _name;
     private string _surname;
     private string _email;
     private string _password;
+
 
     public Person()
     {
@@ -17,10 +19,12 @@ public class Person
     }
     public Person(string name, string surname, string email, string password)
     {
+
         Name = name;
         Surname = surname;
         Email = email;
         Password = password;
+
     }
     
     public string Name
@@ -70,7 +74,7 @@ public class Person
     public bool ValidateEmail()
     {
         string pattern = @"^[a-zA-Z0-9.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-        return Regex.IsMatch(this._email, pattern);
+        return Regex.IsMatch(this.Email, pattern);
     }
     
     public bool ValidateNameAndSurname()
@@ -80,29 +84,29 @@ public class Person
     
     private bool CheckIfEmpty()
     {
-        return !string.IsNullOrEmpty(_name) && !string.IsNullOrEmpty(_surname);
+        return !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Surname);
     }
     
     private bool CheckLength()
     {
-        return _name.Length + _surname.Length <= 100;
+        return Name.Length + Surname.Length <= 100;
     }
     
     private bool CheckPattern()
     {
         string pattern = "^[a-zA-Z ]+$";
-        return Regex.IsMatch(_name, pattern) && Regex.IsMatch(_surname, pattern);
+        return Regex.IsMatch(Name, pattern) && Regex.IsMatch(Surname, pattern);
     }
     
     private bool HasCorrectNumberOfDigits()
     {
-        return _password.Length >= 8;
+        return Password.Length >= 8;
     }
 
     private bool HasUppercaseLetter()
     {
         bool ret = false;
-        foreach (var p in _password)
+        foreach (var p in Password)
         {
             if (char.IsUpper(p))
             {
@@ -117,7 +121,7 @@ public class Person
     private bool HasLowercaseLetter()
     {
         bool ret = false;
-        foreach (var p in _password)
+        foreach (var p in Password)
         {
             if (char.IsLower(p))
             {
@@ -136,7 +140,7 @@ public class Person
         char[] symbols = { '#', '@', '$', '.', ',' };
         foreach (char symbol in symbols)
         {
-            if (_password.Contains(symbol))
+            if (Password.Contains(symbol))
             {
                 ret = true;
             }
@@ -148,7 +152,7 @@ public class Person
     private bool HasAtLeastOneNumber()
     {
         bool ret = false;
-        foreach (var p in _password)
+        foreach (var p in Password)
         {
             if (char.IsDigit(p))
             {
@@ -158,7 +162,9 @@ public class Person
 
         return ret;
     }
+
     
+
     private void IfHasInvalidPasswordThrowException()
     {
         if(!ValidatePassword())
@@ -166,7 +172,9 @@ public class Person
             throw new PersonExceptions("Password is not valid");
         }
     }
+
     
+
     private void IfHasInvalidEmailThrowException()
     {
         if(!ValidateEmail())
@@ -174,6 +182,8 @@ public class Person
             throw new PersonExceptions("Email is not valid");
         }
     }
+
+
 
     private void IfHasInvalidNameOrSurnameThrowException()
     {
