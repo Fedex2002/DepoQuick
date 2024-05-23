@@ -6,10 +6,10 @@ namespace Model;
 
 public class Person
 {
-    private string _name { get; set; }
-    private string _surname { get; set; }
-    private string _email { get; set; }
-    private string _password { get; set; }
+    private string _name;
+    private string _surname;
+    private string _email;
+    private string _password;
 
     public Person()
     {
@@ -17,14 +17,30 @@ public class Person
     }
     public Person(string name, string surname, string email, string password)
     {
-        _name = "";
-        _surname = "";
-        SetNameAndSurname(name, surname);
+        Name = name;
+        Surname = surname;
         _email = "";
         SetEmail(email);
         _password = "";
         SetPassword(password);
     }
+    
+    public string Name
+    {
+        get => _name;
+        set => _name = value;
+    }
+    
+    public string Surname
+    {
+        get => _surname;
+        set
+        {
+            _surname = value;
+            IfHasInvalidNameOrSurnameThrowException();
+        }
+    }
+    
     
     public bool ValidatePassword()
     {
@@ -123,16 +139,7 @@ public class Person
 
         return ret;
     }
-
-    public string GetName()
-    {
-        return _name;
-    }
     
-    public string GetSurname()
-    {
-        return _surname;
-    }
     
     public string GetEmail()
     {
@@ -170,13 +177,6 @@ public class Person
         {
             throw new PersonExceptions("Email is not valid");
         }
-    }
-
-    private void SetNameAndSurname(string name, string surname)
-    {
-        _name = name;
-        _surname = surname;
-        IfHasInvalidNameOrSurnameThrowException(); 
     }
 
     private void IfHasInvalidNameOrSurnameThrowException()
