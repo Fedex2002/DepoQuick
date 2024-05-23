@@ -13,11 +13,11 @@ public class PromotionsRepositories : IRepositories<Promotion>
     }
     public Promotion GetFromRepository(string label)
     {
-        return _promotions.Find(p => p.GetLabel() == label);
+        return _promotions.Find(p => p.Label == label);
     }
     public bool ExistsInRepository(string label)
     {
-        return _promotions.Any(p => p.GetLabel() == label);
+        return _promotions.Any(p => p.Label == label);
     }
     public void RemoveFromRepository(Promotion promotion)
     {
