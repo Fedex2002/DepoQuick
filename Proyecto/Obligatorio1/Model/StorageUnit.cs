@@ -4,11 +4,11 @@ namespace Model;
 
 public class StorageUnit
 {
-    private string _id;
-    private AreaType _area;
-    private SizeType _size;
-    private bool _climatization;
-    private List<Promotion>? _promotions;
+    private readonly string _id;
+    private readonly AreaType _area;
+    private readonly SizeType _size;
+    private readonly bool _climatization;
+    private readonly List<Promotion>? _promotions;
     public StorageUnit()
     {
     }
