@@ -1,3 +1,4 @@
+using Logic.DTOs;
 using Model;
 
 namespace Logic;
@@ -5,7 +6,7 @@ namespace Logic;
 public class SessionLogic
 {
     private readonly PersonLogic _personLogic;
-    public Person CurrentPerson { get; set; }
+    public PersonDto CurrentPerson { get; set; }
     
     public SessionLogic(PersonLogic personLogic)
     {
