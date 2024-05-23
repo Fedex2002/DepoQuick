@@ -19,8 +19,7 @@ public class Booking
         DateStart = dateStart;
         DateEnd = dateEnd;
         StorageUnit = storageUnit;
-        _rejectedMessage = "";
-        SetRejectedBooking(rejectedMessage);
+       RejectedMessage = rejectedMessage;
     }
     
     
@@ -56,20 +55,18 @@ public class Booking
         get => _storageUnit;
         set => _storageUnit = value;
     }
-
     
     
-    public string GetRejectedMessage()
+    public string RejectedMessage
     {
-        return _rejectedMessage;
+        get => _rejectedMessage;
+        set
+        {
+            _rejectedMessage = value;
+            IfHasInvalidRejectionThrowException();
+        }
     }
     
-    
-    private void SetRejectedBooking(string rejectedMessage)
-    {
-        _rejectedMessage = rejectedMessage;
-        IfHasInvalidRejectionThrowException();
-    }
 
     private void IfHasInvalidRejectionThrowException()
     {
