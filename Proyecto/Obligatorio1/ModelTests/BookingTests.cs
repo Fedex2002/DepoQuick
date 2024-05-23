@@ -99,4 +99,11 @@ public class BookingTests
        _mybooking.Status = "Capturado";
         Assert.AreEqual("Capturado", _mybooking.Status);
     }
+    
+    [TestMethod]
+    public void WhenSettingPaymentToTrueShouldSetIt()
+    {
+       _mybooking.Approved = true;
+        Assert.IsTrue(_mybooking.Approved);
+    }
 }
