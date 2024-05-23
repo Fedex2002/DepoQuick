@@ -19,8 +19,7 @@ public class Person
     {
         Name = name;
         Surname = surname;
-        _email = "";
-        SetEmail(email);
+        Email = email;
         _password = "";
         SetPassword(password);
     }
@@ -38,6 +37,16 @@ public class Person
         {
             _surname = value;
             IfHasInvalidNameOrSurnameThrowException();
+        }
+    }
+    
+    public string Email
+    {
+        get => _email;
+        set
+        {
+            _email = value;
+            IfHasInvalidEmailThrowException();
         }
     }
     
@@ -141,10 +150,6 @@ public class Person
     }
     
     
-    public string GetEmail()
-    {
-        return _email;
-    }
     
     public string GetPassword()
     {
@@ -164,13 +169,7 @@ public class Person
             throw new PersonExceptions("Password is not valid");
         }
     }
-
-    private void SetEmail(string email)
-    {
-        _email = email;
-        IfHasInvalidEmailThrowException();
-    }
-
+    
     private void IfHasInvalidEmailThrowException()
     {
         if(!ValidateEmail())
