@@ -5,7 +5,7 @@ namespace Repositories;
 
 public class PromotionsRepositories : IRepositories<Promotion>
 {
-    private List<Promotion> _promotions = new List<Promotion>();
+    private readonly List<Promotion> _promotions = new List<Promotion>();
     
     public void AddToRepository(Promotion promotion)
     {
