@@ -31,10 +31,11 @@ public class BookingTests
     [TestMethod]
     public void CreatingBookingWithValidations_ShouldReturnValidValues()
     {
-        Assert.AreEqual(false, _mybooking.GetApproved());
-        Assert.AreEqual(new DateTime(2024, 7, 1), _mybooking.GetDateStart());
-        Assert.AreEqual(new DateTime(2024, 8, 15), _mybooking.GetDateEnd());
-        Assert.AreEqual("Rejected", _mybooking.GetRejectedMessage());
+        Assert.AreEqual(false, _mybooking.Approved);
+        Assert.AreEqual(new DateTime(2024, 7, 1), _mybooking.DateStart);
+        Assert.AreEqual(_mystorageunit, _mybooking.StorageUnit);
+        Assert.AreEqual(new DateTime(2024, 8, 15), _mybooking.DateEnd);
+        Assert.AreEqual("Rejected", _mybooking.RejectedMessage);
     }
     
     [TestMethod]
@@ -79,5 +80,31 @@ public class BookingTests
     public void CreatingBookingWithInvalidDate_ShouldReturnException()
     {
         _mybooking = new Booking(false, new DateTime(2024, 5, 15), new DateTime(2024, 5, 14), _mystorageunit, "");
+    }
+    
+    [TestMethod]
+    public void WhenCreatingBookingStatusShouldBePending()
+    {
+        Assert.AreEqual("Reservado", _mybooking.Status);
+    }
+    
+    [TestMethod]
+    public void WhenCreatingBookingPaymentShouldBeFalse()
+    {
+        Assert.IsFalse(_mybooking.Payment);
+    }
+    
+    [TestMethod]
+    public void WhenSettingBookingStatusToOkShouldSetIt()
+    {
+       _mybooking.Status = "Capturado";
+        Assert.AreEqual("Capturado", _mybooking.Status);
+    }
+    
+    [TestMethod]
+    public void WhenSettingPaymentToTrueShouldSetIt()
+    {
+       _mybooking.Approved = true;
+        Assert.IsTrue(_mybooking.Approved);
     }
 }
