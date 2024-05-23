@@ -33,11 +33,11 @@ public class StorageUnitTests
         SizeType size = SizeType.Small;
         string id = "id";
         _mystorageunit = new StorageUnit(id,area, size, true, _promotions);
-        Assert.AreEqual(AreaType.A, _mystorageunit.GetArea());
-        Assert.AreEqual(SizeType.Small, _mystorageunit.GetSize());
-        Assert.AreEqual(true, _mystorageunit.GetClimatization());
-        Assert.AreEqual(_promotions, _mystorageunit.GetPromotions());
-        Assert.AreEqual(id,_mystorageunit.GetId());
+        Assert.AreEqual(AreaType.A, _mystorageunit.Area);
+        Assert.AreEqual(SizeType.Small, _mystorageunit.Size);
+        Assert.AreEqual(true, _mystorageunit.Climatization);
+        Assert.AreEqual(_promotions, _mystorageunit.Promotions);
+        Assert.AreEqual(id,_mystorageunit.Id);
     }
  
     [TestMethod]

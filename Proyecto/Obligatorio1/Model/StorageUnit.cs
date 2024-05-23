@@ -15,36 +15,40 @@ public class StorageUnit
     
     public StorageUnit(string id,AreaType area, SizeType size, bool climatization, List<Promotion> promotions)
     {
-        this._id = id;
-        this._area = area;
-        this._size = size;
-        this._climatization = climatization; 
-        this._promotions = promotions;
+        Id = id;
+        Area = area;
+        Size = size;
+       Climatization = climatization; 
+       Promotions = promotions;
+    }
+    
+    public string Id
+    {
+        get => _id;
+        set => _id = value;
     }
        
-    public AreaType GetArea()
+    public AreaType Area
     {
-        return _area;
+        get => _area;
+        set => _area = value;
     }
     
-    public string GetId()
+    public SizeType Size
     {
-        return _id;
+        get => _size;
+        set => _size = value;
     }
     
-    public SizeType GetSize()
+    public bool Climatization
     {
-        return _size;
+        get => _climatization;
+        set => _climatization = value;
     }
-    
-    public bool GetClimatization()
+    public List<Promotion>? Promotions
     {
-        return _climatization;
-    }
-    
-    public List<Promotion> GetPromotions()
-    {
-        return _promotions;
+        get => _promotions;
+        set => _promotions = value;
     }
     
     public double CalculateStorageUnitPricePerDay()
