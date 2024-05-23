@@ -9,11 +9,12 @@ public class User : Person
     
     public User(string name, string surname, string email, string password, List<Booking> bookings) : base(name, surname, email, password)
     {
-        _bookings = bookings;
+        Bookings = bookings;
     }
     
-    public List<Booking> GetBookings()
+    public List<Booking> Bookings
     {
-        return _bookings;
+        get => _bookings;
+        set => _bookings = value ?? new List<Booking>();
     }
 }
