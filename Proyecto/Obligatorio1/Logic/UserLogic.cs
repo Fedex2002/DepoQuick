@@ -20,7 +20,7 @@ public class UserLogic
 
     private void CheckIfPersonIsAUserAddBooking(UserDto userDto, BookingDto bookingDto)
     {
-        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
         Person person = _personRepo.GetFromRepository(userDto.Email);
         bool exists = false;
         if (person is User user)
@@ -71,8 +71,10 @@ public class UserLogic
     }
 
     private void CheckIfPersonIsAUserRemoveBooking(UserDto userDto, BookingDto bookingDto)
-    { 
-        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+    {
+        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd,
+            ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status,
+            bookingDto.Payment);
         Person person = _personRepo.GetFromRepository(userDto.Email);
         if (person is User user)
         {
@@ -92,7 +94,7 @@ public class UserLogic
     
     public double CalculateTotalPriceOfBooking(BookingDto bookingDto)
     {
-        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
         return booking.CalculateBookingTotalPrice();
     }
 
