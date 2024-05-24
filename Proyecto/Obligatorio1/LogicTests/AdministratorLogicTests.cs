@@ -114,5 +114,15 @@ public class AdministratorLogicTests
             "Reservado", false);
         _administratorLogic.ApproveBooking(_userDto, _bookingDto);
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenAdministratorAlreadyApprovedABookingAndTriesToRejectItShouldThrowException()
+    {
+        _bookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
+            new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
+            "Reservado", false);
+        _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "Rejected");
+    }
 
 }
