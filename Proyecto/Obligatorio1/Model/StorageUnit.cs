@@ -9,17 +9,20 @@ public class StorageUnit
     private  SizeType _size;
     private  bool _climatization;
     private  List<Promotion>? _promotions;
+    private List<DateRange> _availableDates;
     public StorageUnit()
     {
+        
     }
     
-    public StorageUnit(string id,AreaType area, SizeType size, bool climatization, List<Promotion> promotions)
+    public StorageUnit(string id,AreaType area, SizeType size, bool climatization, List<Promotion> promotions, List<DateRange> availableDates)
     {
         Id = id;
         Area = area;
         Size = size;
-       Climatization = climatization; 
-       Promotions = promotions;
+        Climatization = climatization; 
+        Promotions = promotions;
+        AvailableDates = availableDates;
     }
     
     public string Id
@@ -50,6 +53,13 @@ public class StorageUnit
         get => _promotions;
         set => _promotions = value;
     }
+    
+    public List<DateRange> AvailableDates
+    {
+        get => _availableDates;
+        set => _availableDates = value;
+    }
+
     
     public double CalculateStorageUnitPricePerDay()
     {
