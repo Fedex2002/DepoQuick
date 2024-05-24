@@ -17,7 +17,8 @@ public class StorageUnitLogic
     public void CreateStorageUnit(StorageUnitDto storageUnitDto)
     {
         List<Promotion> promotions = CreateListPromotions(storageUnitDto);
-        StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions);
+        List<DateRange> availableDates = CreateListAvailableDates(storageUnitDto);
+        StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions, availableDates);
         if (_storageUnitRepositories.GetFromRepository(storageUnitDto.Id) != null)
         {
             IfStorageUnitAlreadyExistsThrowException();
@@ -37,6 +38,12 @@ public class StorageUnitLogic
     {
         List<Promotion> promotions = storageUnitDto.Promotions.Select(promotionDto => new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd)).ToList();
         return promotions;
+    }
+    
+    public List<DateRange> CreateListAvailableDates(StorageUnitDto storageUnitDto)
+    {
+        List<DateRange> availableDates = storageUnitDto.AvailableDates.Select(dateRangeDto => new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate)).ToList();
+        return availableDates;
     }
 
     public void RemoveStorageUnit(StorageUnitDto storageUnitDto)
