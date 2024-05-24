@@ -15,55 +15,74 @@ public class AdministratorLogic
 
     public void ApproveBooking(UserDto userDto, BookingDto bookingDto)
     {
-        Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
-        Booking newBooking = new Booking(true, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
-        Person person = _personRepositories.GetFromRepository(userDto.Email);
-        if (person is User user)
+        if (bookingDto.Approved)
         {
-            List<Booking> bookingsToRemove = new List<Booking>();
-            foreach (var booking in user.Bookings)
-            { 
-                CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(booking, oldBooking, bookingsToRemove);
-            }
-            foreach (var bookingToRemove in bookingsToRemove)
+            IfBookingIsAlreadyApprovedThrowException();
+        }
+        else if (bookingDto.RejectedMessage != "")
+        {
+            IfBookingRejectedMessageIsNotEmptyThrowException();
+        }
+        else
+        {
+            Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
+            Booking newBooking = new Booking(true, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
+            Person person = _personRepositories.GetFromRepository(userDto.Email);
+            if (person is User user)
             {
-                user.Bookings.Remove(bookingToRemove);
+                var userBookings = user.Bookings.ToList();
+                foreach (var booking in userBookings)
+                { 
+                    CheckIfOldBookingAndBookingAreTheSameThenRemove(user.Bookings, booking, oldBooking);
+                }
+                user.Bookings.Add(newBooking);
             }
-            user.Bookings.Add(newBooking);
         }
     }
 
-    private static void CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(Booking booking, Booking oldBooking,
-        List<Booking> bookingsToRemove)
+    private static void IfBookingIsAlreadyApprovedThrowException()
     {
-        if (booking.Approved == oldBooking.Approved && 
-            booking.DateStart == oldBooking.DateStart &&
-            booking.DateEnd == oldBooking.DateEnd && 
-            booking.StorageUnit.Id == oldBooking.StorageUnit.Id &&
-            booking.RejectedMessage == oldBooking.RejectedMessage)
+        throw new LogicExceptions("Booking is already approved");
+    }
+
+    private static void IfBookingRejectedMessageIsNotEmptyThrowException()
+    {
+        throw new LogicExceptions("Booking is already rejected");
+    }
+
+    private void CheckIfOldBookingAndBookingAreTheSameThenRemove(List<Booking> userBookings, Booking booking, Booking oldBooking)
+    {
+        if (booking.StorageUnit.Id == oldBooking.StorageUnit.Id)
         {
-            bookingsToRemove.Add(booking);
+            userBookings.Remove(booking);
         }
     }
 
     public void SetRejectionMessage(UserDto userDto, BookingDto bookingDto, string rejectionMessage)
     {
-        IfRejectionMessageIsEmptyThrowException(rejectionMessage);
-        Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
-        Booking newBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), rejectionMessage, bookingDto.Status, bookingDto.Payment);
-        Person person = _personRepositories.GetFromRepository(userDto.Email);
-        if (person is User user)
+        if (bookingDto.RejectedMessage != "")
         {
-            List<Booking> bookingsToRemove = new List<Booking>();
-            foreach (var booking in user.Bookings)
+            IfBookingRejectedMessageIsNotEmptyThrowException();
+        }
+        else if (bookingDto.Approved)
+        {
+            IfBookingIsAlreadyApprovedThrowException();
+        }
+        else
+        {
+            IfRejectionMessageIsEmptyThrowException(rejectionMessage);
+            Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
+            Booking newBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), rejectionMessage, bookingDto.Status, bookingDto.Payment);
+            Person person = _personRepositories.GetFromRepository(userDto.Email);
+            if (person is User user)
             {
-                CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(booking, oldBooking, bookingsToRemove);
+                var userBookings = user.Bookings.ToList();
+                foreach (var booking in userBookings)
+                {
+                   CheckIfOldBookingAndBookingAreTheSameThenRemove(user.Bookings, booking, oldBooking);
+                }
+                user.Bookings.Add(newBooking);
             }
-            foreach (var bookingToRemove in bookingsToRemove)
-            {
-                user.Bookings.Remove(bookingToRemove);
-            }
-            user.Bookings.Add(newBooking);
         }
     }
 

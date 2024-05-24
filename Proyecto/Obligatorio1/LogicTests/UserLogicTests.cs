@@ -93,8 +93,18 @@ public class UserLogicTests
 
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
-    public void WhenUserTriesToBookTheSameStorageUnitTwiceShouldThrowException()
+    public void WhenUserTriesToBookTheSameStorageUnitWithPromotionTwiceShouldThrowException()
     {
+        _userLogic.AddBookingToUser(_userDto, _mybookingDto);
+        _userLogic.AddBookingToUser(_userDto, _mybookingDto);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenUserTriesToBookTheSameStorageUnitWithoutPromotionTwiceShouldThrowException()
+    {
+        _storageUnitDto = new StorageUnitDto("",AreaType.A, SizeType.Small, true, new List<PromotionDto>(), new List<DateRangeDto>());
+        _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false);
         _userLogic.AddBookingToUser(_userDto, _mybookingDto);
         _userLogic.AddBookingToUser(_userDto, _mybookingDto);
     }

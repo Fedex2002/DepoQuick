@@ -106,5 +106,11 @@ public class StorageUnitLogicTests
         StorageUnitDto storageUnitDto = _storageUnitLogic.GetStorageUnitDtoFromId(storageUnit.Id);
         Assert.AreEqual(storageUnit.Id,storageUnitDto.Id);
     }
-    
+
+    [TestMethod]
+    public void WhenPromotionIsDeletedShouldDeleteItFromAllStorageUnits()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _storageUnitLogic.DeletePromotionFromAllStorageUnits(_promotionDto);
+    }
 }

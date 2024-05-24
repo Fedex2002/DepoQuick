@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Model;
 using Logic.DTOs;
 using Repositories;
@@ -105,4 +106,20 @@ public class StorageUnitLogic
         StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
         return storageUnitDto;
     }
+    
+    public void DeletePromotionFromAllStorageUnits(PromotionDto promotionDto)
+    {
+        foreach (var storageUnit in _storageUnitRepositories.GetAllFromRepository())
+        {
+            var promotions = storageUnit.Promotions.ToList();
+            foreach (var promotion in promotions)
+            {
+                if (promotion.Label == promotionDto.Label)
+                {
+                    storageUnit.Promotions.Remove(promotion);
+                }
+            }
+        }
+    }
+    
 }
