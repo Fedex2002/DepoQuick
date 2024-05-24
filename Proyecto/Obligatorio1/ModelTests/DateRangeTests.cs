@@ -18,4 +18,14 @@ public class DateRangeTests
     {
         Assert.IsNotNull(_dateRange);
     }
+    
+    [TestMethod]
+    public void CreatingADateRangeWithValues_ShouldReturnValues()
+    {
+        DateTime startDate = new DateTime(2024,7,15);
+        DateTime endDate = new DateTime(2024,10,15);
+        _dateRange = new DateRange(startDate, endDate);
+        Assert.AreEqual(startDate, _dateRange.StartDate);
+        Assert.AreEqual(endDate, _dateRange.EndDate);
+    }
 }
