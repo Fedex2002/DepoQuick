@@ -58,4 +58,12 @@ public class StorageUnitTests
         _mystorageunit = new StorageUnit("",AreaType.C, SizeType.Large, true, _promotions, _availableDates);
         Assert.AreEqual(120, _mystorageunit.CalculateStorageUnitPricePerDay());
     }
+    
+    [TestMethod]
+    public void WhenCreatingDateRangeShouldAddItToStorageUnit()
+    {
+        DateRange dateRange = new DateRange(new DateTime(2024,7,15), new DateTime(2024,10,15));
+        _mystorageunit.AddDateRange(dateRange);
+        Assert.AreEqual(1, _mystorageunit.AvailableDates.Count);
+    }
 }
