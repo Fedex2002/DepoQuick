@@ -16,14 +16,16 @@ public class Booking
     {
     }
     
-    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedMessage)
+    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedMessage, string status, bool payment)
     {
 
         Approved = approved;
         DateStart = dateStart;
         DateEnd = dateEnd;
         StorageUnit = storageUnit;
-       RejectedMessage = rejectedMessage;
+        RejectedMessage = rejectedMessage;
+        Status = status;
+        Payment = payment;
     }
     
     
