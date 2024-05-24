@@ -15,4 +15,9 @@ public class DateRange
         StartDate = startDate;
         EndDate = endDate;
     }
+    
+    public bool Includes(DateTime date)
+    {
+        return date >= StartDate && date <= EndDate;
+    }
 }
