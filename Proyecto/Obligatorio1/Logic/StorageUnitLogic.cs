@@ -69,7 +69,7 @@ public class StorageUnitLogic
         List<StorageUnitDto> storageUnitsDto = new List<StorageUnitDto>();
         foreach (var storageUnit in _storageUnitRepositories.GetAllFromRepository())
         {
-            StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions));
+            StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
             storageUnitsDto.Add(storageUnitDto);
         }
         return storageUnitsDto;
@@ -85,6 +85,18 @@ public class StorageUnitLogic
         }
 
         return promotionsDto;
+    }
+    
+    public List<DateRangeDto> ChangeToDateRangeDto(List<DateRange> availableDates)
+    {
+        List<DateRangeDto> availableDatesDto = new List<DateRangeDto>();
+        foreach(var dateRange in availableDates)
+        {
+            DateRangeDto dateRangeDto = new DateRangeDto(dateRange.StartDate, dateRange.EndDate);
+            availableDatesDto.Add(dateRangeDto);
+        }
+
+        return availableDatesDto;
     }
     
     public StorageUnitDto GetStorageUnitDtoFromId(string id)

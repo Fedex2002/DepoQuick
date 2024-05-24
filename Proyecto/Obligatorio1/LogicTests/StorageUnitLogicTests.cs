@@ -17,6 +17,7 @@ public class StorageUnitLogicTests
     private List<PromotionDto> _promotionsDto;
     private Promotion _promotion;
     private PromotionDto _promotionDto;
+    private List<DateRange> _availableDates;
     private List<DateRangeDto> _availableDatesDto;
     
     [TestInitialize]
@@ -30,6 +31,7 @@ public class StorageUnitLogicTests
         _promotionDto = new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotions.Add(_promotion);
         _promotionsDto.Add(_promotionDto);
+        _availableDates = new List<DateRange>();
         _availableDatesDto = new List<DateRangeDto>();
         _storageUnitDto = new StorageUnitDto("1", AreaType.B, SizeType.Medium, false, _promotionsDto, _availableDatesDto);
     }
@@ -83,7 +85,7 @@ public class StorageUnitLogicTests
     [TestMethod]
     public void WhenGettingStorageUnitsDtoShouldReturnAListOfStorageUnitsDto()
     {
-        StorageUnit storageUnit = new StorageUnit("1", AreaType.B, SizeType.Medium, false, _promotions, );
+        StorageUnit storageUnit = new StorageUnit("1", AreaType.B, SizeType.Medium, false, _promotions, _availableDates);
         _storageUnitRepo.AddToRepository(storageUnit);
         List<StorageUnitDto> storageUnitsDto = _storageUnitLogic.GetStorageUnitsDto();
         Assert.IsNotNull(storageUnitsDto);
