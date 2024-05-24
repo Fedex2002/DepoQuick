@@ -50,6 +50,13 @@ public class StorageUnitLogicTests
     }
     
     [TestMethod]
+    public void WhenCreatingDateRangeDtoEmptyShouldReturnEmptyDateRangeDto()
+    {
+        DateRangeDto dateRangeDto = new DateRangeDto();
+        Assert.IsNotNull(dateRangeDto);
+    }
+    
+    [TestMethod]
     public void WhenStorageUnitIsCreatedShouldBeAddedToRepository()
     {
         _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
