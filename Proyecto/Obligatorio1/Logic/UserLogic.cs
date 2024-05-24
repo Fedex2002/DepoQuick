@@ -89,7 +89,13 @@ public class UserLogic
         {
             promotions.Add(new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd));
         }
-        return new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions);
+        
+        List<DateRange> availableDates = new List<DateRange>();
+        foreach (var dateRangeDto in storageUnitDto.AvailableDates)
+        {
+            availableDates.Add(new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate));
+        }
+        return new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions, availableDates);
     }
     
     public double CalculateTotalPriceOfBooking(BookingDto bookingDto)
