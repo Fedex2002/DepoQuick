@@ -9,4 +9,10 @@ public class DateRange
     {
         
     }
+    
+    public DateRange(DateTime startDate, DateTime endDate)
+    {
+        StartDate = startDate;
+        EndDate = endDate;
+    }
 }
