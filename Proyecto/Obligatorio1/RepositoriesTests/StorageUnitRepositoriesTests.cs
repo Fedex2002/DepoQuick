@@ -11,12 +11,14 @@ public class StorageUnitRepositoriesTests
 {
     private StorageUnitRepositories _storageUnitRepositories;
     private StorageUnit _storageUnit;
+    private List<DateRange> _availableDates;
     
     [TestInitialize]
     public void TestInitialize()
     {
         _storageUnitRepositories = new StorageUnitRepositories();
-        _storageUnit = new StorageUnit("1",AreaType.A, SizeType.Small, true,null );
+        _availableDates = new List<DateRange>();
+        _storageUnit = new StorageUnit("1",AreaType.A, SizeType.Small, true,null, _availableDates);
     }
     
     
@@ -54,7 +56,7 @@ public class StorageUnitRepositoriesTests
     [TestMethod]
     public void WhenGettingAllStorageUnitsShouldReturnAllStorageUnits()
     {
-        StorageUnit storageUnit2 = new StorageUnit("2", AreaType.B, SizeType.Medium, true, null);
+        StorageUnit storageUnit2 = new StorageUnit("2", AreaType.B, SizeType.Medium, true, null, _availableDates);
         _storageUnitRepositories.AddToRepository(_storageUnit);
         _storageUnitRepositories.AddToRepository(storageUnit2);
         List<StorageUnit> storageUnits = _storageUnitRepositories.GetAllFromRepository();
