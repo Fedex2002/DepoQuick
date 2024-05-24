@@ -71,8 +71,8 @@ public class UserLogicTests
         _promotionsDto.Add(_promotionDto);
         BookingDto bookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnitDto("", AreaType.A, SizeType.Small, true, _promotionsDto), "");
         Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _userLogic.ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
-        user.GetBookings().Add(booking);
-        user.GetBookings().Remove(booking);
+        user.Bookings.Add(booking);
+        user.Bookings.Remove(booking);
     }
       
     [TestMethod]

@@ -70,7 +70,7 @@ public class PromotionLogic
         List<PromotionDto> promotionsDto = new List<PromotionDto>();
         foreach (var promotion in _promotionRepositories.GetAllFromRepository())
         {
-            promotionsDto.Add(new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(), promotion.GetDateStart(), promotion.GetDateEnd()));
+            promotionsDto.Add(new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd));
         }
         
         return promotionsDto;
@@ -79,7 +79,7 @@ public class PromotionLogic
     public PromotionDto GetPromotionDtoFromLabel(string label)
     {
         Promotion promotion= _promotionRepositories.GetFromRepository(label);
-        PromotionDto promotionDto = new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(), promotion.GetDateStart(), promotion.GetDateEnd());
+        PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd);
         return promotionDto;
     }
 }

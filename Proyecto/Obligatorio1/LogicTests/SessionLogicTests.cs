@@ -24,7 +24,7 @@ public class SessionLogicTests
     [TestMethod]
     public void WhenPersonIsLoggedInSetItAsCurrentPerson()
     {
-        _sessionLogic.Login(_personLogic.GetRepository().GetFromRepository(_person.GetEmail()).GetEmail(),_personLogic.GetRepository().GetFromRepository(_person.GetEmail()).GetPassword());
+        _sessionLogic.Login(_personLogic.GetRepository().GetFromRepository(_person.Email).Email,_personLogic.GetRepository().GetFromRepository(_person.Email).Password);
     }
     
     [TestMethod]
