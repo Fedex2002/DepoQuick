@@ -4,48 +4,62 @@ namespace Model;
 
 public class StorageUnit
 {
-    private int _id;
-    private AreaType _area;
-    private SizeType _size;
-    private bool _climatization;
-    private List<Promotion>? _promotions;
+    private  string _id;
+    private  AreaType _area;
+    private  SizeType _size;
+    private  bool _climatization;
+    private  List<Promotion>? _promotions;
+    private List<DateRange> _availableDates;
     public StorageUnit()
     {
+        
     }
     
-    public StorageUnit(int id,AreaType area, SizeType size, bool climatization, List<Promotion> promotions)
+    public StorageUnit(string id,AreaType area, SizeType size, bool climatization, List<Promotion> promotions, List<DateRange> availableDates)
     {
-        this._id = id;
-        this._area = area;
-        this._size = size;
-        this._climatization = climatization; 
-        this._promotions = promotions;
+        Id = id;
+        Area = area;
+        Size = size;
+        Climatization = climatization; 
+        Promotions = promotions;
+        AvailableDates = availableDates;
+    }
+    
+    public string Id
+    {
+        get => _id;
+        set => _id = value;
     }
        
-    public AreaType GetArea()
+    public AreaType Area
     {
-        return _area;
+        get => _area;
+        set => _area = value;
     }
     
-    public int GetId()
+    public SizeType Size
     {
-        return _id;
+        get => _size;
+        set => _size = value;
     }
     
-    public SizeType GetSize()
+    public bool Climatization
     {
-        return _size;
+        get => _climatization;
+        set => _climatization = value;
+    }
+    public List<Promotion>? Promotions
+    {
+        get => _promotions;
+        set => _promotions = value;
     }
     
-    public bool GetClimatization()
+    public List<DateRange> AvailableDates
     {
-        return _climatization;
+        get => _availableDates;
+        set => _availableDates = value;
     }
-    
-    public List<Promotion> GetPromotions()
-    {
-        return _promotions;
-    }
+
     
     public double CalculateStorageUnitPricePerDay()
     {
@@ -100,7 +114,7 @@ public class StorageUnit
         {
             foreach (Promotion promotion in _promotions)
             {
-                p += promotion.GetDiscount();
+                p += promotion.Discount;
             }
         }
         return p;

@@ -7,13 +7,13 @@ namespace RepositoriesTests;
 
 public class PromotionsRepositoriesTests
 {
-    private PromotionsRepositories _promotionsRepositories;
+    private PromotionsRepositories _promotionRepositories;
     private Promotion _promotion;
     
     [TestInitialize]
     public void TestInitialize()
     {
-        _promotionsRepositories = new PromotionsRepositories();
+        _promotionRepositories = new PromotionsRepositories();
         _promotion = new Promotion("Descuento Invierno", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
     }
     
@@ -21,23 +21,34 @@ public class PromotionsRepositoriesTests
     [TestMethod]
     public void WhenAddingNewPromotionShouldAddItToRepository()
     {
-        _promotionsRepositories.AddToRepository(_promotion);
-        Promotion promotionInRepo = _promotionsRepositories.GetFromRepository(_promotion);
-        Assert.AreEqual(_promotion.GetLabel(), promotionInRepo.GetLabel());
+        _promotionRepositories.AddToRepository(_promotion);
+        Promotion promotionInRepo = _promotionRepositories.GetFromRepository(_promotion.Label);
+        Assert.AreEqual(_promotion.Label, promotionInRepo.Label);
     }
     
     [TestMethod]
     public void WhenAPromotionExistsInRepositoryShouldFindIt()
     {
-        _promotionsRepositories.AddToRepository(_promotion);
-        Assert.IsTrue(_promotionsRepositories.ExistsInRepository(_promotion));
+        _promotionRepositories.AddToRepository(_promotion);
+        Assert.IsTrue(_promotionRepositories.ExistsInRepository(_promotion.Label));
     }
     
     [TestMethod]
     public void WhenDeletingPromotionShouldRemoveItFromRepository()
     {
-        _promotionsRepositories.AddToRepository(_promotion);
-        _promotionsRepositories.RemoveFromRepository(_promotion);
-        Assert.IsFalse(_promotionsRepositories.ExistsInRepository(_promotion));
+        _promotionRepositories.AddToRepository(_promotion);
+        _promotionRepositories.RemoveFromRepository(_promotion);
+        Assert.IsFalse(_promotionRepositories.ExistsInRepository(_promotion.Label));
+    }
+    
+    [TestMethod]
+    
+    public void WhenGettingAllPromotionsFromRepositoryShouldReturnIt()
+    {
+           Promotion promotion2 = new Promotion("Descuento Verano", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+            _promotionRepositories.AddToRepository(_promotion);
+            _promotionRepositories.AddToRepository(promotion2);
+            List<Promotion> promotions = _promotionRepositories.GetAllFromRepository();
+            Assert.AreEqual(2, promotions.Count);
     }
 }

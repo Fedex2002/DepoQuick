@@ -7,9 +7,10 @@ public class Booking
     private DateTime _dateStart = DateTime.MinValue;
     private DateTime _dateEnd = DateTime.MaxValue;
     private StorageUnit _storageUnit;
+
     private string _status = "Reservado";
     private bool _payment;
-    private string _rejectedMessage { get; set; }
+    private string _rejectedMessage;
     
     public Booking()
     {
@@ -17,6 +18,7 @@ public class Booking
     
     public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedMessage, string status, bool payment)
     {
+
         Approved = approved;
         DateStart = dateStart;
         DateEnd = dateEnd;
@@ -63,6 +65,7 @@ public class Booking
     
     public string RejectedMessage
     {
+
         get => _rejectedMessage;
         set
         {
@@ -75,12 +78,15 @@ public class Booking
     {
         get => _status;
         set => _status = value;
+
     }
     
     public bool Payment
     {
+
         get => _payment;
         set => _payment = value;
+
     }
 
 
@@ -104,14 +110,14 @@ public class Booking
 
     private double TotalPriceWithDiscountForBookingDays()
     {
-        double totalPrice = _storageUnit.CalculateStorageUnitPricePerDay() * GetCountOfDays();;
+        double totalPrice = _storageUnit.CalculateStorageUnitPricePerDay() * GetCountOfDays();
         return CheckDiscount(totalPrice);
     }
 
     private double CheckDiscount(double totalPrice)
     {
-        double discount = 0;
-        double totalPriceWithDiscount = 0;
+        double discount;
+        double totalPriceWithDiscount;
         if (GetCountOfDays() >= 7 && GetCountOfDays() <= 14)
         {
             discount = 5;
@@ -137,7 +143,7 @@ public class Booking
     
     public bool CheckRejection()
     {
-        return _rejectedMessage.Length <= 300;
+        return RejectedMessage.Length <= 300;
     }
 
     public bool CheckDate()

@@ -1,0 +1,90 @@
+@page "/DeleteStorageUnits"
+@using Logic
+@using Logic.DTOs
+@layout MainLayout
+@inject StorageUnitLogic storageUnitLogic
+
+<PageTitle>DepoQuick</PageTitle>
+
+<section class="vh-75">
+    <div class="container">
+        <h2 class="mt-5 mb-4">Delete StorageUnits</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>StorageUnit Id</th>
+                            <th>Area</th>
+                            <th>Size</th>
+                            <th>Climatization</th>
+                            <th>Promotions</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var storageUnit in _storageUnits)
+                        {
+                            <tr>
+                                <td>@storageUnit.Id</td>
+                                <td>@storageUnit.Area</td>
+                                <td>@storageUnit.Size</td>
+                                <td>@storageUnit.Climatization</td>
+                                <td>
+                                    @foreach (var promotion in storageUnit.Promotions)
+                                    {
+                                        <div>
+                                            <strong>Label:</strong> @promotion.Label<br />
+                                            <strong>Discount:</strong> @promotion.Discount<br />
+                                            <strong>StartDate:</strong> @promotion.DateStart<br />
+                                            <strong>EndDate:</strong> @promotion.DateEnd<br />
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" @onclick="() =>HandleValidSubmit(storageUnit.Id)">Delete</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if(_showAdminConfirmationModal)
+{
+    <AuthenticationModal 
+      Title="StorageUnit deleted successfully"
+      Text="StorageUnit deleted successfully"
+      DialogType=AuthenticationModal.ModalDialogType.Ok
+      OnClose="@ClosePromotionConfirmationModal">
+    </AuthenticationModal>
+}
+
+@code {
+    StorageUnitDto _storageUnitDto;
+    private List<StorageUnitDto> _storageUnits;
+    private bool _showAdminErrorModal = false;
+    private bool _showAdminConfirmationModal = false;
+    
+    protected override void OnInitialized()
+    {
+        _storageUnitDto = new StorageUnitDto();
+        _storageUnits = storageUnitLogic.GetStorageUnitsDto();
+    }
+    
+    private async Task HandleValidSubmit(string id)
+    {
+        _storageUnitDto = storageUnitLogic.GetStorageUnitDtoFromId(id);
+        storageUnitLogic.RemoveStorageUnit(_storageUnitDto);
+        _showAdminConfirmationModal = true;
+        _storageUnits = storageUnitLogic.GetStorageUnitsDto();
+    }
+  
+    private void ClosePromotionConfirmationModal()
+    {
+        _showAdminConfirmationModal = false;
+    }
+}

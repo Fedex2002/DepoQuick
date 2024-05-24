@@ -6,10 +6,12 @@ namespace Model;
 
 public class Person
 {
-    private string _name { get; set; }
-    private string _surname { get; set; }
-    private string _email { get; set; }
-    private string _password { get; set; }
+
+    private string _name;
+    private string _surname;
+    private string _email;
+    private string _password;
+
 
     public Person()
     {
@@ -17,14 +19,51 @@ public class Person
     }
     public Person(string name, string surname, string email, string password)
     {
-        _name = "";
-        _surname = "";
-        SetNameAndSurname(name, surname);
-        _email = "";
-        SetEmail(email);
-        _password = "";
-        SetPassword(password);
+
+        Name = name;
+        Surname = surname;
+        Email = email;
+        Password = password;
+
     }
+    
+    public string Name
+    {
+        get => _name;
+        set => _name = value;
+    }
+    
+    public string Surname
+    {
+        get => _surname;
+        set
+        {
+            _surname = value;
+            IfHasInvalidNameOrSurnameThrowException();
+        }
+    }
+    
+    public string Email
+    {
+        get => _email;
+        set
+        {
+            _email = value;
+            IfHasInvalidEmailThrowException();
+        }
+    }
+    
+    public string Password
+    {
+        get => _password;
+        set
+        {
+            _password = value;
+            IfHasInvalidPasswordThrowException();
+        }
+    }
+    
+    
     
     public bool ValidatePassword()
     {
@@ -35,7 +74,7 @@ public class Person
     public bool ValidateEmail()
     {
         string pattern = @"^[a-zA-Z0-9.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-        return Regex.IsMatch(this._email, pattern);
+        return Regex.IsMatch(this.Email, pattern);
     }
     
     public bool ValidateNameAndSurname()
@@ -45,29 +84,29 @@ public class Person
     
     private bool CheckIfEmpty()
     {
-        return !string.IsNullOrEmpty(_name) && !string.IsNullOrEmpty(_surname);
+        return !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Surname);
     }
     
     private bool CheckLength()
     {
-        return _name.Length + _surname.Length <= 100;
+        return Name.Length + Surname.Length <= 100;
     }
     
     private bool CheckPattern()
     {
         string pattern = "^[a-zA-Z ]+$";
-        return Regex.IsMatch(_name, pattern) && Regex.IsMatch(_surname, pattern);
+        return Regex.IsMatch(Name, pattern) && Regex.IsMatch(Surname, pattern);
     }
     
     private bool HasCorrectNumberOfDigits()
     {
-        return _password.Length >= 8;
+        return Password.Length >= 8;
     }
 
     private bool HasUppercaseLetter()
     {
         bool ret = false;
-        foreach (var p in _password)
+        foreach (var p in Password)
         {
             if (char.IsUpper(p))
             {
@@ -82,7 +121,7 @@ public class Person
     private bool HasLowercaseLetter()
     {
         bool ret = false;
-        foreach (var p in _password)
+        foreach (var p in Password)
         {
             if (char.IsLower(p))
             {
@@ -101,7 +140,7 @@ public class Person
         char[] symbols = { '#', '@', '$', '.', ',' };
         foreach (char symbol in symbols)
         {
-            if (_password.Contains(symbol))
+            if (Password.Contains(symbol))
             {
                 ret = true;
             }
@@ -113,7 +152,7 @@ public class Person
     private bool HasAtLeastOneNumber()
     {
         bool ret = false;
-        foreach (var p in _password)
+        foreach (var p in Password)
         {
             if (char.IsDigit(p))
             {
@@ -124,31 +163,7 @@ public class Person
         return ret;
     }
 
-    public string GetName()
-    {
-        return _name;
-    }
     
-    public string GetSurname()
-    {
-        return _surname;
-    }
-    
-    public string GetEmail()
-    {
-        return _email;
-    }
-    
-    public string GetPassword()
-    {
-        return _password;
-    }
-    
-    private void SetPassword(string password)
-    {
-        _password = password;
-        IfHasInvalidPasswordThrowException();
-    }
 
     private void IfHasInvalidPasswordThrowException()
     {
@@ -158,11 +173,7 @@ public class Person
         }
     }
 
-    private void SetEmail(string email)
-    {
-        _email = email;
-        IfHasInvalidEmailThrowException();
-    }
+    
 
     private void IfHasInvalidEmailThrowException()
     {
@@ -172,12 +183,7 @@ public class Person
         }
     }
 
-    private void SetNameAndSurname(string name, string surname)
-    {
-        _name = name;
-        _surname = surname;
-        IfHasInvalidNameOrSurnameThrowException(); 
-    }
+
 
     private void IfHasInvalidNameOrSurnameThrowException()
     {
