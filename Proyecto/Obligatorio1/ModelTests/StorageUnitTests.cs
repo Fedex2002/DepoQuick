@@ -75,6 +75,6 @@ public class StorageUnitTests
         DateRange dateRange = new DateRange(new DateTime(2024,7,15), new DateTime(2024,10,15));
         _mystorageunit = new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions, _availableDates);
         _mystorageunit.AddDateRange(dateRange);
-        Assert.IsTrue(_mystorageunit.IsDateInRange(date));
+        Assert.IsTrue(_mystorageunit.IsInDateRange(date));
     }
 }

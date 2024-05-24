@@ -124,5 +124,10 @@ public class StorageUnit
     {
         _availableDates.Add(dateRange);
     }
+    
+    public bool IsInDateRange(DateTime date)
+    {
+        return _availableDates.Any(range => range.Includes(date));
+    }
 }
 
