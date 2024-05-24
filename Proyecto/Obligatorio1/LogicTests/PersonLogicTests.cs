@@ -161,7 +161,9 @@ public class PersonLogicTests
         List<Promotion> promotions = new List<Promotion>();
         Promotion promotion = new Promotion("Promo", 10, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15));
         promotions.Add(promotion);
-        Booking booking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnit("", AreaType.A, SizeType.Small, true,promotions ), "", "Reservado", false);
+        List<DateRange> availableDates = new List<DateRange>();
+        availableDates.Add(new DateRange(new DateTime(2024, 7, 1), new DateTime(2024, 8, 15)));
+        Booking booking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnit("", AreaType.A, SizeType.Small, true,promotions, availableDates), "", "Reservado", false);
         user.Bookings.Add(booking);
         List<BookingDto> bookingsDtos = _personLogic.ChangeToBookingsDtos(user.Bookings);
         Assert.AreEqual(user.Bookings.Count, bookingsDtos.Count);
