@@ -15,8 +15,8 @@ public class AdministratorLogic
 
     public void ApproveBooking(UserDto userDto, BookingDto bookingDto)
     {
-        Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
-        Booking newBooking = new Booking(true, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+        Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
+        Booking newBooking = new Booking(true, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
         Person person = _personRepositories.GetFromRepository(userDto.Email);
         if (person is User user)
         {
@@ -49,8 +49,8 @@ public class AdministratorLogic
     public void SetRejectionMessage(UserDto userDto, BookingDto bookingDto, string rejectionMessage)
     {
         IfRejectionMessageIsEmptyThrowException(rejectionMessage);
-        Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
-        Booking newBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), rejectionMessage);
+        Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
+        Booking newBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), rejectionMessage, bookingDto.Status, bookingDto.Payment);
         Person person = _personRepositories.GetFromRepository(userDto.Email);
         if (person is User user)
         {
@@ -98,7 +98,7 @@ public class AdministratorLogic
         foreach (var booking in bookings)
         {
             BookingDto bookingDto = new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd,
-                GetUserStorageUnitDto(booking.StorageUnit), booking.RejectedMessage);
+                GetUserStorageUnitDto(booking.StorageUnit), booking.RejectedMessage, booking.Status, booking.Payment);
             bookingsDto.Add(bookingDto);
         }
         return bookingsDto;
