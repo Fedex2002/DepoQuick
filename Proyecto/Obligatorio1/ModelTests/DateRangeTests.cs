@@ -28,4 +28,14 @@ public class DateRangeTests
         Assert.AreEqual(startDate, _dateRange.StartDate);
         Assert.AreEqual(endDate, _dateRange.EndDate);
     }
+
+    [TestMethod]
+    public void WhenDateIsInDateRangeShouldReturnTrue()
+    {
+        DateTime startDate = new DateTime(2024,7,15);
+        DateTime endDate = new DateTime(2024,10,15);
+        _dateRange = new DateRange(startDate, endDate);
+        DateTime Date = new DateTime(2024,8,15);
+        Assert.IsTrue(_dateRange.Includes(Date));
+    }
 }
