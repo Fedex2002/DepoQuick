@@ -119,4 +119,10 @@ public class StorageUnit
         }
         return p;
     }
+    
+    public void AddDateRange(DateRange dateRange)
+    {
+        _availableDates.Add(dateRange);
+    }
 }
+
