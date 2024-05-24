@@ -31,7 +31,7 @@ public class UserLogicTests
         _personRepo.AddToRepository(_person);
         _userDto = new UserDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<BookingDto>());
         _storageUnitDto = new StorageUnitDto("",AreaType.A, SizeType.Small, true,new List<PromotionDto>());
-        _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "");
+        _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false);
     }
     
     [TestMethod]
@@ -50,7 +50,7 @@ public class UserLogicTests
     [TestMethod]
     public void WhenUserBookingIsApprovedShouldReturnTrue()
     {
-        _mybookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), _storageUnitDto, "");
+        _mybookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), _storageUnitDto, "", "Reservado", false);
         _userLogic.AddBookingToUser(_userDto, _mybookingDto);
         Assert.IsTrue(_userLogic.CheckIfBookingIsApproved(_mybookingDto));
     }
@@ -69,10 +69,10 @@ public class UserLogicTests
         _personRepo.AddToRepository(user);
         _promotionDto = new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotionsDto.Add(_promotionDto);
-        BookingDto bookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnitDto("", AreaType.A, SizeType.Small, true, _promotionsDto), "");
-        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _userLogic.ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
-        user.GetBookings().Add(booking);
-        user.GetBookings().Remove(booking);
+        BookingDto bookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnitDto("", AreaType.A, SizeType.Small, true, _promotionsDto), "", "Reservado", false);
+        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _userLogic.ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
+        user.Bookings.Add(booking);
+        user.Bookings.Remove(booking);
     }
       
     [TestMethod]

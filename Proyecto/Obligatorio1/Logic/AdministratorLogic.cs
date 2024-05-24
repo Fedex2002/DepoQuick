@@ -15,32 +15,32 @@ public class AdministratorLogic
 
     public void ApproveBooking(UserDto userDto, BookingDto bookingDto)
     {
-        Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
-        Booking newBooking = new Booking(true, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+        Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
+        Booking newBooking = new Booking(true, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
         Person person = _personRepositories.GetFromRepository(userDto.Email);
         if (person is User user)
         {
             List<Booking> bookingsToRemove = new List<Booking>();
-            foreach (var booking in user.GetBookings())
+            foreach (var booking in user.Bookings)
             { 
                 CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(booking, oldBooking, bookingsToRemove);
             }
             foreach (var bookingToRemove in bookingsToRemove)
             {
-                user.GetBookings().Remove(bookingToRemove);
+                user.Bookings.Remove(bookingToRemove);
             }
-            user.GetBookings().Add(newBooking);
+            user.Bookings.Add(newBooking);
         }
     }
 
     private static void CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(Booking booking, Booking oldBooking,
         List<Booking> bookingsToRemove)
     {
-        if (booking.GetApproved() == oldBooking.GetApproved() && 
-            booking.GetDateStart() == oldBooking.GetDateStart() &&
-            booking.GetDateEnd() == oldBooking.GetDateEnd() && 
-            booking.GetStorageUnit().GetId() == oldBooking.GetStorageUnit().GetId() &&
-            booking.GetRejectedMessage() == oldBooking.GetRejectedMessage())
+        if (booking.Approved == oldBooking.Approved && 
+            booking.DateStart == oldBooking.DateStart &&
+            booking.DateEnd == oldBooking.DateEnd && 
+            booking.StorageUnit.Id == oldBooking.StorageUnit.Id &&
+            booking.RejectedMessage == oldBooking.RejectedMessage)
         {
             bookingsToRemove.Add(booking);
         }
@@ -49,21 +49,21 @@ public class AdministratorLogic
     public void SetRejectionMessage(UserDto userDto, BookingDto bookingDto, string rejectionMessage)
     {
         IfRejectionMessageIsEmptyThrowException(rejectionMessage);
-        Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
-        Booking newBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), rejectionMessage);
+        Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
+        Booking newBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), rejectionMessage, bookingDto.Status, bookingDto.Payment);
         Person person = _personRepositories.GetFromRepository(userDto.Email);
         if (person is User user)
         {
             List<Booking> bookingsToRemove = new List<Booking>();
-            foreach (var booking in user.GetBookings())
+            foreach (var booking in user.Bookings)
             {
                 CheckIfOldBookingAndBookingAreTheSameAddToListToRemove(booking, oldBooking, bookingsToRemove);
             }
             foreach (var bookingToRemove in bookingsToRemove)
             {
-                user.GetBookings().Remove(bookingToRemove);
+                user.Bookings.Remove(bookingToRemove);
             }
-            user.GetBookings().Add(newBooking);
+            user.Bookings.Add(newBooking);
         }
     }
 
@@ -83,8 +83,8 @@ public class AdministratorLogic
         {
             if (person is User user)
             {
-                UserDto userDto = new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), 
-                    GetUserBookingsDto(user.GetBookings()));
+                UserDto userDto = new UserDto(user.Name, user.Surname, user.Email, user.Password, 
+                    GetUserBookingsDto(user.Bookings));
                 usersDto.Add(userDto);
             }
         }
@@ -97,8 +97,8 @@ public class AdministratorLogic
         List<BookingDto> bookingsDto = new List<BookingDto>();
         foreach (var booking in bookings)
         {
-            BookingDto bookingDto = new BookingDto(booking.GetApproved(), booking.GetDateStart(), booking.GetDateEnd(),
-                GetUserStorageUnitDto(booking.GetStorageUnit()), booking.GetRejectedMessage());
+            BookingDto bookingDto = new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd,
+                GetUserStorageUnitDto(booking.StorageUnit), booking.RejectedMessage, booking.Status, booking.Payment);
             bookingsDto.Add(bookingDto);
         }
         return bookingsDto;
@@ -106,8 +106,8 @@ public class AdministratorLogic
     
     private StorageUnitDto GetUserStorageUnitDto(StorageUnit storageUnit)
     {
-        return new StorageUnitDto(storageUnit.GetId(), storageUnit.GetArea(), storageUnit.GetSize(),
-            storageUnit.GetClimatization(), GetUserPromotionsDto(storageUnit.GetPromotions()));
+        return new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size,
+            storageUnit.Climatization, GetUserPromotionsDto(storageUnit.Promotions));
     }
     
     private List<PromotionDto> GetUserPromotionsDto(List<Promotion> promotions)
@@ -115,8 +115,8 @@ public class AdministratorLogic
         List<PromotionDto> promotionsDto = new List<PromotionDto>();
         foreach (var promotion in promotions)
         {
-            PromotionDto promotionDto = new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(),
-                promotion.GetDateStart(), promotion.GetDateEnd());
+            PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount,
+                promotion.DateStart, promotion.DateEnd);
             promotionsDto.Add(promotionDto);
         }
         return promotionsDto;

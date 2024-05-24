@@ -22,10 +22,10 @@ public class AdministratorTests
     [TestMethod]
     public void CreatingAdministratorWithValidations_ShouldReturnValues()
     {
-        Assert.AreEqual("Franco", _myadministrator.GetName());
-        Assert.AreEqual("Ramos", _myadministrator.GetSurname());
-        Assert.AreEqual("francoramos1511@gmail.com", _myadministrator.GetEmail());
-        Assert.AreEqual("FrancoRamos2023#", _myadministrator.GetPassword());
+        Assert.AreEqual("Franco", _myadministrator.Name);
+        Assert.AreEqual("Ramos", _myadministrator.Surname);
+        Assert.AreEqual("francoramos1511@gmail.com", _myadministrator.Email);
+        Assert.AreEqual("FrancoRamos2023#", _myadministrator.Password);
     }
     
 }

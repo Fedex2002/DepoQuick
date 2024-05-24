@@ -20,18 +20,18 @@ public class UserLogic
 
     private void CheckIfPersonIsAUserAddBooking(UserDto userDto, BookingDto bookingDto)
     {
-        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
         Person person = _personRepo.GetFromRepository(userDto.Email);
         bool exists = false;
         if (person is User user)
         {
-            foreach (var booking in user.GetBookings())
+            foreach (var booking in user.Bookings)
             {
                 exists = IfStorageUnitInOldBookingAndBookingAreTheSameSetExistsToTrue(booking, newBooking, exists);
             }
             if (!exists)
             {
-                user.GetBookings().Add(newBooking);
+                user.Bookings.Add(newBooking);
             }
             else
             {
@@ -48,11 +48,11 @@ public class UserLogic
     private static bool IfStorageUnitInOldBookingAndBookingAreTheSameSetExistsToTrue(Booking booking, Booking newBooking,
         bool exists)
     {
-        if (booking.GetStorageUnit().GetId() == newBooking.GetStorageUnit().GetId() 
-            && booking.GetStorageUnit().GetArea() == newBooking.GetStorageUnit().GetArea() 
-            && booking.GetStorageUnit().GetSize() == newBooking.GetStorageUnit().GetSize() 
-            && booking.GetStorageUnit().GetClimatization() == newBooking.GetStorageUnit().GetClimatization() 
-            && booking.GetStorageUnit().GetPromotions().SequenceEqual(newBooking.GetStorageUnit().GetPromotions()))
+        if (booking.StorageUnit.Id == newBooking.StorageUnit.Id 
+            && booking.StorageUnit.Area == newBooking.StorageUnit.Area 
+            && booking.StorageUnit.Size == newBooking.StorageUnit.Size 
+            && booking.StorageUnit.Climatization == newBooking.StorageUnit.Climatization 
+            && booking.StorageUnit.Promotions.SequenceEqual(newBooking.StorageUnit.Promotions))
         {
             exists = true;
         }
@@ -71,12 +71,14 @@ public class UserLogic
     }
 
     private void CheckIfPersonIsAUserRemoveBooking(UserDto userDto, BookingDto bookingDto)
-    { 
-        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+    {
+        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd,
+            ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status,
+            bookingDto.Payment);
         Person person = _personRepo.GetFromRepository(userDto.Email);
         if (person is User user)
         {
-            user.GetBookings().Remove(booking);
+            user.Bookings.Remove(booking);
         }
     }
     
@@ -92,7 +94,7 @@ public class UserLogic
     
     public double CalculateTotalPriceOfBooking(BookingDto bookingDto)
     {
-        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage);
+        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
         return booking.CalculateBookingTotalPrice();
     }
 
