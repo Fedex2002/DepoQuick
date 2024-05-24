@@ -62,7 +62,7 @@ public class StorageUnitLogic
         List<StorageUnitDto> storageUnitsDto = new List<StorageUnitDto>();
         foreach (var storageUnit in _storageUnitRepositories.GetAllFromRepository())
         {
-            StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.GetId(), storageUnit.GetArea(), storageUnit.GetSize(), storageUnit.GetClimatization(), ChangeToPromotionsDto(storageUnit.GetPromotions()));
+            StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions));
             storageUnitsDto.Add(storageUnitDto);
         }
         return storageUnitsDto;
@@ -73,7 +73,7 @@ public class StorageUnitLogic
         List<PromotionDto> promotionsDto = new List<PromotionDto>();
         foreach(var promotion in promotions)
         {
-            PromotionDto promotionDto = new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(), promotion.GetDateStart(), promotion.GetDateEnd());
+            PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd);
             promotionsDto.Add(promotionDto);
         }
 
@@ -83,7 +83,7 @@ public class StorageUnitLogic
     public StorageUnitDto GetStorageUnitDtoFromId(string id)
     {
         StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(id);
-        StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.GetId(), storageUnit.GetArea(), storageUnit.GetSize(), storageUnit.GetClimatization(), ChangeToPromotionsDto(storageUnit.GetPromotions()));
+        StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions));
         return storageUnitDto;
     }
 }

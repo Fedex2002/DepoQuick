@@ -33,7 +33,7 @@ public class PersonLogicTests
     public void WhenEmailIsNotRegisteredThrowException()
     {
         _personRepo.RemoveFromRepository(_person);;
-        _personLogic.IfEmailIsNotRegisteredThrowException(_personLogic.CheckIfEmailIsRegistered(_person.GetEmail()));
+        _personLogic.IfEmailIsNotRegisteredThrowException(_personLogic.CheckIfEmailIsRegistered(_person.Email));
     }
 
     [TestMethod]
@@ -41,19 +41,19 @@ public class PersonLogicTests
     public void WhenPasswordIsNotCorrectThrowException()
     {
         _personRepo.RemoveFromRepository(_person);
-        _personLogic.CheckIfPasswordIsCorrect(_person.GetPassword(), "Catch from page");
+        _personLogic.CheckIfPasswordIsCorrect(_person.Password, "Catch from page");
     }
 
     [TestMethod]
     public void WhenEmailIsRegisteredReturnTrue()
     {
-        Assert.IsTrue(_personLogic.CheckIfEmailIsRegistered(_person.GetEmail()));
+        Assert.IsTrue(_personLogic.CheckIfEmailIsRegistered(_person.Email));
     }
 
     [TestMethod]
     public void WhenPasswordIsCorrectReturnTrue()
     {
-        Assert.IsTrue(_personLogic.CheckIfPasswordIsCorrect(_person.GetPassword(), _person.GetPassword()));
+        Assert.IsTrue(_personLogic.CheckIfPasswordIsCorrect(_person.Password, _person.Password));
     }
 
     [TestMethod]
@@ -80,8 +80,8 @@ public class PersonLogicTests
     [TestMethod]
     public void WhenPersonIsTryingToLoginShouldReturnPersonIfValidationsAreCorrect()
     {
-        PersonDto loggedInPersonDto = _personLogic.Login(_person.GetEmail(), _person.GetPassword());
-        PersonDto expectedPersonDto = new PersonDto(_person.GetName(), _person.GetSurname(), _person.GetEmail(), _person.GetPassword());
+        PersonDto loggedInPersonDto = _personLogic.Login(_person.Email, _person.Password);
+        PersonDto expectedPersonDto = new PersonDto(_person.Name, _person.Surname, _person.Email, _person.Password);
         Assert.AreEqual(expectedPersonDto.Name, loggedInPersonDto.Name);
         Assert.AreEqual(expectedPersonDto.Surname, loggedInPersonDto.Surname);
         Assert.AreEqual(expectedPersonDto.Email, loggedInPersonDto.Email);
@@ -93,11 +93,11 @@ public class PersonLogicTests
     {
         Administrator admin = new Administrator("Admin", "Admin","email@gmail.com","PassWord921#EAa");
         _personRepo.AddToRepository(admin);
-        PersonDto loggedInAdministratorDto = _personLogic.Login(admin.GetEmail(),admin.GetPassword());
-        Assert.AreEqual(admin.GetName(), loggedInAdministratorDto.Name);
-        Assert.AreEqual(admin.GetSurname(), loggedInAdministratorDto.Surname);
-        Assert.AreEqual(admin.GetEmail(), loggedInAdministratorDto.Email);
-        Assert.AreEqual(admin.GetPassword(), loggedInAdministratorDto.Password);
+        PersonDto loggedInAdministratorDto = _personLogic.Login(admin.Email,admin.Password);
+        Assert.AreEqual(admin.Name, loggedInAdministratorDto.Name);
+        Assert.AreEqual(admin.Surname, loggedInAdministratorDto.Surname);
+        Assert.AreEqual(admin.Email, loggedInAdministratorDto.Email);
+        Assert.AreEqual(admin.Password, loggedInAdministratorDto.Password);
     }
 
     [TestMethod]
@@ -105,12 +105,12 @@ public class PersonLogicTests
     {
         User user = new User("User", "User", "emailuser@gmail.com","PassWord921#", new List<Booking>());
         _personRepo.AddToRepository(user);
-        PersonDto loggedInPersonDto = _personLogic.Login(user.GetEmail(),user.GetPassword());
+        PersonDto loggedInPersonDto = _personLogic.Login(user.Email,user.Password);
         
-        Assert.AreEqual(user.GetName(), loggedInPersonDto.Name);
-        Assert.AreEqual(user.GetSurname(), loggedInPersonDto.Surname);
-        Assert.AreEqual(user.GetEmail(), loggedInPersonDto.Email);
-        Assert.AreEqual(user.GetPassword(), loggedInPersonDto.Password);
+        Assert.AreEqual(user.Name, loggedInPersonDto.Name);
+        Assert.AreEqual(user.Surname, loggedInPersonDto.Surname);
+        Assert.AreEqual(user.Email, loggedInPersonDto.Email);
+        Assert.AreEqual(user.Password, loggedInPersonDto.Password);
     }
 
 
@@ -161,9 +161,9 @@ public class PersonLogicTests
         List<Promotion> promotions = new List<Promotion>();
         Promotion promotion = new Promotion("Promo", 10, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15));
         promotions.Add(promotion);
-        Booking booking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnit("", AreaType.A, SizeType.Small, true,promotions ), "");
-        user.GetBookings().Add(booking);
-        List<BookingDto> bookingsDtos = _personLogic.ChangeToBookingsDtos(user.GetBookings());
-        Assert.AreEqual(user.GetBookings().Count, bookingsDtos.Count);
+        Booking booking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnit("", AreaType.A, SizeType.Small, true,promotions ), "", "Reservado", false);
+        user.Bookings.Add(booking);
+        List<BookingDto> bookingsDtos = _personLogic.ChangeToBookingsDtos(user.Bookings);
+        Assert.AreEqual(user.Bookings.Count, bookingsDtos.Count);
     }
 }
