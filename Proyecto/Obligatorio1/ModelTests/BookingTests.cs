@@ -10,6 +10,7 @@ public class BookingTests
     private List<Promotion> _promotions;
     private Promotion _mypromotion;
     private StorageUnit _mystorageunit;
+    private List<DateRange> _availableDates;
     
     [TestInitialize]
     public void TestInitialize()
@@ -17,7 +18,7 @@ public class BookingTests
        _promotions = new List<Promotion>();
         _mypromotion= new Promotion("Descuento Invierno", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
         _promotions.Add(_mypromotion);
-        _mystorageunit= new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions);
+        _mystorageunit= new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions, _availableDates);
         _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected", "Reservado", false);
     }
     
@@ -50,7 +51,7 @@ public class BookingTests
     public void CalculatingBookingTotalPriceWithValidations_ShouldReturnTotalPrice()
     {
         Assert.AreEqual(2126.25, _mybooking.CalculateBookingTotalPrice());
-       _mystorageunit= new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions);
+       _mystorageunit= new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions, _availableDates);
         _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 7, 4), _mystorageunit, "Rejected", "Reservado", false);
         Assert.AreEqual(157.5, _mybooking.CalculateBookingTotalPrice());
         _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 7, 9), _mystorageunit, "Rejected", "Reservado", false);
