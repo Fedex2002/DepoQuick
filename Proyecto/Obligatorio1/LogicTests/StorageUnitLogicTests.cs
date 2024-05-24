@@ -19,6 +19,8 @@ public class StorageUnitLogicTests
     private PromotionDto _promotionDto;
     private List<DateRange> _availableDates;
     private List<DateRangeDto> _availableDatesDto;
+    private DateRange _dateRange;
+    private DateRangeDto _dateRangeDto;
     
     [TestInitialize]
     public void TestInitialize()
@@ -32,7 +34,11 @@ public class StorageUnitLogicTests
         _promotions.Add(_promotion);
         _promotionsDto.Add(_promotionDto);
         _availableDates = new List<DateRange>();
+        _dateRange = new DateRange(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _availableDates.Add(_dateRange);
         _availableDatesDto = new List<DateRangeDto>();
+        _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _availableDatesDto.Add(_dateRangeDto);
         _storageUnitDto = new StorageUnitDto("1", AreaType.B, SizeType.Medium, false, _promotionsDto, _availableDatesDto);
     }
     [TestMethod]
