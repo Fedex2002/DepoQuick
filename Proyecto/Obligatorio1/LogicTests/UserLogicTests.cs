@@ -108,4 +108,11 @@ public class UserLogicTests
         _userLogic.AddBookingToUser(_userDto, _mybookingDto);
         _userLogic.AddBookingToUser(_userDto, _mybookingDto);
     }
+
+    [TestMethod]
+    public void WhenUserPaysABookingShouldSetItToTrue()
+    {
+        _userLogic.AddBookingToUser(_userDto, _mybookingDto);
+        _userLogic.PayBooking(_userDto, _mybookingDto);
+    }
 }
