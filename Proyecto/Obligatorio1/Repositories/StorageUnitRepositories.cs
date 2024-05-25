@@ -6,11 +6,11 @@ namespace Repositories;
 
 public class StorageUnitRepositories : IRepositories<StorageUnit>
 {
-    private List<StorageUnit> _storageUnits = new List<StorageUnit>();
+    private readonly List<StorageUnit> _storageUnits = new List<StorageUnit>();
     
     public void AddToRepository(StorageUnit storageUnit)
     {
-        if (ExistsInRepository(storageUnit.GetId()))
+        if (ExistsInRepository(storageUnit.Id))
         {
             ThrowException();
         }
@@ -24,11 +24,11 @@ public class StorageUnitRepositories : IRepositories<StorageUnit>
 
     public StorageUnit GetFromRepository(string id)
     {
-        return _storageUnits.Find(s => s.GetId() == id);
+        return _storageUnits.Find(s => s.Id == id);
     }
     public bool ExistsInRepository(string id)
     {
-        return _storageUnits.Any(s => s.GetId() == id);
+        return _storageUnits.Any(s => s.Id == id);
     }
     public void RemoveFromRepository(StorageUnit storageUnit)
     {

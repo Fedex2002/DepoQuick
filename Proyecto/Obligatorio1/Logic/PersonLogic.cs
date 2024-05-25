@@ -7,7 +7,7 @@ namespace Logic;
 
 public class PersonLogic
 {
-    private PersonRepositories _personRepositories;
+    private readonly PersonRepositories _personRepositories;
     
     public PersonLogic(PersonRepositories personRepositories)
     {
@@ -51,7 +51,7 @@ public class PersonLogic
         if (CheckIfEmailIsRegistered(email))
         {
             Person person = _personRepositories.GetFromRepository(email);
-            if (CheckIfPasswordIsCorrect(password, person.GetPassword()))
+            if (CheckIfPasswordIsCorrect(password, person.Password))
             {
                 personDto = CheckIfIsUserAdministratorOrPerson(person, personDto);
             }
@@ -68,16 +68,16 @@ public class PersonLogic
     {
         if (person is Administrator)
         {
-            personDto= new AdministratorDto(person.GetName(), person.GetSurname(), person.GetEmail(), person.GetPassword());
+            personDto= new AdministratorDto(person.Name, person.Surname, person.Email, person.Password);
         }
         else if (person is User user)
         {
-            personDto= new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), ChangeToBookingsDtos(user.GetBookings()));
+            personDto= new UserDto(user.Name, user.Surname, user.Email, user.Password, ChangeToBookingsDtos(user.Bookings));
         }
         else if (person != null)
         {
-            personDto = new PersonDto(person.GetName(), person.GetSurname(), person.GetEmail(),
-                person.GetPassword());
+            personDto = new PersonDto(person.Name, person.Surname, person.Email,
+                person.Password);
         }
 
         return personDto;
@@ -123,12 +123,19 @@ public class PersonLogic
         foreach (var booking in bookings)
         {
             List<PromotionDto> promotionDtos = new List<PromotionDto>();
-            foreach (var Promotion in booking.GetStorageUnit().GetPromotions())
+            foreach (var promotion in booking.StorageUnit.Promotions)
             {
-                promotionDtos.Add(new PromotionDto(Promotion.GetLabel(), Promotion.GetDiscount(), Promotion.GetDateStart(), Promotion.GetDateEnd()));
+                promotionDtos.Add(new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd));
             }
-            StorageUnitDto storageUnitDto = new StorageUnitDto(booking.GetStorageUnit().GetId(), booking.GetStorageUnit().GetArea(), booking.GetStorageUnit().GetSize(), booking.GetStorageUnit().GetClimatization(), promotionDtos);
-            bookingDtos.Add(new BookingDto(booking.GetApproved(), booking.GetDateStart(), booking.GetDateEnd(), storageUnitDto, booking.GetRejectedMessage()));
+            
+            List<DateRangeDto> availableDates = new List<DateRangeDto>();
+            foreach (var dateRange in booking.StorageUnit.AvailableDates)
+            {
+                availableDates.Add(new DateRangeDto(dateRange.StartDate, dateRange.EndDate));
+            }
+            StorageUnitDto storageUnitDto = new StorageUnitDto(booking.StorageUnit.Id, booking.StorageUnit.Area, booking.StorageUnit.Size, booking.StorageUnit.Climatization, promotionDtos, availableDates);
+            bookingDtos.Add(new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd, storageUnitDto,
+                booking.RejectedMessage, booking.Status, booking.Payment));
         }
 
         return bookingDtos;

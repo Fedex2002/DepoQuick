@@ -4,57 +4,91 @@ namespace Model;
 public class Booking
 {
     private bool _approved;
-    private DateTime _dateStart;
-    private DateTime _dateEnd;
+    private DateTime _dateStart = DateTime.MinValue;
+    private DateTime _dateEnd = DateTime.MaxValue;
     private StorageUnit _storageUnit;
-    private string _rejectedMessage { get; set; }
+
+    private string _status = "Reservado";
+    private bool _payment;
+    private string _rejectedMessage;
     
     public Booking()
     {
     }
     
-    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedMessage)
+    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedMessage, string status, bool payment)
     {
-        _approved = false;
-        SetApproved(approved);
-        _dateStart = DateTime.MinValue;
-        _dateEnd = DateTime.MaxValue;
-        SetDate(dateStart, dateEnd);
-        _storageUnit = storageUnit;
-        _rejectedMessage = "";
-        SetRejectedBooking(rejectedMessage);
+
+        Approved = approved;
+        DateStart = dateStart;
+        DateEnd = dateEnd;
+        StorageUnit = storageUnit;
+        RejectedMessage = rejectedMessage;
+        Status = status;
+        Payment = payment;
     }
     
-    public bool GetApproved()
+    
+    public bool Approved
     {
-        return _approved;
+        get => _approved;
+        set => _approved = value;
     }
     
-    public DateTime GetDateStart()
+    
+    public DateTime DateStart
     {
-        return _dateStart;
+        get => _dateStart;
+        set
+        {
+            _dateStart = value;
+            IfHasInvalidDateThrowException();
+        }
+    }
+
+    public DateTime DateEnd
+    {
+        get => _dateEnd;
+        set
+        {
+            _dateEnd = value;
+            IfHasInvalidDateThrowException();
+        }
     }
     
-    public DateTime GetDateEnd()
+    public StorageUnit StorageUnit
     {
-        return _dateEnd;
+        get => _storageUnit;
+        set => _storageUnit = value;
     }
     
-    public string GetRejectedMessage()
+    
+    public string RejectedMessage
     {
-        return _rejectedMessage;
+
+        get => _rejectedMessage;
+        set
+        {
+            _rejectedMessage = value;
+            IfHasInvalidRejectionThrowException();
+        }
+    }
+
+    public string Status
+    {
+        get => _status;
+        set => _status = value;
+
     }
     
-    public StorageUnit GetStorageUnit()
+    public bool Payment
     {
-        return _storageUnit;
+
+        get => _payment;
+        set => _payment = value;
+
     }
-    
-    private void SetRejectedBooking(string rejectedMessage)
-    {
-        _rejectedMessage = rejectedMessage;
-        IfHasInvalidRejectionThrowException();
-    }
+
 
     private void IfHasInvalidRejectionThrowException()
     {
@@ -76,14 +110,14 @@ public class Booking
 
     private double TotalPriceWithDiscountForBookingDays()
     {
-        double totalPrice = _storageUnit.CalculateStorageUnitPricePerDay() * GetCountOfDays();;
+        double totalPrice = _storageUnit.CalculateStorageUnitPricePerDay() * GetCountOfDays();
         return CheckDiscount(totalPrice);
     }
 
     private double CheckDiscount(double totalPrice)
     {
-        double discount = 0;
-        double totalPriceWithDiscount = 0;
+        double discount;
+        double totalPriceWithDiscount;
         if (GetCountOfDays() >= 7 && GetCountOfDays() <= 14)
         {
             discount = 5;
@@ -109,12 +143,7 @@ public class Booking
     
     public bool CheckRejection()
     {
-        return _rejectedMessage.Length <= 300;
-    }
-
-    private void SetApproved(bool approved)
-    {
-        _approved = approved;
+        return RejectedMessage.Length <= 300;
     }
 
     public bool CheckDate()
@@ -122,13 +151,6 @@ public class Booking
         return _dateStart < _dateEnd;
     }
     
-    private void SetDate(DateTime dateStart, DateTime dateEnd)
-    {
-        _dateStart = dateStart;
-        _dateEnd = dateEnd;
-        IfHasInvalidDateThrowException();
-    }
-
     private void IfHasInvalidDateThrowException()
     {
         if (!CheckDate())

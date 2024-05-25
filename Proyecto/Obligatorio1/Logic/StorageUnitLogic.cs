@@ -1,6 +1,5 @@
 using System.Security.Cryptography;
 using Model;
-using Model.Enums;
 using Logic.DTOs;
 using Repositories;
 using Model.Exceptions;
@@ -9,7 +8,7 @@ namespace Logic;
 
 public class StorageUnitLogic
 {
-    private StorageUnitRepositories _storageUnitRepositories;
+    private readonly StorageUnitRepositories _storageUnitRepositories;
     
     public StorageUnitLogic(StorageUnitRepositories storageUnitRepositories)
     {
@@ -19,7 +18,8 @@ public class StorageUnitLogic
     public void CreateStorageUnit(StorageUnitDto storageUnitDto)
     {
         List<Promotion> promotions = CreateListPromotions(storageUnitDto);
-        StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions);
+        List<DateRange> availableDates = CreateListAvailableDates(storageUnitDto);
+        StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions, availableDates);
         if (_storageUnitRepositories.GetFromRepository(storageUnitDto.Id) != null)
         {
             IfStorageUnitAlreadyExistsThrowException();
@@ -39,6 +39,12 @@ public class StorageUnitLogic
     {
         List<Promotion> promotions = storageUnitDto.Promotions.Select(promotionDto => new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd)).ToList();
         return promotions;
+    }
+    
+    public List<DateRange> CreateListAvailableDates(StorageUnitDto storageUnitDto)
+    {
+        List<DateRange> availableDates = storageUnitDto.AvailableDates.Select(dateRangeDto => new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate)).ToList();
+        return availableDates;
     }
 
     public void RemoveStorageUnit(StorageUnitDto storageUnitDto)
@@ -64,7 +70,7 @@ public class StorageUnitLogic
         List<StorageUnitDto> storageUnitsDto = new List<StorageUnitDto>();
         foreach (var storageUnit in _storageUnitRepositories.GetAllFromRepository())
         {
-            StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.GetId(), storageUnit.GetArea(), storageUnit.GetSize(), storageUnit.GetClimatization(), ChangeToPromotionsDto(storageUnit.GetPromotions()));
+            StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
             storageUnitsDto.Add(storageUnitDto);
         }
         return storageUnitsDto;
@@ -75,17 +81,29 @@ public class StorageUnitLogic
         List<PromotionDto> promotionsDto = new List<PromotionDto>();
         foreach(var promotion in promotions)
         {
-            PromotionDto promotionDto = new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(), promotion.GetDateStart(), promotion.GetDateEnd());
+            PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd);
             promotionsDto.Add(promotionDto);
         }
 
         return promotionsDto;
     }
     
+    public List<DateRangeDto> ChangeToDateRangeDto(List<DateRange> availableDates)
+    {
+        List<DateRangeDto> availableDatesDto = new List<DateRangeDto>();
+        foreach(var dateRange in availableDates)
+        {
+            DateRangeDto dateRangeDto = new DateRangeDto(dateRange.StartDate, dateRange.EndDate);
+            availableDatesDto.Add(dateRangeDto);
+        }
+
+        return availableDatesDto;
+    }
+    
     public StorageUnitDto GetStorageUnitDtoFromId(string id)
     {
         StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(id);
-        StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.GetId(), storageUnit.GetArea(), storageUnit.GetSize(), storageUnit.GetClimatization(), ChangeToPromotionsDto(storageUnit.GetPromotions()));
+        StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
         return storageUnitDto;
     }
     
@@ -93,15 +111,30 @@ public class StorageUnitLogic
     {
         foreach (var storageUnit in _storageUnitRepositories.GetAllFromRepository())
         {
-            var promotions = storageUnit.GetPromotions().ToList();
+            var promotions = storageUnit.Promotions.ToList();
             foreach (var promotion in promotions)
             {
-                if (promotion.GetLabel() == promotionDto.Label)
+                if (promotion.Label == promotionDto.Label)
                 {
-                    storageUnit.GetPromotions().Remove(promotion);
+                    storageUnit.Promotions.Remove(promotion);
                 }
             }
         }
     }
     
+    public void AddAvailableDateRangeToStorageUnit(string id, DateRangeDto dateRangeDto)
+    {
+        IfDateRangeIsInvalidThrowException(dateRangeDto);
+        StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(id);
+        DateRange dateRange = new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate);
+        storageUnit.AvailableDates.Add(dateRange);
+    }
+
+    private static void IfDateRangeIsInvalidThrowException(DateRangeDto dateRangeDto)
+    {
+        if (dateRangeDto.EndDate < dateRangeDto.StartDate)
+        {
+            throw new LogicExceptions("Date error: end date is before start date");
+        }
+    }
 }

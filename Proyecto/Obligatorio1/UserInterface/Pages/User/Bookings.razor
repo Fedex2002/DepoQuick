@@ -15,17 +15,17 @@
         <div class="row mb-3">
             <div class="col-md-2">
                 <label for="startDate" class="form-label">Start Date</label>
-                <input type="date" id="startDate" class="form-control" @bind="filterStartDate">
+                <input type="date" id="startDate" class="form-control" @bind="_filterStartDate">
             </div>
             <div class="col-md-2">
                 <label for="endDate" class="form-label">End Date</label>
-                <input type="date" id="endDate" class="form-control" @bind="filterEndDate">
+                <input type="date" id="endDate" class="form-control" @bind="_filterEndDate">
             </div>
             <div class="col-md-2 d-flex align-items-end">
                 <button type="button" class="btn btn-primary" @onclick="FilterBookings">Search</button>
             </div>
         </div>
-        @if (showBookings){
+        @if (_showBookings){
             <div class="row">
                 <div class="col-md-12">
                     <table class="table table-striped">
@@ -40,7 +40,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                         @if (storageUnits.Count == 0)
+                         @if (_storageUnits.Count == 0)
                          {
                              <tr>
                                  <td colspan="6">No possible bookings found</td>
@@ -48,7 +48,7 @@
                          }
                          else
                          {
-                             @foreach (var storageUnit in storageUnits) 
+                             @foreach (var storageUnit in _storageUnits) 
                              { 
                                  <tr>
                                      <td>
@@ -69,21 +69,21 @@
                                          }
                                      </td>
                                      <td>
-                                         <label class="form-label">$@pricePerDay[storageUnit.Id]</label>
+                                         <label class="form-label">$@_pricePerDay[storageUnit.Id]</label>
                                      </td>
                                      <td>
                                          <div data-mdb-input-init class="form-outline mb-2">
-                                             <input type="date" class="form-control form-control-lg" @bind="dateStart[storageUnit.Id]" required/>
+                                             <input type="date" class="form-control form-control-lg" @bind="_dateStart[storageUnit.Id]" required/>
                                          </div>
                                      </td>
                                      <td>
                                          <div data-mdb-input-init class="form-outline mb-2">
-                                             <input type="date" class="form-control form-control-lg" @bind="dateEnd[storageUnit.Id]" required/>
+                                             <input type="date" class="form-control form-control-lg" @bind="_dateEnd[storageUnit.Id]" required/>
                                          </div>
                                      </td>
                                      <td>
                                          <div>
-                                             <label class="form-label">$@totalPrice[storageUnit.Id]</label>
+                                             <label class="form-label">$@_totalPrice[storageUnit.Id]</label>
                                          </div>
                                      </td>
                                      <td>
@@ -101,16 +101,16 @@
     </div>
 </section>
 
-@if (showUserErrorModal)
+@if (_showUserErrorModal)
 {
   <AuthenticationModal
     Title="Booking error"
-    Text="@errorMessage"
+    Text="@_errorMessage"
     DialogType=AuthenticationModal.ModalDialogType.Ok
     OnClose="@CloseBookingErrorModal">
   </AuthenticationModal>
 }
-@if(showUserConfirmationModal)
+@if(_showUserConfirmationModal)
 {
     <AuthenticationModal 
       Title="Booking selected successfully"
@@ -121,32 +121,33 @@
 }
 
 @code {
-    BookingDto bookingDto;
-    UserDto userDto;
-    Dictionary<string, DateTime> dateStart = new Dictionary<string, DateTime>();
-    Dictionary<string, DateTime> dateEnd = new Dictionary<string, DateTime>();
-    Dictionary<string, double> pricePerDay = new Dictionary<string, double>();
-    Dictionary<string, double> totalPrice = new Dictionary<string, double>();
-    DateTime filterStartDate;
-    DateTime filterEndDate;
-    private List<StorageUnitDto> storageUnits;
-    private bool showUserErrorModal;
-    private string errorMessage = "";
-    private bool showUserConfirmationModal;
-    private bool showBookings = false;
+    BookingDto _bookingDto;
+    UserDto _userDto;
+    Dictionary<string, DateTime> _dateStart = new Dictionary<string, DateTime>();
+    Dictionary<string, DateTime> _dateEnd = new Dictionary<string, DateTime>();
+    Dictionary<string, double> _pricePerDay = new Dictionary<string, double>();
+    Dictionary<string, double> _totalPrice = new Dictionary<string, double>();
+    DateTime _filterStartDate;
+    DateTime _filterEndDate;
+    private List<StorageUnitDto> _storageUnits;
+    private bool _showUserErrorModal;
+    private string _errorMessage = "";
+    private bool _showUserConfirmationModal;
+    private bool _showBookings = false;
     
     protected override void OnInitialized()
     {
-        filterStartDate = DateTime.Today;
-        filterEndDate = DateTime.Today;
-        bookingDto = new BookingDto();
-        storageUnits = storageUnitLogic.GetStorageUnitsDto();
+        _filterStartDate = DateTime.Today;
+        _filterEndDate = DateTime.Today;
+        _bookingDto = new BookingDto();
+        _storageUnits = storageUnitLogic.GetStorageUnitsDto();
+        
         foreach (var storageUnitDto in storageUnitLogic.GetStorageUnitsDto())
         {
-            pricePerDay[storageUnitDto.Id] = userLogic.CalculateStorageUnitPricePerDay(storageUnitDto);
-            dateStart[storageUnitDto.Id] = DateTime.Today;
-            dateEnd[storageUnitDto.Id] = DateTime.Today;
-            totalPrice[storageUnitDto.Id] = 0;
+            _pricePerDay[storageUnitDto.Id] = userLogic.CalculateStorageUnitPricePerDay(storageUnitDto);
+            _dateStart[storageUnitDto.Id] = DateTime.Today;
+            _dateEnd[storageUnitDto.Id] = DateTime.Today;
+            _totalPrice[storageUnitDto.Id] = 0;
         }
     }
 
@@ -154,28 +155,28 @@
     {
         try
         {
-            if (totalPrice[storageUnitDto.Id] == 0)
+            if (_totalPrice[storageUnitDto.Id] == 0)
             {
-                showUserErrorModal = true;
-                errorMessage = "Please calculate the total price before selecting the storage unit";
+                _showUserErrorModal = true;
+                _errorMessage = "Please calculate the total price before selecting the storage unit";
             }
             else
             {
-                DateTime finalDateStart = dateStart[storageUnitDto.Id];
-                DateTime finalDateEnd = dateEnd[storageUnitDto.Id];
-                bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "");
+                DateTime finalDateStart = _dateStart[storageUnitDto.Id];
+                DateTime finalDateEnd = _dateEnd[storageUnitDto.Id];
+                _bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "", "Reservado", false);
                 if (sessionLogic.CurrentPerson is UserDto userDto)
                 {
-                    userLogic.AddBookingToUser(userDto, bookingDto);
-                    userDto.Bookings.Add(bookingDto);
-                    showUserConfirmationModal = true;
+                    userLogic.AddBookingToUser(userDto, _bookingDto);
+                    userDto.Bookings.Add(_bookingDto);
+                    _showUserConfirmationModal = true;
                 }
             }
         }
         catch (Exception e)
         {
-            errorMessage = e.Message;
-            showUserErrorModal = true;
+            _errorMessage = e.Message;
+            _showUserErrorModal = true;
         }
     }
 
@@ -183,30 +184,30 @@
     {
         try
         {
-            DateTime finalDateStart = dateStart[storageUnitDto.Id];
-            DateTime finalDateEnd = dateEnd[storageUnitDto.Id];
-            bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "");
-            totalPrice[storageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
+            DateTime finalDateStart = _dateStart[storageUnitDto.Id];
+            DateTime finalDateEnd = _dateEnd[storageUnitDto.Id];
+            _bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "", "Reservado", false);
+            _totalPrice[storageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(_bookingDto);
         }
         catch (Exception e)
         {
-            errorMessage = e.Message;
-            showUserErrorModal = true;
+            _errorMessage = e.Message;
+            _showUserErrorModal = true;
         }
     }
 
     private void CloseBookingErrorModal()
     {
-        showUserErrorModal = false;
+        _showUserErrorModal = false;
     }
 
     private void CloseBookingConfirmationModal()
     {
-        showUserConfirmationModal = false;
+        _showUserConfirmationModal = false;
     }
     
     private void FilterBookings()
     {
-        showBookings = true;
+        _showBookings = true;
     }
 }

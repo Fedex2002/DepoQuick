@@ -37,19 +37,19 @@
                         </table>
                     </div>
                     <div data-mdb-input-init class="form-outline mb-2">
-                        <input class="form-control form-control-lg" @bind="newLabel" placeholder="Enter new Label" required/>
+                        <input class="form-control form-control-lg" @bind="_newLabel" placeholder="Enter new Label" required/>
                         <label class="form-label" >New Label</label>
                     </div>
                     <div data-mdb-input-init class="form-outline mb-2">
-                        <input class="form-control form-control-lg" @bind="newDiscount" placeholder="Enter new discount" required/>
+                        <input class="form-control form-control-lg" @bind="_newDiscount" placeholder="Enter new discount" required/>
                         <label class="form-label" >New Discount</label>
                     </div>
                     <div data-mdb-input-init class="form-outline mb-2">
-                        <input type="date" class="form-control form-control-lg" @bind="newDateStart" required/>
+                        <input type="date" class="form-control form-control-lg" @bind="_newDateStart" required/>
                         <label class="form-label" >New DateStart</label>
                     </div>
                     <div data-mdb-input-init class="form-outline mb-2">
-                        <input type="date" class="form-control form-control-lg" @bind="newDateEnd" required/>
+                        <input type="date" class="form-control form-control-lg" @bind="_newDateEnd" required/>
                         <label class="form-label" >New DateEnd</label>
                     </div>
                     <div class="text-center text-lg-start pt-2">
@@ -61,17 +61,17 @@
     </div>
 </section>
 
-@if (showAdminErrorModal)
+@if (_showAdminErrorModal)
 {
   <AuthenticationModal
     Title="Promotion error"
-    Text="@errorMessage"
+    Text="@_errorMessage"
     DialogType=AuthenticationModal.ModalDialogType.Ok
     OnClose="@ClosePromotionErrorModal">
   </AuthenticationModal>
 }
 
-@if(showAdminConfirmationModal)
+@if(_showAdminConfirmationModal)
 {
     <AuthenticationModal 
       Title="Promotion modified successfully"
@@ -81,52 +81,52 @@
     </AuthenticationModal>
 }
 @code {
-    PromotionDto newPromotion;
-    private string oldLabel;
-    private string newLabel;
-    private int newDiscount;
-    private DateTime newDateStart;
-    private DateTime newDateEnd;
-    private bool showAdminConfirmationModal = false;
-    private bool showAdminErrorModal = false;
-    private string errorMessage = "";
+    PromotionDto _newPromotion;
+    private string _oldLabel;
+    private string _newLabel;
+    private int _newDiscount;
+    private DateTime _newDateStart;
+    private DateTime _newDateEnd;
+    private bool _showAdminConfirmationModal = false;
+    private bool _showAdminErrorModal = false;
+    private string _errorMessage = "";
 
     protected override void OnInitialized()
     {
-        newPromotion = new PromotionDto();
-        newDateStart = DateTime.Today;
-        newDateEnd = DateTime.Today;
+        _newPromotion = new PromotionDto();
+        _newDateStart = DateTime.Today;
+        _newDateEnd = DateTime.Today;
     }
 
     private void SetSelectedPromotion(string label)
     {
-        oldLabel = label;
+        _oldLabel = label;
     }
 
     private async Task HandleValidSubmit()
     {
         try
         {
-            newPromotion = new PromotionDto(newLabel, newDiscount, newDateStart, newDateEnd);
-            promotionLogic.ModifyPromotion(newPromotion, oldLabel); 
-            showAdminConfirmationModal = true;
+            _newPromotion = new PromotionDto(_newLabel, _newDiscount, _newDateStart, _newDateEnd);
+            promotionLogic.ModifyPromotion(_newPromotion, _oldLabel); 
+            _showAdminConfirmationModal = true;
             
         }
         catch (Exception e)
         {
-            showAdminErrorModal = true;
-            errorMessage = e.Message;
+            _showAdminErrorModal = true;
+            _errorMessage = e.Message;
         }
     }
     
     private void ClosePromotionConfirmationModal()
     {
-        showAdminConfirmationModal = false;
+        _showAdminConfirmationModal = false;
     }
     
     private void ClosePromotionErrorModal()
     {
-        showAdminErrorModal = false;
+        _showAdminErrorModal = false;
     }
 
 }

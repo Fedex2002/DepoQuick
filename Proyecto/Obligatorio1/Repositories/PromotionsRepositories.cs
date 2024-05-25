@@ -5,7 +5,7 @@ namespace Repositories;
 
 public class PromotionsRepositories : IRepositories<Promotion>
 {
-    private List<Promotion> _promotions = new List<Promotion>();
+    private readonly List<Promotion> _promotions = new List<Promotion>();
     
     public void AddToRepository(Promotion promotion)
     {
@@ -13,11 +13,11 @@ public class PromotionsRepositories : IRepositories<Promotion>
     }
     public Promotion GetFromRepository(string label)
     {
-        return _promotions.Find(p => p.GetLabel() == label);
+        return _promotions.Find(p => p.Label == label);
     }
     public bool ExistsInRepository(string label)
     {
-        return _promotions.Any(p => p.GetLabel() == label);
+        return _promotions.Any(p => p.Label == label);
     }
     public void RemoveFromRepository(Promotion promotion)
     {
