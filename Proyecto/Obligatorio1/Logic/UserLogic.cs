@@ -27,7 +27,7 @@ public class UserLogic
         {
             foreach (var booking in user.Bookings)
             {
-                exists = IfStorageUnitInOldBookingAndNewBookingAreTheSameSetExistsToTrue(booking, newBooking, exists);
+                exists = user.Bookings.Any(booking => booking.StorageUnit.Id == newBooking.StorageUnit.Id);
             }
             if (!exists)
             {
