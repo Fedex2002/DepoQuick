@@ -147,12 +147,17 @@ public class UserLogic
         Person person = _personRepo.GetFromRepository(userDto.Email);
         if (person is User user)
         {
-            foreach (var booking in user.Bookings)
+            FindUserBookingAndSetPaymentToTrue(bookingDto, user);
+        }
+    }
+
+    private static void FindUserBookingAndSetPaymentToTrue(BookingDto bookingDto, User user)
+    {
+        foreach (var booking in user.Bookings)
+        {
+            if (booking.StorageUnit.Id == bookingDto.StorageUnitDto.Id)
             {
-                if (booking.StorageUnit.Id == bookingDto.StorageUnitDto.Id)
-                {
-                    booking.Payment = true;
-                }
+                booking.Payment = true;
             }
         }
     }
