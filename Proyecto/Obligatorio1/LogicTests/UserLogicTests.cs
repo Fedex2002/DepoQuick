@@ -115,4 +115,13 @@ public class UserLogicTests
         _userLogic.AddBookingToUser(_userDto, _mybookingDto);
         _userLogic.PayBooking(_userDto, _mybookingDto);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenUserTriesToPayABookingTwiceShouldThrowException()
+    {
+        _userLogic.AddBookingToUser(_userDto, _mybookingDto);
+        _userLogic.PayBooking(_userDto, _mybookingDto);
+        _userLogic.PayBooking(_userDto, _mybookingDto);
+    }
 }
