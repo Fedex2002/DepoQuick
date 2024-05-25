@@ -124,6 +124,11 @@ public class StorageUnitLogic
     
     public void AddAvailableDateRangeToStorageUnit(string id, DateRangeDto dateRangeDto)
     {
+        if (dateRangeDto.EndDate < dateRangeDto.StartDate)
+        {
+            throw new LogicExceptions("Date error: end date is before start date");
+        }
+        
         StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(id);
         DateRange dateRange = new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate);
         storageUnit.AvailableDates.Add(dateRange);
