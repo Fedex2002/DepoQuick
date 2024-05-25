@@ -70,21 +70,27 @@ public class AdministratorLogic
         else
         {
             IfRejectionMessageIsEmptyThrowException(rejectionMessage);
-            Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
-            Booking newBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), rejectionMessage, bookingDto.Status, bookingDto.Payment);
+            string oldBooking = bookingDto.StorageUnitDto.Id;
             Person person = _personRepositories.GetFromRepository(userDto.Email);
             if (person is User user)
             {
                 var userBookings = user.Bookings.ToList();
                 foreach (var booking in userBookings)
                 {
-                   CheckIfOldBookingAndBookingAreTheSameThenRemove(user.Bookings, booking, oldBooking);
+                    IfBookingStorageUnitIdIsAMatchSetRejectedMessage(booking, oldBooking, rejectionMessage);
                 }
-                user.Bookings.Add(newBooking);
             }
         }
     }
 
+    private void IfBookingStorageUnitIdIsAMatchSetRejectedMessage(Booking booking, string oldBookingId, string rejectionMessage)
+    {
+        if (booking.StorageUnit.Id == oldBookingId)
+        {
+            booking.RejectedMessage = rejectionMessage;
+        }
+    }
+    
     private static void IfRejectionMessageIsEmptyThrowException(string rejectionMessage)
     {
         if (rejectionMessage == "")
@@ -151,21 +157,5 @@ public class AdministratorLogic
         }
 
         return dateRangesDto;
-    }
-
-    private StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
-    {
-        List<Promotion> promotions = new List<Promotion>();
-        foreach (var promotionDto in storageUnitDto.Promotions)
-        {
-            promotions.Add(new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd));
-        }
-
-        List<DateRange> dateRanges = new List<DateRange>();
-        foreach (var dateRangeDto in storageUnitDto.AvailableDates)
-        {
-            dateRanges.Add(new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate));
-        }
-        return new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions, dateRanges);
     }
 }
