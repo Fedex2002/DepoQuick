@@ -127,6 +127,12 @@ public class StorageUnitLogic
         IfDateRangeIsInvalidThrowException(dateRangeDto);
         StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(id);
         DateRange newdateRange = new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate);
+        IfDateRangeAlreadyExistsThrowException(storageUnit, newdateRange);
+        storageUnit.AvailableDates.Add(newdateRange);
+    }
+
+    private static void IfDateRangeAlreadyExistsThrowException(StorageUnit storageUnit, DateRange newdateRange)
+    {
         foreach (var dateRange in storageUnit.AvailableDates)
         {
             if (dateRange.StartDate == newdateRange.StartDate && dateRange.EndDate == newdateRange.EndDate)
@@ -134,7 +140,6 @@ public class StorageUnitLogic
                 throw new LogicExceptions("Date range already exists");
             }
         }
-        storageUnit.AvailableDates.Add(newdateRange);
     }
 
     private static void IfDateRangeIsInvalidThrowException(DateRangeDto dateRangeDto)
