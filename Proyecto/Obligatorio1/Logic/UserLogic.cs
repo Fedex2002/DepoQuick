@@ -141,4 +141,19 @@ public class UserLogic
         StorageUnit storageUnit = ChangeToStorageUnit(storageUnitDto);
         return storageUnit.CalculateStorageUnitPricePerDay();
     }
+    
+    public void PayBooking(UserDto userDto, BookingDto bookingDto)
+    {
+        Person person = _personRepo.GetFromRepository(userDto.Email);
+        if (person is User user)
+        {
+            foreach (var booking in user.Bookings)
+            {
+                if (booking.StorageUnit.Id == bookingDto.StorageUnitDto.Id)
+                {
+                    booking.Payment = true;
+                }
+            }
+        }
+    }
 }
