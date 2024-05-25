@@ -134,4 +134,13 @@ public class AdministratorLogicTests
     {
         _administratorLogic.ApproveBooking(_userDto, _bookingDto);
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenAdministratorTriesToRejectABookingAndUserDidNotMakeThePaymentShouldThrowException()
+    {
+        _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "Rejected");
+    }
+    
+    
 }
