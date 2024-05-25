@@ -34,11 +34,7 @@ public class Promotion
     public DateTime DateStart
     {
         get => _dateStart;
-        set
-        {
-            _dateStart = value;
-            IfHasInvalidDateThrowException();
-        }
+        set => _dateStart = value;
     }
     
     
