@@ -57,7 +57,7 @@ public class AdministratorLogicTests
     }
 
     [TestMethod]
-    public void WhenAdministratorApprovesABookingDtoShouldChangeItToTrue()
+    public void WhenAdministratorApprovesABookingDtoShouldChangeItToTrueAndToStatusCaptured()
     {
         _administratorLogic.ApproveBooking(_userDto, _bookingDto);
     }
@@ -124,5 +124,4 @@ public class AdministratorLogicTests
             "Reservado", false);
         _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "Rejected");
     }
-
 }
