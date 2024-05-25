@@ -38,7 +38,7 @@ public class PromotionLogic
     public void CreatePromotion(PromotionDto promotionDto)
     {
         Promotion promotion= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
-        if (_promotionRepositories.GetFromRepository(promotionDto.Label) != null)
+        if (_promotionRepositories.ExistsInRepository(promotionDto.Label))
         {
             IfPromotionExistsThrowException();
         }
