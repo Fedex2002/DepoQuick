@@ -72,6 +72,7 @@
                                         <label class="form-label">@_dateEnd[booking.StorageUnitDto.Id].ToShortDateString()</label>
                                     </td>
                                     <td>
+                                        <label class="form-label">@_status[booking.StorageUnitDto.Id]</label>
                                     </td>
                                     <td>
                                         @if (!_showRejectInput || _selectedBooking != booking)
@@ -131,6 +132,7 @@
     readonly Dictionary<string, DateTime> _dateStart = new Dictionary<string, DateTime>();
     readonly Dictionary<string, DateTime> _dateEnd = new Dictionary<string, DateTime>();
     readonly Dictionary<string, double> _totalPrice = new Dictionary<string, double>();
+    readonly Dictionary<string, string> _status = new Dictionary<string, string>();
     private string _rejectionReason;
     private bool _showAdminErrorModal = false;
     private string _message = "";
@@ -148,6 +150,7 @@
                 _totalPrice[bookingDto.StorageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
                 _dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
                 _dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
+                _status[bookingDto.StorageUnitDto.Id] = bookingDto.Status;
             }
             if (user.Bookings.Any())
             {
