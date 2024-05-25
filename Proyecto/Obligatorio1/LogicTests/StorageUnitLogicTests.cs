@@ -145,4 +145,12 @@ public class StorageUnitLogicTests
         _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
     }
     
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToAddAnExistingAvailableDateRangeShouldThrowException()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+    }
 }
