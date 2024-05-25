@@ -59,6 +59,9 @@ public class AdministratorLogicTests
     [TestMethod]
     public void WhenAdministratorApprovesABookingDtoShouldChangeItToTrueAndToStatusCaptured()
     {
+        _bookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
+            new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
+            "Reservado", true);
         _administratorLogic.ApproveBooking(_userDto, _bookingDto);
     }
 
