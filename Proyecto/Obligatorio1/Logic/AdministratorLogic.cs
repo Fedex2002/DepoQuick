@@ -76,6 +76,10 @@ public class AdministratorLogic
         {
             IfBookingIsAlreadyApprovedThrowException();
         }
+        else if (bookingDto.Payment == false)
+        {
+            IfUserDidNotMakeThePaymentThrowException();
+        }
         else
         {
             IfRejectionMessageIsEmptyThrowException(rejectionMessage);
