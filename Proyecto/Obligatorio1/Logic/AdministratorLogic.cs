@@ -25,17 +25,15 @@ public class AdministratorLogic
         }
         else
         {
-            Booking oldBooking = new Booking(false, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
-            Booking newBooking = new Booking(true, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
+            string oldBookingStorageUnitId = bookingDto.StorageUnitDto.Id;
             Person person = _personRepositories.GetFromRepository(userDto.Email);
             if (person is User user)
             {
                 var userBookings = user.Bookings.ToList();
                 foreach (var booking in userBookings)
                 { 
-                    CheckIfOldBookingAndBookingAreTheSameThenRemove(user.Bookings, booking, oldBooking);
+                    IfBookingStorageUnitIdIsAMatchSetApprovedToTrueAndStatusToCaptured(booking, oldBookingStorageUnitId);
                 }
-                user.Bookings.Add(newBooking);
             }
         }
     }
@@ -50,11 +48,12 @@ public class AdministratorLogic
         throw new LogicExceptions("Booking is already rejected");
     }
 
-    private void CheckIfOldBookingAndBookingAreTheSameThenRemove(List<Booking> userBookings, Booking booking, Booking oldBooking)
+    private void IfBookingStorageUnitIdIsAMatchSetApprovedToTrueAndStatusToCaptured(Booking booking, string oldBookingId)
     {
-        if (booking.StorageUnit.Id == oldBooking.StorageUnit.Id)
+        if (booking.StorageUnit.Id == oldBookingId)
         {
-            userBookings.Remove(booking);
+            booking.Approved = true;
+            booking.Status = "Capturado";
         }
     }
 
