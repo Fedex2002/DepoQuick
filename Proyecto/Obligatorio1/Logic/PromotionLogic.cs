@@ -17,7 +17,7 @@ public class PromotionLogic
     public void ModifyPromotion(PromotionDto promotionDto, string oldLabel)
     {
         Promotion promotionInRepo= _promotionRepositories.GetFromRepository(oldLabel);
-        if (_promotionRepositories.GetFromRepository(oldLabel) == null)
+        if (!_promotionRepositories.ExistsInRepository(oldLabel))
         {
             IfPromotionDoesNotExistThrowException();
         }
