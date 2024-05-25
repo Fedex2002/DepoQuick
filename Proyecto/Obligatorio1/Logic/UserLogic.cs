@@ -157,6 +157,10 @@ public class UserLogic
         {
             if (booking.StorageUnit.Id == bookingDto.StorageUnitDto.Id)
             {
+                if (booking.Payment)
+                {
+                    throw new LogicExceptions("Booking already paid");
+                }
                 booking.Payment = true;
             }
         }
