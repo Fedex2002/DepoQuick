@@ -22,6 +22,10 @@ public class AdministratorLogic
         else if (bookingDto.RejectedMessage != "")
         {
             IfBookingRejectedMessageIsNotEmptyThrowException();
+        } 
+        else if (bookingDto.Payment == false)
+        {
+            throw new LogicExceptions("The booking can't be approved without user payment");
         }
         else
         {
