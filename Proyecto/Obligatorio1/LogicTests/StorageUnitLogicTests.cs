@@ -126,4 +126,15 @@ public class StorageUnitLogicTests
         _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
         _storageUnitLogic.DeletePromotionFromAllStorageUnits(_promotionDto);
     }
+
+    [TestMethod]
+    public void WhenAvailableDateRangeIsAddedToAStorageUnitShouldSetIt()
+    {
+        _storageUnitDto = new StorageUnitDto("5", AreaType.C, SizeType.Medium, true, _promotionsDto, new List<DateRangeDto>());
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+        Assert.AreEqual(_dateRangeDto.StartDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].StartDate);
+        Assert.AreEqual(_dateRangeDto.EndDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].EndDate);
+    }
+    
 }
