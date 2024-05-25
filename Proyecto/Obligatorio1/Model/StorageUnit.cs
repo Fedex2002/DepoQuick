@@ -93,7 +93,7 @@ public class StorageUnit
         {
             foreach (Promotion promotion in _promotions)
             {
-                p += promotion.GetDiscount();
+                p += promotion.Discount;
             }
         }
         return p;
