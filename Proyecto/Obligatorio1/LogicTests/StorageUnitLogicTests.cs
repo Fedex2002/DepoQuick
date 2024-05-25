@@ -136,5 +136,13 @@ public class StorageUnitLogicTests
         Assert.AreEqual(_dateRangeDto.StartDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].StartDate);
         Assert.AreEqual(_dateRangeDto.EndDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].EndDate);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToAddAnIncorrectAvailableDateRangeToAStorageUnitShouldThrowException()
+    {
+        _dateRangeDto = new DateRangeDto(new DateTime(2024, 10, 15), new DateTime(2024, 5, 15));
+        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+    }
     
 }
