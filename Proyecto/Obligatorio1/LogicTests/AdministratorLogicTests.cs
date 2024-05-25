@@ -124,4 +124,11 @@ public class AdministratorLogicTests
             "Reservado", false);
         _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "Rejected");
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenAdministratorTriesToApproveABookingAndUserDidNotMakeThePaymentShouldThrowException()
+    {
+        _administratorLogic.ApproveBooking(_userDto, _bookingDto);
+    }
 }
