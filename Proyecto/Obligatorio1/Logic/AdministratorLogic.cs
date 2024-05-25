@@ -25,7 +25,7 @@ public class AdministratorLogic
         } 
         else if (bookingDto.Payment == false)
         {
-            throw new LogicExceptions("The booking can't be approved without user payment");
+            IfUserDidNotMakeThePaymentThrowException();
         }
         else
         {
@@ -40,6 +40,11 @@ public class AdministratorLogic
                 }
             }
         }
+    }
+
+    private static void IfUserDidNotMakeThePaymentThrowException()
+    {
+        throw new LogicExceptions("The booking can't be approved without user payment");
     }
 
     private static void IfBookingIsAlreadyApprovedThrowException()
