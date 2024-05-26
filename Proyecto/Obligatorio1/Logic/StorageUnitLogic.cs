@@ -166,4 +166,32 @@ public class StorageUnitLogic
             throw new LogicExceptions("Date error: end date is before start date");
         }
     }
+    
+    public List<StorageUnitDto> SearchAvailableStorageUnits(DateRangeDto dateRangeDto)
+    {
+        IfDateRangeIsInvalidThrowException(dateRangeDto);
+        List<StorageUnitDto> availableStorageUnits = new List<StorageUnitDto>();
+        foreach (var storageUnit in _storageUnitRepositories.GetAllFromRepository())
+        {
+            foreach (var dateRange in storageUnit.AvailableDates)
+            {
+                if (dateRangeDto.StartDate >= dateRange.StartDate && dateRangeDto.EndDate <= dateRange.EndDate)
+                {
+                    StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
+                    availableStorageUnits.Add(storageUnitDto);
+                } 
+            }
+        }
+        IfThereIsNoStorageUnitWithThisDateRangeThrowException(availableStorageUnits);
+
+        return availableStorageUnits;
+    }
+
+    private static void IfThereIsNoStorageUnitWithThisDateRangeThrowException(List<StorageUnitDto> availableStorageUnits)
+    {
+        if (availableStorageUnits.Count == 0)
+        {
+            throw new LogicExceptions("No storage units available for this date range");
+        }
+    }
 }

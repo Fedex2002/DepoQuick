@@ -180,4 +180,30 @@ public class StorageUnitLogicTests
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 10), new DateTime(2024, 7, 15));
         _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
     }
+
+    [TestMethod]
+    public void WhenSearchingStorageUnitsWithDateRangeShouldReturnThem()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 27), new DateTime(2024, 10, 12));
+        List<StorageUnitDto> storageUnitsDto = _storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
+        Assert.AreEqual(1 ,storageUnitsDto.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToSearchStorageUnitsWithDateRangeThatIsInvalidShouldThrowException()
+    {
+        _dateRangeDto = new DateRangeDto(new DateTime(2024, 10, 15), new DateTime(2024, 5, 15));
+        _storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenSearchingStorageUnitsWithDateRangeThatDoesNotExistsShouldThrowException()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _dateRangeDto = new DateRangeDto(new DateTime(2024, 10, 15), new DateTime(2024, 10, 30));
+        _storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
+    }
 }
