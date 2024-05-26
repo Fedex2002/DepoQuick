@@ -171,4 +171,13 @@ public class StorageUnitLogicTests
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 10, 15), new DateTime(2024, 10, 30));
         _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToAddAnAvailableDateRangeThatEndDateExistsInACreatedRangeShouldThrowException()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 10), new DateTime(2024, 7, 15));
+        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+    }
 }
