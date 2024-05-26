@@ -182,6 +182,10 @@ public class StorageUnitLogic
                 } 
             }
         }
+        if (availableStorageUnits.Count == 0)
+        {
+            throw new LogicExceptions("No storage units available for this date range");
+        }
 
         return availableStorageUnits;
     }
