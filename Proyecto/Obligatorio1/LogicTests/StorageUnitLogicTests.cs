@@ -187,5 +187,6 @@ public class StorageUnitLogicTests
         _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 27), new DateTime(2024, 10, 12));
         List<StorageUnitDto> storageUnitsDto = _storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
+        Assert.AreEqual(1 ,storageUnitsDto.Count);
     }
 }
