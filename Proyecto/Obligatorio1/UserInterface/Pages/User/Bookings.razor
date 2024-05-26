@@ -123,6 +123,7 @@
 @code {
     BookingDto _bookingDto;
     UserDto _userDto;
+    DateRangeDto _dateRangeDto;
     Dictionary<string, DateTime> _dateStart = new Dictionary<string, DateTime>();
     Dictionary<string, DateTime> _dateEnd = new Dictionary<string, DateTime>();
     Dictionary<string, double> _pricePerDay = new Dictionary<string, double>();
@@ -133,22 +134,14 @@
     private bool _showUserErrorModal;
     private string _errorMessage = "";
     private bool _showUserConfirmationModal;
-    private bool _showBookings = false;
+    private bool _showBookings;
     
     protected override void OnInitialized()
     {
         _filterStartDate = DateTime.Today;
         _filterEndDate = DateTime.Today;
         _bookingDto = new BookingDto();
-        _storageUnits = storageUnitLogic.GetStorageUnitsDto();
-        
-        foreach (var storageUnitDto in storageUnitLogic.GetStorageUnitsDto())
-        {
-            _pricePerDay[storageUnitDto.Id] = userLogic.CalculateStorageUnitPricePerDay(storageUnitDto);
-            _dateStart[storageUnitDto.Id] = DateTime.Today;
-            _dateEnd[storageUnitDto.Id] = DateTime.Today;
-            _totalPrice[storageUnitDto.Id] = 0;
-        }
+        _showBookings = false;
     }
 
     private async Task HandleValidSubmit(StorageUnitDto storageUnitDto)
@@ -206,8 +199,27 @@
         _showUserConfirmationModal = false;
     }
     
-    private void FilterBookings()
+    private async Task FilterBookings()
     {
-        _showBookings = true;
+        try
+        {
+            _dateRangeDto = new DateRangeDto(_filterStartDate, _filterEndDate);
+            _storageUnits = storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
+            
+            foreach (var storageUnitDto in _storageUnits)
+            {
+                _pricePerDay[storageUnitDto.Id] = userLogic.CalculateStorageUnitPricePerDay(storageUnitDto);
+                _dateStart[storageUnitDto.Id] = DateTime.Today;
+                _dateEnd[storageUnitDto.Id] = DateTime.Today;
+                _totalPrice[storageUnitDto.Id] = 0;
+            }
+            _showBookings = true;
+        } 
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+            _showUserErrorModal = true;
+            OnInitialized();
+        }
     }
 }
