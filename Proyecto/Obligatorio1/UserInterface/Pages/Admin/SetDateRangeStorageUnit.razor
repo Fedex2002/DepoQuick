@@ -49,11 +49,11 @@
                                     }
                                 </td>
                                 <td>
-                                    <input type="date" class="form-control form-control-lg" @bind="dateStart" required/>
+                                    <input type="date" class="form-control form-control-lg" value="@dateStartDictionary[storageUnit.Id].Item1.ToString("yyyy-MM-dd")" @onchange="e => UpdateDateStart(storageUnit.Id, e.Value.ToString())" required/>
                                     <label class="form-label">DateStart</label>
                                 </td>
                                 <td>
-                                    <input type="date" class="form-control form-control-lg" @bind="dateEnd" required/>
+                                    <input type="date" class="form-control form-control-lg" value="@dateStartDictionary[storageUnit.Id].Item2.ToString("yyyy-MM-dd")" @onchange="e => UpdateDateEnd(storageUnit.Id, e.Value.ToString())" required/>
                                     <label class="form-label">DateEnd</label>
                                 </td>
                                 <td>
@@ -91,24 +91,45 @@
 
 @code {
     private List<StorageUnitDto> storageUnits;
-    private DateTime dateStart;
-    private DateTime dateEnd;
+    private Dictionary<string, (DateTime DateStart, DateTime DateEnd)> dateStartDictionary;
     private bool showAdminErrorModal;
     private string errorMessage = "";
     private bool showAdminConfirmationModal;
+    
 
     protected override void OnInitialized()
     {
         storageUnits = storageUnitLogic.GetStorageUnitsDto();
-        dateStart = DateTime.Today;
-        dateEnd = DateTime.Today;
+        dateStartDictionary = new Dictionary<string, (DateTime DateStart, DateTime DateEnd)>();
+        foreach (var storageUnit in storageUnits)
+        {
+            dateStartDictionary[storageUnit.Id] = (DateTime.Today, DateTime.Today);
+        }
     }
+    
+    private void UpdateDateStart(string storageUnitId, string newDate)
+    {
+        if (DateTime.TryParse(newDate, out DateTime parsedDate))
+        {
+            dateStartDictionary[storageUnitId] = (parsedDate, dateStartDictionary[storageUnitId].DateEnd);
+        }
+    }
+
+    private void UpdateDateEnd(string storageUnitId, string newDate)
+    {
+        if (DateTime.TryParse(newDate, out DateTime parsedDate))
+        {
+            dateStartDictionary[storageUnitId] = (dateStartDictionary[storageUnitId].DateStart, parsedDate);
+        }
+    }
+
 
     private async Task HandleValidSubmit(StorageUnitDto storageUnitDto)
     {
         try
         {
-            DateRangeDto dateRangeDto = new DateRangeDto(dateStart, dateEnd);
+            var dates = dateStartDictionary[storageUnitDto.Id];
+            DateRangeDto dateRangeDto = new DateRangeDto(dates.DateStart, dates.DateEnd);
             storageUnitLogic.AddAvailableDateRangeToStorageUnit(storageUnitDto.Id, dateRangeDto);
             showAdminConfirmationModal = true;
         }
