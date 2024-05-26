@@ -126,8 +126,37 @@ public class StorageUnitLogic
     {
         IfDateRangeIsInvalidThrowException(dateRangeDto);
         StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(id);
-        DateRange dateRange = new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate);
-        storageUnit.AvailableDates.Add(dateRange);
+        DateRange newDateRange = new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate);
+        IfDateRangeAlreadyExistsThrowException(storageUnit, newDateRange);
+        storageUnit.AvailableDates.Add(newDateRange);
+    }
+
+    private static void IfDateRangeAlreadyExistsThrowException(StorageUnit storageUnit, DateRange newDateRange)
+    {
+        foreach (var dateRange in storageUnit.AvailableDates)
+        {
+            if (newDateRange.StartDate >= dateRange.StartDate && newDateRange.EndDate <= dateRange.EndDate)
+            {
+                DateRangeExistsSoThrowException();
+            }
+            if (newDateRange.StartDate <= dateRange.StartDate && newDateRange.EndDate >= dateRange.EndDate)
+            {
+                DateRangeExistsSoThrowException();
+            }
+            if (newDateRange.StartDate >= dateRange.StartDate && newDateRange.StartDate <= dateRange.EndDate)
+            {
+                DateRangeExistsSoThrowException();
+            }
+            if (newDateRange.EndDate >= dateRange.StartDate && newDateRange.EndDate <= dateRange.EndDate)
+            {
+                DateRangeExistsSoThrowException();
+            }
+        }
+    }
+
+    private static void DateRangeExistsSoThrowException()
+    {
+        throw new LogicExceptions("Date range already exists");
     }
 
     private static void IfDateRangeIsInvalidThrowException(DateRangeDto dateRangeDto)

@@ -22,13 +22,9 @@ public class UserLogic
     {
         Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
         Person person = _personRepo.GetFromRepository(userDto.Email);
-        bool exists = false;
         if (person is User user)
         {
-            foreach (var booking in user.Bookings)
-            {
-                exists = IfStorageUnitInOldBookingAndNewBookingAreTheSameSetExistsToTrue(booking, newBooking, exists);
-            }
+            bool exists = user.Bookings.Any(booking => booking.StorageUnit.Id == newBooking.StorageUnit.Id);
             if (!exists)
             {
                 user.Bookings.Add(newBooking);
@@ -43,53 +39,6 @@ public class UserLogic
     private static void IfUserAlreadyBookTheStorageUnitThrowException()
     {
         throw new LogicExceptions("Booking for this StorageUnit already exists");
-    }
-
-    private bool IfStorageUnitInOldBookingAndNewBookingAreTheSameSetExistsToTrue(Booking oldBooking, Booking newBooking,
-        bool exists)
-    {
-        if (oldBooking.StorageUnit.Id == newBooking.StorageUnit.Id 
-            && oldBooking.StorageUnit.Area == newBooking.StorageUnit.Area
-            && oldBooking.StorageUnit.Size == newBooking.StorageUnit.Size
-            && oldBooking.StorageUnit.Climatization == newBooking.StorageUnit.Climatization
-            && CheckIfPromotionsOfInStorageUnitOfOldBookingAndNewBookingAreTheSame(oldBooking, newBooking))
-            
-        {
-            exists = true;
-        }
-
-        return exists;
-    }
-    
-    private bool CheckIfPromotionsOfInStorageUnitOfOldBookingAndNewBookingAreTheSame(Booking oldBooking, Booking newBooking)
-    {
-        bool same = false;
-        if ((oldBooking.StorageUnit.Promotions == null || oldBooking.StorageUnit.Promotions.Count == 0) &&
-            (newBooking.StorageUnit.Promotions == null || newBooking.StorageUnit.Promotions.Count == 0))
-        {
-            same = true;
-        }
-        else
-        {
-            foreach (var promotion in oldBooking.StorageUnit.Promotions) 
-            { 
-                same = CheckIfPromotionIsTheSame(promotion, newBooking.StorageUnit.Promotions);
-            }
-        }
-        return same;
-    }
-    
-    private bool CheckIfPromotionIsTheSame(Promotion promotion, List<Promotion> promotions)
-    {
-        bool same = false;
-        foreach (var promotion1 in promotions)
-        {
-            if (promotion.Label == promotion1.Label && promotion.Discount == promotion1.Discount && promotion.DateStart == promotion1.DateStart && promotion.DateEnd == promotion1.DateEnd)
-            {
-                same = true;
-            }
-        }
-        return same;
     }
 
     public bool CheckIfBookingIsApproved(BookingDto bookingDto)

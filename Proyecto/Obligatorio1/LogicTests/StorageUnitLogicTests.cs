@@ -145,4 +145,39 @@ public class StorageUnitLogicTests
         _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
     }
     
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToAddASameOrIncludedExistingAvailableDateRangeShouldThrowException()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToAddAnAvailableDateRangeThatCoversAnExistingOneShouldThrowException()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 1), new DateTime(2024, 10, 30));
+        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+        
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToAddAnAvailableDateRangeThatStartDateExistsInACreatedRangeShouldThrowException()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _dateRangeDto = new DateRangeDto(new DateTime(2024, 10, 15), new DateTime(2024, 10, 30));
+        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToAddAnAvailableDateRangeThatEndDateExistsInACreatedRangeShouldThrowException()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 10), new DateTime(2024, 7, 15));
+        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+    }
 }
