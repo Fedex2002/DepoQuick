@@ -147,7 +147,7 @@ public class StorageUnitLogicTests
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
-    public void WhenTryingToAddAnExistingAvailableDateRangeShouldThrowException()
+    public void WhenTryingToAddASameOrIncludedExistingAvailableDateRangeShouldThrowException()
     {
         _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
         _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
