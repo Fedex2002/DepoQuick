@@ -180,4 +180,12 @@ public class StorageUnitLogicTests
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 10), new DateTime(2024, 7, 15));
         _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
     }
+
+    [TestMethod]
+    public void WhenSearchingStorageUnitsWithDateRangeShouldReturnThem()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 27), new DateTime(2024, 10, 12));
+        List<StorageUnitDto> storageUnitsDto = _storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
+    }
 }
