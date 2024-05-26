@@ -157,6 +157,7 @@
             {
                 DateTime finalDateStart = _dateStart[storageUnitDto.Id];
                 DateTime finalDateEnd = _dateEnd[storageUnitDto.Id];
+                storageUnitLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(finalDateStart, finalDateEnd, _dateRangeDto);
                 _bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "", "Reservado", false);
                 if (sessionLogic.CurrentPerson is UserDto userDto)
                 {
@@ -179,6 +180,7 @@
         {
             DateTime finalDateStart = _dateStart[storageUnitDto.Id];
             DateTime finalDateEnd = _dateEnd[storageUnitDto.Id];
+            storageUnitLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(finalDateStart, finalDateEnd, _dateRangeDto);
             _bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "", "Reservado", false);
             _totalPrice[storageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(_bookingDto);
         }
@@ -186,6 +188,7 @@
         {
             _errorMessage = e.Message;
             _showUserErrorModal = true;
+            _totalPrice[storageUnitDto.Id] = 0;
         }
     }
 
