@@ -194,4 +194,12 @@ public class StorageUnitLogic
             throw new LogicExceptions("No storage units available for this date range");
         }
     }
+    
+    public void CheckIfDateStartAndDateEndAreIncludedInDateRange(DateTime dateStart, DateTime dateEnd, DateRangeDto dateRangeDto)
+    {
+        if (!(dateStart >= dateRangeDto.StartDate && dateEnd <= dateRangeDto.EndDate))
+        {
+            throw new LogicExceptions("Date range is not included in the available date range");
+        }
+    }
 }

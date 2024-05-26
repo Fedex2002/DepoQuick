@@ -206,4 +206,14 @@ public class StorageUnitLogicTests
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 10, 15), new DateTime(2024, 10, 30));
         _storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void IfSelectedStartDateAndEndDateOfBookingIsNotInDateRangeShouldThrowException()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        DateTime startDate = new DateTime(2024, 10, 15);
+        DateTime endDate = new DateTime(2024, 10, 30);
+        _storageUnitLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(startDate, endDate, _dateRangeDto);
+    }
 }
