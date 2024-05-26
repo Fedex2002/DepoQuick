@@ -182,11 +182,16 @@ public class StorageUnitLogic
                 } 
             }
         }
+        IfThereIsNoStorageUnitWithThisDateRangeThrowException(availableStorageUnits);
+
+        return availableStorageUnits;
+    }
+
+    private static void IfThereIsNoStorageUnitWithThisDateRangeThrowException(List<StorageUnitDto> availableStorageUnits)
+    {
         if (availableStorageUnits.Count == 0)
         {
             throw new LogicExceptions("No storage units available for this date range");
         }
-
-        return availableStorageUnits;
     }
 }
