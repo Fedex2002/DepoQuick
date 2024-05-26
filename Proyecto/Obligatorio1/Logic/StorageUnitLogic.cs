@@ -199,7 +199,7 @@ public class StorageUnitLogic
     {
         if (!(dateStart >= dateRangeDto.StartDate && dateEnd <= dateRangeDto.EndDate))
         {
-            throw new LogicExceptions("Date range already exists");
+            throw new LogicExceptions("Date range is not included in the available date range");
         }
     }
 }
