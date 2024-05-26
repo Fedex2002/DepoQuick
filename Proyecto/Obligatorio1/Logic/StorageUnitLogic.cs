@@ -137,21 +137,26 @@ public class StorageUnitLogic
         {
             if (newDateRange.StartDate >= dateRange.StartDate && newDateRange.EndDate <= dateRange.EndDate)
             {
-                throw new LogicExceptions("Date range already exists");
+                DateRangeExistsSoThrowException();
             }
             if (newDateRange.StartDate <= dateRange.StartDate && newDateRange.EndDate >= dateRange.EndDate)
             {
-                throw new LogicExceptions("Date range already exists");
+                DateRangeExistsSoThrowException();
             }
             if (newDateRange.StartDate >= dateRange.StartDate && newDateRange.StartDate <= dateRange.EndDate)
             {
-                throw new LogicExceptions("Date range already exists");
+                DateRangeExistsSoThrowException();
             }
             if (newDateRange.EndDate >= dateRange.StartDate && newDateRange.EndDate <= dateRange.EndDate)
             {
-                throw new LogicExceptions("Date range already exists");
+                DateRangeExistsSoThrowException();
             }
         }
+    }
+
+    private static void DateRangeExistsSoThrowException()
+    {
+        throw new LogicExceptions("Date range already exists");
     }
 
     private static void IfDateRangeIsInvalidThrowException(DateRangeDto dateRangeDto)
