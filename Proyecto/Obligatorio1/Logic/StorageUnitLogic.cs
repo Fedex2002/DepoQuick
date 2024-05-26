@@ -135,7 +135,7 @@ public class StorageUnitLogic
     {
         foreach (var dateRange in storageUnit.AvailableDates)
         {
-            if (dateRange.StartDate == newdateRange.StartDate && dateRange.EndDate == newdateRange.EndDate)
+            if (newdateRange.StartDate >= dateRange.StartDate && newdateRange.EndDate <= dateRange.EndDate)
             {
                 throw new LogicExceptions("Date range already exists");
             }
