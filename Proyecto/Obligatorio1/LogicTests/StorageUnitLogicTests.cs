@@ -189,4 +189,12 @@ public class StorageUnitLogicTests
         List<StorageUnitDto> storageUnitsDto = _storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
         Assert.AreEqual(1 ,storageUnitsDto.Count);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenTryingToSearchStorageUnitsWithDateRangeThatIsInvalidShouldThrowException()
+    {
+        _dateRangeDto = new DateRangeDto(new DateTime(2024, 10, 15), new DateTime(2024, 5, 15));
+        _storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
+    }
 }
