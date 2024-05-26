@@ -169,6 +169,7 @@ public class StorageUnitLogic
     
     public List<StorageUnitDto> SearchAvailableStorageUnits(DateRangeDto dateRangeDto)
     {
+        IfDateRangeIsInvalidThrowException(dateRangeDto);
         List<StorageUnitDto> availableStorageUnits = new List<StorageUnitDto>();
         foreach (var storageUnit in _storageUnitRepositories.GetAllFromRepository())
         {
