@@ -85,9 +85,14 @@ public class UserLogic
         return booking.CalculateBookingTotalPrice();
     }
 
-    public double CalculateStorageUnitPricePerDay(StorageUnitDto storageUnitDto)
+    public double CalculateStorageUnitPricePerDay(StorageUnitDto storageUnitDto, DateRangeDto dateRangeDto)
     {
         StorageUnit storageUnit = ChangeToStorageUnit(storageUnitDto);
+        bool promotionIsInDateRange = storageUnit.Promotions.Any(promotion => dateRangeDto.StartDate >= promotion.DateStart && dateRangeDto.EndDate <= promotion.DateEnd);
+        if (!promotionIsInDateRange)
+        {
+            storageUnit.Promotions = new List<Promotion>();
+        }
         return storageUnit.CalculateStorageUnitPricePerDay();
     }
     
