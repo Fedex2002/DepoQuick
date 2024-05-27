@@ -16,6 +16,7 @@
                         <th>StorageUnit data</th>
                         <th>Start Date</th>
                         <th>End Date</th>
+                        <th>Date Range</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -55,6 +56,25 @@
                                 <td>
                                     <input type="date" class="form-control form-control-lg" value="@dateStartDictionary[storageUnit.Id].Item2.ToString("yyyy-MM-dd")" @onchange="e => UpdateDateEnd(storageUnit.Id, e.Value.ToString())" required/>
                                     <label class="form-label">DateEnd</label>
+                                </td>
+                                <td>
+                                    @if (storageUnit.AvailableDates.Count == 0)
+                                    {
+                                        <p>No date range set</p>
+                                    }
+                                    else
+                                    {
+                                        var dateRangeCount = 1;
+                                        @foreach (var dateRange in storageUnit.AvailableDates)
+                                        {
+                                            <div>
+                                                <p style="margin-bottom: 0;">Date Range @dateRangeCount</p>
+                                                <strong>Start Date:</strong> @dateRange.StartDate.ToString("dd/MM/yyy")<br/>
+                                                <strong>End Date:</strong> @dateRange.EndDate.ToString("dd/MM/yyy")<br/>
+                                            </div>
+                                            dateRangeCount++;
+                                        }
+                                    }
                                 </td>
                                 <td>
                                     <button type="submit" class="btn btn-primary btn-lg" @onclick="() => HandleValidSubmit(storageUnit)" style="padding-left: 2.5rem; padding-right: 2.5rem;">Set possible booking date</button>
@@ -132,6 +152,7 @@
             DateRangeDto dateRangeDto = new DateRangeDto(dates.DateStart, dates.DateEnd);
             storageUnitLogic.AddAvailableDateRangeToStorageUnit(storageUnitDto.Id, dateRangeDto);
             showAdminConfirmationModal = true;
+            OnInitialized();
         }
         catch (Exception e)
         {
