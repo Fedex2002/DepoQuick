@@ -90,17 +90,18 @@ public class AdministratorLogic
                 var userBookings = user.Bookings.ToList();
                 foreach (var booking in userBookings)
                 {
-                    IfBookingStorageUnitIdIsAMatchSetRejectedMessage(booking, oldBooking, rejectionMessage);
+                    IfBookingStorageUnitIdIsAMatchSetRejectedMessageAndChangeStatusToRejected(booking, oldBooking, rejectionMessage);
                 }
             }
         }
     }
 
-    private void IfBookingStorageUnitIdIsAMatchSetRejectedMessage(Booking booking, string oldBookingId, string rejectionMessage)
+    private void IfBookingStorageUnitIdIsAMatchSetRejectedMessageAndChangeStatusToRejected(Booking booking, string oldBookingId, string rejectionMessage)
     {
         if (booking.StorageUnit.Id == oldBookingId)
         {
             booking.RejectedMessage = rejectionMessage;
+            booking.Status = "Rechazado";
         }
     }
     
