@@ -16,7 +16,7 @@
                         <th>StorageUnit data</th>
                         <th>Start Date</th>
                         <th>End Date</th>
-                        <th>Date Range</th>
+                        <th>Date Ranges</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -24,7 +24,7 @@
                     @if (storageUnits.Count == 0)
                     {
                         <tr>
-                            <td colspan="4">No storage units found</td>
+                            <td colspan="5">No storage units found</td>
                         </tr>
                     }
                     else
@@ -60,7 +60,7 @@
                                 <td>
                                     @if (storageUnit.AvailableDates.Count == 0)
                                     {
-                                        <p>No date range set</p>
+                                        <p>No date ranges set</p>
                                     }
                                     else
                                     {
