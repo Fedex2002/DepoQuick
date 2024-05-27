@@ -211,7 +211,7 @@
             
             foreach (var storageUnitDto in _storageUnits)
             {
-                _pricePerDay[storageUnitDto.Id] = userLogic.CalculateStorageUnitPricePerDay(storageUnitDto);
+                _pricePerDay[storageUnitDto.Id] = userLogic.CalculateStorageUnitPricePerDay(storageUnitDto, _dateRangeDto);
                 _dateStart[storageUnitDto.Id] = _filterStartDate;
                 _dateEnd[storageUnitDto.Id] = _filterEndDate;
                 _totalPrice[storageUnitDto.Id] = 0;
