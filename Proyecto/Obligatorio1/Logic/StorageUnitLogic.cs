@@ -202,4 +202,22 @@ public class StorageUnitLogic
             throw new LogicExceptions("Date range is not included in the available date range");
         }
     }
+    
+    public void EliminateDateRangeFromStorageUnit(string id, DateRangeDto dateRangeDto)
+    {
+        if (dateRangeDto == null)
+        {
+            throw new LogicExceptions("Please select a date range to eliminate");
+        }
+        StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(id);
+        DateRange dateRangeToRemove = new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate);
+        foreach (var dateRange in storageUnit.AvailableDates)
+        {
+            if (dateRange.StartDate == dateRangeToRemove.StartDate && dateRange.EndDate == dateRangeToRemove.EndDate)
+            {
+                dateRangeToRemove = dateRange;
+            }
+        }
+        storageUnit.AvailableDates.Remove(dateRangeToRemove);
+    }
 }
