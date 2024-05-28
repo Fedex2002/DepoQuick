@@ -224,4 +224,13 @@ public class StorageUnitLogicTests
         _storageUnitLogic.EliminateDateRangeFromStorageUnit(_storageUnitDto.Id, _dateRangeDto);
         Assert.AreEqual(0, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates.Count);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenNotSelectingADateRangeToRemoveFromStorageUnitShouldThrowException()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _dateRangeDto = null;
+        _storageUnitLogic.EliminateDateRangeFromStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+    }
 }
