@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography;
 using Model;
 using Logic.DTOs;
@@ -195,14 +196,6 @@ public class StorageUnitLogic
         }
     }
     
-    public void CheckIfDateStartAndDateEndAreIncludedInDateRange(DateTime dateStart, DateTime dateEnd, DateRangeDto dateRangeDto)
-    {
-        if (!(dateStart >= dateRangeDto.StartDate && dateEnd <= dateRangeDto.EndDate))
-        {
-            throw new LogicExceptions("Date range is not included in the available date range");
-        }
-    }
-    
     public void EliminateDateRangeFromStorageUnit(string id, DateRangeDto dateRangeDto)
     {
         if (dateRangeDto == null)
@@ -210,14 +203,44 @@ public class StorageUnitLogic
             throw new LogicExceptions("Please select a date range to eliminate");
         }
         StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(id);
-        DateRange dateRangeToRemove = new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate);
-        foreach (var dateRange in storageUnit.AvailableDates)
+        foreach (var dateRange in storageUnit.AvailableDates.ToList())
         {
-            if (dateRange.StartDate == dateRangeToRemove.StartDate && dateRange.EndDate == dateRangeToRemove.EndDate)
+            if (dateRange.StartDate == dateRangeDto.StartDate && dateRange.EndDate == dateRangeDto.EndDate)
             {
-                dateRangeToRemove = dateRange;
+                storageUnit.AvailableDates.Remove(dateRange);
             }
         }
-        storageUnit.AvailableDates.Remove(dateRangeToRemove);
+    }
+
+    public void ModifyOrRemoveDateRange(StorageUnitDto storageUnitDto, DateRangeDto dateRangeDto)
+    {
+        StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(storageUnitDto.Id);
+        foreach (var dateRange in storageUnit.AvailableDates.ToList())
+        {
+            if (dateRangeDto.StartDate == dateRange.StartDate && dateRangeDto.EndDate == dateRange.EndDate)
+            {
+                storageUnit.AvailableDates.Remove(dateRange);
+            }
+            if (dateRangeDto.StartDate == dateRange.StartDate && dateRangeDto.EndDate < dateRange.EndDate)
+            {
+                storageUnit.AvailableDates.Remove(dateRange);
+                DateRange newDateRange = new DateRange(dateRangeDto.EndDate.AddDays(1), dateRange.EndDate);
+                _storageUnitRepositories.GetFromRepository(storageUnitDto.Id).AvailableDates.Add(newDateRange);
+            }
+            if (dateRangeDto.EndDate == dateRange.EndDate && dateRangeDto.StartDate > dateRange.StartDate)
+            {
+                storageUnit.AvailableDates.Remove(dateRange);
+                DateRange newDateRange = new DateRange(dateRange.StartDate, dateRangeDto.StartDate.AddDays(-1));
+                _storageUnitRepositories.GetFromRepository(storageUnitDto.Id).AvailableDates.Add(newDateRange);
+            }
+            if (dateRangeDto.StartDate > dateRange.StartDate && dateRangeDto.EndDate < dateRange.EndDate)
+            {
+                storageUnit.AvailableDates.Remove(dateRange);
+                DateRange newDateRange = new DateRange(dateRange.StartDate, dateRangeDto.StartDate.AddDays(-1));
+                _storageUnitRepositories.GetFromRepository(storageUnitDto.Id).AvailableDates.Add(newDateRange);
+                DateRange newDateRange2 = new DateRange(dateRangeDto.EndDate.AddDays(1), dateRange.EndDate);
+                _storageUnitRepositories.GetFromRepository(storageUnitDto.Id).AvailableDates.Add(newDateRange2);
+            }
+        }
     }
 }
