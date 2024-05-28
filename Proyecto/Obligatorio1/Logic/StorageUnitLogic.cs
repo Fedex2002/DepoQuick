@@ -203,15 +203,13 @@ public class StorageUnitLogic
             throw new LogicExceptions("Please select a date range to eliminate");
         }
         StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(id);
-        DateRange dateRangeToRemove = new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate);
-        foreach (var dateRange in storageUnit.AvailableDates)
+        foreach (var dateRange in storageUnit.AvailableDates.ToList())
         {
-            if (dateRange.StartDate == dateRangeToRemove.StartDate && dateRange.EndDate == dateRangeToRemove.EndDate)
+            if (dateRange.StartDate == dateRangeDto.StartDate && dateRange.EndDate == dateRangeDto.EndDate)
             {
-                dateRangeToRemove = dateRange;
+                storageUnit.AvailableDates.Remove(dateRange);
             }
         }
-        storageUnit.AvailableDates.Remove(dateRangeToRemove);
     }
 
     public void ModifyOrRemoveDateRange(StorageUnitDto storageUnitDto, DateRangeDto dateRangeDto)
