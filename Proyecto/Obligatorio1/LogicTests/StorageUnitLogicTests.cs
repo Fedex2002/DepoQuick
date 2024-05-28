@@ -216,4 +216,12 @@ public class StorageUnitLogicTests
         DateTime endDate = new DateTime(2024, 10, 30);
         _storageUnitLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(startDate, endDate, _dateRangeDto);
     }
+    
+    [TestMethod]
+    public void WhenSelectingDateRangeShouldEliminateItFromStorageUnit()
+    {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _storageUnitLogic.EliminateDateRangeFromStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+        Assert.AreEqual(0, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates.Count);
+    }
 }
