@@ -212,4 +212,15 @@ public class StorageUnitLogic
         }
         storageUnit.AvailableDates.Remove(dateRangeToRemove);
     }
+
+    public void ModifyOrRemoveDateRange(StorageUnitDto storageUnitDto, DateRangeDto dateRangeDto)
+    {
+        foreach (var dateRange in storageUnitDto.AvailableDates)
+        {
+            if (dateRangeDto.StartDate == dateRange.StartDate && dateRangeDto.EndDate == dateRange.EndDate)
+            {
+                EliminateDateRangeFromStorageUnit(storageUnitDto.Id, dateRangeDto);
+            }
+        }
+    }
 }

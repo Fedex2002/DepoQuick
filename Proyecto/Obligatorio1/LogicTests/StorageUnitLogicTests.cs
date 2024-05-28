@@ -227,6 +227,8 @@ public class StorageUnitLogicTests
     [TestMethod]
     public void WhenUserMakesABookingInADateRangeShouldReduceDateRangeOfStorageUnitOrRemoveIt()
     {
+        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
         _storageUnitLogic.ModifyOrRemoveDateRange(_storageUnitDto, _dateRangeDto);
+        Assert.AreEqual(0, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates.Count);
     }
 }
