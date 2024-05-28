@@ -219,7 +219,13 @@ public class StorageUnitLogic
         {
             if (dateRangeDto.StartDate == dateRange.StartDate && dateRangeDto.EndDate == dateRange.EndDate)
             {
-                EliminateDateRangeFromStorageUnit(storageUnitDto.Id, dateRangeDto);
+                EliminateDateRangeFromStorageUnit(storageUnitDto.Id, dateRange);
+            }
+            if (dateRangeDto.StartDate == dateRange.StartDate && dateRangeDto.EndDate < dateRange.EndDate)
+            {
+                EliminateDateRangeFromStorageUnit(storageUnitDto.Id, dateRange);
+                DateRange newDateRange = new DateRange(dateRangeDto.EndDate.AddDays(1), dateRange.EndDate);
+                _storageUnitRepositories.GetFromRepository(storageUnitDto.Id).AvailableDates.Add(newDateRange);
             }
         }
     }
