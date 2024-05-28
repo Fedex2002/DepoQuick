@@ -221,20 +221,17 @@ public class StorageUnitLogic
         {
             if (dateRangeDto.StartDate == dateRange.StartDate && dateRangeDto.EndDate == dateRange.EndDate)
             {
-                DateRangeDto removeDateRange = new DateRangeDto(dateRange.StartDate, dateRange.EndDate);
-                EliminateDateRangeFromStorageUnit(storageUnitDto.Id, removeDateRange);
+                storageUnit.AvailableDates.Remove(dateRange);
             }
             if (dateRangeDto.StartDate == dateRange.StartDate && dateRangeDto.EndDate < dateRange.EndDate)
             {
-                DateRangeDto removeDateRange = new DateRangeDto(dateRange.StartDate, dateRange.EndDate);
-                EliminateDateRangeFromStorageUnit(storageUnitDto.Id, removeDateRange);
+                storageUnit.AvailableDates.Remove(dateRange);
                 DateRange newDateRange = new DateRange(dateRangeDto.EndDate.AddDays(1), dateRange.EndDate);
                 _storageUnitRepositories.GetFromRepository(storageUnitDto.Id).AvailableDates.Add(newDateRange);
             }
             if (dateRangeDto.EndDate == dateRange.EndDate && dateRangeDto.StartDate > dateRange.StartDate)
             {
-                DateRangeDto removeDateRange = new DateRangeDto(dateRange.StartDate, dateRange.EndDate);
-                EliminateDateRangeFromStorageUnit(storageUnitDto.Id, removeDateRange);
+                storageUnit.AvailableDates.Remove(dateRange);
                 DateRange newDateRange = new DateRange(dateRange.StartDate, dateRangeDto.StartDate.AddDays(-1));
                 _storageUnitRepositories.GetFromRepository(storageUnitDto.Id).AvailableDates.Add(newDateRange);
             }
