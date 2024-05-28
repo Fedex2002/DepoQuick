@@ -127,4 +127,13 @@ public class UserLogicTests
         _userLogic.PayBooking(_userDto, _mybookingDto);
         _userLogic.PayBooking(_userDto, _mybookingDto);
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void IfSelectedStartDateAndEndDateOfBookingIsNotInDateRangeShouldThrowException()
+    {
+        DateTime startDate = new DateTime(2024, 10, 15);
+        DateTime endDate = new DateTime(2024, 10, 30);
+        _userLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(startDate, endDate, _dateRangeDto);
+    }
 }

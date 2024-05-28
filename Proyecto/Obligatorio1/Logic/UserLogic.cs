@@ -124,4 +124,12 @@ public class UserLogic
             throw new LogicExceptions("Booking already paid");
         }
     }
+    
+    public void CheckIfDateStartAndDateEndAreIncludedInDateRange(DateTime dateStart, DateTime dateEnd, DateRangeDto dateRangeDto)
+    {
+        if (!(dateStart >= dateRangeDto.StartDate && dateEnd <= dateRangeDto.EndDate))
+        {
+            throw new LogicExceptions("Date range is not included in the available date range");
+        }
+    }
 }
