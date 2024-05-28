@@ -223,4 +223,10 @@ public class StorageUnitLogicTests
         _dateRangeDto = null;
         _storageUnitLogic.EliminateDateRangeFromStorageUnit(_storageUnitDto.Id, _dateRangeDto);
     }
+
+    [TestMethod]
+    public void WhenUserMakesABookingInADateRangeShouldReduceDateRangeOfStorageUnitOrRemoveIt()
+    {
+        _storageUnitLogic.ModifyOrRemoveDateRange(_storageUnitDto, _dateRangeDto);
+    }
 }
