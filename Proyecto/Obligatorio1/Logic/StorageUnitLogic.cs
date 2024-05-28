@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography;
 using Model;
 using Logic.DTOs;
@@ -215,16 +216,26 @@ public class StorageUnitLogic
 
     public void ModifyOrRemoveDateRange(StorageUnitDto storageUnitDto, DateRangeDto dateRangeDto)
     {
-        foreach (var dateRange in storageUnitDto.AvailableDates)
+        StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(storageUnitDto.Id);
+        foreach (var dateRange in storageUnit.AvailableDates.ToList())
         {
             if (dateRangeDto.StartDate == dateRange.StartDate && dateRangeDto.EndDate == dateRange.EndDate)
             {
-                EliminateDateRangeFromStorageUnit(storageUnitDto.Id, dateRange);
+                DateRangeDto removeDateRange = new DateRangeDto(dateRange.StartDate, dateRange.EndDate);
+                EliminateDateRangeFromStorageUnit(storageUnitDto.Id, removeDateRange);
             }
             if (dateRangeDto.StartDate == dateRange.StartDate && dateRangeDto.EndDate < dateRange.EndDate)
             {
-                EliminateDateRangeFromStorageUnit(storageUnitDto.Id, dateRange);
+                DateRangeDto removeDateRange = new DateRangeDto(dateRange.StartDate, dateRange.EndDate);
+                EliminateDateRangeFromStorageUnit(storageUnitDto.Id, removeDateRange);
                 DateRange newDateRange = new DateRange(dateRangeDto.EndDate.AddDays(1), dateRange.EndDate);
+                _storageUnitRepositories.GetFromRepository(storageUnitDto.Id).AvailableDates.Add(newDateRange);
+            }
+            if (dateRangeDto.EndDate == dateRange.EndDate && dateRangeDto.StartDate > dateRange.StartDate)
+            {
+                DateRangeDto removeDateRange = new DateRangeDto(dateRange.StartDate, dateRange.EndDate);
+                EliminateDateRangeFromStorageUnit(storageUnitDto.Id, removeDateRange);
+                DateRange newDateRange = new DateRange(dateRange.StartDate, dateRangeDto.StartDate.AddDays(-1));
                 _storageUnitRepositories.GetFromRepository(storageUnitDto.Id).AvailableDates.Add(newDateRange);
             }
         }

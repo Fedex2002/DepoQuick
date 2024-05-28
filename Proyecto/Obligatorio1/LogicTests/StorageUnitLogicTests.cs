@@ -237,5 +237,11 @@ public class StorageUnitLogicTests
         DateRange newRange = new DateRange(new DateTime(2024, 8, 16), new DateTime(2024, 10, 15));
         Assert.AreEqual(newRange.StartDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].StartDate);
         Assert.AreEqual(newRange.EndDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].EndDate);
+        
+        _dateRangeDto = new DateRangeDto(new DateTime(2024, 9, 15), new DateTime(2024, 10, 15));
+        _storageUnitLogic.ModifyOrRemoveDateRange(_storageUnitDto, _dateRangeDto);
+        newRange = new DateRange(new DateTime(2024, 8, 16), new DateTime(2024, 9, 14));
+        Assert.AreEqual(newRange.StartDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].StartDate);
+        Assert.AreEqual(newRange.EndDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].EndDate);
     }
 }
