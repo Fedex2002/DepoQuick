@@ -9,7 +9,7 @@ public class CsvReportExporter
 
     public void Export(string path, List<Booking> bookings)
     {
-        File.WriteAllText(path,"");
+        File.WriteAllText(path, GetData(bookings));
     }
     
     public string GetData(List<Booking> bookings)
