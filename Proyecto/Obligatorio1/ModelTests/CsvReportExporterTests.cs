@@ -18,6 +18,7 @@ public class CsvReportExporterTests
         _csvReportExporter = new CsvReportExporter();
         _promotions = new List<Promotion>();
         _bookings = new List<Booking>();
+        _availableDates = new List<DateRange>();
         _mypromotion= new Promotion("Descuento Invierno", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
         _promotions.Add(_mypromotion);
         _mystorageunit= new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions, _availableDates);
@@ -46,7 +47,7 @@ public class CsvReportExporterTests
     [TestMethod]
     public void WhenGettingDataFromBookingsShouldReturnIt()
     {
-        string dataExpected = "1,False,01/07/2024 00:00:00,15/08/2024 00:00:00,Rejected,Reservado,False\r\n";
+        string dataExpected = "DEPOSITO,RESERVA,PAGO\r\n,A,True,0,Small,1,False,1/7/2024 00:00:00,15/8/2024 00:00:00,Rejected,Reservado,False\r\n";
         Assert.AreEqual(dataExpected, _csvReportExporter.GetData(_bookings));
         
     }
