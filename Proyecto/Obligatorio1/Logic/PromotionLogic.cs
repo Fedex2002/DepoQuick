@@ -17,22 +17,28 @@ public class PromotionLogic
     public void ModifyPromotion(PromotionDto promotionDto, string oldLabel)
     {
         Promotion promotionInRepo= _promotionRepositories.GetFromRepository(oldLabel);
-        if (_promotionRepositories.GetFromRepository(oldLabel) == null)
+        if (!_promotionRepositories.ExistsInRepository(oldLabel))
         {
             IfPromotionDoesNotExistThrowException();
         }
         else
         {
-            _promotionRepositories.RemoveFromRepository(promotionInRepo);
-            promotionInRepo= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
-            _promotionRepositories.AddToRepository(promotionInRepo);
+            EditPromotion(promotionDto, promotionInRepo);
         }
     }
-    
+
+    private static void EditPromotion(PromotionDto promotionDto, Promotion promotionInRepo)
+    {
+        promotionInRepo.Label = promotionDto.Label;
+        promotionInRepo.Discount = promotionDto.Discount;
+        promotionInRepo.DateStart = promotionDto.DateStart;
+        promotionInRepo.DateEnd = promotionDto.DateEnd;
+    }
+
     public void CreatePromotion(PromotionDto promotionDto)
     {
         Promotion promotion= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
-        if (_promotionRepositories.GetFromRepository(promotionDto.Label) != null)
+        if (_promotionRepositories.ExistsInRepository(promotionDto.Label))
         {
             IfPromotionExistsThrowException();
         }
@@ -50,7 +56,7 @@ public class PromotionLogic
     public void RemovePromotion(PromotionDto promotionDto)
     {
         Promotion promotionInRepo= _promotionRepositories.GetFromRepository(promotionDto.Label);
-        if (_promotionRepositories.GetFromRepository(promotionDto.Label) == null)
+        if (!_promotionRepositories.ExistsInRepository(promotionDto.Label))
         {
             IfPromotionDoesNotExistThrowException();
         }
