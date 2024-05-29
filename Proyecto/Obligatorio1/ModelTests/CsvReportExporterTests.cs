@@ -11,7 +11,7 @@ public class CsvReportExporterTests
     private Promotion _mypromotion;
     private StorageUnit _mystorageunit;
     private List<DateRange> _availableDates;
-    
+    private List<Booking> _bookings;
     [TestInitialize]
     void TestInitialize()
     {
@@ -21,6 +21,7 @@ public class CsvReportExporterTests
         _promotions.Add(_mypromotion);
         _mystorageunit= new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions, _availableDates);
         _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected", "Reservado", false);
+        _bookings.Add(_mybooking);
     }
     
     [TestMethod]
@@ -29,7 +30,14 @@ public class CsvReportExporterTests
         _csvReportExporter = new CsvReportExporter();
         Assert.IsNotNull(_csvReportExporter);
     }
-    
-    
-    
+
+    [TestMethod]
+
+    public void WhenExportingAsCsvShouldExportBookingsToPath()
+    {
+        
+        _csvReportExporter.Export("C:/Users/Usuario/Desktop/Bookings.csv", _bookings);
+        Assert.IsTrue(File.Exists("C:/Users/Usuario/Desktop/Bookings.csv"));
+    }
+
 }
