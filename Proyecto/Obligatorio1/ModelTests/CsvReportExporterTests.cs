@@ -43,4 +43,12 @@ public class CsvReportExporterTests
         Assert.IsTrue(File.Exists(filePath));
     }
 
+    [TestMethod]
+    public void WhenGettingDataFromBookingsShouldReturnIt()
+    {
+        string dataExpected = "1,False,01/07/2024 00:00:00,15/08/2024 00:00:00,Rejected,Reservado,False\r\n";
+        Assert.AreEqual(dataExpected, _csvReportExporter.GetData(_bookings));
+        
+    }
+
 }
