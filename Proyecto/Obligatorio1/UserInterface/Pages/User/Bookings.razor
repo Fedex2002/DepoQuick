@@ -1,6 +1,7 @@
 @page "/Bookings"
 @using Logic
 @using Logic.DTOs
+@using Model
 @layout MainLayout
 @inject UserLogic userLogic
 @inject SessionLogic sessionLogic
@@ -123,32 +124,28 @@
 @code {
     BookingDto _bookingDto;
     UserDto _userDto;
+    DateRangeDto _dateRangeDto;
     Dictionary<string, DateTime> _dateStart = new Dictionary<string, DateTime>();
     Dictionary<string, DateTime> _dateEnd = new Dictionary<string, DateTime>();
     Dictionary<string, double> _pricePerDay = new Dictionary<string, double>();
     Dictionary<string, double> _totalPrice = new Dictionary<string, double>();
     DateTime _filterStartDate;
     DateTime _filterEndDate;
+    DateTime _finalDateStart;
+    DateTime _finalDateEnd;
+    
     private List<StorageUnitDto> _storageUnits;
     private bool _showUserErrorModal;
     private string _errorMessage = "";
     private bool _showUserConfirmationModal;
-    private bool _showBookings = false;
+    private bool _showBookings;
     
     protected override void OnInitialized()
     {
         _filterStartDate = DateTime.Today;
         _filterEndDate = DateTime.Today;
         _bookingDto = new BookingDto();
-        _storageUnits = storageUnitLogic.GetStorageUnitsDto();
-        
-        foreach (var storageUnitDto in storageUnitLogic.GetStorageUnitsDto())
-        {
-            _pricePerDay[storageUnitDto.Id] = userLogic.CalculateStorageUnitPricePerDay(storageUnitDto);
-            _dateStart[storageUnitDto.Id] = DateTime.Today;
-            _dateEnd[storageUnitDto.Id] = DateTime.Today;
-            _totalPrice[storageUnitDto.Id] = 0;
-        }
+        _showBookings = false;
     }
 
     private async Task HandleValidSubmit(StorageUnitDto storageUnitDto)
@@ -162,15 +159,17 @@
             }
             else
             {
-                DateTime finalDateStart = _dateStart[storageUnitDto.Id];
-                DateTime finalDateEnd = _dateEnd[storageUnitDto.Id];
-                _bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "", "Reservado", false);
+                userLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(_finalDateStart, _finalDateEnd, _dateRangeDto);
+                _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false);
                 if (sessionLogic.CurrentPerson is UserDto userDto)
                 {
                     userLogic.AddBookingToUser(userDto, _bookingDto);
                     userDto.Bookings.Add(_bookingDto);
                     _showUserConfirmationModal = true;
                 }
+
+                _dateRangeDto = new DateRangeDto(_finalDateStart, _finalDateEnd);
+                storageUnitLogic.ModifyOrRemoveDateRange(storageUnitDto, _dateRangeDto);
             }
         }
         catch (Exception e)
@@ -184,15 +183,17 @@
     {
         try
         {
-            DateTime finalDateStart = _dateStart[storageUnitDto.Id];
-            DateTime finalDateEnd = _dateEnd[storageUnitDto.Id];
-            _bookingDto = new BookingDto(false, finalDateStart, finalDateEnd, storageUnitDto, "", "Reservado", false);
+            _finalDateStart = _dateStart[storageUnitDto.Id];
+            _finalDateEnd = _dateEnd[storageUnitDto.Id];
+            userLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(_finalDateStart, _finalDateEnd, _dateRangeDto);
+            _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false);
             _totalPrice[storageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(_bookingDto);
         }
         catch (Exception e)
         {
             _errorMessage = e.Message;
             _showUserErrorModal = true;
+            _totalPrice[storageUnitDto.Id] = 0;
         }
     }
 
@@ -206,8 +207,27 @@
         _showUserConfirmationModal = false;
     }
     
-    private void FilterBookings()
+    private async Task FilterBookings()
     {
-        _showBookings = true;
+        try
+        {
+            _dateRangeDto = new DateRangeDto(_filterStartDate, _filterEndDate);
+            _storageUnits = storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
+            
+            foreach (var storageUnitDto in _storageUnits)
+            {
+                _pricePerDay[storageUnitDto.Id] = userLogic.CalculateStorageUnitPricePerDay(storageUnitDto, _dateRangeDto);
+                _dateStart[storageUnitDto.Id] = _filterStartDate;
+                _dateEnd[storageUnitDto.Id] = _filterEndDate;
+                _totalPrice[storageUnitDto.Id] = 0;
+            }
+            _showBookings = true;
+        } 
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+            _showUserErrorModal = true;
+            OnInitialized();
+        }
     }
 }

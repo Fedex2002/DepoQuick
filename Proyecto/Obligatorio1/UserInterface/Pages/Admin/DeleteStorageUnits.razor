@@ -19,6 +19,7 @@
                             <th>Size</th>
                             <th>Climatization</th>
                             <th>Promotions</th>
+                            <th>Date Ranges</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -26,7 +27,7 @@
                         @if (_storageUnits.Count == 0)
                         {
                             <tr>
-                                <td colspan="6">No storage units found</td>
+                                <td colspan="7">No storage units found</td>
                             </tr>
                         }
                         else
@@ -39,15 +40,41 @@
                                     <td>@storageUnit.Size</td>
                                     <td>@storageUnit.Climatization</td>
                                     <td>
-                                        @foreach (var promotion in storageUnit.Promotions)
+                                        @if (storageUnit.Promotions.Count == 0)
                                         {
-                                            <div>
-                                                <strong>Label:</strong> @promotion.Label<br/>
-                                                <strong>Discount:</strong> @promotion.Discount<br/>
-                                                <strong>StartDate:</strong> @promotion.DateStart<br/>
-                                                <strong>EndDate:</strong> @promotion.DateEnd<br/>
-                                            </div>
+                                            <p>No promotions set</p>
                                         }
+                                        else
+                                        {
+                                            @foreach (var promotion in storageUnit.Promotions)
+                                            {
+                                                <div>
+                                                    <strong>Label:</strong> @promotion.Label<br/>
+                                                    <strong>Discount:</strong> @promotion.Discount<br/>
+                                                    <strong>StartDate:</strong> @promotion.DateStart<br/>
+                                                    <strong>EndDate:</strong> @promotion.DateEnd<br/>
+                                                </div>
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                         @if (storageUnit.AvailableDates.Count == 0)
+                                         {
+                                             <p>No date ranges set</p>
+                                         }
+                                         else
+                                         {
+                                             var dateRangeCount = 1; 
+                                             @foreach (var dateRange in storageUnit.AvailableDates) 
+                                             { 
+                                                 <div>
+                                                     <p style="margin-bottom: 0;">Date Range @dateRangeCount</p>
+                                                     <strong>Start Date:</strong> @dateRange.StartDate.ToString("dd/MM/yyy")<br/>
+                                                     <strong>End Date:</strong> @dateRange.EndDate.ToString("dd/MM/yyy")<br/>
+                                                 </div>
+                                                 dateRangeCount++;
+                                             }
+                                         }
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-danger" @onclick="() => HandleValidSubmit(storageUnit.Id)">Delete</button>

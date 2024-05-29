@@ -77,9 +77,10 @@
                                     <td>
                                         @if (!_showRejectInput || _selectedBooking != booking)
                                         {
-                                            <button type="button" class="btn btn-danger mb-2" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => ToggleRejectInput(booking)">Reject the Booking</button>
-                                            <br/>
-                                            <button type="button" class="btn btn-success" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => AcceptBooking(user, booking)">Accept the Booking</button>
+                                            <div class="d-flex flex-column">
+                                                <button type="button" class="btn btn-danger mb-2 w-75" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => ToggleRejectInput(booking)">Reject the Booking</button>
+                                                <button type="button" class="btn btn-success w-75" style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="() => AcceptBooking(user, booking)">Accept the Booking</button>
+                                            </div>
                                         }
                                         @if (_showRejectInput && _selectedBooking == booking)
                                         {
@@ -133,7 +134,7 @@
     readonly Dictionary<string, DateTime> _dateEnd = new Dictionary<string, DateTime>();
     readonly Dictionary<string, double> _totalPrice = new Dictionary<string, double>();
     readonly Dictionary<string, string> _status = new Dictionary<string, string>();
-    private string _rejectionReason;
+    private string _rejectionReason = "";
     private bool _showAdminErrorModal = false;
     private string _message = "";
     private string _errorMessage = "";
