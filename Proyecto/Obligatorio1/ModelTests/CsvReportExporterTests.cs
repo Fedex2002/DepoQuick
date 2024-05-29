@@ -13,10 +13,11 @@ public class CsvReportExporterTests
     private List<DateRange> _availableDates;
     private List<Booking> _bookings;
     [TestInitialize]
-    void TestInitialize()
+   public void TestInitialize()
     {
         _csvReportExporter = new CsvReportExporter();
         _promotions = new List<Promotion>();
+        _bookings = new List<Booking>();
         _mypromotion= new Promotion("Descuento Invierno", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
         _promotions.Add(_mypromotion);
         _mystorageunit= new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions, _availableDates);
@@ -35,9 +36,11 @@ public class CsvReportExporterTests
 
     public void WhenExportingAsCsvShouldExportBookingsToPath()
     {
-        
-        _csvReportExporter.Export("C:/Users/Usuario/Desktop/Bookings.csv", _bookings);
-        Assert.IsTrue(File.Exists("C:/Users/Usuario/Desktop/Bookings.csv"));
+        string projectRoot = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+        string relativePath = @"Output\Bookings.csv";
+        string filePath = Path.Combine(projectRoot, relativePath);
+        _csvReportExporter.Export(filePath, _bookings);
+        Assert.IsTrue(File.Exists(filePath));
     }
 
 }
