@@ -142,6 +142,13 @@ public class AdministratorLogicTests
     {
         _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "Rejected");
     }
-    
-    
+
+    [TestMethod]
+    public void WhenGettingAllBookingsFromUsersShouldReturnThem()
+    {
+        List<Booking> bookings = _administratorLogic.GetAllUserBookings();
+        Assert.IsTrue(bookings.Count > 0);
+
+        
+    }
 }
