@@ -188,4 +188,11 @@ public class AdministratorLogic
 
         return allBookings;
     }
+
+    public void ExportToCsv(string filePath)
+    {
+        List<Booking> bookings = GetAllUserBookings();
+        CsvReportExporter csvReportExporter = new CsvReportExporter();
+        csvReportExporter.Export(filePath, bookings);
+    }
 }
