@@ -5,6 +5,7 @@
 @inject UserLogic userLogic
 @inject AdministratorLogic administratorLogic
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JS
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -12,7 +13,14 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mt-5 mb-4">
             <h2 class="mb-0">Approve or Reject Bookings</h2>
-            <button type="button" class="btn btn-primary btn-lg">Export Bookings Report</button>
+            <div class="d-flex align-items-center">
+                <label for="exportFormat" class="me-2">Export Format:</label>
+                <select class="form-select" id="exportFormat" @bind="selectedFormat">
+                    <option value="csv">CSV</option>
+                    <option value="txt">TXT</option>
+                </select>
+                <button type="button" class="btn btn-primary btn-lg ms-3" @onclick="ExportBookings">Export Bookings</button>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -125,6 +133,7 @@
     </AuthenticationModal>
 }
 
+
 @code {
     private bool _hasBookings = false;
     private bool _showRejectInput = false;
@@ -139,6 +148,8 @@
     private string _message = "";
     private string _errorMessage = "";
     private bool _showAdminConfirmationModal = false;
+    private bool _showExportModal = false;
+    private string selectedFormat = "csv";
     
     protected override void OnInitialized()
     {
@@ -213,4 +224,40 @@
     {
         _showAdminConfirmationModal = false;
     }
+    
+    private void OpenExportModal()
+    {
+        _showExportModal = true;
+    }
+
+    private void CloseExportModal()
+    {
+        _showExportModal = false;
+    }
+
+    private async Task ExportBookings()
+    {
+        try
+        {
+            Console.WriteLine("About to export");
+            if (selectedFormat == "csv")
+            {
+                var csvData = administratorLogic.ExportToCsv();
+                await JS.InvokeVoidAsync("downloadCsv", "bookings_report.csv", csvData);
+                _message = "Bookings report exported successfully!";
+            }
+            else if (selectedFormat == "txt")
+            {
+                _errorMessage = "TXT export is not implemented yet.";
+                _showAdminErrorModal = true;
+            }
+        }
+        catch (Exception e)
+        {
+            _showAdminErrorModal = true;
+            _errorMessage = e.Message;
+        }
+    }
+    
+    
 }
