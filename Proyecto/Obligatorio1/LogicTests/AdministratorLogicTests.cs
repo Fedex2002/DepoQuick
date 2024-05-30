@@ -142,6 +142,24 @@ public class AdministratorLogicTests
     {
         _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "Rejected");
     }
+
+    [TestMethod]
+    public void WhenGettingAllBookingsFromUsersShouldReturnThem()
+    {
+        List<Booking> bookings = _administratorLogic.GetAllUserBookings();
+        Assert.IsTrue(bookings.Count > 0);
+
+        
+    }
     
+    [TestMethod]
     
+    public void WhenExportingToCsvShouldMakeTheFileInPath()
+    {
+        string projectRoot = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+        string relativePath = @"Output\Bookings.csv";
+        string filePath = Path.Combine(projectRoot, relativePath);
+        _administratorLogic.ExportToCsv(filePath);
+        Assert.IsTrue(File.Exists(filePath));
+    }
 }
