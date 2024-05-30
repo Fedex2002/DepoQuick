@@ -172,4 +172,20 @@ public class AdministratorLogic
 
         return dateRangesDto;
     }
+
+    public List<Booking> GetAllUserBookings()
+    {
+        List<Person> users = _personRepositories.GetAllFromRepository();
+        List<Booking> allBookings = new List<Booking>();
+
+        foreach (var person in users)
+        {
+            if (person is User user)
+            {
+                allBookings.AddRange(user.Bookings);
+            }
+        }
+
+        return allBookings;
+    }
 }
