@@ -107,7 +107,7 @@ public class BookingLogicTests
     public void WhenUserTriesToBookTheSameStorageUnitWithoutPromotionTwiceShouldThrowException()
     {
         _storageUnitDto = new StorageUnitDto("",AreaType.A, SizeType.Small, true, new List<PromotionDto>(), new List<DateRangeDto>());
-        _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false);
+        _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false, _userDto.Email);
         _bookingLogic.AddBookingToUser(_userDto, _mybookingDto);
         _bookingLogic.AddBookingToUser(_userDto, _mybookingDto);
     }
