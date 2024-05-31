@@ -23,7 +23,7 @@ public class PersonTests
     [TestMethod]
     public void CreatingPersonWithValuesShouldReturnValues()
     {
-        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023#");
+        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023#",false);
         Assert.AreEqual("Franco", _myperson.Name);
         Assert.AreEqual("Ramos", _myperson.Surname);
         Assert.AreEqual("francoramos1511@gmail.com", _myperson.Email);
