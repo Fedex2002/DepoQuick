@@ -61,7 +61,7 @@ public class PersonTests
     [TestMethod]
     public void WhenCreatingANewPersonWithNameAndSurnameValidations_ShouldReturnTrueIfItIsAValidNameAndSurname()
     {
-        _myperson = new Person("Franco Maximiliano", "Ramos Risso", "francoramos1511@gmail.com", "FrancoRamos2023#");
+        _myperson = new Person("Franco Maximiliano", "Ramos Risso", "francoramos1511@gmail.com", "FrancoRamos2023#",false);
         Assert.IsTrue(_myperson.ValidateNameAndSurname());
     }
     
