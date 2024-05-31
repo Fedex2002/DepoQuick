@@ -84,20 +84,10 @@ public class PersonLogic
 
     private void CheckIfIsUserOrAdministratorAndAddToTheRepository(PersonDto personDto)
     {
-        if (personDto is UserDto userDto)
-        {
-            User user = new User(userDto.Name, userDto.Surname, userDto.Email, userDto.Password, new List<Booking>());
-            _personRepositories.AddToRepository(user);
-        }
-        else 
-        {
-            if(personDto is AdministratorDto adminDto)
-            {
-                Administrator admin = new Administrator(adminDto.Name, adminDto.Surname, adminDto.Email, adminDto.Password);
-                _personRepositories.AddToRepository(admin);
-            }
-        }
+        Person personToRepo = new Person(personDto.Name, personDto.Surname,personDto.Email, personDto.Password, personDto.IsAdmin);
+        _personRepositories.AddToRepository(personToRepo);
+        
     }
-    
+
 }
     
