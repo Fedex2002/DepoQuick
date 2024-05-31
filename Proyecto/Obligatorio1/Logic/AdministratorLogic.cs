@@ -136,7 +136,7 @@ public class AdministratorLogic
         foreach (var booking in bookings)
         {
             BookingDto bookingDto = new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd,
-                GetUserStorageUnitDto(booking.StorageUnit), booking.RejectedMessage, booking.Status, booking.Payment);
+                GetUserStorageUnitDto(booking.StorageUnit), booking.RejectedMessage, booking.Status, booking.Payment,booking.PersonEmail);
             bookingsDto.Add(bookingDto);
         }
         return bookingsDto;
