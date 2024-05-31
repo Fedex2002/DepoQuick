@@ -28,7 +28,7 @@ public class PersonRepositoryTest
     [ExpectedException(typeof(RepositoryExceptions))]
     public void WhenAddingExistingPersonShouldThrowAnException()
     {
-        _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#");
+        _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
         _personRepo.AddToRepository(_person);
         _personRepo.AddToRepository(_person);
     }
