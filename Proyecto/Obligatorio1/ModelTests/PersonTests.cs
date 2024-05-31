@@ -69,7 +69,7 @@ public class PersonTests
     [ExpectedException(typeof(PersonExceptions))]
     public void WhenCreatingANewPersonWithNameAndSurnameValidations_ShouldReturnExceptionIfItIsNotAValidNameAndSurname()
     {
-        _myperson = new Person("", "Ra2m#s", "francoramos1511gmail.com", "franco");
+        _myperson = new Person("", "Ra2m#s", "francoramos1511gmail.com", "franco",false);
     }
 
     [TestMethod]
