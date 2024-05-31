@@ -40,7 +40,7 @@ public class AdministratorLogicTests
         _availableDates.Add(new DateRange(new DateTime(2024, 5, 24), new DateTime(2024, 5, 30)));
         _booking = new Booking(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnit("12", AreaType.A, SizeType.Small, true, _promotions, _availableDates), "", "Reservado",
-            false);
+            false,"samplemail@gmail.com");
         _bookings.Add(_booking);
         _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", _bookings);
         _personRepo.AddToRepository(_user);

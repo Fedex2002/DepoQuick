@@ -4,11 +4,11 @@ using Model.Exceptions;
 using Repositories;
 namespace Logic;
 
-public class UserLogic
+public class BookingLogic
 {
     private readonly PersonRepositories _personRepo;
     
-    public UserLogic(PersonRepositories personRepo)
+    public BookingLogic(PersonRepositories personRepo)
     {
         _personRepo = personRepo;
     }

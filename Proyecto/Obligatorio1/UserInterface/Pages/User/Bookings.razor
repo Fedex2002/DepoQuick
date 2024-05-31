@@ -3,7 +3,7 @@
 @using Logic.DTOs
 @using Model
 @layout MainLayout
-@inject UserLogic userLogic
+@inject BookingLogic BookingLogic
 @inject SessionLogic sessionLogic
 @inject StorageUnitLogic storageUnitLogic
 
@@ -159,11 +159,11 @@
             }
             else
             {
-                userLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(_finalDateStart, _finalDateEnd, _dateRangeDto);
+                BookingLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(_finalDateStart, _finalDateEnd, _dateRangeDto);
                 _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false);
                 if (sessionLogic.CurrentPerson is UserDto userDto)
                 {
-                    userLogic.AddBookingToUser(userDto, _bookingDto);
+                    BookingLogic.AddBookingToUser(userDto, _bookingDto);
                     userDto.Bookings.Add(_bookingDto);
                     _showUserConfirmationModal = true;
                 }
@@ -185,9 +185,9 @@
         {
             _finalDateStart = _dateStart[storageUnitDto.Id];
             _finalDateEnd = _dateEnd[storageUnitDto.Id];
-            userLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(_finalDateStart, _finalDateEnd, _dateRangeDto);
+            BookingLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(_finalDateStart, _finalDateEnd, _dateRangeDto);
             _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false);
-            _totalPrice[storageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(_bookingDto);
+            _totalPrice[storageUnitDto.Id] = BookingLogic.CalculateTotalPriceOfBooking(_bookingDto);
         }
         catch (Exception e)
         {
@@ -216,7 +216,7 @@
             
             foreach (var storageUnitDto in _storageUnits)
             {
-                _pricePerDay[storageUnitDto.Id] = userLogic.CalculateStorageUnitPricePerDay(storageUnitDto, _dateRangeDto);
+                _pricePerDay[storageUnitDto.Id] = BookingLogic.CalculateStorageUnitPricePerDay(storageUnitDto, _dateRangeDto);
                 _dateStart[storageUnitDto.Id] = _filterStartDate;
                 _dateEnd[storageUnitDto.Id] = _filterEndDate;
                 _totalPrice[storageUnitDto.Id] = 0;
