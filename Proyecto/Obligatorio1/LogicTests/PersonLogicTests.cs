@@ -91,16 +91,16 @@ public class PersonLogicTests
     }
 
     [TestMethod]
-    public void WhenPersonIsTryingToLoginAndIsUserShouldReturnUser()
+    public void WhenPersonIsTryingToLoginAndIsUserShouldReturnPersonWithoutAdminPrivileges()
     {
-        User user = new User("User", "User", "emailuser@gmail.com","PassWord921#", new List<Booking>());
-        _personRepo.AddToRepository(user);
-        PersonDto loggedInPersonDto = _personLogic.Login(user.Email,user.Password);
+        _person.IsAdmin = false;
+        _personRepo.AddToRepository(_person);
+        PersonDto loggedInPersonDto = _personLogic.Login(_person.Email,_person.Password);
         
-        Assert.AreEqual(user.Name, loggedInPersonDto.Name);
-        Assert.AreEqual(user.Surname, loggedInPersonDto.Surname);
-        Assert.AreEqual(user.Email, loggedInPersonDto.Email);
-        Assert.AreEqual(user.Password, loggedInPersonDto.Password);
+        Assert.AreEqual(_person.Name, loggedInPersonDto.Name);
+        Assert.AreEqual(_person.Surname, loggedInPersonDto.Surname);
+        Assert.AreEqual(_person.Email, loggedInPersonDto.Email);
+        Assert.AreEqual(_person.Password, loggedInPersonDto.Password);
     }
 
 
