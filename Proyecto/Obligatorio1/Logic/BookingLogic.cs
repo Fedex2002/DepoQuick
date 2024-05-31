@@ -20,7 +20,7 @@ public class UserLogic
 
     private void CheckIfPersonIsAUserAddBooking(UserDto userDto, BookingDto bookingDto)
     {
-        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
+        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,userDto.Email);
         Person person = _personRepo.GetFromRepository(userDto.Email);
         if (person is User user)
         {
@@ -55,7 +55,7 @@ public class UserLogic
     {
         Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd,
             ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status,
-            bookingDto.Payment);
+            bookingDto.Payment,userDto.Email);
         Person person = _personRepo.GetFromRepository(userDto.Email);
         if (person is User user)
         {
