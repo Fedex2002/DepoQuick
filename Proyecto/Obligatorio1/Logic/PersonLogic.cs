@@ -127,7 +127,13 @@ public class PersonLogic
             {
                 promotionDtos.Add(new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd));
             }
-            StorageUnitDto storageUnitDto = new StorageUnitDto(booking.StorageUnit.Id, booking.StorageUnit.Area, booking.StorageUnit.Size, booking.StorageUnit.Climatization, promotionDtos);
+            
+            List<DateRangeDto> availableDates = new List<DateRangeDto>();
+            foreach (var dateRange in booking.StorageUnit.AvailableDates)
+            {
+                availableDates.Add(new DateRangeDto(dateRange.StartDate, dateRange.EndDate));
+            }
+            StorageUnitDto storageUnitDto = new StorageUnitDto(booking.StorageUnit.Id, booking.StorageUnit.Area, booking.StorageUnit.Size, booking.StorageUnit.Climatization, promotionDtos, availableDates);
             bookingDtos.Add(new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd, storageUnitDto,
                 booking.RejectedMessage, booking.Status, booking.Payment));
         }

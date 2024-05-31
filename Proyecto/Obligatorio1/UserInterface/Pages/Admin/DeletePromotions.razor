@@ -3,6 +3,7 @@
 @using Logic.DTOs
 @layout MainLayout
 @inject PromotionLogic promotionLogic
+@inject StorageUnitLogic storageUnitLogic
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -22,19 +23,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var promotion in _promotions)
+                        @if (_promotions.Count == 0)
                         {
                             <tr>
-                                <td>@promotion.Label</td>
-                                <td>@promotion.Discount%</td>
-                                <td>@promotion.DateStart.ToShortDateString()</td>
-                                <td>@promotion.DateEnd.ToShortDateString()</td>
-                                <td>
-                                    <button type="button" class="btn btn-danger" @onclick="() =>HandleValidSubmit(promotion.Label)">Delete</button>
-                                </td>
+                                <td colspan="5">No promotions found</td>
                             </tr>
                         }
-                    </tbody>
+                        else
+                        {
+                            @foreach (var promotion in _promotions)
+                            {
+                                <tr>
+                                    <td>@promotion.Label</td>
+                                    <td>@promotion.Discount%</td>
+                                    <td>@promotion.DateStart.ToShortDateString()</td>
+                                    <td>@promotion.DateEnd.ToShortDateString()</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" @onclick="() => HandleValidSubmit(promotion.Label)">Delete</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                     </tbody>
                 </table>
             </div>
         </div>
@@ -79,6 +89,7 @@
         {
             _promotionDto = promotionLogic.GetPromotionDtoFromLabel(label);
             promotionLogic.RemovePromotion(_promotionDto);
+            storageUnitLogic.DeletePromotionFromAllStorageUnits(_promotionDto);
             _showAdminConfirmationModal = true;
             _promotions = promotionLogic.GetPromotionsDto();
         }

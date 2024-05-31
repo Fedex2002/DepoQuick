@@ -138,7 +138,7 @@
       {
         _climatization = false;
       }
-      _storageUnitDto = new StorageUnitDto(_id, _area, _size, _climatization, _selectedPromotions);
+      _storageUnitDto = new StorageUnitDto(_id, _area, _size, _climatization, _selectedPromotions, new List<DateRangeDto>());
       storageUnitLogic.CreateStorageUnit(_storageUnitDto);
       _showAdminConfirmationModal = true;
       

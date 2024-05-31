@@ -22,13 +22,9 @@ public class UserLogic
     {
         Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
         Person person = _personRepo.GetFromRepository(userDto.Email);
-        bool exists = false;
         if (person is User user)
         {
-            foreach (var booking in user.Bookings)
-            {
-                exists = IfStorageUnitInOldBookingAndBookingAreTheSameSetExistsToTrue(booking, newBooking, exists);
-            }
+            bool exists = user.Bookings.Any(booking => booking.StorageUnit.Id == newBooking.StorageUnit.Id);
             if (!exists)
             {
                 user.Bookings.Add(newBooking);
@@ -43,21 +39,6 @@ public class UserLogic
     private static void IfUserAlreadyBookTheStorageUnitThrowException()
     {
         throw new LogicExceptions("Booking for this StorageUnit already exists");
-    }
-
-    private static bool IfStorageUnitInOldBookingAndBookingAreTheSameSetExistsToTrue(Booking booking, Booking newBooking,
-        bool exists)
-    {
-        if (booking.StorageUnit.Id == newBooking.StorageUnit.Id 
-            && booking.StorageUnit.Area == newBooking.StorageUnit.Area 
-            && booking.StorageUnit.Size == newBooking.StorageUnit.Size 
-            && booking.StorageUnit.Climatization == newBooking.StorageUnit.Climatization 
-            && booking.StorageUnit.Promotions.SequenceEqual(newBooking.StorageUnit.Promotions))
-        {
-            exists = true;
-        }
-
-        return exists;
     }
 
     public bool CheckIfBookingIsApproved(BookingDto bookingDto)
@@ -89,7 +70,13 @@ public class UserLogic
         {
             promotions.Add(new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd));
         }
-        return new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions);
+        
+        List<DateRange> availableDates = new List<DateRange>();
+        foreach (var dateRangeDto in storageUnitDto.AvailableDates)
+        {
+            availableDates.Add(new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate));
+        }
+        return new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions, availableDates);
     }
     
     public double CalculateTotalPriceOfBooking(BookingDto bookingDto)
@@ -98,9 +85,51 @@ public class UserLogic
         return booking.CalculateBookingTotalPrice();
     }
 
-    public double CalculateStorageUnitPricePerDay(StorageUnitDto storageUnitDto)
+    public double CalculateStorageUnitPricePerDay(StorageUnitDto storageUnitDto, DateRangeDto dateRangeDto)
     {
         StorageUnit storageUnit = ChangeToStorageUnit(storageUnitDto);
+        bool promotionIsInDateRange = storageUnit.Promotions.Any(promotion => dateRangeDto.StartDate >= promotion.DateStart && dateRangeDto.EndDate <= promotion.DateEnd);
+        if (!promotionIsInDateRange)
+        {
+            storageUnit.Promotions = new List<Promotion>();
+        }
         return storageUnit.CalculateStorageUnitPricePerDay();
+    }
+    
+    public void PayBooking(UserDto userDto, BookingDto bookingDto)
+    {
+        Person person = _personRepo.GetFromRepository(userDto.Email);
+        if (person is User user)
+        {
+            FindUserBookingAndSetPaymentToTrue(bookingDto, user);
+        }
+    }
+
+    private static void FindUserBookingAndSetPaymentToTrue(BookingDto bookingDto, User user)
+    {
+        foreach (var booking in user.Bookings)
+        {
+            if (booking.StorageUnit.Id == bookingDto.StorageUnitDto.Id)
+            {
+                IfBookingPaymentIsAlreadyTrueThrowException(booking);
+                booking.Payment = true;
+            }
+        }
+    }
+
+    private static void IfBookingPaymentIsAlreadyTrueThrowException(Booking booking)
+    {
+        if (booking.Payment)
+        {
+            throw new LogicExceptions("Booking already paid");
+        }
+    }
+    
+    public void CheckIfDateStartAndDateEndAreIncludedInDateRange(DateTime dateStart, DateTime dateEnd, DateRangeDto dateRangeDto)
+    {
+        if (!(dateStart >= dateRangeDto.StartDate && dateEnd <= dateRangeDto.EndDate))
+        {
+            throw new LogicExceptions("Date range is not included in the available date range");
+        }
     }
 }

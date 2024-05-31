@@ -119,4 +119,15 @@ public class StorageUnit
         }
         return p;
     }
+    
+    public void AddDateRange(DateRange dateRange)
+    {
+        _availableDates.Add(dateRange);
+    }
+    
+    public bool IsInDateRange(DateTime date)
+    {
+        return _availableDates.Any(range => range.Includes(date));
+    }
 }
+

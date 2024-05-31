@@ -31,7 +31,7 @@ public class PromotionLogicTests
     }    
     
     [TestMethod] 
-    public void WhenModifyingPromotionShouldEliminateTheOldOneAndAddTheNewOne()
+    public void WhenModifyingPromotionShouldModifyTheExistingPromotion()
     {
         _promotionRepo.AddToRepository(_promotion);
         _promotionDto= new PromotionDto("Summer discount", 50, new DateTime(2025, 7, 15), new DateTime(2025, 10, 15));
