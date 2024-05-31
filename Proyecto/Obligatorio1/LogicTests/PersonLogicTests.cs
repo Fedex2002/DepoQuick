@@ -22,7 +22,7 @@ public class PersonLogicTests
     {
         _personRepo = new PersonRepositories();
         _personLogic = new PersonLogic(_personRepo);
-        _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#");
+        _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#",false);
         _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#");
         _bookingsDto = new List<BookingDto>();
         _personRepo.AddToRepository(_person); 
@@ -78,15 +78,16 @@ public class PersonLogicTests
     }
     
     [TestMethod]
-    public void WhenPersonIsTryingToLoginAndIsAdministratorShouldReturnAdministrator()
+    public void WhenPersonIsTryingToLoginAndIsAdministratorShouldReturnPersonWithAdminPrivileges()
     {
-        Administrator admin = new Administrator("Admin", "Admin","email@gmail.com","PassWord921#EAa");
-        _personRepo.AddToRepository(admin);
-        PersonDto loggedInAdministratorDto = _personLogic.Login(admin.Email,admin.Password);
-        Assert.AreEqual(admin.Name, loggedInAdministratorDto.Name);
-        Assert.AreEqual(admin.Surname, loggedInAdministratorDto.Surname);
-        Assert.AreEqual(admin.Email, loggedInAdministratorDto.Email);
-        Assert.AreEqual(admin.Password, loggedInAdministratorDto.Password);
+        _person.IsAdmin = true;
+        _personRepo.AddToRepository(_person);
+        PersonDto loggedInAdministratorDto = _personLogic.Login(_person.Email,_person.Password);
+        Assert.AreEqual(_person.Name, loggedInAdministratorDto.Name);
+        Assert.AreEqual(_person.Surname, loggedInAdministratorDto.Surname);
+        Assert.AreEqual(_person.Email, loggedInAdministratorDto.Email);
+        Assert.AreEqual(_person.Password, loggedInAdministratorDto.Password);
+        Assert.AreEqual(_person.IsAdmin, loggedInAdministratorDto.IsAdmin);
     }
 
     [TestMethod]
