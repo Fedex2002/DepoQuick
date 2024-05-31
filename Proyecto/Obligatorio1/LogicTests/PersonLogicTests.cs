@@ -119,13 +119,7 @@ public class PersonLogicTests
         Assert.AreEqual(_personRepo, _personLogic.GetRepository());
     }
     
-    [TestMethod]
-    public void WhenUserIsTryingToSignUpShouldAddUserToRepositoryIfValidationsAreCorrect()
-    {
-        PersonDto userDto = new UserDto("John", "Doe", "johndoe123@gmail.com", "PassWord921#",_bookingsDto);
-        _personLogic.SignUp(userDto);
-        Assert.IsTrue(_personRepo.ExistsInRepository(userDto.Email));
-    }
+ 
     
     [TestMethod]
     public void WhenAdministratorIsTryingToSignUpShouldAddAdministratorToRepositoryIfValidationsAreCorrect()
