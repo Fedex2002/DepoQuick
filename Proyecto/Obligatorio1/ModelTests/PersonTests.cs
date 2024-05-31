@@ -71,5 +71,13 @@ public class PersonTests
     {
         _myperson = new Person("", "Ra2m#s", "francoramos1511gmail.com", "franco");
     }
-    
+
+    [TestMethod]
+
+    public void WhenCreatingAPersonThatIsAnAdminShouldSetIsAdminToTrue()
+    {
+        _myperson = new Person("Franco Maximiliano", "Ramos Risso", "francoramos1511@gmail.com", "FrancoRamos2023#",true);
+        Assert.IsTrue(_myperson.IsAdmin);
+    }
+
 }
