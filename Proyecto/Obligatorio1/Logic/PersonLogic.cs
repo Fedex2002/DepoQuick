@@ -51,9 +51,9 @@ public class PersonLogic
         if (CheckIfEmailIsRegistered(email))
         {
             Person person = _personRepositories.GetFromRepository(email);
-            if (CheckIfPasswordIsCorrect(password, person.GetPassword()))
+            if (CheckIfPasswordIsCorrect(password, person.Password))
             {
-                personDto = CheckIfIsUserAdministratorOrPerson(person, personDto);
+                personDto = new PersonDto(person.Name, person.Surname, person.Email, person.Password,person.IsAdmin);
             }
         }
         else
@@ -63,25 +63,7 @@ public class PersonLogic
 
         return personDto;
     }
-
-    private PersonDto CheckIfIsUserAdministratorOrPerson(Person person, PersonDto personDto)
-    {
-        if (person is Administrator)
-        {
-            personDto= new AdministratorDto(person.GetName(), person.GetSurname(), person.GetEmail(), person.GetPassword());
-        }
-        else if (person is User user)
-        {
-            personDto= new UserDto(user.GetName(), user.GetSurname(), user.GetEmail(), user.GetPassword(), ChangeToBookingsDtos(user.GetBookings()));
-        }
-        else if (person != null)
-        {
-            personDto = new PersonDto(person.GetName(), person.GetSurname(), person.GetEmail(),
-                person.GetPassword());
-        }
-
-        return personDto;
-    }
+    
 
     public PersonRepositories GetRepository()
     {
@@ -102,36 +84,10 @@ public class PersonLogic
 
     private void CheckIfIsUserOrAdministratorAndAddToTheRepository(PersonDto personDto)
     {
-        if (personDto is UserDto userDto)
-        {
-            User user = new User(userDto.Name, userDto.Surname, userDto.Email, userDto.Password, new List<Booking>());
-            _personRepositories.AddToRepository(user);
-        }
-        else 
-        {
-            if(personDto is AdministratorDto adminDto)
-            {
-                Administrator admin = new Administrator(adminDto.Name, adminDto.Surname, adminDto.Email, adminDto.Password);
-                _personRepositories.AddToRepository(admin);
-            }
-        }
+        Person personToRepo = new Person(personDto.Name, personDto.Surname,personDto.Email, personDto.Password, personDto.IsAdmin);
+        _personRepositories.AddToRepository(personToRepo);
+        
     }
 
-    public List<BookingDto> ChangeToBookingsDtos(List<Booking> bookings)
-    {
-        List<BookingDto> bookingDtos = new List<BookingDto>();
-        foreach (var booking in bookings)
-        {
-            List<PromotionDto> promotionDtos = new List<PromotionDto>();
-            foreach (var promotion in booking.GetStorageUnit().GetPromotions())
-            {
-                promotionDtos.Add(new PromotionDto(promotion.GetLabel(), promotion.GetDiscount(), promotion.GetDateStart(), promotion.GetDateEnd()));
-            }
-            StorageUnitDto storageUnitDto = new StorageUnitDto(booking.GetStorageUnit().GetId(), booking.GetStorageUnit().GetArea(), booking.GetStorageUnit().GetSize(), booking.GetStorageUnit().GetClimatization(), promotionDtos);
-            bookingDtos.Add(new BookingDto(booking.GetApproved(), booking.GetDateStart(), booking.GetDateEnd(), storageUnitDto, booking.GetRejectedMessage()));
-        }
-
-        return bookingDtos;
-    }
 }
     

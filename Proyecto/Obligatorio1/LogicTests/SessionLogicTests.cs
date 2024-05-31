@@ -16,7 +16,7 @@ public class SessionLogicTests
     {
         _personRepo = new PersonRepositories();
         _personLogic = new PersonLogic(_personRepo);
-        _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#");
+        _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#",false);
         _personRepo.AddToRepository(_person);
         _sessionLogic = new SessionLogic(_personLogic);
     }
@@ -24,7 +24,7 @@ public class SessionLogicTests
     [TestMethod]
     public void WhenPersonIsLoggedInSetItAsCurrentPerson()
     {
-        _sessionLogic.Login(_personLogic.GetRepository().GetFromRepository(_person.GetEmail()).GetEmail(),_personLogic.GetRepository().GetFromRepository(_person.GetEmail()).GetPassword());
+        _sessionLogic.Login(_personLogic.GetRepository().GetFromRepository(_person.Email).Email,_personLogic.GetRepository().GetFromRepository(_person.Email).Password);
     }
     
     [TestMethod]

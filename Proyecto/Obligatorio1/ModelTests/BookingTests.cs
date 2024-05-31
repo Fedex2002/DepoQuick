@@ -10,6 +10,7 @@ public class BookingTests
     private List<Promotion> _promotions;
     private Promotion _mypromotion;
     private StorageUnit _mystorageunit;
+    private List<DateRange> _availableDates;
     
     [TestInitialize]
     public void TestInitialize()
@@ -17,8 +18,8 @@ public class BookingTests
        _promotions = new List<Promotion>();
         _mypromotion= new Promotion("Descuento Invierno", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
         _promotions.Add(_mypromotion);
-        _mystorageunit= new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions);
-        _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected");
+        _mystorageunit= new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions, _availableDates);
+        _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected", "Reservado", false,"examplemail@gmail.com");
     }
     
     [TestMethod]
@@ -36,6 +37,8 @@ public class BookingTests
         Assert.AreEqual(_mystorageunit, _mybooking.StorageUnit);
         Assert.AreEqual(new DateTime(2024, 8, 15), _mybooking.DateEnd);
         Assert.AreEqual("Rejected", _mybooking.RejectedMessage);
+        Assert.AreEqual("Reservado", _mybooking.Status);
+        Assert.IsFalse(_mybooking.Payment);
     }
     
     [TestMethod]
@@ -48,10 +51,10 @@ public class BookingTests
     public void CalculatingBookingTotalPriceWithValidations_ShouldReturnTotalPrice()
     {
         Assert.AreEqual(2126.25, _mybooking.CalculateBookingTotalPrice());
-       _mystorageunit= new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions);
-        _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 7, 4), _mystorageunit, "Rejected");
+       _mystorageunit= new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions, _availableDates);
+        _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 7, 4), _mystorageunit, "Rejected", "Reservado", false,"examplemail@gmail.com");
         Assert.AreEqual(157.5, _mybooking.CalculateBookingTotalPrice());
-        _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 7, 9), _mystorageunit, "Rejected");
+        _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 7, 9), _mystorageunit, "Rejected", "Reservado", false,"examplemail@gmail.com");
         Assert.AreEqual(399, _mybooking.CalculateBookingTotalPrice());
     }
 
@@ -66,7 +69,7 @@ public class BookingTests
     public void WhenRejectingBookingWithValidations_ShouldReturnExceptionIfNotValid()
     {
         _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, 
-            "Lamentamos informarte que, después de una revisión exhaustiva y consideración cuidadosa, hemos decidido que no podremos avanzar con tu solicitud en esta ocasión. Nos gustaría expresarte nuestro agradecimiento por haber compartido tu propuesta con nosotros y por tu interés en colaborar con nuestro equipo. Valoramos sinceramente el tiempo y el esfuerzo que has dedicado a esta oportunidad. Por favor, no dudes en ponerte en contacto con nosotros si tienes alguna pregunta o si deseas obtener más información sobre nuestra decisión. Te deseamos todo lo mejor en tus futuros esfuerzos y proyectos!.");
+            "Lamentamos informarte que, después de una revisión exhaustiva y consideración cuidadosa, hemos decidido que no podremos avanzar con tu solicitud en esta ocasión. Nos gustaría expresarte nuestro agradecimiento por haber compartido tu propuesta con nosotros y por tu interés en colaborar con nuestro equipo. Valoramos sinceramente el tiempo y el esfuerzo que has dedicado a esta oportunidad. Por favor, no dudes en ponerte en contacto con nosotros si tienes alguna pregunta o si deseas obtener más información sobre nuestra decisión. Te deseamos todo lo mejor en tus futuros esfuerzos y proyectos!.", "Reservado", false,"examplemail@gmail.com");
     }
     
     [TestMethod]
@@ -79,7 +82,7 @@ public class BookingTests
     [ExpectedException(typeof(BookingExceptions))]
     public void CreatingBookingWithInvalidDate_ShouldReturnException()
     {
-        _mybooking = new Booking(false, new DateTime(2024, 5, 15), new DateTime(2024, 5, 14), _mystorageunit, "");
+        _mybooking = new Booking(false, new DateTime(2024, 5, 15), new DateTime(2024, 5, 14), _mystorageunit, "", "Reservado", false,"examplemail@gmail.com");
     }
     
     [TestMethod]
@@ -106,5 +109,14 @@ public class BookingTests
     {
        _mybooking.Approved = true;
         Assert.IsTrue(_mybooking.Approved);
+    }
+    
+    [TestMethod]
+    
+    public void WhenGettingPersonEmailFromBookingShouldReturnEmail()
+    {
+        string email= "examplemail @gmail.com";
+        _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected", "Reservado", false,email);
+        Assert.AreEqual("", _mybooking.PersonEmail);
     }
 }

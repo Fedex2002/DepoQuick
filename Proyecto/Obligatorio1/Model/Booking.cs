@@ -11,19 +11,22 @@ public class Booking
     private string _status = "Reservado";
     private bool _payment;
     private string _rejectedMessage;
+    private string _personEmail;
     
     public Booking()
     {
     }
     
-    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedMessage)
+    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedMessage, string status, bool payment,string personEmail)
     {
-
         Approved = approved;
         DateStart = dateStart;
         DateEnd = dateEnd;
         StorageUnit = storageUnit;
-       RejectedMessage = rejectedMessage;
+        RejectedMessage = rejectedMessage;
+        Status = status;
+        Payment = payment;
+        PersonEmail = personEmail;
     }
     
     
@@ -31,6 +34,12 @@ public class Booking
     {
         get => _approved;
         set => _approved = value;
+    }
+    
+    public string PersonEmail
+    {
+        get => _personEmail;
+        set => _personEmail = value;
     }
     
     
