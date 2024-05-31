@@ -50,7 +50,7 @@ public class AdministratorLogicTests
         _availableDatesDto.Add(new DateRangeDto(new DateTime(2024, 5, 24), new DateTime(2024, 5, 30)));
         _bookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
-            "Reservado", false);
+            "Reservado", false,_user.Email);
         _bookingsDto = new List<BookingDto>();
         _bookingsDto.Add(_bookingDto);
         _userDto = new UserDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", _bookingsDto);
