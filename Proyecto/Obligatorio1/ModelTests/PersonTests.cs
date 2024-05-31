@@ -47,7 +47,7 @@ public class PersonTests
     [TestMethod]
     public void WhenCreatingANewPersonWithValidEmail_ShouldReturnTrueIfItIsAValidEmail()
     {
-        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023#");
+        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "FrancoRamos2023#",false);
         Assert.IsTrue(_myperson.ValidateEmail());
     }
     
