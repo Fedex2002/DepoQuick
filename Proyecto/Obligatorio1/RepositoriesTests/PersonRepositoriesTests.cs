@@ -45,7 +45,7 @@ public class PersonRepositoryTest
 
     public void WhenGettingAllPersonsFromRepositoryShouldReturnIt()
     {
-        Person person2 = new Person("Jane", "Doe", "janedoe@gmail.com", "PassWord921#");
+        Person person2 = new Person("Jane", "Doe", "janedoe@gmail.com", "PassWord921#", false);
         _personRepo.AddToRepository(_person);
         _personRepo.AddToRepository(person2);
         List<Person> persons = _personRepo.GetAllFromRepository();
