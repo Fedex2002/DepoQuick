@@ -64,13 +64,7 @@ public class PersonLogicTests
     }
     
  
-    
-    [TestMethod]
-    public void WhenEmptyAdministratorDtoIsCreatedShouldReturnEmptyAdministratorDto()
-    {
-        AdministratorDto administratorDto = new AdministratorDto();
-        Assert.IsNotNull(administratorDto);
-    }
+
     
     [TestMethod]
     public void WhenPersonIsTryingToLoginShouldReturnPersonIfValidationsAreCorrect()
