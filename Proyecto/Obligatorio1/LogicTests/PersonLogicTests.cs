@@ -119,6 +119,14 @@ public class PersonLogicTests
         Assert.AreEqual(_personRepo, _personLogic.GetRepository());
     }
     
+    [TestMethod]
+    public void WhenPersonIsTryingToSignupAndIsValidShouldAddToTheRepository()
+    {
+        PersonDto personDto = new PersonDto(_person.Name, _person.Surname, _person.Email, _person.Password, _person.IsAdmin);
+        _personLogic.SignUp(personDto);
+    }
+
+    
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
