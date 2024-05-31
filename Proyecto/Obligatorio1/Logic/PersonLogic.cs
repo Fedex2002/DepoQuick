@@ -98,29 +98,6 @@ public class PersonLogic
             }
         }
     }
-
-    public List<BookingDto> ChangeToBookingsDtos(List<Booking> bookings)
-    {
-        List<BookingDto> bookingDtos = new List<BookingDto>();
-        foreach (var booking in bookings)
-        {
-            List<PromotionDto> promotionDtos = new List<PromotionDto>();
-            foreach (var promotion in booking.StorageUnit.Promotions)
-            {
-                promotionDtos.Add(new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd));
-            }
-            
-            List<DateRangeDto> availableDates = new List<DateRangeDto>();
-            foreach (var dateRange in booking.StorageUnit.AvailableDates)
-            {
-                availableDates.Add(new DateRangeDto(dateRange.StartDate, dateRange.EndDate));
-            }
-            StorageUnitDto storageUnitDto = new StorageUnitDto(booking.StorageUnit.Id, booking.StorageUnit.Area, booking.StorageUnit.Size, booking.StorageUnit.Climatization, promotionDtos, availableDates);
-            bookingDtos.Add(new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd, storageUnitDto,
-                booking.RejectedMessage, booking.Status, booking.Payment));
-        }
-
-        return bookingDtos;
-    }
+    
 }
     
