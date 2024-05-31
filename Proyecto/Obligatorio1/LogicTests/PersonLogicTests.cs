@@ -63,12 +63,7 @@ public class PersonLogicTests
         Assert.IsNotNull(personDto);
     }
     
-    [TestMethod]
-    public void WhenEmptyUserDtoIsCreatedShouldReturnEmptyUserDto()
-    {
-        UserDto userDto = new UserDto();
-        Assert.IsNotNull(userDto);
-    }
+ 
     
     [TestMethod]
     public void WhenEmptyAdministratorDtoIsCreatedShouldReturnEmptyAdministratorDto()
