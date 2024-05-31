@@ -23,7 +23,7 @@ public class PersonLogicTests
         _personRepo = new PersonRepositories();
         _personLogic = new PersonLogic(_personRepo);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#",false);
-        _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#");
+        _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#",_person.IsAdmin);
         _bookingsDto = new List<BookingDto>();
         _personRepo.AddToRepository(_person); 
     }
