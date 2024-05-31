@@ -55,7 +55,7 @@ public class PersonTests
     [ExpectedException(typeof(PersonExceptions))]
     public void WhenCreatingANewPersonWithEmailValidations_ShouldReturnExceptionIfItIsNotAValidEmail()
     {
-        _myperson = new Person("Franco", "Ramos", "francoramos1511gmail.com", "franco");
+        _myperson = new Person("Franco", "Ramos", "francoramos1511gmail.com", "franco",false);
     }
     
     [TestMethod]
