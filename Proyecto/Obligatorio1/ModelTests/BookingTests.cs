@@ -110,4 +110,13 @@ public class BookingTests
        _mybooking.Approved = true;
         Assert.IsTrue(_mybooking.Approved);
     }
+    
+    [TestMethod]
+    
+    public void WhenGettingUserEmailFromBookingShouldReturnEmail()
+    {
+        string email= "examplemail @gmail.com";
+        _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected", "Reservado", false,"",email);
+        Assert.AreEqual("", _mybooking.UserEmail);
+    }
 }
