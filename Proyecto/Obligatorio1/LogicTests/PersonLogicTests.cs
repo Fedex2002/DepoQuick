@@ -114,7 +114,7 @@ public class PersonLogicTests
     [TestMethod]
     public void WhenPersonsAreAddedToRepositoryShouldReturnTheRepository()
     {
-        Person federico = new Person("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#");
+        Person federico = new Person("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#",false);
         _personRepo.AddToRepository(federico); 
         Assert.AreEqual(_personRepo, _personLogic.GetRepository());
     }
