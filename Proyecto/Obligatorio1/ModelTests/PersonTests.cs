@@ -41,7 +41,7 @@ public class PersonTests
     [ExpectedException(typeof(PersonExceptions))]
     public void WhenCreatingANewPersonWithPasswordValidations_ShouldReturnExceptionIfItIsNotAValidPassword()
     {
-        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "franco");
+        _myperson = new Person("Franco", "Ramos", "francoramos1511@gmail.com", "franco",false);
     }
     
     [TestMethod]
