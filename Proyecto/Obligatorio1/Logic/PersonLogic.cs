@@ -53,7 +53,7 @@ public class PersonLogic
             Person person = _personRepositories.GetFromRepository(email);
             if (CheckIfPasswordIsCorrect(password, person.Password))
             {
-                personDto = CheckIfIsUserAdministratorOrPerson(person, personDto);
+                personDto = new PersonDto(person.Name, person.Surname, person.Email, person.Password,person.IsAdmin);
             }
         }
         else
@@ -63,25 +63,7 @@ public class PersonLogic
 
         return personDto;
     }
-
-    private PersonDto CheckIfIsUserAdministratorOrPerson(Person person, PersonDto personDto)
-    {
-        if (person is Administrator)
-        {
-            personDto= new AdministratorDto(person.Name, person.Surname, person.Email, person.Password);
-        }
-        else if (person is User user)
-        {
-            personDto= new UserDto(user.Name, user.Surname, user.Email, user.Password, ChangeToBookingsDtos(user.Bookings));
-        }
-        else if (person != null)
-        {
-            personDto = new PersonDto(person.Name, person.Surname, person.Email,
-                person.Password);
-        }
-
-        return personDto;
-    }
+    
 
     public PersonRepositories GetRepository()
     {
