@@ -11,20 +11,19 @@ public class Person
     private string _surname;
     private string _email;
     private string _password;
-
-
+    private bool _isAdmin;
     public Person()
     {
         
     }
-    public Person(string name, string surname, string email, string password)
+    public Person(string name, string surname, string email, string password,bool isAdmin)
     {
 
         Name = name;
         Surname = surname;
         Email = email;
         Password = password;
-
+        IsAdmin = isAdmin;
     }
     
     public string Name
@@ -42,6 +41,13 @@ public class Person
             IfHasInvalidNameOrSurnameThrowException();
         }
     }
+    
+    public bool IsAdmin
+    {
+        get => _isAdmin;
+        set => _isAdmin = value;
+    }
+    
     
     public string Email
     {
