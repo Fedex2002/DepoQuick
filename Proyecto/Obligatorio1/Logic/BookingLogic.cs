@@ -6,11 +6,11 @@ namespace Logic;
 
 public class BookingLogic
 {
-    private readonly PersonRepositories _personRepo;
+    private readonly BookingRepositories _bookingRepositories;
     
-    public BookingLogic(PersonRepositories personRepo)
+    public BookingLogic(BookingRepositories bookingRepo)
     {
-        _personRepo = personRepo;
+        _bookingRepositories = bookingRepo;
     }
     
     public void AddBookingToUser(UserDto userDto, BookingDto bookingDto)

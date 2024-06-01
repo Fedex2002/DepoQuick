@@ -11,31 +11,33 @@ namespace LogicTests;
 [TestClass]
 public class BookingLogicTests
 {
-    private User _person;
-    private UserDto _userDto;
+    private Person _person;
+    private PersonDto _userDto;
     private BookingLogic _bookingLogic;
-    private PersonRepositories _personRepo;
+    private BookingRepositories _bookingRepo;
     private PromotionDto _promotionDto;
     private List<PromotionDto> _promotionsDto;
     private StorageUnitDto _storageUnitDto;
     private BookingDto _mybookingDto;
     private List<DateRangeDto> _availableDatesDto;
     private DateRangeDto _dateRangeDto;
+    private Booking _booking;
     
     [TestInitialize]
     public void TestInitialize()
     {
-        _person = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<Booking>());
-        _personRepo = new PersonRepositories();
+        _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
+        _bookingRepo = new BookingRepositories();
         _promotionsDto = new List<PromotionDto>();
+        _booking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false,_person.Email);
         _availableDatesDto = new List<DateRangeDto>();
         _promotionDto = new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotionsDto.Add(_promotionDto);
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 1), new DateTime(2024, 8, 15));
         _availableDatesDto.Add(_dateRangeDto);
-        _bookingLogic = new BookingLogic(_personRepo);
-        _personRepo.AddToRepository(_person);
-        _userDto = new UserDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", new List<BookingDto>());
+        _bookingLogic = new BookingLogic(_bookingRepo);
+        _bookingRepo.AddToRepository(_booking);
+        _userDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
         _storageUnitDto = new StorageUnitDto("",AreaType.A, SizeType.Small, true,_promotionsDto, _availableDatesDto);
         _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false,_person.Email);
     }
@@ -72,7 +74,7 @@ public class BookingLogicTests
     public void WhenAUserBookingIsAddedOrRemovedShouldChangeStorageUnitDtoToAStorageUnit()
     {
         User user = new User("Franco", "Ramos", "francoramos1511@gmail.com", "PassWord921#2", new List<Booking>());
-        _personRepo.AddToRepository(user);
+        _bookingRepo.AddToRepository(user);
         BookingDto bookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnitDto("", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "", "Reservado", false,_userDto.Email);
         Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _bookingLogic.ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,bookingDto.UserEmail);
         user.Bookings.Add(booking);
