@@ -2,15 +2,17 @@ using Repositories;
 using Logic.DTOs;
 using Model;
 using Model.Exceptions;
+using RepositoriesInterface;
+
 namespace Logic;
 
 public class AdministratorLogic
 {
-    private readonly PersonRepositories _personRepositories;
+    private readonly IRepositories<Booking> _bookingRepositories;
 
-    public AdministratorLogic(PersonRepositories personRepositories)
+    public AdministratorLogic(IRepositories<Booking> bookingRepo)
     {
-        _personRepositories = personRepositories;
+        _bookingRepositories = bookingRepo;
     }
 
     public void ApproveBooking(UserDto userDto, BookingDto bookingDto)
