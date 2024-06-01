@@ -1,11 +1,12 @@
 using DataAccess.Context;
 using DataAccess.Repository;
 using Logic.DTOs;
+using Logic.Interfaces;
 using Model;
 
 namespace Logic;
 
-public class ApplicationController
+public class ApplicationController : IPromotionController
 {
     public PromotionsRepository PromotionsRepository;
     
