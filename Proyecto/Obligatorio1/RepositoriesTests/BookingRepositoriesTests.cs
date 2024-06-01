@@ -34,5 +34,13 @@ public class BookingRepositoriesTests
         Assert.AreEqual(_booking.PersonEmail, bookingInRepo.PersonEmail);
     }
     
+    [TestMethod]
+    public void WhenRemovingBookingFromRepositoryShouldRemoveIt()
+    {
+        _bookingRepositories.AddToRepository(_booking);
+        _bookingRepositories.RemoveFromRepository(_booking);
+        Assert.IsFalse(_bookingRepositories.ExistsInRepository(_booking.PersonEmail));
+    }
+    
  
 }
