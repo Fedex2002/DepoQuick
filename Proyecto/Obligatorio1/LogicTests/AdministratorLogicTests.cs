@@ -4,13 +4,14 @@ using Logic.DTOs;
 using Model;
 using Model.Enums;
 using Model.Exceptions;
+using RepositoriesInterface;
 
 namespace LogicTests;
 
 [TestClass]
 public class AdministratorLogicTests
 {
-    private PersonRepositories? _personRepo;
+    private IRepositories<Booking>? _bookingRepo;
     private AdministratorLogic? _administratorLogic;
     private List<Booking>? _bookings;
     private Promotion? _promotion;
@@ -19,8 +20,8 @@ public class AdministratorLogicTests
     private List<Promotion>? _promotions;
     private BookingDto? _bookingDto;
     private Booking? _booking;
-    private UserDto? _userDto;
-    private User? _user;
+    private Person _person;
+    private PersonDto _personDto;
     private List<DateRange>? _availableDates;
     private List<DateRangeDto>? _availableDatesDto;
     private List<BookingDto> _bookingsDto;
@@ -29,8 +30,7 @@ public class AdministratorLogicTests
     [TestInitialize]
     public void TestInitialize()
     {
-        _personRepo = new PersonRepositories();
-        _administratorLogic = new AdministratorLogic(_personRepo);
+        _administratorLogic = new AdministratorLogic(_bookingRepo);
         _bookings = new List<Booking>();
         _promotions = new List<Promotion>();
         _promotionsDto = new List<PromotionDto>();
@@ -40,10 +40,8 @@ public class AdministratorLogicTests
         _availableDates.Add(new DateRange(new DateTime(2024, 5, 24), new DateTime(2024, 5, 30)));
         _booking = new Booking(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnit("12", AreaType.A, SizeType.Small, true, _promotions, _availableDates), "", "Reservado",
-            false,"samplemail@gmail.com");
-        _bookings.Add(_booking);
-        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", _bookings);
-        _personRepo.AddToRepository(_user);
+            false,"johndoe@gmail.com");
+         _person= new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
         _promotionDto = new PromotionDto("Winter Discount", 25, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15));
         _promotionsDto.Add(_promotionDto);
         _availableDatesDto = new List<DateRangeDto>();
@@ -53,7 +51,7 @@ public class AdministratorLogicTests
             "Reservado", false,_user.Email);
         _bookingsDto = new List<BookingDto>();
         _bookingsDto.Add(_bookingDto);
-        _userDto = new UserDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", _bookingsDto);
+        _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
     }
 
     [TestMethod]
