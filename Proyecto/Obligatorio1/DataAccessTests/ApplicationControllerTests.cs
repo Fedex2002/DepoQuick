@@ -62,8 +62,9 @@ namespace DataAccessTests
             _controller.AddPromotion(promotion);
             
             PromotionDto newPromotionDto = new PromotionDto("Summer discount", 50, new DateTime(2025, 7, 15), new DateTime(2025, 10, 15));
+            Promotion newPromotion = _controller.CreatePromotion(newPromotionDto);
             
-            _controller.UpdatePromotion(promotion, newPromotionDto);
+            _controller.UpdatePromotion(promotion, newPromotion);
             
             Assert.AreEqual(promotion, _controller.PromotionsRepository.FindPromotionByLabel(promotion.Label));
         }

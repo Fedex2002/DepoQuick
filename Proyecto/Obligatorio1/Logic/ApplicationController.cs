@@ -24,4 +24,9 @@ public class ApplicationController
     {
         PromotionsRepository.AddPromotion(promotion);
     }
+    
+    public void UpdatePromotion(Promotion promotion, Promotion newPromotion)
+    {
+        PromotionsRepository.UpdatePromotion(promotion, newPromotion);
+    }
 }
