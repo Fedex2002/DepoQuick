@@ -12,7 +12,7 @@
     </div>
 </div>
 
-@if (SessionLogic.CurrentPerson is AdministratorDto)
+@if (SessionLogic.CurrentPerson.IsAdmin)
 {
     <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
         <nav class="flex-column">
@@ -66,7 +66,7 @@
         </nav>
     </div>
 }
-else if (SessionLogic.CurrentPerson is UserDto)
+else 
 {
     <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
         <nav class="flex-column">
