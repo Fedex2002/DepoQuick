@@ -17,4 +17,14 @@ public class BookingRepositories
         return bookingInRepo;
     }
     
+    public bool ExistsInRepository(string email)
+    {
+        return _bookings.Any(u => u.PersonEmail == email);
+    }
+    
+    public void RemoveFromRepository(Booking booking)
+    {
+        _bookings.Remove(booking);
+    }
+    
 }
