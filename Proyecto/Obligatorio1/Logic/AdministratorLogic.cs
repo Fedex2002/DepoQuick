@@ -119,49 +119,6 @@ public class AdministratorLogic
     
  
     
-    private List<BookingDto> GetUserBookingsDto(List<Booking> bookings)
-    {
-        List<BookingDto> bookingsDto = new List<BookingDto>();
-        foreach (var booking in bookings)
-        {
-            BookingDto bookingDto = new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd,
-                GetUserStorageUnitDto(booking.StorageUnit), booking.RejectedMessage, booking.Status, booking.Payment,booking.PersonEmail);
-            bookingsDto.Add(bookingDto);
-        }
-        return bookingsDto;
-    }
-    
-    private StorageUnitDto GetUserStorageUnitDto(StorageUnit storageUnit)
-    {
-        return new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size,
-            storageUnit.Climatization, GetUserPromotionsDto(storageUnit.Promotions), GetDateRangesDto(storageUnit.AvailableDates));
-    }
-    
-    private List<PromotionDto> GetUserPromotionsDto(List<Promotion> promotions)
-    {
-        List<PromotionDto> promotionsDto = new List<PromotionDto>();
-        foreach (var promotion in promotions)
-        {
-            PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount,
-                promotion.DateStart, promotion.DateEnd);
-            promotionsDto.Add(promotionDto);
-        }
-    
-        return promotionsDto;
-    }
-    
-    private List<DateRangeDto> GetDateRangesDto(List<DateRange> dateRanges)
-    {
-        List<DateRangeDto> dateRangesDto = new List<DateRangeDto>();
-        foreach (var dateRange in dateRanges)
-        {
-            DateRangeDto dateRangeDto = new DateRangeDto(dateRange.StartDate, dateRange.EndDate);
-            dateRangesDto.Add(dateRangeDto);
-        }
-    
-        return dateRangesDto;
-    }
-    
     public List<Booking> GetAllUserBookings()
     {
         return _bookingRepositories.GetAllFromRepository();
