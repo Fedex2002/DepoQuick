@@ -5,6 +5,7 @@
 @inject BookingLogic BookingLogic
 @inject AdministratorLogic administratorLogic
 @inject NavigationManager NavigationManager
+@inject PersonLogic personLogic
 @inject IJSRuntime JS
 
 <PageTitle>DepoQuick</PageTitle>
@@ -173,8 +174,8 @@
     {
         try
         {
-            _personLogic.GetPersonDtoByEmail(bookingEmail);
-            administratorLogic.ApproveBooking(bookingDto, bookingDto);
+            PersonDto personInbooking = personLogic.GetPersonDtoFromEmail(bookingEmail);
+            administratorLogic.ApproveBooking(personInbooking, bookingDto);
             OnInitialized();
             _message = "Booking has been approved successfully!";
             _showAdminConfirmationModal = true;
@@ -186,11 +187,12 @@
         }
     }
 
-    private void RejectBooking(bookingDto bookingDto, BookingDto bookingDto)
+    private void RejectBooking(string bookingEmail, BookingDto bookingDto)
     {
         try
         {
-            administratorLogic.SetRejectionMessage(bookingDto, bookingDto, _rejectionReason);
+            PersonDto personInbooking = personLogic.GetPersonDtoFromEmail(bookingEmail);
+            administratorLogic.SetRejectionMessage(personInbooking, bookingDto, _rejectionReason);
             OnInitialized();
             _message = "Booking has been rejected successfully!";
             _showAdminConfirmationModal = true;
@@ -231,18 +233,19 @@
     {
         try
         {
-            Console.WriteLine("About to export");
-            if (selectedFormat == "csv")
-            {
-                var csvData = administratorLogic.ExportToCsv();
-                await JS.InvokeVoidAsync("downloadCsv", "bookings_report.csv", csvData);
-                _message = "Bookings report exported successfully!";
-            }
-            else if (selectedFormat == "txt")
-            {
-                _errorMessage = "TXT export is not implemented yet.";
-                _showAdminErrorModal = true;
-            }
+            //comentado hasta acabar la exportacion
+            // Console.WriteLine("About to export");
+            // if (selectedFormat == "csv")
+            // {
+            //     var csvData = administratorLogic.ExportToCsv();
+            //     await JS.InvokeVoidAsync("downloadCsv", "bookings_report.csv", csvData);
+            //     _message = "Bookings report exported successfully!";
+            // }
+            // else if (selectedFormat == "txt")
+            // {
+            //     _errorMessage = "TXT export is not implemented yet.";
+            //     _showAdminErrorModal = true;
+            // }
         }
         catch (Exception e)
         {
