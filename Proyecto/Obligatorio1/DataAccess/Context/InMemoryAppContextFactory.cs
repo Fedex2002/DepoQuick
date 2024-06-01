@@ -12,7 +12,7 @@ public class InMemoryAppContextFactory : IApplicationDbContextFactory
     public ApplicationDbContext CreateDbContext()
     {
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        optionsBuilder.UseInMemoryDatabase("TestDB");
+        optionsBuilder.UseInMemoryDatabase("DepoQuick");
 
         return new ApplicationDbContext(optionsBuilder.Options);
     }
