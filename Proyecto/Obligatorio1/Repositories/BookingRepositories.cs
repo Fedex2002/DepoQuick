@@ -27,4 +27,9 @@ public class BookingRepositories
         _bookings.Remove(booking);
     }
     
+    public List<Booking> GetAllFromRepository()
+    {
+        return _bookings;
+    }
+    
 }
