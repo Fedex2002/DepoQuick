@@ -115,7 +115,7 @@ public class AdministratorLogic
             throw new LogicExceptions("The rejection message can't be empty.");
         }
     }
-}
+
     
     public List<UserDto> GetUsersDto()
     {
@@ -199,4 +199,5 @@ public class AdministratorLogic
         CsvReportExporter csvReportExporter = new CsvReportExporter();
         csvReportExporter.Export(filePath, bookings);
     }
+    
 }

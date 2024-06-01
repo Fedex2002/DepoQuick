@@ -81,7 +81,7 @@ public class AdministratorLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenAdministratorRejectsABookingDtoWithEmptyMessageShouldThrowException()
     {
-        _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "");
+        _administratorLogic.SetRejectionMessage(_personDto, _bookingDto, "");
     }
     
     [TestMethod]
