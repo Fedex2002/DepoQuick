@@ -69,7 +69,7 @@ public class PromotionRepositoryTests
     {
         _repository.AddPromotion(_myPromotion);
         
-        Promotion promotionInDb = _repository.FindPromotion(_myPromotion.Label);
+        Promotion promotionInDb = _repository.FindPromotionByLabel(_myPromotion.Label);
         
         Assert.AreEqual(_myPromotion, promotionInDb);
     }

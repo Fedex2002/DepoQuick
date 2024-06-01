@@ -52,5 +52,11 @@ public class PromotionsRepository
             _database.SaveChanges();
         }
     }
+    
+    public Promotion FindPromotionByLabel(string label)
+    {
+        Promotion promotion = _database.Promotions.FirstOrDefault(prom => prom.Label == label);
+        return promotion;
+    }
 }
 
