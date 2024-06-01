@@ -84,12 +84,6 @@ public class AdministratorLogicTests
         _administratorLogic.SetRejectionMessage(_personDto, _bookingDto, "");
     }
     
-    [TestMethod]
-    public void WhenAdministratorIsTryingToApproveOrRejectBookingsShouldGetAListOfUsersDto()
-    {
-        List<UserDto> users = _administratorLogic.GetUsersDto();
-        Assert.IsTrue(users.Count > 0);
-    }
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]

@@ -117,22 +117,7 @@ public class AdministratorLogic
     }
 
     
-    public List<UserDto> GetUsersDto()
-    {
-        List<Person> users = _personRepositories.GetAllFromRepository();
-        List<UserDto> usersDto = new List<UserDto>();
-        foreach (var person in users)
-        {
-            if (person is User user)
-            {
-                UserDto userDto = new UserDto(user.Name, user.Surname, user.Email, user.Password, 
-                    GetUserBookingsDto(user.Bookings));
-                usersDto.Add(userDto);
-            }
-        }
-    
-        return usersDto;
-    }
+ 
     
     private List<BookingDto> GetUserBookingsDto(List<Booking> bookings)
     {
