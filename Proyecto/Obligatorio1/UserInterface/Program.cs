@@ -21,9 +21,10 @@ StorageUnitRepositories storageUnitRepositories = new StorageUnitRepositories();
 StorageUnitLogic storageUnitLogic = new StorageUnitLogic(storageUnitRepositories);
 builder.Services.AddSingleton(storageUnitRepositories);
 builder.Services.AddSingleton(storageUnitLogic);
-BookingLogic bookingLogic = new BookingLogic(personRepositories);
+BookingRepositories bookingRepositories = new BookingRepositories();
+BookingLogic bookingLogic = new BookingLogic(bookingRepositories);
 builder.Services.AddSingleton(bookingLogic);
-AdministratorLogic administratorLogic = new AdministratorLogic(personRepositories);
+AdministratorLogic administratorLogic = new AdministratorLogic(bookingRepositories);
 builder.Services.AddSingleton(administratorLogic);
 
 var app = builder.Build();
