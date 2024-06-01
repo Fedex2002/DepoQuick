@@ -117,6 +117,6 @@ public class BookingTests
     {
         string email= "examplemail @gmail.com";
         _mybooking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _mystorageunit, "Rejected", "Reservado", false,email);
-        Assert.AreEqual("", _mybooking.PersonEmail);
+        Assert.AreEqual("examplemail @gmail.com", _mybooking.PersonEmail);
     }
 }
