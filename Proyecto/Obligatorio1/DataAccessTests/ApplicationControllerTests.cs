@@ -68,5 +68,16 @@ namespace DataAccessTests
             
             Assert.AreEqual(promotion, _controller.PromotionsRepository.FindPromotionByLabel(promotion.Label));
         }
+
+        [TestMethod]
+        public void WhenControllerRemovesThePromotion_ShouldDeleteThePromotion()
+        {
+            PromotionDto promotionDto = new PromotionDto("Winter discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+            Promotion promotion = _controller.PromotionsRepository.FindPromotionByLabel(promotionDto.Label);
+            
+            _controller.DeletePromotion(promotion);
+            
+            Assert.IsFalse(_controller.PromotionsRepository.PromotionAlreadyExists(promotion.Label));
+        }
     }
 }
