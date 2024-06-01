@@ -8,14 +8,14 @@ namespace Logic;
 
 public class AdministratorLogic
 {
-    private readonly IRepositories<Booking> _bookingRepositories;
+    private readonly BookingRepositories _bookingRepositories;
 
-    public AdministratorLogic(IRepositories<Booking> bookingRepo)
+    public AdministratorLogic(BookingRepositories bookingRepo)
     {
         _bookingRepositories = bookingRepo;
     }
 
-    public void ApproveBooking(UserDto userDto, BookingDto bookingDto)
+    public void ApproveBooking(PersonDto userDto, BookingDto bookingDto)
     {
         if (bookingDto.Approved)
         {
@@ -24,25 +24,22 @@ public class AdministratorLogic
         else if (bookingDto.RejectedMessage != "")
         {
             IfBookingRejectedMessageIsNotEmptyThrowException();
-        } 
+        }
         else if (bookingDto.Payment == false)
         {
             IfUserDidNotMakeThePaymentThrowException();
         }
         else
         {
-            string oldBookingStorageUnitId = bookingDto.StorageUnitDto.Id;
-            Person person = _personRepositories.GetFromRepository(userDto.Email);
-            if (person is User user)
-            {
-                var userBookings = user.Bookings.ToList();
-                foreach (var booking in userBookings)
-                { 
-                    IfBookingStorageUnitIdIsAMatchSetApprovedToTrueAndStatusToCaptured(booking, oldBookingStorageUnitId);
-                }
-            }
+            List<Booking> bookings = _bookingRepositories.GetAllFromRepository();
+            var bookingToApprove = bookings.FirstOrDefault(
+                b => b.PersonEmail == userDto.Email && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
+            );
+
+            IfBookingStorageUnitIdIsAMatchSetApprovedToTrueAndStatusToCaptured(bookingDto,bookingToApprove,bookingDto.StorageUnitDto.Id);
         }
     }
+    
 
     private static void IfUserDidNotMakeThePaymentThrowException()
     {
@@ -59,15 +56,17 @@ public class AdministratorLogic
         throw new LogicExceptions("Booking is already rejected");
     }
 
-    private void IfBookingStorageUnitIdIsAMatchSetApprovedToTrueAndStatusToCaptured(Booking booking, string oldBookingId)
+    private void IfBookingStorageUnitIdIsAMatchSetApprovedToTrueAndStatusToCaptured(BookingDto bookingDto,Booking booking, string oldBookingId)
     {
         if (booking.StorageUnit.Id == oldBookingId)
         {
             booking.Approved = true;
             booking.Status = "Capturado";
+            bookingDto.Approved = true;
+            bookingDto.Status = "Capturado";
         }
     }
-
+    
     public void SetRejectionMessage(UserDto userDto, BookingDto bookingDto, string rejectionMessage)
     {
         if (bookingDto.RejectedMessage != "")
@@ -97,7 +96,7 @@ public class AdministratorLogic
             }
         }
     }
-
+    
     private void IfBookingStorageUnitIdIsAMatchSetRejectedMessageAndChangeStatusToRejected(Booking booking, string oldBookingId, string rejectionMessage)
     {
         if (booking.StorageUnit.Id == oldBookingId)
@@ -114,7 +113,7 @@ public class AdministratorLogic
             throw new LogicExceptions("The rejection message can't be empty.");
         }
     }
-
+    
     public List<UserDto> GetUsersDto()
     {
         List<Person> users = _personRepositories.GetAllFromRepository();
@@ -128,10 +127,10 @@ public class AdministratorLogic
                 usersDto.Add(userDto);
             }
         }
-
+    
         return usersDto;
     }
-
+    
     private List<BookingDto> GetUserBookingsDto(List<Booking> bookings)
     {
         List<BookingDto> bookingsDto = new List<BookingDto>();
@@ -149,7 +148,7 @@ public class AdministratorLogic
         return new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size,
             storageUnit.Climatization, GetUserPromotionsDto(storageUnit.Promotions), GetDateRangesDto(storageUnit.AvailableDates));
     }
-
+    
     private List<PromotionDto> GetUserPromotionsDto(List<Promotion> promotions)
     {
         List<PromotionDto> promotionsDto = new List<PromotionDto>();
@@ -159,7 +158,7 @@ public class AdministratorLogic
                 promotion.DateStart, promotion.DateEnd);
             promotionsDto.Add(promotionDto);
         }
-
+    
         return promotionsDto;
     }
     
@@ -171,15 +170,15 @@ public class AdministratorLogic
             DateRangeDto dateRangeDto = new DateRangeDto(dateRange.StartDate, dateRange.EndDate);
             dateRangesDto.Add(dateRangeDto);
         }
-
+    
         return dateRangesDto;
     }
-
+    
     public List<Booking> GetAllUserBookings()
     {
         List<Person> users = _personRepositories.GetAllFromRepository();
         List<Booking> allBookings = new List<Booking>();
-
+    
         foreach (var person in users)
         {
             if (person is User user)
@@ -187,10 +186,10 @@ public class AdministratorLogic
                 allBookings.AddRange(user.Bookings);
             }
         }
-
+    
         return allBookings;
     }
-
+    
     public void ExportToCsv(string filePath)
     {
         List<Booking> bookings = GetAllUserBookings();
