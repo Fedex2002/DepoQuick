@@ -11,4 +11,10 @@ public class BookingRepositories
         _bookings.Add(booking);
     }
     
+    public Booking GetFromRepository(string email)
+    {
+        Booking bookingInRepo = _bookings.Find(u => u.PersonEmail == email);
+        return bookingInRepo;
+    }
+    
 }
