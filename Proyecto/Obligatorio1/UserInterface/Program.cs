@@ -1,4 +1,6 @@
+using DataAccess.Context;
 using Logic;
+using Microsoft.EntityFrameworkCore;
 using Repositories;
 
 
@@ -21,10 +23,17 @@ StorageUnitRepositories storageUnitRepositories = new StorageUnitRepositories();
 StorageUnitLogic storageUnitLogic = new StorageUnitLogic(storageUnitRepositories);
 builder.Services.AddSingleton(storageUnitRepositories);
 builder.Services.AddSingleton(storageUnitLogic);
-BookingLogic bookingLogic = new BookingLogic(personRepositories);
+BookingRepositories bookingRepositories = new BookingRepositories();
+BookingLogic bookingLogic = new BookingLogic(bookingRepositories);
 builder.Services.AddSingleton(bookingLogic);
-AdministratorLogic administratorLogic = new AdministratorLogic(personRepositories);
+AdministratorLogic administratorLogic = new AdministratorLogic(bookingRepositories);
 builder.Services.AddSingleton(administratorLogic);
+
+builder.Services.AddDbContextFactory<ApplicationDbContext>(
+    options => options.UseSqlServer(
+        builder.Configuration.GetConnectionString("ApplicationDBLocalConnection"),
+        providerOptions => providerOptions.EnableRetryOnFailure())
+    );
 
 var app = builder.Build();
 

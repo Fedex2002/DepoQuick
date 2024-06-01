@@ -98,14 +98,14 @@
 
       if (!_adminRegistered)
       {
-        _person = new AdministratorDto(_name, _surname, _email, _password);
+        _person = new PersonDto(_name, _surname, _email, _password,true);
         _adminRegistered = true;
         personLogic.SignUp(_person);
 
       }
       else
       {
-        _person = new UserDto(_name, _surname, _email, _password, new List<BookingDto>());
+        _person = new PersonDto(_name, _surname, _email, _password, false);
         personLogic.SignUp(_person);
       }
       

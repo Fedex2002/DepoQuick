@@ -114,7 +114,7 @@
     readonly Dictionary<string, string> _rejectionMessage = new Dictionary<string, string>();
     readonly Dictionary<string, string> _status = new Dictionary<string, string>();
     private List<StorageUnitDto> _storageUnits;
-    private List<UserDto> _users;
+    private List<PersonDto> _users;
     private List<BookingDto> _bookings;
     private bool showUserErrorModal;
     private string errorMessage = "";
@@ -122,27 +122,31 @@
     
     protected override void OnInitialized()
     {
-        var currentUser = sessionLogic.CurrentPerson as UserDto;
-        if (currentUser != null)
-        {
-            _bookings = currentUser.Bookings;
+        _bookings = BookingLogic.GetAllBookingsDto();
+        var currentUser = sessionLogic.CurrentPerson ;
             foreach (var bookingDto in _bookings)
             {
-                _totalPrice[bookingDto.StorageUnitDto.Id] = BookingLogic.CalculateTotalPriceOfBooking(bookingDto);
-                _dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
-                _dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
-                _active[bookingDto.StorageUnitDto.Id] = bookingDto.Approved;
-                _rejectionMessage[bookingDto.StorageUnitDto.Id] = bookingDto.RejectedMessage;
-                _status[bookingDto.StorageUnitDto.Id] = bookingDto.Status;
+                if (bookingDto.UserEmail == currentUser.Email)
+                {
+                    _totalPrice[bookingDto.StorageUnitDto.Id] = BookingLogic.CalculateTotalPriceOfBooking(bookingDto);
+                    _dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
+                    _dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
+                    _active[bookingDto.StorageUnitDto.Id] = bookingDto.Approved;
+                    _rejectionMessage[bookingDto.StorageUnitDto.Id] = bookingDto.RejectedMessage;
+                    _status[bookingDto.StorageUnitDto.Id] = bookingDto.Status;
+                    
+                }
+
+              
             }
-        }
+        
     }
 
     private async Task HandleValidSubmit(BookingDto booking)
     {
         try
         {
-            var currentUser = sessionLogic.CurrentPerson as UserDto;
+            var currentUser = sessionLogic.CurrentPerson;
             BookingLogic.PayBooking(currentUser, booking);
             showUserConfirmationModal = true;
         }
