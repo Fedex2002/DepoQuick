@@ -4,36 +4,33 @@ using Model.Exceptions;
 using Repositories;
 namespace Logic;
 
-public class UserLogic
+public class BookingLogic
 {
-    private readonly PersonRepositories _personRepo;
+    private readonly BookingRepositories _bookingRepositories;
     
-    public UserLogic(PersonRepositories personRepo)
+    public BookingLogic(BookingRepositories bookingRepo)
     {
-        _personRepo = personRepo;
+        _bookingRepositories = bookingRepo;
     }
     
-    public void AddBookingToUser(UserDto userDto, BookingDto bookingDto)
+    public void AddBooking(PersonDto userDto, BookingDto bookingDto)
     {
-        CheckIfPersonIsAUserAddBooking(userDto, bookingDto);
+        CheckIfAlreadyBookedAndAddBooking(userDto, bookingDto);
     }
 
-    private void CheckIfPersonIsAUserAddBooking(UserDto userDto, BookingDto bookingDto)
+    private void CheckIfAlreadyBookedAndAddBooking(PersonDto userDto, BookingDto bookingDto)
     {
-        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
-        Person person = _personRepo.GetFromRepository(userDto.Email);
-        if (person is User user)
-        {
-            bool exists = user.Bookings.Any(booking => booking.StorageUnit.Id == newBooking.StorageUnit.Id);
+        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,userDto.Email);
+        List<Booking> bookings = _bookingRepositories.GetAllFromRepository();
+            bool exists = bookings.Any(booking => booking.StorageUnit.Id == newBooking.StorageUnit.Id);
             if (!exists)
             {
-                user.Bookings.Add(newBooking);
+                _bookingRepositories.AddToRepository(newBooking);
             }
             else
             {
                 IfUserAlreadyBookTheStorageUnitThrowException();
             }
-        }
     }
 
     private static void IfUserAlreadyBookTheStorageUnitThrowException()
@@ -46,21 +43,17 @@ public class UserLogic
         return bookingDto.Approved;
     }
     
-    public void RemoveBookingFromUser(UserDto userDto, BookingDto bookingDto)
+    public void RemoveBookingFromUser(PersonDto userDto, BookingDto bookingDto)
     {
-        CheckIfPersonIsAUserRemoveBooking(userDto, bookingDto);
+        RemoveBookingFromPerson(userDto, bookingDto);
     }
 
-    private void CheckIfPersonIsAUserRemoveBooking(UserDto userDto, BookingDto bookingDto)
+    private void RemoveBookingFromPerson(PersonDto userDto, BookingDto bookingDto)
     {
         Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd,
             ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status,
-            bookingDto.Payment);
-        Person person = _personRepo.GetFromRepository(userDto.Email);
-        if (person is User user)
-        {
-            user.Bookings.Remove(booking);
-        }
+            bookingDto.Payment,userDto.Email);
+       _bookingRepositories.RemoveFromRepository(booking);
     }
     
     public StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
@@ -81,7 +74,7 @@ public class UserLogic
     
     public double CalculateTotalPriceOfBooking(BookingDto bookingDto)
     {
-        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment);
+        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment, bookingDto.UserEmail);
         return booking.CalculateBookingTotalPrice();
     }
 
@@ -96,24 +89,18 @@ public class UserLogic
         return storageUnit.CalculateStorageUnitPricePerDay();
     }
     
-    public void PayBooking(UserDto userDto, BookingDto bookingDto)
+    public void PayBooking(PersonDto userDto, BookingDto bookingDto)
     {
-        Person person = _personRepo.GetFromRepository(userDto.Email);
-        if (person is User user)
-        {
-            FindUserBookingAndSetPaymentToTrue(bookingDto, user);
-        }
-    }
+        List<Booking> bookings = _bookingRepositories.GetAllFromRepository();
+        var bookingToPay = bookings.FirstOrDefault(
+            b => b.PersonEmail == userDto.Email && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
+        );
 
-    private static void FindUserBookingAndSetPaymentToTrue(BookingDto bookingDto, User user)
-    {
-        foreach (var booking in user.Bookings)
+        if (bookingToPay != null)
         {
-            if (booking.StorageUnit.Id == bookingDto.StorageUnitDto.Id)
-            {
-                IfBookingPaymentIsAlreadyTrueThrowException(booking);
-                booking.Payment = true;
-            }
+            IfBookingPaymentIsAlreadyTrueThrowException(bookingToPay);
+            bookingToPay.Payment = true;
+            bookingDto.Payment = true;
         }
     }
 

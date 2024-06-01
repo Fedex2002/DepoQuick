@@ -22,8 +22,8 @@ public class PersonLogicTests
     {
         _personRepo = new PersonRepositories();
         _personLogic = new PersonLogic(_personRepo);
-        _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#");
-        _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#");
+        _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#",false);
+        _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#",_person.IsAdmin);
         _bookingsDto = new List<BookingDto>();
         _personRepo.AddToRepository(_person); 
     }
@@ -63,25 +63,14 @@ public class PersonLogicTests
         Assert.IsNotNull(personDto);
     }
     
-    [TestMethod]
-    public void WhenEmptyUserDtoIsCreatedShouldReturnEmptyUserDto()
-    {
-        UserDto userDto = new UserDto();
-        Assert.IsNotNull(userDto);
-    }
-    
-    [TestMethod]
-    public void WhenEmptyAdministratorDtoIsCreatedShouldReturnEmptyAdministratorDto()
-    {
-        AdministratorDto administratorDto = new AdministratorDto();
-        Assert.IsNotNull(administratorDto);
-    }
+ 
+
     
     [TestMethod]
     public void WhenPersonIsTryingToLoginShouldReturnPersonIfValidationsAreCorrect()
     {
         PersonDto loggedInPersonDto = _personLogic.Login(_person.Email, _person.Password);
-        PersonDto expectedPersonDto = new PersonDto(_person.Name, _person.Surname, _person.Email, _person.Password);
+        PersonDto expectedPersonDto = new PersonDto(_person.Name, _person.Surname, _person.Email, _person.Password, _person.IsAdmin);
         Assert.AreEqual(expectedPersonDto.Name, loggedInPersonDto.Name);
         Assert.AreEqual(expectedPersonDto.Surname, loggedInPersonDto.Surname);
         Assert.AreEqual(expectedPersonDto.Email, loggedInPersonDto.Email);
@@ -89,28 +78,29 @@ public class PersonLogicTests
     }
     
     [TestMethod]
-    public void WhenPersonIsTryingToLoginAndIsAdministratorShouldReturnAdministrator()
+    public void WhenPersonIsTryingToLoginAndIsAdministratorShouldReturnPersonWithAdminPrivileges()
     {
-        Administrator admin = new Administrator("Admin", "Admin","email@gmail.com","PassWord921#EAa");
-        _personRepo.AddToRepository(admin);
-        PersonDto loggedInAdministratorDto = _personLogic.Login(admin.Email,admin.Password);
-        Assert.AreEqual(admin.Name, loggedInAdministratorDto.Name);
-        Assert.AreEqual(admin.Surname, loggedInAdministratorDto.Surname);
-        Assert.AreEqual(admin.Email, loggedInAdministratorDto.Email);
-        Assert.AreEqual(admin.Password, loggedInAdministratorDto.Password);
+        _person.IsAdmin = true;
+        _personRepo.AddToRepository(_person);
+        PersonDto loggedInAdministratorDto = _personLogic.Login(_person.Email,_person.Password);
+        Assert.AreEqual(_person.Name, loggedInAdministratorDto.Name);
+        Assert.AreEqual(_person.Surname, loggedInAdministratorDto.Surname);
+        Assert.AreEqual(_person.Email, loggedInAdministratorDto.Email);
+        Assert.AreEqual(_person.Password, loggedInAdministratorDto.Password);
+        Assert.AreEqual(_person.IsAdmin, loggedInAdministratorDto.IsAdmin);
     }
 
     [TestMethod]
-    public void WhenPersonIsTryingToLoginAndIsUserShouldReturnUser()
+    public void WhenPersonIsTryingToLoginAndIsUserShouldReturnPersonWithoutAdminPrivileges()
     {
-        User user = new User("User", "User", "emailuser@gmail.com","PassWord921#", new List<Booking>());
-        _personRepo.AddToRepository(user);
-        PersonDto loggedInPersonDto = _personLogic.Login(user.Email,user.Password);
+        _person.IsAdmin = false;
+        _personRepo.AddToRepository(_person);
+        PersonDto loggedInPersonDto = _personLogic.Login(_person.Email,_person.Password);
         
-        Assert.AreEqual(user.Name, loggedInPersonDto.Name);
-        Assert.AreEqual(user.Surname, loggedInPersonDto.Surname);
-        Assert.AreEqual(user.Email, loggedInPersonDto.Email);
-        Assert.AreEqual(user.Password, loggedInPersonDto.Password);
+        Assert.AreEqual(_person.Name, loggedInPersonDto.Name);
+        Assert.AreEqual(_person.Surname, loggedInPersonDto.Surname);
+        Assert.AreEqual(_person.Email, loggedInPersonDto.Email);
+        Assert.AreEqual(_person.Password, loggedInPersonDto.Password);
     }
 
 
@@ -124,27 +114,19 @@ public class PersonLogicTests
     [TestMethod]
     public void WhenPersonsAreAddedToRepositoryShouldReturnTheRepository()
     {
-        Person federico = new Person("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#");
+        Person federico = new Person("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#",false);
         _personRepo.AddToRepository(federico); 
         Assert.AreEqual(_personRepo, _personLogic.GetRepository());
     }
     
     [TestMethod]
-    public void WhenUserIsTryingToSignUpShouldAddUserToRepositoryIfValidationsAreCorrect()
+    public void WhenPersonIsTryingToSignupAndIsValidShouldAddToTheRepository()
     {
-        PersonDto userDto = new UserDto("John", "Doe", "johndoe123@gmail.com", "PassWord921#",_bookingsDto);
-        _personLogic.SignUp(userDto);
-        Assert.IsTrue(_personRepo.ExistsInRepository(userDto.Email));
+        PersonDto personDto = new PersonDto(_person.Name, _person.Surname, _person.Email, _person.Password, _person.IsAdmin);
+        _personLogic.SignUp(personDto);
     }
-    
-    [TestMethod]
-    public void WhenAdministratorIsTryingToSignUpShouldAddAdministratorToRepositoryIfValidationsAreCorrect()
-    {
-        PersonDto adminDto = new AdministratorDto("John", "Doe", "johndoe1235@gmail.com", "PassWord921#");
-        _personLogic.SignUp(adminDto);
-        Assert.IsTrue(_personRepo.ExistsInRepository(adminDto.Email));
 
-    }
+    
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
@@ -153,19 +135,4 @@ public class PersonLogicTests
         _personLogic.SignUp(_personDto);
     }
     
-    [TestMethod]
-    public void WhenUserIsTryingToLoginInShouldReturnAListOfHisBookingDtos()
-    {
-        User user = new User("Franco", "Ramos", "francoramos1511@gmail.com", "PassWord921#2", new List<Booking>());
-        _personRepo.AddToRepository(user);
-        List<Promotion> promotions = new List<Promotion>();
-        Promotion promotion = new Promotion("Promo", 10, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15));
-        promotions.Add(promotion);
-        List<DateRange> availableDates = new List<DateRange>();
-        availableDates.Add(new DateRange(new DateTime(2024, 7, 1), new DateTime(2024, 8, 15)));
-        Booking booking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnit("", AreaType.A, SizeType.Small, true,promotions, availableDates), "", "Reservado", false);
-        user.Bookings.Add(booking);
-        List<BookingDto> bookingsDtos = _personLogic.ChangeToBookingsDtos(user.Bookings);
-        Assert.AreEqual(user.Bookings.Count, bookingsDtos.Count);
-    }
 }

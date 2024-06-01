@@ -16,7 +16,7 @@ public class SessionLogicTests
     {
         _personRepo = new PersonRepositories();
         _personLogic = new PersonLogic(_personRepo);
-        _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#");
+        _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#",false);
         _personRepo.AddToRepository(_person);
         _sessionLogic = new SessionLogic(_personLogic);
     }
