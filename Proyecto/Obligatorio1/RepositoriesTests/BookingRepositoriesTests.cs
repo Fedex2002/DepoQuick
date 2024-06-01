@@ -1,5 +1,6 @@
 using Model;
 using Model.Enums;
+using Repositories;
 
 namespace RepositoriesTests;
 [TestClass]
@@ -21,7 +22,9 @@ public class BookingRepositoriesTests
     public void WhenAddingNewBookingShouldAddItToRepository()
     {
         _bookingRepositories.AddToRepository(_booking);
-        Booking bookingInRepo = _bookingRepositories.GetFromRepository(_booking.Id);
+        Booking bookingInRepo = _bookingRepositories.GetFromRepository(_booking.PersonEmail);
         Assert.AreEqual(_booking.PersonEmail, bookingInRepo.PersonEmail);
     }
+    
+ 
 }
