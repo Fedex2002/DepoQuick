@@ -28,7 +28,7 @@ public class PromotionsRepository
         throw new RepositoryExceptions("The promotion already exists");
     }
 
-    private bool PromotionAlreadyExists(Promotion newPromotion)
+    public bool PromotionAlreadyExists(Promotion newPromotion)
     {
         return _database.Promotions.Any(promotion => promotion.Label == newPromotion.Label);
     }
