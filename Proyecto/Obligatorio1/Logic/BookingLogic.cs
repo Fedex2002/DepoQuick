@@ -43,21 +43,17 @@ public class BookingLogic
         return bookingDto.Approved;
     }
     
-    public void RemoveBookingFromUser(UserDto userDto, BookingDto bookingDto)
+    public void RemoveBookingFromUser(PersonDto userDto, BookingDto bookingDto)
     {
-        CheckIfPersonIsAUserRemoveBooking(userDto, bookingDto);
+        RemoveBookingFromPerson(userDto, bookingDto);
     }
 
-    private void CheckIfPersonIsAUserRemoveBooking(UserDto userDto, BookingDto bookingDto)
+    private void RemoveBookingFromPerson(PersonDto userDto, BookingDto bookingDto)
     {
         Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd,
             ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status,
             bookingDto.Payment,userDto.Email);
-        Person person = _personRepo.GetFromRepository(userDto.Email);
-        if (person is User user)
-        {
-            user.Bookings.Remove(booking);
-        }
+       _bookingRepositories.RemoveFromRepository(booking);
     }
     
     public StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
