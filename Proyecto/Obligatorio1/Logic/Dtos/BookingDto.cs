@@ -12,11 +12,14 @@ public class BookingDto
     
     public bool Payment { get; set; }
 
+    public string UserEmail { get; set; }
+
     public BookingDto()
     {
     }
 
-    public BookingDto( bool approved, DateTime dateStart, DateTime dateEnd, StorageUnitDto storageUnitDto, string rejectedMessage, string status, bool payment)
+
+    public BookingDto( bool approved, DateTime dateStart, DateTime dateEnd, StorageUnitDto storageUnitDto, string rejectedMessage,string status,bool payment, string userEmail)
     {
         Approved = approved;
         DateStart = dateStart;
@@ -25,5 +28,7 @@ public class BookingDto
         RejectedMessage = rejectedMessage;
         Status = status;
         Payment = payment;
+        UserEmail = userEmail;
+
     }
 }

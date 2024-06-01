@@ -2,7 +2,7 @@
 @using Logic
 @using Logic.DTOs
 @layout MainLayout
-@inject UserLogic userLogic
+@inject BookingLogic BookingLogic
 @inject AdministratorLogic administratorLogic
 @inject NavigationManager NavigationManager
 
@@ -148,7 +148,7 @@
         {
             foreach (var bookingDto in user.Bookings)
             {
-                _totalPrice[bookingDto.StorageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
+                _totalPrice[bookingDto.StorageUnitDto.Id] = BookingLogic.CalculateTotalPriceOfBooking(bookingDto);
                 _dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
                 _dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
                 _status[bookingDto.StorageUnitDto.Id] = bookingDto.Status;
