@@ -103,6 +103,16 @@ public class BookingLogic
             bookingDto.Payment = true;
         }
     }
+    
+    public List<BookingDto> GetAllBookingsDto()
+    {
+        List<BookingDto> bookingsDto = new List<BookingDto>();
+        foreach (var booking in _bookingRepositories.GetAllFromRepository())
+        {
+            bookingsDto.Add(new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd, new StorageUnitDto(booking.StorageUnit.Id, booking.StorageUnit.Area, booking.StorageUnit.Size, booking.StorageUnit.Climatization, new List<PromotionDto>(), new List<DateRangeDto>()), booking.RejectedMessage, booking.Status, booking.Payment, booking.PersonEmail));
+        }
+        return bookingsDto;
+    }
 
     private static void IfBookingPaymentIsAlreadyTrueThrowException(Booking booking)
     {
