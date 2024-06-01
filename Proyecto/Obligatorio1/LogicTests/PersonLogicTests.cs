@@ -125,6 +125,17 @@ public class PersonLogicTests
         PersonDto personDto = new PersonDto(_person.Name, _person.Surname, _person.Email, _person.Password, _person.IsAdmin);
         _personLogic.SignUp(personDto);
     }
+    
+    [TestMethod]
+    
+    public void WhenGeettingPersonDtoFromEmailShouldReturnIt()
+    {
+        PersonDto personDto = _personLogic.GetPersonDtoFromEmail(_person.Email);
+        Assert.AreEqual(_personDto.Name, personDto.Name);
+        Assert.AreEqual(_personDto.Surname, personDto.Surname);
+        Assert.AreEqual(_personDto.Email, personDto.Email);
+        Assert.AreEqual(_personDto.Password, personDto.Password);
+    }
 
     
     
