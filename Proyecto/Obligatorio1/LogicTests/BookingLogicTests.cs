@@ -149,4 +149,15 @@ public class BookingLogicTests
         DateTime endDate = new DateTime(2024, 10, 30);
         _bookingLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(startDate, endDate, _dateRangeDto);
     }
+
+    [TestMethod]
+    void WhenGettingAllBookingsDtoShouldReturnThem()
+    {
+        _bookingLogic.AddBooking(_userDto, _mybookingDto);
+        BookingDto booking2 = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
+            _storageUnitDto, "", "Reservado", false, "samplemail@gmail.com")
+        _bookingLogic.AddBooking(_userDto, booking2);
+        List<BookingDto> bookings = _bookingLogic.GetAllBookingsDto();
+        Assert.AreEqual(2, bookings.Count);
+    }
 }
