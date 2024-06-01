@@ -52,7 +52,7 @@ public class PromotionRepositoryTests
     {
         _repository.AddPromotion(_myPromotion);
         
-        Promotion promotionInDb = _context.Promotions.Find(_myPromotion.Label);
+        Promotion promotionInDb = _repository.FindPromotionByLabel(_myPromotion.Label);
         
         promotionInDb.Label = "Descuento Verano";
         promotionInDb.Discount = 30;

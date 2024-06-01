@@ -42,7 +42,7 @@ public class PromotionsRepository
     
     public void UpdatePromotion(Promotion promotion)
     {
-        Promotion dbPromotion = _database.Promotions.FirstOrDefault(prom => prom.Label == promotion.Label);
+        Promotion dbPromotion = FindPromotionByLabel(promotion.Label);
         if (dbPromotion != null)
         {
             dbPromotion.Label = promotion.Label;
