@@ -17,19 +17,29 @@ public class BookingLogicTests
     private BookingRepositories _bookingRepo;
     private PromotionDto _promotionDto;
     private List<PromotionDto> _promotionsDto;
+    private StorageUnit _storageUnit;
     private StorageUnitDto _storageUnitDto;
     private BookingDto _mybookingDto;
     private List<DateRangeDto> _availableDatesDto;
     private DateRangeDto _dateRangeDto;
     private Booking _booking;
-    
+    private List<Promotion> _promotions;
+    private Promotion _promotion;
+    private List<DateRange> _availableDates;
+    private DateRange _dateRange;
+
     [TestInitialize]
     public void TestInitialize()
     {
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
         _bookingRepo = new BookingRepositories();
         _promotionsDto = new List<PromotionDto>();
-        _booking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false,_person.Email);
+        _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _promotions.Add(_promotion);
+        _availableDates = new List<DateRange>();
+        _dateRange = new DateRange(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _availableDates.Add(_dateRange);
+        _booking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnit, "", "Reservado", false,_person.Email);
         _availableDatesDto = new List<DateRangeDto>();
         _promotionDto = new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotionsDto.Add(_promotionDto);
@@ -38,6 +48,7 @@ public class BookingLogicTests
         _bookingLogic = new BookingLogic(_bookingRepo);
         _bookingRepo.AddToRepository(_booking);
         _userDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
+        _storageUnit= new StorageUnit("1", AreaType.B, SizeType.Medium, false, _promotions, _availableDates);
         _storageUnitDto = new StorageUnitDto("",AreaType.A, SizeType.Small, true,_promotionsDto, _availableDatesDto);
         _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false,_person.Email);
     }
@@ -59,14 +70,14 @@ public class BookingLogicTests
     public void WhenUserBookingIsApprovedShouldReturnTrue()
     {
         _mybookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), _storageUnitDto, "", "Reservado", false,_userDto.Email);
-        _bookingLogic.AddBookingToUser(_userDto, _mybookingDto);
+        _bookingLogic.AddBooking(_userDto, _mybookingDto);
         Assert.IsTrue(_bookingLogic.CheckIfBookingIsApproved(_mybookingDto));
     }
     
     [TestMethod]
     public void WhenUserBookingIsRejectedShouldEliminateBookingFromUserListOfBookings()
     {
-        _bookingLogic.AddBookingToUser(_userDto, _mybookingDto);
+        _bookingLogic.AddBooking(_userDto, _mybookingDto);
         _bookingLogic.RemoveBookingFromUser(_userDto, _mybookingDto);
     }
     
