@@ -89,24 +89,18 @@ public class BookingLogic
         return storageUnit.CalculateStorageUnitPricePerDay();
     }
     
-    public void PayBooking(UserDto userDto, BookingDto bookingDto)
+    public void PayBooking(PersonDto userDto, BookingDto bookingDto)
     {
-        Person person = _personRepo.GetFromRepository(userDto.Email);
-        if (person is User user)
-        {
-            FindUserBookingAndSetPaymentToTrue(bookingDto, user);
-        }
-    }
+        List<Booking> bookings = _bookingRepositories.GetAllFromRepository();
+        var bookingToPay = bookings.FirstOrDefault(
+            b => b.PersonEmail == userDto.Email && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
+        );
 
-    private static void FindUserBookingAndSetPaymentToTrue(BookingDto bookingDto, User user)
-    {
-        foreach (var booking in user.Bookings)
+        if (bookingToPay != null)
         {
-            if (booking.StorageUnit.Id == bookingDto.StorageUnitDto.Id)
-            {
-                IfBookingPaymentIsAlreadyTrueThrowException(booking);
-                booking.Payment = true;
-            }
+            IfBookingPaymentIsAlreadyTrueThrowException(bookingToPay);
+            bookingToPay.Payment = true;
+            bookingDto.Payment = true;
         }
     }
 

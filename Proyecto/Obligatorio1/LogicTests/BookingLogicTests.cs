@@ -32,6 +32,7 @@ public class BookingLogicTests
     public void TestInitialize()
     {
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
+        _promotions = new List<Promotion>();
         _bookingRepo = new BookingRepositories();
         _promotionsDto = new List<PromotionDto>();
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
@@ -39,6 +40,7 @@ public class BookingLogicTests
         _availableDates = new List<DateRange>();
         _dateRange = new DateRange(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _availableDates.Add(_dateRange);
+        _storageUnit= new StorageUnit("1", AreaType.B, SizeType.Medium, false, _promotions, _availableDates);
         _booking = new Booking(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnit, "", "Reservado", false,_person.Email);
         _availableDatesDto = new List<DateRangeDto>();
         _promotionDto = new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
@@ -48,7 +50,6 @@ public class BookingLogicTests
         _bookingLogic = new BookingLogic(_bookingRepo);
         _bookingRepo.AddToRepository(_booking);
         _userDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
-        _storageUnit= new StorageUnit("1", AreaType.B, SizeType.Medium, false, _promotions, _availableDates);
         _storageUnitDto = new StorageUnitDto("",AreaType.A, SizeType.Small, true,_promotionsDto, _availableDatesDto);
         _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false,_person.Email);
     }
@@ -127,7 +128,7 @@ public class BookingLogicTests
     [TestMethod]
     public void WhenUserPaysABookingShouldSetItToTrue()
     {
-        _bookingLogic.AddBookingToUser(_userDto, _mybookingDto);
+        _bookingLogic.AddBooking(_userDto, _mybookingDto);
         _bookingLogic.PayBooking(_userDto, _mybookingDto);
     }
 
@@ -135,7 +136,7 @@ public class BookingLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenUserTriesToPayABookingTwiceShouldThrowException()
     {
-        _bookingLogic.AddBookingToUser(_userDto, _mybookingDto);
+        _bookingLogic.AddBooking(_userDto, _mybookingDto);
         _bookingLogic.PayBooking(_userDto, _mybookingDto);
         _bookingLogic.PayBooking(_userDto, _mybookingDto);
     }
