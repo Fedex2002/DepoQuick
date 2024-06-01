@@ -1,8 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Model.Exceptions;
 namespace Model;
 
 public class Promotion
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
     private string _label = "";
     private int _discount;
     private DateTime _dateStart = DateTime.MinValue;
