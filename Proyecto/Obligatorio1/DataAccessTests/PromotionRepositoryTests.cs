@@ -63,4 +63,15 @@ public class PromotionRepositoryTests
         
         Assert.AreEqual(_myPromotion, promotionInDb);
     }
+    
+    [TestMethod]
+    public void WhenTryingToFindAPromotion_ShouldReturnThePromotion()
+    {
+        _repository.AddPromotion(_myPromotion);
+        
+        Promotion promotionInDb = _repository.FindPromotion(_myPromotion.Label);
+        
+        Assert.AreEqual(_myPromotion, promotionInDb);
+    }
+    
 }
