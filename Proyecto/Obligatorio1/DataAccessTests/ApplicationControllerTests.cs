@@ -1,5 +1,7 @@
 using DataAccess.Context;
 using Logic;
+using Logic.DTOs;
+using Model;
 
 
 namespace DataAccessTests
@@ -28,6 +30,16 @@ namespace DataAccessTests
         public void WhenControllerIsCreated_ThenContextIsNotNull()
         {
             Assert.IsNotNull(_controller);
+        }
+        
+        [TestMethod]
+        public void WhenControllerReceivesAPromotionDto_ShouldMapToPromotionObject()
+        {
+            PromotionDto promotionDto = new PromotionDto("Winter discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+            
+            Promotion promotion = _controller.CreatePromotion(promotionDto);
+            
+            Assert.IsInstanceOfType(promotion, typeof(Promotion));
         }
     }
 }
