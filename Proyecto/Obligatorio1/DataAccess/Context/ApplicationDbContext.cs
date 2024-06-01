@@ -22,5 +22,5 @@ public class ApplicationDbContext : DbContext
             .HasKey(p => p.Email); 
         modelBuilder.Entity<Promotion>()
             .HasKey(p => p.Label); 
-    }   
+    }
 }
