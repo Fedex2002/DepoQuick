@@ -73,11 +73,14 @@ namespace DataAccessTests
         public void WhenControllerRemovesThePromotion_ShouldDeleteThePromotion()
         {
             PromotionDto promotionDto = new PromotionDto("Winter discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
-            Promotion promotion = _controller.PromotionsRepository.FindPromotionByLabel(promotionDto.Label);
+            Promotion promotion = _controller.CreatePromotion(promotionDto);
+            _controller.AddPromotion(promotion);
             
-            _controller.DeletePromotion(promotion);
+            Promotion promotionToDelete = _controller.PromotionsRepository.FindPromotionByLabel(promotionDto.Label);
             
-            Assert.IsFalse(_controller.PromotionsRepository.PromotionAlreadyExists(promotion.Label));
+            _controller.DeletePromotion(promotionToDelete);
+            
+            Assert.IsFalse(_controller.PromotionsRepository.PromotionAlreadyExists(promotion));
         }
     }
 }

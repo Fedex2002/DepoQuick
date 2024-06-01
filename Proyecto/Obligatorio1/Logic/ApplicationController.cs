@@ -29,4 +29,9 @@ public class ApplicationController
     {
         PromotionsRepository.UpdatePromotion(promotion, newPromotion);
     }
+    
+    public void DeletePromotion(Promotion promotion)
+    {
+        PromotionsRepository.DeletePromotion(promotion);
+    }
 }
