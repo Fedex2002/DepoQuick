@@ -40,15 +40,15 @@ public class PromotionsRepository
         _database.SaveChanges();
     }
     
-    public void UpdatePromotion(Promotion promotion)
+    public void UpdatePromotion(Promotion promotion, Promotion newPromotion)
     {
         Promotion dbPromotion = FindPromotionByLabel(promotion.Label);
         if (dbPromotion != null)
         {
-            dbPromotion.Label = promotion.Label;
-            dbPromotion.Discount = promotion.Discount;
-            dbPromotion.DateStart = promotion.DateStart;
-            dbPromotion.DateEnd = promotion.DateEnd;
+            dbPromotion.Label = newPromotion.Label;
+            dbPromotion.Discount = newPromotion.Discount;
+            dbPromotion.DateStart = newPromotion.DateStart;
+            dbPromotion.DateEnd = newPromotion.DateEnd;
             _database.SaveChanges();
         }
     }

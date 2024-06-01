@@ -52,16 +52,13 @@ public class PromotionRepositoryTests
     {
         _repository.AddPromotion(_myPromotion);
         
+        Promotion newPromotion = new Promotion("Descuento Invierno", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        
+        _repository.UpdatePromotion(_myPromotion, newPromotion);
+        
         Promotion promotionInDb = _repository.FindPromotionByLabel(_myPromotion.Label);
-        
-        promotionInDb.Label = "Descuento Verano";
-        promotionInDb.Discount = 30;
-        promotionInDb.DateStart = new DateTime(2024,1,1);
-        promotionInDb.DateEnd = new DateTime(2024,3,1);
-        
-        _repository.UpdatePromotion(promotionInDb);
-        
-        Assert.AreEqual(_myPromotion, promotionInDb);
+
+        Assert.AreEqual(promotionInDb.Label, newPromotion.Label);
     }
     
     [TestMethod]
