@@ -51,13 +51,15 @@ public class PromotionRepositoryTests
     public void WhenModifyingAPromotion_ShouldUpdateThePromotionInPromotionsTable()
     {
         _repository.AddPromotion(_myPromotion);
-        _myPromotion.Label = "Descuento Verano";
-        _myPromotion.Discount = 30;
-        _myPromotion.DateStart = new DateTime(2024,1,1);
-        _myPromotion.DateEnd = new DateTime(2024,3,1);
-        _repository.UpdatePromotion(_myPromotion);
         
-        var promotionInDb = _context.Promotions.Find(_myPromotion.Label);
+        Promotion promotionInDb = _context.Promotions.Find(_myPromotion.Label);
+        
+        promotionInDb.Label = "Descuento Verano";
+        promotionInDb.Discount = 30;
+        promotionInDb.DateStart = new DateTime(2024,1,1);
+        promotionInDb.DateEnd = new DateTime(2024,3,1);
+        
+        _repository.UpdatePromotion(promotionInDb);
         
         Assert.AreEqual(_myPromotion, promotionInDb);
     }

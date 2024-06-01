@@ -39,5 +39,18 @@ public class PromotionsRepository
 
         _database.SaveChanges();
     }
+    
+    public void UpdatePromotion(Promotion promotion)
+    {
+        Promotion dbPromotion = _database.Promotions.FirstOrDefault(prom => prom.Label == promotion.Label);
+        if (dbPromotion != null)
+        {
+            dbPromotion.Label = promotion.Label;
+            dbPromotion.Discount = promotion.Discount;
+            dbPromotion.DateStart = promotion.DateStart;
+            dbPromotion.DateEnd = promotion.DateEnd;
+            _database.SaveChanges();
+        }
+    }
 }
 
