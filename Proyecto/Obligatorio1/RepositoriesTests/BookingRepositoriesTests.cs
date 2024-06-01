@@ -26,5 +26,13 @@ public class BookingRepositoriesTests
         Assert.AreEqual(_booking.PersonEmail, bookingInRepo.PersonEmail);
     }
     
+    [TestMethod]
+    public void WhenGettingBookingFromRepositoryShouldReturnIt()
+    {
+        _bookingRepositories.AddToRepository(_booking);
+        Booking bookingInRepo = _bookingRepositories.GetFromRepository(_booking.PersonEmail);
+        Assert.AreEqual(_booking.PersonEmail, bookingInRepo.PersonEmail);
+    }
+    
  
 }
