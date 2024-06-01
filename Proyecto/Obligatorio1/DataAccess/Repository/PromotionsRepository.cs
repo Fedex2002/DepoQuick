@@ -1,5 +1,6 @@
 using DataAccess.Context;
 using Model;
+using Model.Exceptions;
 
 namespace DataAccess.Repository;
 
@@ -14,8 +15,12 @@ public class PromotionsRepository
     
     public void AddPromotion(Promotion promotion)
     {
+        if (_database.Promotions.Any(promotion => promotion.Label == promotion.Label))
+        {
+            throw new RepositoryExceptions("The promotion already exists");
+        }
+        
         AddNewPromotionToPromotionsTable(promotion);
-
     }
     private void AddNewPromotionToPromotionsTable(Promotion promotion)
     {
