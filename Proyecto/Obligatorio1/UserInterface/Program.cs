@@ -1,4 +1,6 @@
+using DataAccess.Context;
 using Logic;
+using Microsoft.EntityFrameworkCore;
 using Repositories;
 
 
@@ -26,6 +28,12 @@ BookingLogic bookingLogic = new BookingLogic(bookingRepositories);
 builder.Services.AddSingleton(bookingLogic);
 AdministratorLogic administratorLogic = new AdministratorLogic(bookingRepositories);
 builder.Services.AddSingleton(administratorLogic);
+
+builder.Services.AddDbContextFactory<ApplicationDbContext>(
+    options => options.UseSqlServer(
+        builder.Configuration.GetConnectionString("ApplicationDBLocalConnection"),
+        providerOptions => providerOptions.EnableRetryOnFailure())
+    );
 
 var app = builder.Build();
 
