@@ -92,4 +92,14 @@ public class PromotionRepositoryTests
         
         Assert.IsTrue(exists);
     }
+    
+    [TestMethod]
+    public void WhenPromotionIsDeleted_ShouldEliminateThePromotionFromTheDatabase()
+    {
+        _repository.AddPromotion(_myPromotion);
+        
+        _repository.DeletePromotion(_myPromotion.Label);
+        
+        Assert.AreEqual(0, _context.Promotions.Count());
+    }
 }
