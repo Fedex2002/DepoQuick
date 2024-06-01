@@ -98,7 +98,7 @@ public class PromotionRepositoryTests
     {
         _repository.AddPromotion(_myPromotion);
         
-        _repository.DeletePromotion(_myPromotion.Label);
+        _repository.DeletePromotion(_myPromotion);
         
         Assert.AreEqual(0, _context.Promotions.Count());
     }

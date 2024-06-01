@@ -40,6 +40,16 @@ public class PromotionsRepository
         _database.SaveChanges();
     }
     
+    public void DeletePromotion(Promotion promotion)
+    {
+        Promotion dbPromotion = FindPromotionByLabel(promotion.Label);
+        if (dbPromotion != null)
+        {
+            _database.Promotions.Remove(dbPromotion);
+            _database.SaveChanges();
+        }
+    }
+    
     public void UpdatePromotion(Promotion promotion, Promotion newPromotion)
     {
         Promotion dbPromotion = FindPromotionByLabel(promotion.Label);
