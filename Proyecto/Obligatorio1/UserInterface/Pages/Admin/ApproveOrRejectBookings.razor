@@ -45,7 +45,7 @@
                     }
                     else
                     {
-                        @foreach (var user in _allUsers)
+                        @foreach (var user in _allBookingDtos)
                         {
                             @foreach (var booking in user.Bookings)
                             {
@@ -137,7 +137,7 @@
 @code {
     private bool _hasBookings = false;
     private bool _showRejectInput = false;
-    private List<UserDto> _allUsers = new List<UserDto>();
+    private List<BookingDto> _allBookingDtos = new List<BookingDto>();
     private BookingDto _selectedBooking;
     readonly Dictionary<string, DateTime> _dateStart = new Dictionary<string, DateTime>();
     readonly Dictionary<string, DateTime> _dateEnd = new Dictionary<string, DateTime>();
@@ -154,10 +154,8 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _allUsers = administratorLogic.GetUsersDto();
-        foreach (var user in _allUsers)
-        {
-            foreach (var bookingDto in user.Bookings)
+        _allBookingDtos = BookingLogic.GetBookingsDto();
+            foreach (var bookingDto in _allBookingDtos)
             {
                 _totalPrice[bookingDto.StorageUnitDto.Id] = BookingLogic.CalculateTotalPriceOfBooking(bookingDto);
                 _dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
