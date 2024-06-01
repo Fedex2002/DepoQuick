@@ -136,7 +136,7 @@ public class AdministratorLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenAdministratorTriesToRejectABookingAndUserDidNotMakeThePaymentShouldThrowException()
     {
-        _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "Rejected");
+        _administratorLogic.SetRejectionMessage(_personDto, _bookingDto, "Rejected");
     }
     
     [TestMethod]
