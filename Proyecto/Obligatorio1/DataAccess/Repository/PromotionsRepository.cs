@@ -58,5 +58,10 @@ public class PromotionsRepository
         Promotion promotion = _database.Promotions.FirstOrDefault(prom => prom.Label == label);
         return promotion;
     }
+    
+    public List<Promotion> GetAllPromotions()
+    {
+        return _database.Promotions.ToList();
+    }
 }
 
