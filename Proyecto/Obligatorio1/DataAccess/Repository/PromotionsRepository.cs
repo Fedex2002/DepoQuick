@@ -15,13 +15,24 @@ public class PromotionsRepository
     
     public void AddPromotion(Promotion promotion)
     {
-        if (_database.Promotions.Any(promotion => promotion.Label == promotion.Label))
+        if (PromotionAlreadyExists(promotion))
         {
-            throw new RepositoryExceptions("The promotion already exists");
+            PromotionAlreadyExistsSoThrowException();
         }
         
         AddNewPromotionToPromotionsTable(promotion);
     }
+
+    private static void PromotionAlreadyExistsSoThrowException()
+    {
+        throw new RepositoryExceptions("The promotion already exists");
+    }
+
+    private bool PromotionAlreadyExists(Promotion newPromotion)
+    {
+        return _database.Promotions.Any(promotion => promotion.Label == newPromotion.Label);
+    }
+
     private void AddNewPromotionToPromotionsTable(Promotion promotion)
     {
         _database.Promotions.Add(promotion);
