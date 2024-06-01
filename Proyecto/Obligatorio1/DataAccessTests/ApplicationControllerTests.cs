@@ -41,5 +41,17 @@ namespace DataAccessTests
             
             Assert.IsInstanceOfType(promotion, typeof(Promotion));
         }
+        
+        [TestMethod]
+        public void WhenControllerAddsNewPromotion_ShouldAddItToPromotionsRepository()
+        {
+            PromotionDto promotionDto = new PromotionDto("Winter discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+            
+            Promotion promotion = _controller.CreatePromotion(promotionDto);
+            
+            _controller.AddPromotion(promotion);
+            
+            Assert.AreEqual(1, _controller.PromotionsRepository.GetAllPromotions().Count);
+        }
     }
 }
