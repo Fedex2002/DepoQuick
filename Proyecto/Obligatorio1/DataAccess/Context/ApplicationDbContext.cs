@@ -21,6 +21,6 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Person>()
             .HasKey(p => p.Email); 
         modelBuilder.Entity<Promotion>()
-            .HasKey(p => p.Label); 
+            .HasKey(p => p.Id); 
     }
 }

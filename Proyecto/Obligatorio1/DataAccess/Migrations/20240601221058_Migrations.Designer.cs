@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240601185140_PromotionMigration")]
-    partial class PromotionMigration
+    [Migration("20240601221058_Migrations")]
+    partial class Migrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,8 +52,11 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Model.Promotion", b =>
                 {
-                    b.Property<string>("Label")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DateEnd")
                         .HasColumnType("datetime2");
@@ -64,7 +67,11 @@ namespace DataAccess.Migrations
                     b.Property<int>("Discount")
                         .HasColumnType("int");
 
-                    b.HasKey("Label");
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Promotions");
                 });
