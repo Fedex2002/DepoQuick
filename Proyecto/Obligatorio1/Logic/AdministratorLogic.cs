@@ -164,18 +164,7 @@ public class AdministratorLogic
     
     public List<Booking> GetAllUserBookings()
     {
-        List<Person> users = _personRepositories.GetAllFromRepository();
-        List<Booking> allBookings = new List<Booking>();
-    
-        foreach (var person in users)
-        {
-            if (person is User user)
-            {
-                allBookings.AddRange(user.Bookings);
-            }
-        }
-    
-        return allBookings;
+        return _bookingRepositories.GetAllFromRepository();
     }
     
     public void ExportToCsv(string filePath)
