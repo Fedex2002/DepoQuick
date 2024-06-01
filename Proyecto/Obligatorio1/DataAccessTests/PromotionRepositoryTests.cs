@@ -74,4 +74,15 @@ public class PromotionRepositoryTests
         Assert.AreEqual(_myPromotion, promotionInDb);
     }
     
+    [TestMethod]
+    public void WhenGettingAllPromotions_ShouldReturnAllThePromotionsInTheDatabase()
+    {
+        Promotion promotion2 = new Promotion("Descuento Verano", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _repository.AddPromotion(_myPromotion);
+        _repository.AddPromotion(promotion2);
+        
+        List<Promotion> promotions = _repository.GetAllPromotions();
+        
+        Assert.AreEqual(2, promotions.Count);
+    }
 }
