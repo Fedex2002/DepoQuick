@@ -110,8 +110,8 @@ public class BookingLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenUserTriesToBookTheSameStorageUnitWithPromotionTwiceShouldThrowException()
     {
-        _bookingLogic.AddBookingToUser(_userDto, _mybookingDto);
-        _bookingLogic.AddBookingToUser(_userDto, _mybookingDto);
+        _bookingLogic.AddBooking(_userDto, _mybookingDto);
+        _bookingLogic.AddBooking(_userDto, _mybookingDto);
     }
 
     [TestMethod]
