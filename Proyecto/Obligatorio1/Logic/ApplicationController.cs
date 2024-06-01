@@ -19,4 +19,9 @@ public class ApplicationController
         Promotion promotion = new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
         return promotion;
     }
+    
+    public void AddPromotion(Promotion promotion)
+    {
+        PromotionsRepository.AddPromotion(promotion);
+    }
 }
