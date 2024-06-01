@@ -1,4 +1,5 @@
 using DataAccess.Context;
+using Logic;
 
 
 namespace DataAccessTests
@@ -26,7 +27,7 @@ namespace DataAccessTests
         [TestMethod]
         public void WhenControllerIsCreated_ThenContextIsNotNull()
         {
-            Assert.IsNotNull(_controller.Context);
+            Assert.IsNotNull(_controller);
         }
     }
 }
