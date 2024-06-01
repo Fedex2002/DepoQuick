@@ -1,4 +1,5 @@
 using DataAccess.Context;
+using DataAccess.Repository;
 using Model;
 
 namespace DataAccessTests;
@@ -6,6 +7,7 @@ namespace DataAccessTests;
 [TestClass]
 public class PromotionRepositoryTests
 {
+    private PromotionsRepository _repository;
     private ApplicationDbContext _context;
     private readonly IApplicationDbContextFactory _contextFactory = new InMemoryAppContextFactory();
     private Promotion _myPromotion;
