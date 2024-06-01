@@ -50,9 +50,9 @@ public class BookingLogicTests
     }
     
     [TestMethod]
-    public void WhenUserMakesABookingShouldAddItToHisListOfBookings()
+    public void WhenUserMakesABookingShouldAddItToBookingRepositories()
     {
-        _bookingLogic.AddBookingToUser(_userDto, _mybookingDto);
+        _bookingLogic.AddBooking(_userDto, _mybookingDto);
     }
     
     [TestMethod]
