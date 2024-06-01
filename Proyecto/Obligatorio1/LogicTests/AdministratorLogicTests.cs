@@ -129,7 +129,7 @@ public class AdministratorLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenAdministratorTriesToApproveABookingAndUserDidNotMakeThePaymentShouldThrowException()
     {
-        _administratorLogic.ApproveBooking(_userDto, _bookingDto);
+        _administratorLogic.ApproveBooking(_personDto, _bookingDto);
     }
     
     [TestMethod]
