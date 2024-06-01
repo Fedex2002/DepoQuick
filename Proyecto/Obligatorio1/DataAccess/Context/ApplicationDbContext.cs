@@ -6,6 +6,7 @@ namespace DataAccess.Context;
 public class ApplicationDbContext : DbContext
 {
     public DbSet<Person> Persons { get; set; }
+    public DbSet<Promotion> Promotions { get; set; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
@@ -19,5 +20,7 @@ public class ApplicationDbContext : DbContext
     {
         modelBuilder.Entity<Person>()
             .HasKey(p => p.Email); 
-    }
+        modelBuilder.Entity<Promotion>()
+            .HasKey(p => p.Label); 
+    }   
 }
