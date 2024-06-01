@@ -111,8 +111,8 @@ public class AdministratorLogicTests
     {
         _bookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "Rejected",
-            "Reservado", false,_user.Email);
-        _administratorLogic.ApproveBooking(_userDto, _bookingDto);
+            "Reservado", false,_person.Email);
+        _administratorLogic.ApproveBooking(_personDto, _bookingDto);
     }
     
     [TestMethod]
