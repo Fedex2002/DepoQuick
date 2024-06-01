@@ -4,7 +4,15 @@
 @{
     Layout = "_Layout";
 }
-
+<script>
+    function downloadCsv(filename, csvData) {
+        var blob = new Blob([csvData], { type: 'text/csv' });
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+    }
+</script>
 
 
 <component type="typeof(App)" render-mode="ServerPrerendered"/>

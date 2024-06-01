@@ -5,7 +5,7 @@
 @inject SessionLogic sessionLogic
 <PageTitle>DepoQuick</PageTitle>
 
-@if(sessionLogic.CurrentPerson is AdministratorDto)
+@if(sessionLogic.CurrentPerson.IsAdmin)
 {
     <div class="container">
         <h1 class="mt-3">DepoQuick</h1>

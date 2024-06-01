@@ -4,13 +4,14 @@ using Logic.DTOs;
 using Model;
 using Model.Enums;
 using Model.Exceptions;
+using RepositoriesInterface;
 
 namespace LogicTests;
 
 [TestClass]
 public class AdministratorLogicTests
 {
-    private PersonRepositories? _personRepo;
+    private BookingRepositories? _bookingRepo;
     private AdministratorLogic? _administratorLogic;
     private List<Booking>? _bookings;
     private Promotion? _promotion;
@@ -19,8 +20,8 @@ public class AdministratorLogicTests
     private List<Promotion>? _promotions;
     private BookingDto? _bookingDto;
     private Booking? _booking;
-    private UserDto? _userDto;
-    private User? _user;
+    private Person _person;
+    private PersonDto _personDto;
     private List<DateRange>? _availableDates;
     private List<DateRangeDto>? _availableDatesDto;
     private List<BookingDto> _bookingsDto;
@@ -29,8 +30,8 @@ public class AdministratorLogicTests
     [TestInitialize]
     public void TestInitialize()
     {
-        _personRepo = new PersonRepositories();
-        _administratorLogic = new AdministratorLogic(_personRepo);
+        _bookingRepo = new BookingRepositories();
+        _administratorLogic = new AdministratorLogic(_bookingRepo);
         _bookings = new List<Booking>();
         _promotions = new List<Promotion>();
         _promotionsDto = new List<PromotionDto>();
@@ -40,20 +41,19 @@ public class AdministratorLogicTests
         _availableDates.Add(new DateRange(new DateTime(2024, 5, 24), new DateTime(2024, 5, 30)));
         _booking = new Booking(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnit("12", AreaType.A, SizeType.Small, true, _promotions, _availableDates), "", "Reservado",
-            false);
-        _bookings.Add(_booking);
-        _user = new User("John", "Doe", "johndoe@gmail.com", "PassWord921#", _bookings);
-        _personRepo.AddToRepository(_user);
+            false,"johndoe@gmail.com");
+        _bookingRepo.AddToRepository(_booking);
+         _person= new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
         _promotionDto = new PromotionDto("Winter Discount", 25, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15));
         _promotionsDto.Add(_promotionDto);
         _availableDatesDto = new List<DateRangeDto>();
         _availableDatesDto.Add(new DateRangeDto(new DateTime(2024, 5, 24), new DateTime(2024, 5, 30)));
         _bookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
-            "Reservado", false);
+            "Reservado", false,_person.Email);
         _bookingsDto = new List<BookingDto>();
         _bookingsDto.Add(_bookingDto);
-        _userDto = new UserDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", _bookingsDto);
+        _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
     }
 
     [TestMethod]
@@ -61,62 +61,58 @@ public class AdministratorLogicTests
     {
         _bookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
-            "Reservado", true);
-        _administratorLogic.ApproveBooking(_userDto, _bookingDto);
+            "Reservado", true, _person.Email);
+        _administratorLogic.ApproveBooking(_personDto, _bookingDto);
+        Assert.IsTrue(_bookingDto.Approved);
+        Assert.AreEqual("Capturado", _bookingDto.Status);
     }
-
+    
     [TestMethod]
     public void WhenAdministratorRejectsABookingDtoShouldWriteARejectionMessage()
     {
         _bookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
-            "Reservado", true);
+            "Reservado", true,_person.Email);
         string rejectionMessage = "The booking has been rejected";
-        _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, rejectionMessage);
+        _administratorLogic.SetRejectionMessage(_personDto, _bookingDto, rejectionMessage);
     }
-
+    
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenAdministratorRejectsABookingDtoWithEmptyMessageShouldThrowException()
     {
-        _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "");
+        _administratorLogic.SetRejectionMessage(_personDto, _bookingDto, "");
     }
-
-    [TestMethod]
-    public void WhenAdministratorIsTryingToApproveOrRejectBookingsShouldGetAListOfUsersDto()
-    {
-        List<UserDto> users = _administratorLogic.GetUsersDto();
-        Assert.IsTrue(users.Count > 0);
-    }
-
+    
+    
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenAdministratorAlreadyApprovedABookingShouldThrowException()
     {
         _bookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
-            "Reservado", true);
-        _administratorLogic.ApproveBooking(_userDto, _bookingDto);
+            "Reservado", true,_person.Email);
+        _administratorLogic.ApproveBooking(_personDto, _bookingDto);
     }
-
+    
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenAdministratorAlreadyRejectedABookingShouldThrowException()
     {
         _bookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "Rejected",
-            "Reservado", true);
-        _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "Rejected");
+            "Reservado", true,_person.Email);
+        _administratorLogic.SetRejectionMessage(_personDto, _bookingDto, "Rejected");
     }
-
+    
     [TestMethod] 
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenAdministratorAlreadyRejectedABookingAndTriesToApproveItShouldThrowException()
     {
         _bookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "Rejected",
-            "Reservado", false);
-        _administratorLogic.ApproveBooking(_userDto, _bookingDto);
+            "Reservado", false,_person.Email);
+        _administratorLogic.ApproveBooking(_personDto, _bookingDto);
     }
     
     [TestMethod]
@@ -125,30 +121,30 @@ public class AdministratorLogicTests
     {
         _bookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
-            "Reservado", false);
-        _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "Rejected");
+            "Reservado", false,_person.Email);
+        _administratorLogic.SetRejectionMessage(_personDto, _bookingDto, "Rejected");
     }
-
+    
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenAdministratorTriesToApproveABookingAndUserDidNotMakeThePaymentShouldThrowException()
     {
-        _administratorLogic.ApproveBooking(_userDto, _bookingDto);
+        _administratorLogic.ApproveBooking(_personDto, _bookingDto);
     }
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenAdministratorTriesToRejectABookingAndUserDidNotMakeThePaymentShouldThrowException()
     {
-        _administratorLogic.SetRejectionMessage(_userDto, _bookingDto, "Rejected");
+        _administratorLogic.SetRejectionMessage(_personDto, _bookingDto, "Rejected");
     }
-
+    
     [TestMethod]
     public void WhenGettingAllBookingsFromUsersShouldReturnThem()
     {
         List<Booking> bookings = _administratorLogic.GetAllUserBookings();
         Assert.IsTrue(bookings.Count > 0);
-
+    
         
     }
     
