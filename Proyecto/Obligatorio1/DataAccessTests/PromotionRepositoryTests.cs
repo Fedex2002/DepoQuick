@@ -82,4 +82,14 @@ public class PromotionRepositoryTests
         
         Assert.AreEqual(2, promotions.Count);
     }
+    
+    [TestMethod]
+    public void WhenPromotionExists_ShouldReturnTrue()
+    {
+        _repository.AddPromotion(_myPromotion);
+        
+        bool exists = _repository.PromotionAlreadyExists(_myPromotion);
+        
+        Assert.IsTrue(exists);
+    }
 }
