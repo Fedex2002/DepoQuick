@@ -56,4 +56,10 @@ public class ApplicationController : IPromotionController
         PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd);
         return promotionDto;
     }
+
+    public Person CreatePerson(PersonDto personDto)
+    {
+        Person person = new Person(personDto.Name, personDto.Surname, personDto.Email, personDto.Password, personDto.IsAdmin);
+        return person;
+    }
 }
