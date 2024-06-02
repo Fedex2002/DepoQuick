@@ -19,6 +19,12 @@ public class PersonsRepository
         {
             PersonAlreadyExistsSoThrowException();
         }
+
+        AddNewPersonToPersonsTable(person);
+    }
+
+    private void AddNewPersonToPersonsTable(Person person)
+    {
         _database.Persons.Add(person);
 
         _database.SaveChanges();
