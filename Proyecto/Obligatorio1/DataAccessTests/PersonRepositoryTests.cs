@@ -54,9 +54,9 @@ public class PersonRepositoryTests
         _repository.AddPerson(_person);
         _repository.AddPerson(_person);
     }
-
+    
     [TestMethod]
-    public void WhenTryingToFindAPerson_ShouldReturnTrueIfPersonIsInTheDatabase()
+    public void WhenTryingToFindAPerson_ShouldReturnPersonIfItIsInTheDatabase()
     {
         _repository.AddPerson(_person);
 
