@@ -45,4 +45,14 @@ public class PersonsRepository
         Person person = _database.Persons.FirstOrDefault(pers => pers.Email == email);
         return person;
     }
+    
+    public void DeletePerson(Person person)
+    {
+        Person dbPerson = FindPersonByEmail(person.Email);
+        if (dbPerson != null)
+        {
+            _database.Persons.Remove(dbPerson);
+            _database.SaveChanges();
+        }
+    }
 }
