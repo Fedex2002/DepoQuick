@@ -55,4 +55,9 @@ public class PersonsRepository
             _database.SaveChanges();
         }
     }
+    
+    public List<Person> GetAllPersons()
+    {
+        return _database.Persons.ToList();
+    }
 }
