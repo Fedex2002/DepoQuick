@@ -94,5 +94,17 @@ namespace DataAccessTests
             
             Assert.AreEqual(1, promotions.Count);
         }
+        
+        [TestMethod]
+        public void WhenControllerNeedsToGetAPromotionDtoByLabel_ShouldReturnThePromotionDto()
+        {
+            PromotionDto promotionDto = new PromotionDto("Winter discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+            Promotion promotion = _controller.CreatePromotion(promotionDto);
+            _controller.AddPromotion(promotion);
+            
+            PromotionDto promotionDtoToFind = _controller.GetPromotionDtoFromLabel(promotionDto.Label);
+            
+            Assert.AreEqual(promotionDto, promotionDtoToFind);
+        }
     }
 }
