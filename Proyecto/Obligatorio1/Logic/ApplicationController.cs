@@ -35,4 +35,25 @@ public class ApplicationController : IPromotionController
     {
         PromotionsRepository.DeletePromotion(promotion);
     }
+    
+    public List<PromotionDto> GetPromotionsDto()
+    {
+        List<Promotion> promotions = PromotionsRepository.GetAllPromotions();
+        List<PromotionDto> promotionDtos = new List<PromotionDto>();
+        
+        foreach (Promotion promotion in promotions)
+        {
+            PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd);
+            promotionDtos.Add(promotionDto);
+        }
+        
+        return promotionDtos;
+    }
+    
+    public PromotionDto GetPromotionDtoFromLabel(string label)
+    {
+        Promotion promotion = PromotionsRepository.FindPromotionByLabel(label);
+        PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd);
+        return promotionDto;
+    }
 }
