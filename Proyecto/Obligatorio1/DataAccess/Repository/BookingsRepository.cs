@@ -45,5 +45,8 @@ public class BookingsRepository
         return _database.Bookings.ToList();
     }
     
-    
+    public Booking FindBookingByStorageUnitId(string id)
+    {
+        return _database.Bookings.FirstOrDefault(b => b.StorageUnit.Id == id);
+    }
 }
