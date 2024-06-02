@@ -1,5 +1,6 @@
 using DataAccess.Context;
 using Model;
+using Model.Exceptions;
 
 namespace DataAccess.Repository;
 
@@ -14,6 +15,10 @@ public class PersonsRepository
     
     public void AddPerson(Person person)
     {
+        if (PersonAlreadyExists(person))
+        {
+            throw new RepositoryExceptions("The person already exists");
+        }
         _database.Persons.Add(person);
 
         _database.SaveChanges();
