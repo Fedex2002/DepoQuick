@@ -88,7 +88,7 @@ public class PromotionRepositoryTests
     {
         _repository.AddPromotion(_myPromotion);
         
-        bool exists = _repository.PromotionAlreadyExists(_myPromotion);
+        bool exists = _repository.PromotionAlreadyExists(_myPromotion.Label);
         
         Assert.IsTrue(exists);
     }
