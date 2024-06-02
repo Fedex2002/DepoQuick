@@ -80,7 +80,7 @@ namespace DataAccessTests
             
             _controller.DeletePromotion(promotionToDelete);
             
-            Assert.IsFalse(_controller.PromotionsRepository.PromotionAlreadyExists(promotion));
+            Assert.IsFalse(_controller.PromotionsRepository.PromotionAlreadyExists(promotion.Label));
         }
 
         [TestMethod]
