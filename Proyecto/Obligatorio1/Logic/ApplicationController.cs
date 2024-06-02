@@ -3,16 +3,19 @@ using DataAccess.Repository;
 using Logic.DTOs;
 using Logic.Interfaces;
 using Model;
+using Repositories;
 
 namespace Logic;
 
 public class ApplicationController : IPromotionController
 {
     public PromotionsRepository PromotionsRepository;
+    public PersonsRepository PersonRepository;
     
     public ApplicationController(ApplicationDbContext context)
     {
         PromotionsRepository = new PromotionsRepository(context);
+        PersonRepository = new PersonsRepository(context);
     }
     
     public Promotion CreatePromotion(PromotionDto promotionDto)
@@ -61,5 +64,11 @@ public class ApplicationController : IPromotionController
     {
         Person person = new Person(personDto.Name, personDto.Surname, personDto.Email, personDto.Password, personDto.IsAdmin);
         return person;
+    }
+
+    public void AddPerson(Person person)
+    {
+        PersonRepository.AddPerson(person);
+        
     }
 }
