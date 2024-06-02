@@ -18,4 +18,9 @@ public class BookingsRepository
 
         _database.SaveChanges();
     }
+    
+    public bool BookingAlreadyExists(Booking booking)
+    {
+        return _database.Bookings.Any(b => b == booking);
+    }
 }
