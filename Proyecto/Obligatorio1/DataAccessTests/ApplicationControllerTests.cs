@@ -125,5 +125,15 @@ namespace DataAccessTests
             _controller.AddPerson(person);
             Assert.AreEqual(1, _controller.PersonRepository.GetAllPersons().Count);
         }
+
+        [TestMethod]
+
+        public void WhenControllerGetsAllPersonsDtoShouldReturnAListOfPersonsDto()
+        {
+            Person person = new Person("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#",false);
+            _controller.AddPerson(person);
+            List<PersonDto> persons = _controller.GetPersonsDto();
+            Assert.AreEqual(1, persons.Count);
+        }
     }
 }
