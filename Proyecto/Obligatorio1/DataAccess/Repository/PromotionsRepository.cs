@@ -50,9 +50,9 @@ public class PromotionsRepository
         }
     }
     
-    public void UpdatePromotion(Promotion promotion, Promotion newPromotion)
+    public void UpdatePromotion(string label, Promotion newPromotion)
     {
-        Promotion dbPromotion = FindPromotionByLabel(promotion.Label);
+        Promotion dbPromotion = FindPromotionByLabel(label);
         if (dbPromotion != null)
         {
             dbPromotion.Label = newPromotion.Label;

@@ -54,7 +54,7 @@ public class PromotionRepositoryTests
         
         Promotion newPromotion = new Promotion("Descuento Invierno", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         
-        _repository.UpdatePromotion(_myPromotion, newPromotion);
+        _repository.UpdatePromotion(_myPromotion.Label, newPromotion);
         
         Promotion promotionInDb = _repository.FindPromotionByLabel(_myPromotion.Label);
 
