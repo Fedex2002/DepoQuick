@@ -18,4 +18,9 @@ public class PersonsRepository
 
         _database.SaveChanges();
     }
+    
+    public bool PersonAlreadyExists(Person newPerson)
+    {
+        return _database.Persons.Any(person => person.Email == newPerson.Email);
+    }
 }
