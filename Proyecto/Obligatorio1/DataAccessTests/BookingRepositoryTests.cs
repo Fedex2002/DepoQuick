@@ -57,4 +57,14 @@ public class BookingRepositoryTests
         _repository.AddBooking(_booking);
         _repository.AddBooking(_booking);
     }
+
+    [TestMethod]
+    public void WhenGettingAllBookings_ShouldReturnAllTheBookingsInTheDatabase()
+    {
+        _repository.AddBooking(_booking);
+
+        List<Booking> bookings = _repository.GetAllBookings();
+
+        Assert.AreEqual(1, bookings.Count);
+    }
 }
