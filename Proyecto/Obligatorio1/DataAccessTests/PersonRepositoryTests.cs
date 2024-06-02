@@ -1,6 +1,7 @@
 using DataAccess.Context;
 using DataAccess.Repository;
 using Model;
+using Model.Exceptions;
 
 namespace DataAccessTests;
 
@@ -44,5 +45,13 @@ public class PersonRepositoryTests
         bool exists = _repository.PersonAlreadyExists(_person);
 
         Assert.IsTrue(exists);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(RepositoryExceptions))]
+    public void WhenPersonAlreadyExists_ShouldThrowRepositoryException()
+    {
+        _repository.AddPerson(_person);
+        _repository.AddPerson(_person);
     }
 }
