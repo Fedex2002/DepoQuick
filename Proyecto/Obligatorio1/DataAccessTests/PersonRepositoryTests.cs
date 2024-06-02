@@ -1,4 +1,5 @@
 using DataAccess.Context;
+using DataAccess.Repository;
 using Model;
 
 namespace DataAccessTests;
@@ -15,6 +16,7 @@ public class PersonRepositoryTests
     public void SetUp()
     {
         _context = _contextFactory.CreateDbContext();
+        _repository = new PersonsRepository(_context);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
     }
 
