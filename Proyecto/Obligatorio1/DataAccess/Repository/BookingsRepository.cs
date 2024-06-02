@@ -39,4 +39,9 @@ public class BookingsRepository
     {
         return _database.Bookings.Any(b => b == booking);
     }
+    
+    public List<Booking> GetAllBookings()
+    {
+        return _database.Bookings.ToList();
+    }
 }
