@@ -1,5 +1,7 @@
 using DataAccess.Context;
+using DataAccess.Repository;
 using Logic;
+using Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 
@@ -28,6 +30,10 @@ BookingLogic bookingLogic = new BookingLogic(bookingRepositories);
 builder.Services.AddSingleton(bookingLogic);
 AdministratorLogic administratorLogic = new AdministratorLogic(bookingRepositories);
 builder.Services.AddSingleton(administratorLogic);
+
+builder.Services.AddScoped<IPromotionController,ApplicationController>();
+
+builder.Services.AddScoped<PromotionsRepository>();
 
 builder.Services.AddDbContextFactory<ApplicationDbContext>(
     options => options.UseSqlServer(
