@@ -19,7 +19,12 @@ public class BookingsRepository
         {
             BookingAlreadyExistsSoThrowException();
         }
-        
+
+        AddNewBookingToBookingsTable(booking);
+    }
+
+    private void AddNewBookingToBookingsTable(Booking booking)
+    {
         _database.Bookings.Add(booking);
 
         _database.SaveChanges();
