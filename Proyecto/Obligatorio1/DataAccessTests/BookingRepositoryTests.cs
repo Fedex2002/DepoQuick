@@ -38,4 +38,14 @@ public class BookingRepositoryTests
 
         Assert.AreEqual(_booking, bookingInDb);
     }
+
+    [TestMethod]
+    public void WhenBookingExists_ShouldReturnTrue()
+    {
+        _repository.AddBooking(_booking);
+
+        bool exists = _repository.BookingAlreadyExists(_booking);
+
+        Assert.IsTrue(exists);
+    }
 }
