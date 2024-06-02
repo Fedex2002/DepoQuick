@@ -74,4 +74,16 @@ public class PersonRepositoryTests
 
         Assert.IsFalse(_repository.PersonAlreadyExists(_person));
     }
+    
+    [TestMethod]
+    public void WhenGettingAllPersons_ShouldReturnAllThePersonsInTheDatabase()
+    {
+        Person person2 = new Person("Fede", "Ramos", "federamos@gmail.com", "PassWord921#", false);
+        _repository.AddPerson(_person);
+        _repository.AddPerson(person2);
+        
+        List<Person> persons = _repository.GetAllPersons();
+        
+        Assert.AreEqual(2, persons.Count);
+    }
 }
