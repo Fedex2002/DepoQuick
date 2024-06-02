@@ -26,7 +26,7 @@ public class ApplicationController : IPromotionController
         PromotionsRepository.AddPromotion(promotion);
     }
     
-    public void UpdatePromotion(Promotion promotion, Promotion newPromotion)
+    public void UpdatePromotion(string promotion, Promotion newPromotion)
     {
         PromotionsRepository.UpdatePromotion(promotion, newPromotion);
     }
