@@ -7,7 +7,7 @@ using Repositories;
 
 namespace Logic;
 
-public class ApplicationController : IPromotionController
+public class ApplicationController : IPromotionController, IPersonController
 {
     public PromotionsRepository PromotionsRepository;
     public PersonsRepository PersonRepository;
