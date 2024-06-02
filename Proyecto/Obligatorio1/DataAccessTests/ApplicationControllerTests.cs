@@ -106,5 +106,15 @@ namespace DataAccessTests
             
             Assert.AreEqual(promotionDto.Label, promotionDtoToFind.Label);
         }
+
+        [TestMethod]
+
+        public void WhenControlllerCreatesAPersonShouldReturnAPersonObject()
+        {
+            PersonDto personDto = new PersonDto("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#",false);
+            _controller.CreatePerson(personDto);
+            Assert.IsInstanceOfType(_controller.CreatePerson(personDto), typeof(Person));
+            
+        }
     }
 }
