@@ -64,4 +64,14 @@ public class PersonRepositoryTests
 
         Assert.AreEqual(_person, personInDb);
     }
+    
+    [TestMethod]
+    public void WhenPersonIsDeleted_ShouldEliminateThePersonFromTheDatabase()
+    {
+        _repository.AddPerson(_person);
+
+        _repository.DeletePerson(_person);
+
+        Assert.IsFalse(_repository.PersonAlreadyExists(_person));
+    }
 }
