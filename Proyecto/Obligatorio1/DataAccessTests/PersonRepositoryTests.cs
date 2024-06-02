@@ -54,4 +54,14 @@ public class PersonRepositoryTests
         _repository.AddPerson(_person);
         _repository.AddPerson(_person);
     }
+
+    [TestMethod]
+    public void WhenTryingToFindAPerson_ShouldReturnTrueIfPersonIsInTheDatabase()
+    {
+        _repository.AddPerson(_person);
+
+        Person personInDb = _repository.FindPersonByEmail(_person.Email);
+
+        Assert.AreEqual(_person, personInDb);
+    }
 }
