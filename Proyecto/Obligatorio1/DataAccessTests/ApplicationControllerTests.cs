@@ -82,5 +82,17 @@ namespace DataAccessTests
             
             Assert.IsFalse(_controller.PromotionsRepository.PromotionAlreadyExists(promotion));
         }
+
+        [TestMethod]
+        public void WhenControllerNeedsToGetAllPromotions_ShouldReturnAListOfPromotionsDto()
+        {
+            PromotionDto promotionDto = new PromotionDto("Winter discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+            Promotion promotion = _controller.CreatePromotion(promotionDto);
+            _controller.AddPromotion(promotion);
+            
+            List<PromotionDto> promotions = _controller.GetPromotionsDto();
+            
+            Assert.AreEqual(1, promotions.Count);
+        }
     }
 }
