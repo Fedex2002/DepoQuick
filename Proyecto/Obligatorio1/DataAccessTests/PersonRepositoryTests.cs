@@ -35,4 +35,14 @@ public class PersonRepositoryTests
 
         Assert.AreEqual(_person, personInDb);
     }
+
+    [TestMethod]
+    public void WhenPersonExists_ShouldReturnTrue()
+    {
+        _repository.AddPerson(_person);
+
+        bool exists = _repository.PersonAlreadyExists(_person);
+
+        Assert.IsTrue(exists);
+    }
 }
