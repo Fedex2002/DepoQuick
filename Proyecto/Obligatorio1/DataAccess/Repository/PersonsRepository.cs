@@ -39,4 +39,10 @@ public class PersonsRepository
     {
         return _database.Persons.Any(person => person.Email == newPerson.Email);
     }
+    
+    public Person FindPersonByEmail(string email)
+    {
+        Person person = _database.Persons.FirstOrDefault(pers => pers.Email == email);
+        return person;
+    }
 }
