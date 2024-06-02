@@ -67,4 +67,14 @@ public class BookingRepositoryTests
 
         Assert.AreEqual(1, bookings.Count);
     }
+
+    [TestMethod]
+    public void WhenTryingToFindABooking_ShouldReturnBookingIfItIsInTheDatabase()
+    {
+        _repository.AddBooking(_booking);
+
+        Booking bookingInDb = _repository.FindBookingByStorageUnitId(_booking.StorageUnit.Id);
+
+        Assert.AreEqual(_booking, bookingInDb);
+    }
 }
