@@ -2,6 +2,7 @@ using DataAccess.Context;
 using DataAccess.Repository;
 using Model;
 using Model.Enums;
+using Model.Exceptions;
 
 namespace DataAccessTests;
 
@@ -47,5 +48,13 @@ public class BookingRepositoryTests
         bool exists = _repository.BookingAlreadyExists(_booking);
 
         Assert.IsTrue(exists);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(RepositoryExceptions))]
+    public void WhenBookingAlreadyExists_ShouldThrowRepositoryException()
+    {
+        _repository.AddBooking(_booking);
+        _repository.AddBooking(_booking);
     }
 }
