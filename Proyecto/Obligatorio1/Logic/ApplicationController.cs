@@ -49,4 +49,11 @@ public class ApplicationController : IPromotionController
         
         return promotionDtos;
     }
+    
+    public PromotionDto GetPromotionDtoFromLabel(string label)
+    {
+        Promotion promotion = PromotionsRepository.FindPromotionByLabel(label);
+        PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd);
+        return promotionDto;
+    }
 }

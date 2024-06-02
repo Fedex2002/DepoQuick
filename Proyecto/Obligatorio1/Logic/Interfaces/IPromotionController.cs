@@ -10,6 +10,6 @@ public interface IPromotionController
     public void UpdatePromotion(Promotion promotion, Promotion newPromotion);
     public void DeletePromotion(Promotion promotion);
     public List<PromotionDto> GetPromotionsDto();
-    //public PromotionDto GetPromotionDtoFromLabel(string label);
+    public PromotionDto GetPromotionDtoFromLabel(string label);
     
 }

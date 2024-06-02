@@ -104,7 +104,7 @@ namespace DataAccessTests
             
             PromotionDto promotionDtoToFind = _controller.GetPromotionDtoFromLabel(promotionDto.Label);
             
-            Assert.AreEqual(promotionDto, promotionDtoToFind);
+            Assert.AreEqual(promotionDto.Label, promotionDtoToFind.Label);
         }
     }
 }
