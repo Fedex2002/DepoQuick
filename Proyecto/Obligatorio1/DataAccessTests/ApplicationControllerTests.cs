@@ -116,5 +116,13 @@ namespace DataAccessTests
             Assert.IsInstanceOfType(_controller.CreatePerson(personDto), typeof(Person));
             
         }
+
+        [TestMethod]
+
+        public void WhenControllerAddsAPersonShouldAddItToTheRepository()
+        {
+            Person person = new Person("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#",false);
+            _controller.AddPerson(person);
+        }
     }
 }
