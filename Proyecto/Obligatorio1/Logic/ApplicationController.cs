@@ -71,4 +71,18 @@ public class ApplicationController : IPromotionController
         PersonRepository.AddPerson(person);
         
     }
+
+    public List<PersonDto> GetPersonsDto()
+    {
+        List<Person> persons = PersonRepository.GetAllPersons();
+        List<PersonDto> personDtos = new List<PersonDto>();
+        
+        foreach (Person person in persons)
+        {
+            PersonDto personDto = new PersonDto(person.Name, person.Surname, person.Email, person.Password, person.IsAdmin);
+            personDtos.Add(personDto);
+        }
+        
+        return personDtos;
+    }
 }
