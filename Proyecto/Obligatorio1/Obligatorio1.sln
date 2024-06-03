@@ -16,6 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoriesInterface", "Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicTests", "LogicTests\LogicTests.csproj", "{25D89C80-6974-4D38-8F19-96EA008CDDA3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{BD3A1FA9-A28F-4847-952B-35CE6BF1B15D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessTests", "DataAccessTests\DataAccessTests.csproj", "{C52620D9-7429-4900-BDA1-FB1EFE76BA12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,5 +58,13 @@ Global
 		{25D89C80-6974-4D38-8F19-96EA008CDDA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25D89C80-6974-4D38-8F19-96EA008CDDA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25D89C80-6974-4D38-8F19-96EA008CDDA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD3A1FA9-A28F-4847-952B-35CE6BF1B15D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD3A1FA9-A28F-4847-952B-35CE6BF1B15D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD3A1FA9-A28F-4847-952B-35CE6BF1B15D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD3A1FA9-A28F-4847-952B-35CE6BF1B15D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C52620D9-7429-4900-BDA1-FB1EFE76BA12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C52620D9-7429-4900-BDA1-FB1EFE76BA12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C52620D9-7429-4900-BDA1-FB1EFE76BA12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C52620D9-7429-4900-BDA1-FB1EFE76BA12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
