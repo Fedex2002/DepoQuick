@@ -41,4 +41,12 @@ public class TxtReportExporterTests
         string actualData = _txtReportExporter.Export(_bookings);
         Assert.AreEqual(expectedData, actualData);
     }
+    
+    [TestMethod]
+    public void WhenGettingDataFromBookingsShouldReturnIt()
+    {
+        string expectedData = "StorageUnit Id: \nArea: A\nSize: Small\nClimatization: True\nStartDate: 2024-07-01\nEndDate: 2024-08-15\nStatus: Reservado\n";
+        Assert.AreEqual(expectedData, _txtReportExporter.GetData(_bookings));
+        
+    }
 }
