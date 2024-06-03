@@ -9,7 +9,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<Promotion> Promotions { get; set; }
     public DbSet<Booking> Bookings { get; set; }
     public DbSet<StorageUnit> StorageUnits { get; set; }
-    public DbSet<DateRange> DateRanges { get; set; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {

@@ -66,7 +66,7 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DateRanges",
+                name: "DateRange",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -77,9 +77,9 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DateRanges", x => x.Id);
+                    table.PrimaryKey("PK_DateRange", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DateRanges_StorageUnits_StorageUnitId",
+                        name: "FK_DateRange_StorageUnits_StorageUnitId",
                         column: x => x.StorageUnitId,
                         principalTable: "StorageUnits",
                         principalColumn: "Id");
@@ -113,8 +113,8 @@ namespace DataAccess.Migrations
                 column: "StorageUnitId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DateRanges_StorageUnitId",
-                table: "DateRanges",
+                name: "IX_DateRange_StorageUnitId",
+                table: "DateRange",
                 column: "StorageUnitId");
 
             migrationBuilder.CreateIndex(
@@ -130,7 +130,7 @@ namespace DataAccess.Migrations
                 name: "Bookings");
 
             migrationBuilder.DropTable(
-                name: "DateRanges");
+                name: "DateRange");
 
             migrationBuilder.DropTable(
                 name: "Persons");

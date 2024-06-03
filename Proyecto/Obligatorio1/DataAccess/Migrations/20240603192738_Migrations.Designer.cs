@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240602204548_Migrations")]
+    [Migration("20240603192738_Migrations")]
     partial class Migrations
     {
         /// <inheritdoc />
@@ -88,7 +88,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("StorageUnitId");
 
-                    b.ToTable("DateRanges");
+                    b.ToTable("DateRange");
                 });
 
             modelBuilder.Entity("Model.Person", b =>
