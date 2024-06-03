@@ -46,16 +46,6 @@ public class PersonsRepository
         return person;
     }
     
-    public void DeletePerson(Person person)
-    {
-        Person dbPerson = FindPersonByEmail(person.Email);
-        if (dbPerson != null)
-        {
-            _database.Persons.Remove(dbPerson);
-            _database.SaveChanges();
-        }
-    }
-    
     public List<Person> GetAllPersons()
     {
         return _database.Persons.ToList();

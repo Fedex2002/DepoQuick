@@ -54,25 +54,15 @@ public class PersonRepositoryTests
         _repository.AddPerson(_person);
         _repository.AddPerson(_person);
     }
-
+    
     [TestMethod]
-    public void WhenTryingToFindAPerson_ShouldReturnTrueIfPersonIsInTheDatabase()
+    public void WhenTryingToFindAPerson_ShouldReturnPersonIfItIsInTheDatabase()
     {
         _repository.AddPerson(_person);
 
         Person personInDb = _repository.FindPersonByEmail(_person.Email);
 
         Assert.AreEqual(_person, personInDb);
-    }
-    
-    [TestMethod]
-    public void WhenPersonIsDeleted_ShouldEliminateThePersonFromTheDatabase()
-    {
-        _repository.AddPerson(_person);
-
-        _repository.DeletePerson(_person);
-
-        Assert.IsFalse(_repository.PersonAlreadyExists(_person));
     }
     
     [TestMethod]

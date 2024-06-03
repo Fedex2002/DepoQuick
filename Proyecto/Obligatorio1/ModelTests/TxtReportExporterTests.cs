@@ -3,19 +3,19 @@ using Model.Enums;
 
 namespace ModelTests;
 [TestClass]
-public class CsvReportExporterTests
+public class TxtReportExporterTests
 {
     private Booking _mybooking;
-    private CsvReportExporter _csvReportExporter;
+    private TxtReportExporter _txtReportExporter;
     private List<Promotion> _promotions;
     private Promotion _mypromotion;
     private StorageUnit _mystorageunit;
     private List<DateRange> _availableDates;
     private List<Booking> _bookings;
     [TestInitialize]
-   public void TestInitialize()
+    public void TestInitialize()
     {
-        _csvReportExporter = new CsvReportExporter();
+        _txtReportExporter = new TxtReportExporter();
         _promotions = new List<Promotion>();
         _bookings = new List<Booking>();
         _availableDates = new List<DateRange>();
@@ -27,26 +27,26 @@ public class CsvReportExporterTests
     }
     
     [TestMethod]
-    public void CreatingEmptyCsvReportExporterShouldReturnEmpty()
+    public void CreatingEmptyTxtReportExporterShouldReturnEmpty()
     {
-        _csvReportExporter = new CsvReportExporter();
-        Assert.IsNotNull(_csvReportExporter);
+        _txtReportExporter = new TxtReportExporter();
+        Assert.IsNotNull(_txtReportExporter);
     }
-
+    
     [TestMethod]
-    public void WhenExportingAsCsvShouldReturnCorrectCsvString()
+    
+    public void WhenExportingAsTxtShouldReturnCorrectTxtString()
     {
-        string expectedData = "StorageUnit Id,Area,Size,Climatization,StartDate,EndDate,Status\r\n\"\",\"A\",\"Small\",\"True\",\"2024-07-01\",\"2024-08-15\",\"Reservado\"\r\n";
-        string actualData = _csvReportExporter.Export(_bookings);
+        string expectedData = "StorageUnit Id: \nArea: A\nSize: Small\nClimatization: True\nStartDate: 2024-07-01\nEndDate: 2024-08-15\nStatus: Reservado\n";
+        string actualData = _txtReportExporter.Export(_bookings);
         Assert.AreEqual(expectedData, actualData);
     }
-
+    
     [TestMethod]
     public void WhenGettingDataFromBookingsShouldReturnIt()
     {
-        string expectedData = "StorageUnit Id,Area,Size,Climatization,StartDate,EndDate,Status\r\n\"\",\"A\",\"Small\",\"True\",\"2024-07-01\",\"2024-08-15\",\"Reservado\"\r\n";
-        Assert.AreEqual(expectedData, _csvReportExporter.GetData(_bookings));
+        string expectedData = "StorageUnit Id: \nArea: A\nSize: Small\nClimatization: True\nStartDate: 2024-07-01\nEndDate: 2024-08-15\nStatus: Reservado\n";
+        Assert.AreEqual(expectedData, _txtReportExporter.GetData(_bookings));
         
     }
-
 }
