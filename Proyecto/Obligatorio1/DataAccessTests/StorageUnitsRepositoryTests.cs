@@ -82,7 +82,7 @@ public class StorageUnitsRepositoryTests
     {
         _repository.AddStorageUnit(_storageUnit);
 
-        _repository.RemoveStorageUnit(_storageUnit);
+        _repository.DeleteStorageUnit(_storageUnit);
 
         Assert.AreEqual(0, _context.StorageUnits.Count());
     }

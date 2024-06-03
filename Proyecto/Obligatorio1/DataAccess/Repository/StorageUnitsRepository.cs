@@ -40,7 +40,7 @@ public class StorageUnitsRepository
         return _database.StorageUnits.Any(s => s == storageUnit);
     }
     
-    public void RemoveStorageUnit(StorageUnit storageUnit)
+    public void DeleteStorageUnit(StorageUnit storageUnit)
     {
         StorageUnit dbStorageUnit = GetStorageUnit(storageUnit.Id);
         if (dbStorageUnit != null)
