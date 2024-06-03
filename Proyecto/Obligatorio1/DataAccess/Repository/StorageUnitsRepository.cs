@@ -44,4 +44,9 @@ public class StorageUnitsRepository
     {
         return _database.StorageUnits.FirstOrDefault(s => s.Id == id);
     }
+    
+    public List<StorageUnit> GetAllStorageUnits()
+    {
+        return _database.StorageUnits.ToList();
+    }
 }
