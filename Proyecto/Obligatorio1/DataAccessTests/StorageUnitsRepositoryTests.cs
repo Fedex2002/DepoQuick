@@ -2,6 +2,7 @@ using DataAccess.Context;
 using DataAccess.Repository;
 using Model;
 using Model.Enums;
+using Model.Exceptions;
 
 namespace DataAccessTests;
 
@@ -46,5 +47,13 @@ public class StorageUnitsRepositoryTests
         bool exists = _repository.StorageUnitAlreadyExists(_storageUnit);
 
         Assert.IsTrue(exists);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(RepositoryExceptions))]
+    public void WhenStorageUnitAlreadyExists_ShouldThrowRepositoryException()
+    {
+        _repository.AddStorageUnit(_storageUnit);
+        _repository.AddStorageUnit(_storageUnit);
     }
 }
