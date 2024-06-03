@@ -1,8 +1,9 @@
 using System.Text;
+using Model.Interfaces;
 
 namespace Model;
 
-public class TxtReportExporter
+public class TxtReportExporter : IReportExporter
 {
 
     public string Export(List<Booking> bookings)
