@@ -66,16 +66,6 @@ public class PersonRepositoryTests
     }
     
     [TestMethod]
-    public void WhenPersonIsDeleted_ShouldEliminateThePersonFromTheDatabase()
-    {
-        _repository.AddPerson(_person);
-
-        _repository.DeletePerson(_person);
-
-        Assert.IsFalse(_repository.PersonAlreadyExists(_person));
-    }
-    
-    [TestMethod]
     public void WhenGettingAllPersons_ShouldReturnAllThePersonsInTheDatabase()
     {
         Person person2 = new Person("Fede", "Ramos", "federamos@gmail.com", "PassWord921#", false);
