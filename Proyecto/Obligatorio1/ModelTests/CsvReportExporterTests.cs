@@ -34,21 +34,18 @@ public class CsvReportExporterTests
     }
 
     [TestMethod]
-
-    public void WhenExportingAsCsvShouldExportBookingsToPath()
+    public void WhenExportingAsCsvShouldReturnCorrectCsvString()
     {
-        string projectRoot = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
-        string relativePath = @"Output\Bookings.csv";
-        string filePath = Path.Combine(projectRoot, relativePath);
-        _csvReportExporter.Export(filePath, _bookings);
-        Assert.IsTrue(File.Exists(filePath));
+        string expectedData = "StorageUnit Id,Area,Size,Climatization,StartDate,EndDate,Status\r\n\"\",\"A\",\"Small\",\"True\",\"2024-07-01\",\"2024-08-15\",\"Reservado\"\r\n";
+        string actualData = _csvReportExporter.Export(_bookings);
+        Assert.AreEqual(expectedData, actualData);
     }
 
     [TestMethod]
     public void WhenGettingDataFromBookingsShouldReturnIt()
     {
-        string dataExpected = "DEPOSITO,RESERVA,PAGO\r\n,A,True,0,Small,1,False,1/7/2024 00:00:00,15/8/2024 00:00:00,Rejected,Reservado,False\r\n";
-        Assert.AreEqual(dataExpected, _csvReportExporter.GetData(_bookings));
+        string expectedData = "StorageUnit Id,Area,Size,Climatization,StartDate,EndDate,Status\r\n\"\",\"A\",\"Small\",\"True\",\"2024-07-01\",\"2024-08-15\",\"Reservado\"\r\n";
+        Assert.AreEqual(expectedData, _csvReportExporter.GetData(_bookings));
         
     }
 

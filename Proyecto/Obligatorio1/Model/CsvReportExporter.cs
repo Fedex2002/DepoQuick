@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Model;
 
 public class CsvReportExporter
@@ -7,18 +9,27 @@ public class CsvReportExporter
     {
     }
 
-    public void Export(string path, List<Booking> bookings)
+    public string Export(List<Booking> bookings)
     {
-        File.WriteAllText(path, GetData(bookings));
+        return GetData(bookings);
     }
     
     public string GetData(List<Booking> bookings)
     {
-        string data = "DEPOSITO,RESERVA,PAGO\r\n";
+        var csvBuilder = new StringBuilder();
+        csvBuilder.AppendLine("StorageUnit Id,Area,Size,Climatization,StartDate,EndDate,Status");
         foreach (var booking in bookings)
         {
-            data += booking.StorageUnit.Id +"," +booking.StorageUnit.Area+ "," +booking.StorageUnit.Climatization+ "," +booking.StorageUnit.AvailableDates.Count + "," +booking.StorageUnit.Size+ "," +booking.StorageUnit.Promotions.Count + "," + booking.Approved + "," + booking.DateStart + "," + booking.DateEnd + "," + booking.RejectedMessage + "," + booking.Status + "," + booking.Payment + "\r\n";
+            csvBuilder.AppendLine(
+                $"\"{booking.StorageUnit.Id}\"," +
+                $"\"{booking.StorageUnit.Area}\"," +
+                $"\"{booking.StorageUnit.Size}\"," +
+                $"\"{booking.StorageUnit.Climatization}\"," +
+                $"\"{booking.DateStart:yyyy-MM-dd}\"," +
+                $"\"{booking.DateEnd:yyyy-MM-dd}\"," +
+                $"\"{booking.Status}\""
+            );
         }
-        return data;
+        return csvBuilder.ToString().Replace("\n", "\r\n");
     }
 }
