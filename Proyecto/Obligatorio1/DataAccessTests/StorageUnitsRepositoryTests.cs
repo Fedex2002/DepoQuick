@@ -76,4 +76,14 @@ public class StorageUnitsRepositoryTests
 
         Assert.AreEqual(1, storageUnitsInDb.Count);
     }
+    
+    [TestMethod]
+    public void WhenRemovingAStorageUnit_ShouldRemoveTheStorageUnitFromTheDatabase()
+    {
+        _repository.AddStorageUnit(_storageUnit);
+
+        _repository.RemoveStorageUnit(_storageUnit);
+
+        Assert.AreEqual(0, _context.StorageUnits.Count());
+    }
 }
