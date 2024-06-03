@@ -44,8 +44,8 @@ public class CsvReportExporterTests
     [TestMethod]
     public void WhenGettingDataFromBookingsShouldReturnIt()
     {
-        string dataExpected = "DEPOSITO,RESERVA,PAGO\r\n,A,True,0,Small,1,False,1/7/2024 00:00:00,15/8/2024 00:00:00,Rejected,Reservado,False\r\n";
-        Assert.AreEqual(dataExpected, _csvReportExporter.GetData(_bookings));
+        string expectedData = "StorageUnit Id,Area,Size,Climatization,StartDate,EndDate,Status\r\n\"\",\"A\",\"Small\",\"True\",\"2024-07-01\",\"2024-08-15\",\"Reservado\"\r\n";
+        Assert.AreEqual(expectedData, _csvReportExporter.GetData(_bookings));
         
     }
 
