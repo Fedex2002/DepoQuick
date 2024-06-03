@@ -39,4 +39,9 @@ public class StorageUnitsRepository
     {
         return _database.StorageUnits.Any(s => s == storageUnit);
     }
+    
+    public StorageUnit GetStorageUnit(string id)
+    {
+        return _database.StorageUnits.FirstOrDefault(s => s.Id == id);
+    }
 }
