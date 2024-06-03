@@ -37,4 +37,14 @@ public class StorageUnitsRepositoryTests
 
         Assert.AreEqual(_storageUnit, storageUnitInDb);
     }
+    
+    [TestMethod]
+    public void WhenStorageUnitExists_ShouldReturnTrue()
+    {
+        _repository.AddStorageUnit(_storageUnit);
+
+        bool exists = _repository.StorageUnitAlreadyExists(_storageUnit);
+
+        Assert.IsTrue(exists);
+    }
 }
