@@ -66,4 +66,14 @@ public class StorageUnitsRepositoryTests
 
         Assert.AreEqual(_storageUnit, storageUnitInDb);
     }
+    
+    [TestMethod]
+    public void WhenGettingAllStorageUnits_ShouldReturnAllTheStorageUnitsInTheDatabase()
+    {
+        _repository.AddStorageUnit(_storageUnit);
+
+        List<StorageUnit> storageUnitsInDb = _repository.GetAllStorageUnits();
+
+        Assert.AreEqual(1, storageUnitsInDb.Count);
+    }
 }
