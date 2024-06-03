@@ -19,4 +19,9 @@ public class StorageUnitsRepository
         
         _database.SaveChanges();
     }
+    
+    public bool StorageUnitAlreadyExists(StorageUnit storageUnit)
+    {
+        return _database.StorageUnits.Any(s => s == storageUnit);
+    }
 }
