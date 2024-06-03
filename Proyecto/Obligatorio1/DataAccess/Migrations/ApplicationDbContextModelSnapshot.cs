@@ -85,7 +85,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("StorageUnitId");
 
-                    b.ToTable("DateRanges");
+                    b.ToTable("DateRange");
                 });
 
             modelBuilder.Entity("Model.Person", b =>
