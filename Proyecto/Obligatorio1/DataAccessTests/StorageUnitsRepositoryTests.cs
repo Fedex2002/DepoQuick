@@ -56,4 +56,14 @@ public class StorageUnitsRepositoryTests
         _repository.AddStorageUnit(_storageUnit);
         _repository.AddStorageUnit(_storageUnit);
     }
+    
+    [TestMethod]
+    public void WhenTryingToFindAStorageUnit_ShouldReturnTheStorageUnitIfItIsInTheDatabase()
+    {
+        _repository.AddStorageUnit(_storageUnit);
+
+        StorageUnit storageUnitInDb = _repository.GetStorageUnit(_storageUnit.Id);
+
+        Assert.AreEqual(_storageUnit, storageUnitInDb);
+    }
 }
