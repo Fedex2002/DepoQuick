@@ -32,4 +32,13 @@ public class TxtReportExporterTests
         _txtReportExporter = new TxtReportExporter();
         Assert.IsNotNull(_txtReportExporter);
     }
+    
+    [TestMethod]
+    
+    public void WhenExportingAsTxtShouldReturnCorrectTxtString()
+    {
+        string expectedData = "StorageUnit Id: \nArea: A\nSize: Small\nClimatization: True\nStartDate: 2024-07-01\nEndDate: 2024-08-15\nStatus: Reservado\n";
+        string actualData = _txtReportExporter.Export(_bookings);
+        Assert.AreEqual(expectedData, actualData);
+    }
 }
