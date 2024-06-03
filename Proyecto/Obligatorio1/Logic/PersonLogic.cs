@@ -89,5 +89,11 @@ public class PersonLogic
         
     }
 
+    public PersonDto GetPersonDtoFromEmail(string personEmail)
+    {
+        Person person = _personRepositories.GetFromRepository(personEmail);
+        PersonDto personDto = new PersonDto(person.Name, person.Surname, person.Email, person.Password, person.IsAdmin);
+        return personDto;
+    }
 }
     

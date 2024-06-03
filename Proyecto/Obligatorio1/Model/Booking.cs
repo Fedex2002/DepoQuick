@@ -1,8 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Model.Exceptions;
 namespace Model;
 
 public class Booking
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
     private bool _approved;
     private DateTime _dateStart = DateTime.MinValue;
     private DateTime _dateEnd = DateTime.MaxValue;

@@ -123,7 +123,7 @@
 
 @code {
     BookingDto _bookingDto;
-    UserDto _userDto;
+    PersonDto _personDto;
     DateRangeDto _dateRangeDto;
     Dictionary<string, DateTime> _dateStart = new Dictionary<string, DateTime>();
     Dictionary<string, DateTime> _dateEnd = new Dictionary<string, DateTime>();
@@ -160,14 +160,9 @@
             else
             {
                 BookingLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(_finalDateStart, _finalDateEnd, _dateRangeDto);
-                _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false);
-                if (sessionLogic.CurrentPerson is UserDto userDto)
-                {
-                    BookingLogic.AddBookingToUser(userDto, _bookingDto);
-                    userDto.Bookings.Add(_bookingDto);
+                _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false,sessionLogic.CurrentPerson.Email);
+                    BookingLogic.AddBooking(sessionLogic.CurrentPerson, _bookingDto);
                     _showUserConfirmationModal = true;
-                }
-
                 _dateRangeDto = new DateRangeDto(_finalDateStart, _finalDateEnd);
                 storageUnitLogic.ModifyOrRemoveDateRange(storageUnitDto, _dateRangeDto);
             }
@@ -186,7 +181,7 @@
             _finalDateStart = _dateStart[storageUnitDto.Id];
             _finalDateEnd = _dateEnd[storageUnitDto.Id];
             BookingLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(_finalDateStart, _finalDateEnd, _dateRangeDto);
-            _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false);
+            _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false,sessionLogic.CurrentPerson.Email);
             _totalPrice[storageUnitDto.Id] = BookingLogic.CalculateTotalPriceOfBooking(_bookingDto);
         }
         catch (Exception e)

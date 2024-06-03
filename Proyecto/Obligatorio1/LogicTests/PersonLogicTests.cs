@@ -81,7 +81,6 @@ public class PersonLogicTests
     public void WhenPersonIsTryingToLoginAndIsAdministratorShouldReturnPersonWithAdminPrivileges()
     {
         _person.IsAdmin = true;
-        _personRepo.AddToRepository(_person);
         PersonDto loggedInAdministratorDto = _personLogic.Login(_person.Email,_person.Password);
         Assert.AreEqual(_person.Name, loggedInAdministratorDto.Name);
         Assert.AreEqual(_person.Surname, loggedInAdministratorDto.Surname);
@@ -94,7 +93,6 @@ public class PersonLogicTests
     public void WhenPersonIsTryingToLoginAndIsUserShouldReturnPersonWithoutAdminPrivileges()
     {
         _person.IsAdmin = false;
-        _personRepo.AddToRepository(_person);
         PersonDto loggedInPersonDto = _personLogic.Login(_person.Email,_person.Password);
         
         Assert.AreEqual(_person.Name, loggedInPersonDto.Name);
@@ -122,8 +120,20 @@ public class PersonLogicTests
     [TestMethod]
     public void WhenPersonIsTryingToSignupAndIsValidShouldAddToTheRepository()
     {
+        _personRepo.RemoveFromRepository(_person);
         PersonDto personDto = new PersonDto(_person.Name, _person.Surname, _person.Email, _person.Password, _person.IsAdmin);
         _personLogic.SignUp(personDto);
+    }
+    
+    [TestMethod]
+    
+    public void WhenGeettingPersonDtoFromEmailShouldReturnIt()
+    {
+        PersonDto personDto = _personLogic.GetPersonDtoFromEmail(_person.Email);
+        Assert.AreEqual(_personDto.Name, personDto.Name);
+        Assert.AreEqual(_personDto.Surname, personDto.Surname);
+        Assert.AreEqual(_personDto.Email, personDto.Email);
+        Assert.AreEqual(_personDto.Password, personDto.Password);
     }
 
     
