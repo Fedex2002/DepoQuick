@@ -3,16 +3,19 @@ using DataAccess.Repository;
 using Logic.DTOs;
 using Logic.Interfaces;
 using Model;
+using Repositories;
 
 namespace Logic;
 
-public class ApplicationController : IPromotionController
+public class ApplicationController : IPromotionController, IPersonController
 {
     public PromotionsRepository PromotionsRepository;
+    public PersonsRepository PersonRepository;
     
     public ApplicationController(ApplicationDbContext context)
     {
         PromotionsRepository = new PromotionsRepository(context);
+        PersonRepository = new PersonsRepository(context);
     }
     
     public Promotion CreatePromotion(PromotionDto promotionDto)
@@ -26,7 +29,7 @@ public class ApplicationController : IPromotionController
         PromotionsRepository.AddPromotion(promotion);
     }
     
-    public void UpdatePromotion(Promotion promotion, Promotion newPromotion)
+    public void UpdatePromotion(string promotion, Promotion newPromotion)
     {
         PromotionsRepository.UpdatePromotion(promotion, newPromotion);
     }
@@ -55,5 +58,31 @@ public class ApplicationController : IPromotionController
         Promotion promotion = PromotionsRepository.FindPromotionByLabel(label);
         PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd);
         return promotionDto;
+    }
+
+    public Person CreatePerson(PersonDto personDto)
+    {
+        Person person = new Person(personDto.Name, personDto.Surname, personDto.Email, personDto.Password, personDto.IsAdmin);
+        return person;
+    }
+
+    public void AddPerson(Person person)
+    {
+        PersonRepository.AddPerson(person);
+        
+    }
+
+    public List<PersonDto> GetPersonsDto()
+    {
+        List<Person> persons = PersonRepository.GetAllPersons();
+        List<PersonDto> personDtos = new List<PersonDto>();
+        
+        foreach (Person person in persons)
+        {
+            PersonDto personDto = new PersonDto(person.Name, person.Surname, person.Email, person.Password, person.IsAdmin);
+            personDtos.Add(personDto);
+        }
+        
+        return personDtos;
     }
 }

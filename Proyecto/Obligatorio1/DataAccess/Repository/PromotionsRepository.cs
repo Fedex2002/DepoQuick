@@ -15,7 +15,7 @@ public class PromotionsRepository
     
     public void AddPromotion(Promotion promotion)
     {
-        if (PromotionAlreadyExists(promotion))
+        if (PromotionAlreadyExists(promotion.Label))
         {
             PromotionAlreadyExistsSoThrowException();
         }
@@ -28,9 +28,9 @@ public class PromotionsRepository
         throw new RepositoryExceptions("The promotion already exists");
     }
 
-    public bool PromotionAlreadyExists(Promotion newPromotion)
+    public bool PromotionAlreadyExists(string label)
     {
-        return _database.Promotions.Any(promotion => promotion.Label == newPromotion.Label);
+        return _database.Promotions.Any(promotion => promotion.Label == label);
     }
 
     private void AddNewPromotionToPromotionsTable(Promotion promotion)
@@ -50,9 +50,9 @@ public class PromotionsRepository
         }
     }
     
-    public void UpdatePromotion(Promotion promotion, Promotion newPromotion)
+    public void UpdatePromotion(string label, Promotion newPromotion)
     {
-        Promotion dbPromotion = FindPromotionByLabel(promotion.Label);
+        Promotion dbPromotion = FindPromotionByLabel(label);
         if (dbPromotion != null)
         {
             dbPromotion.Label = newPromotion.Label;

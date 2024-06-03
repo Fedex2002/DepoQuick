@@ -64,7 +64,7 @@ namespace DataAccessTests
             PromotionDto newPromotionDto = new PromotionDto("Summer discount", 50, new DateTime(2025, 7, 15), new DateTime(2025, 10, 15));
             Promotion newPromotion = _controller.CreatePromotion(newPromotionDto);
             
-            _controller.UpdatePromotion(promotion, newPromotion);
+            _controller.UpdatePromotion(promotion.Label, newPromotion);
             
             Assert.AreEqual(promotion, _controller.PromotionsRepository.FindPromotionByLabel(promotion.Label));
         }
@@ -80,7 +80,7 @@ namespace DataAccessTests
             
             _controller.DeletePromotion(promotionToDelete);
             
-            Assert.IsFalse(_controller.PromotionsRepository.PromotionAlreadyExists(promotion));
+            Assert.IsFalse(_controller.PromotionsRepository.PromotionAlreadyExists(promotion.Label));
         }
 
         [TestMethod]
@@ -105,6 +105,35 @@ namespace DataAccessTests
             PromotionDto promotionDtoToFind = _controller.GetPromotionDtoFromLabel(promotionDto.Label);
             
             Assert.AreEqual(promotionDto.Label, promotionDtoToFind.Label);
+        }
+
+        [TestMethod]
+
+        public void WhenControlllerCreatesAPersonShouldReturnAPersonObject()
+        {
+            PersonDto personDto = new PersonDto("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#",false);
+            _controller.CreatePerson(personDto);
+            Assert.IsInstanceOfType(_controller.CreatePerson(personDto), typeof(Person));
+            
+        }
+
+        [TestMethod]
+
+        public void WhenControllerAddsAPersonShouldAddItToTheRepository()
+        {
+            Person person = new Person("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#",false);
+            _controller.AddPerson(person);
+            Assert.AreEqual(1, _controller.PersonRepository.GetAllPersons().Count);
+        }
+
+        [TestMethod]
+
+        public void WhenControllerGetsAllPersonsDtoShouldReturnAListOfPersonsDto()
+        {
+            Person person = new Person("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#",false);
+            _controller.AddPerson(person);
+            List<PersonDto> persons = _controller.GetPersonsDto();
+            Assert.AreEqual(1, persons.Count);
         }
     }
 }
