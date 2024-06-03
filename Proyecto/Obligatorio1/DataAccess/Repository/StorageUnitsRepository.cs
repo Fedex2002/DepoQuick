@@ -15,6 +15,11 @@ public class StorageUnitsRepository
 
     public void AddStorageUnit(StorageUnit storageUnit)
     {
+        if (StorageUnitAlreadyExists(storageUnit))
+        {
+            throw new RepositoryExceptions("Storage unit already exists");
+        }
+        
         _database.StorageUnits.Add(storageUnit);
         
         _database.SaveChanges();
