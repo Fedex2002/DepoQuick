@@ -62,7 +62,7 @@ public class StorageUnitsRepositoryTests
     {
         _repository.AddStorageUnit(_storageUnit);
 
-        StorageUnit storageUnitInDb = _repository.GetStorageUnit(_storageUnit.Id);
+        StorageUnit storageUnitInDb = _repository.GetStorageUnitFromId(_storageUnit.Id);
 
         Assert.AreEqual(_storageUnit, storageUnitInDb);
     }

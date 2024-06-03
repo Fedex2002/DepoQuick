@@ -42,7 +42,7 @@ public class StorageUnitsRepository
     
     public void DeleteStorageUnit(StorageUnit storageUnit)
     {
-        StorageUnit dbStorageUnit = GetStorageUnit(storageUnit.Id);
+        StorageUnit dbStorageUnit = GetStorageUnitFromId(storageUnit.Id);
         if (dbStorageUnit != null)
         {
             _database.StorageUnits.Remove(dbStorageUnit);
@@ -50,7 +50,7 @@ public class StorageUnitsRepository
         }
     }
     
-    public StorageUnit GetStorageUnit(string id)
+    public StorageUnit GetStorageUnitFromId(string id)
     {
         return _database.StorageUnits.FirstOrDefault(s => s.Id == id);
     }
