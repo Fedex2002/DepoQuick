@@ -34,14 +34,11 @@ public class CsvReportExporterTests
     }
 
     [TestMethod]
-
-    public void WhenExportingAsCsvShouldExportBookingsToPath()
+    public void WhenExportingAsCsvShouldReturnCorrectCsvString()
     {
-        string projectRoot = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
-        string relativePath = @"Output\Bookings.csv";
-        string filePath = Path.Combine(projectRoot, relativePath);
-        _csvReportExporter.Export(filePath, _bookings);
-        Assert.IsTrue(File.Exists(filePath));
+        string expectedData = "StorageUnit Id,Area,Size,Climatization,StartDate,EndDate,Status\r\n\"\",\"A\",\"Small\",\"True\",\"2024-07-01\",\"2024-08-15\",\"Reservado\"\r\n";
+        string actualData = _csvReportExporter.Export(_bookings);
+        Assert.AreEqual(expectedData, actualData);
     }
 
     [TestMethod]
