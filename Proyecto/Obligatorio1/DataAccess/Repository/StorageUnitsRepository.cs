@@ -40,6 +40,16 @@ public class StorageUnitsRepository
         return _database.StorageUnits.Any(s => s == storageUnit);
     }
     
+    public void RemoveStorageUnit(StorageUnit storageUnit)
+    {
+        StorageUnit dbStorageUnit = GetStorageUnit(storageUnit.Id);
+        if (dbStorageUnit != null)
+        {
+            _database.StorageUnits.Remove(dbStorageUnit);
+            _database.SaveChanges();
+        }
+    }
+    
     public StorageUnit GetStorageUnit(string id)
     {
         return _database.StorageUnits.FirstOrDefault(s => s.Id == id);
