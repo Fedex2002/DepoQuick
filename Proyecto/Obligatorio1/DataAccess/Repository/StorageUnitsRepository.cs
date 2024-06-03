@@ -19,9 +19,14 @@ public class StorageUnitsRepository
         {
             StorageUnitAlreadyExistsSoThrowException();
         }
-        
+
+        AddNewStorageUnitToStorageUnitsTable(storageUnit);
+    }
+
+    private void AddNewStorageUnitToStorageUnitsTable(StorageUnit storageUnit)
+    {
         _database.StorageUnits.Add(storageUnit);
-        
+
         _database.SaveChanges();
     }
 
