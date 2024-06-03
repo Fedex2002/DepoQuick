@@ -123,7 +123,7 @@ namespace DataAccessTests
         {
             Person person = new Person("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#",false);
             _controller.AddPerson(person);
-            Assert.AreEqual(1, _controller.PersonRepository.GetAllPersons().Count);
+            Assert.AreEqual(1, _controller.PersonsRepository.GetAllPersons().Count);
         }
 
         [TestMethod]

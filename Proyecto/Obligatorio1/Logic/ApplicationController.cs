@@ -10,12 +10,12 @@ namespace Logic;
 public class ApplicationController : IPromotionController, IPersonController
 {
     public PromotionsRepository PromotionsRepository;
-    public PersonsRepository PersonRepository;
+    public PersonsRepository PersonsRepository;
     
     public ApplicationController(ApplicationDbContext context)
     {
         PromotionsRepository = new PromotionsRepository(context);
-        PersonRepository = new PersonsRepository(context);
+        PersonsRepository = new PersonsRepository(context);
     }
     
     public Promotion CreatePromotion(PromotionDto promotionDto)
@@ -29,9 +29,9 @@ public class ApplicationController : IPromotionController, IPersonController
         PromotionsRepository.AddPromotion(promotion);
     }
     
-    public void UpdatePromotion(string promotion, Promotion newPromotion)
+    public void UpdatePromotion(string promotionLabel, Promotion newPromotion)
     {
-        PromotionsRepository.UpdatePromotion(promotion, newPromotion);
+        PromotionsRepository.UpdatePromotion(promotionLabel, newPromotion);
     }
     
     public void DeletePromotion(Promotion promotion)
@@ -68,13 +68,13 @@ public class ApplicationController : IPromotionController, IPersonController
 
     public void AddPerson(Person person)
     {
-        PersonRepository.AddPerson(person);
+        PersonsRepository.AddPerson(person);
         
     }
 
     public List<PersonDto> GetPersonsDto()
     {
-        List<Person> persons = PersonRepository.GetAllPersons();
+        List<Person> persons = PersonsRepository.GetAllPersons();
         List<PersonDto> personDtos = new List<PersonDto>();
         
         foreach (Person person in persons)
