@@ -93,7 +93,7 @@ public class BookingLogic
     
     public void PayBooking(PersonDto userDto, BookingDto bookingDto)
     {
-        List<Booking> bookings = _bookingRepositories.GetAllFromRepository();
+        List<Booking> bookings = _bookingRepositories.GetAllBookings();
         var bookingToPay = bookings.FirstOrDefault(
             b => b.PersonEmail == userDto.Email && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
         );
