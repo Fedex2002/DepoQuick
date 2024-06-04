@@ -55,7 +55,7 @@ public class BookingLogic
         Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd,
             ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status,
             bookingDto.Payment,userDto.Email);
-       _bookingRepositories.RemoveFromRepository(booking);
+       _bookingRepositories.DeleteBooking(booking);
     }
     
     public StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
