@@ -57,6 +57,13 @@ public class BookingLogicTests
         _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false, _person.Email);
     }
     
+    [TestCleanup]
+    public void CleanUp()
+    {
+        _context.Database.EnsureDeleted();
+    }
+    
+    
     [TestMethod]
     public void WhenCreatingABookingDtoEmptyShouldReturnEmptyBooking()
     {
