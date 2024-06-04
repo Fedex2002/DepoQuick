@@ -15,7 +15,7 @@ public class BookingsRepository
     
     public void AddBooking(Booking booking)
     {
-        if (BookingAlreadyExists(booking))
+        if (BookingExists(booking))
         {
             BookingAlreadyExistsSoThrowException();
         }
@@ -35,7 +35,7 @@ public class BookingsRepository
         throw new RepositoryExceptions("Booking already exists");
     }
 
-    public bool BookingAlreadyExists(Booking booking)
+    public bool BookingExists(Booking booking)
     {
         return _database.Bookings.Any(b => b == booking);
     }
@@ -45,8 +45,9 @@ public class BookingsRepository
         return _database.Bookings.ToList();
     }
     
-    public Booking FindBookingByStorageUnitId(string id)
+    public Booking FindBookingByStorageUnitIdAndEmail(string storageUnitId, string email)
     {
-        return _database.Bookings.FirstOrDefault(b => b.StorageUnit.Id == id);
+        return _database.Bookings.FirstOrDefault(b => b.StorageUnit.Id == storageUnitId && b.PersonEmail == email);
     }
+   
 }

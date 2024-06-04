@@ -45,7 +45,7 @@ public class BookingRepositoryTests
     {
         _repository.AddBooking(_booking);
 
-        bool exists = _repository.BookingAlreadyExists(_booking);
+        bool exists = _repository.BookingExists(_booking);
 
         Assert.IsTrue(exists);
     }
@@ -73,7 +73,7 @@ public class BookingRepositoryTests
     {
         _repository.AddBooking(_booking);
 
-        Booking bookingInDb = _repository.FindBookingByStorageUnitId(_booking.StorageUnit.Id);
+        Booking bookingInDb = _repository.FindBookingByStorageUnitIdAndEmail(_booking.PersonEmail, _booking.StorageUnit.Id);
 
         Assert.AreEqual(_booking, bookingInDb);
     }
