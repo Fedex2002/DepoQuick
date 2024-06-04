@@ -88,7 +88,7 @@ public class BookingLogicTests
     [TestMethod]
     public void WhenUserBookingIsRejectedShouldEliminateBookingFromUserListOfBookings()
     {
-        _bookingLogic.AddBooking(_userDto, _mybookingDto);
+        _bookingLogic.AddBooking(_mybookingDto);
         _bookingLogic.RemoveBookingFromUser( _mybookingDto);
     }
     
