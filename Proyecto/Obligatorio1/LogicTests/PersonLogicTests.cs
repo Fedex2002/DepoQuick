@@ -17,7 +17,6 @@ public class PersonLogicTests
     private PersonLogic _personLogic;
     private Person _person;
     private PersonDto _personDto;
-    private List<BookingDto> _bookingsDto;
     private ApplicationDbContext _context;
     private readonly IApplicationDbContextFactory _contextFactory = new InMemoryAppContextFactory();
     
@@ -28,7 +27,6 @@ public class PersonLogicTests
         _personLogic = new PersonLogic(_personRepo);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#",false);
         _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#",_person.IsAdmin);
-        _bookingsDto = new List<BookingDto>();
     }
     
     [TestMethod]
