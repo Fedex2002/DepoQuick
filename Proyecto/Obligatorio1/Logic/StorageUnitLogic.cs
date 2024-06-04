@@ -104,7 +104,7 @@ public class StorageUnitLogic
     
     public StorageUnitDto GetStorageUnitDtoFromId(string id)
     {
-        StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(id);
+        StorageUnit storageUnit = _storageUnitRepositories.GetStorageUnitFromId(id);
         StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
         return storageUnitDto;
     }

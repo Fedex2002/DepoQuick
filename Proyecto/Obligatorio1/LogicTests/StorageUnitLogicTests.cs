@@ -120,7 +120,7 @@ public class StorageUnitLogicTests
     public void WhenGettingStorageUnitsDtoFromIdShouldReturnIt()
     {
         StorageUnit storageUnit = new StorageUnit("1", AreaType.B, SizeType.Medium, false, _promotions, _availableDates);
-        _storageUnitRepo.AddToRepository(storageUnit);
+        _storageUnitRepo.AddStorageUnit(storageUnit);
         StorageUnitDto storageUnitDto = _storageUnitLogic.GetStorageUnitDtoFromId(storageUnit.Id);
         Assert.AreEqual(storageUnit.Id,storageUnitDto.Id);
     }
