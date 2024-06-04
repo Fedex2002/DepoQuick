@@ -26,6 +26,12 @@ public class SessionLogicTests
         _sessionLogic = new SessionLogic(_personLogic);
     }
 
+    [TestCleanup]
+    public void CleanUp()
+    {
+        _context.Database.EnsureDeleted();
+    }
+    
     [TestMethod]
     public void WhenPersonIsLoggedInSetItAsCurrentPerson()
     {
