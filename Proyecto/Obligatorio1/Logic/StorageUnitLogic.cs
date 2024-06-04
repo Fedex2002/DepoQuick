@@ -111,7 +111,7 @@ public class StorageUnitLogic
     
     public void DeletePromotionFromAllStorageUnits(PromotionDto promotionDto)
     {
-        foreach (var storageUnit in _storageUnitRepositories.GetAllFromRepository())
+        foreach (var storageUnit in _storageUnitRepositories.GetAllStorageUnits())
         {
             var promotions = storageUnit.Promotions.ToList();
             foreach (var promotion in promotions)
