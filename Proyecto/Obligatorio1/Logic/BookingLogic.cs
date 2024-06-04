@@ -109,7 +109,7 @@ public class BookingLogic
     public List<BookingDto> GetAllBookingsDto()
     {
         List<BookingDto> bookingsDto = new List<BookingDto>();
-        foreach (var booking in _bookingRepositories.GetAllFromRepository())
+        foreach (var booking in _bookingRepositories.GetAllBookings())
         {
             bookingsDto.Add(new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd, new StorageUnitDto(booking.StorageUnit.Id, booking.StorageUnit.Area, booking.StorageUnit.Size, booking.StorageUnit.Climatization, new List<PromotionDto>(), new List<DateRangeDto>()), booking.RejectedMessage, booking.Status, booking.Payment, booking.PersonEmail));
         }
