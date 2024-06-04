@@ -1,3 +1,5 @@
+using DataAccess.Context;
+using DataAccess.Repository;
 using Model;
 using Logic;
 using Repositories;
@@ -6,18 +8,21 @@ namespace LogicTests;
 [TestClass]
 public class SessionLogicTests
 {
-    private PersonRepositories _personRepo;
+    private PersonsRepository _personRepo;
     private PersonLogic _personLogic;
     private Person _person;
     private SessionLogic _sessionLogic;
+    private ApplicationDbContext _context;
+    private readonly IApplicationDbContextFactory _contextFactory = new InMemoryAppContextFactory();
 
     [TestInitialize]
     public void TestInitialize()
     {
-        _personRepo = new PersonRepositories();
+        _context = _contextFactory.CreateDbContext();
+        _personRepo = new PersonsRepository(_context);
         _personLogic = new PersonLogic(_personRepo);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#",false);
-        _personRepo.AddToRepository(_person);
+        _personRepo.AddPerson(_person);
         _sessionLogic = new SessionLogic(_personLogic);
     }
 
