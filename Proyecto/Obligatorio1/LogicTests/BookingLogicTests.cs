@@ -163,11 +163,11 @@ public class BookingLogicTests
     [TestMethod]
     public void WhenGettingAllBookingsDtoShouldReturnThem()
     {
-        _bookingLogic.AddBooking(_userDto, _mybookingDto);
+        _bookingLogic.AddBooking(_mybookingDto);
         _storageUnitDto = new StorageUnitDto("hola",AreaType.A, SizeType.Small, true,_promotionsDto, _availableDatesDto);
         BookingDto booking2 = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             _storageUnitDto, "", "Reservado", false, "samplemail@gmail.com");
-        _bookingLogic.AddBooking(_userDto, booking2);
+        _bookingLogic.AddBooking( booking2);
         List<BookingDto> bookings = _bookingLogic.GetAllBookingsDto();
         Assert.AreEqual(2, bookings.Count);
     }
