@@ -1,4 +1,6 @@
 using System.Runtime.InteropServices.ComTypes;
+using DataAccess.Context;
+using DataAccess.Repository;
 using Logic;
 using Logic.DTOs;
 using Repositories;
@@ -14,7 +16,7 @@ public class BookingLogicTests
     private Person _person;
     private PersonDto _userDto;
     private BookingLogic _bookingLogic;
-    private BookingRepositories _bookingRepo;
+    private BookingsRepository _bookingRepo;
     private PromotionDto _promotionDto;
     private List<PromotionDto> _promotionsDto;
     private StorageUnit _storageUnit;
@@ -27,13 +29,16 @@ public class BookingLogicTests
     private Promotion _promotion;
     private List<DateRange> _availableDates;
     private DateRange _dateRange;
-
+    private ApplicationDbContext _context;
+    private readonly IApplicationDbContextFactory _contextFactory = new InMemoryAppContextFactory();
+    
     [TestInitialize]
     public void TestInitialize()
     {
+        _context = _contextFactory.CreateDbContext();
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
         _promotions = new List<Promotion>();
-        _bookingRepo = new BookingRepositories();
+        _bookingRepo = new BookingsRepository(_context);
         _promotionsDto = new List<PromotionDto>();
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotions.Add(_promotion);

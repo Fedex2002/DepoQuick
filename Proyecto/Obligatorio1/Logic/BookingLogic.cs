@@ -1,3 +1,4 @@
+using DataAccess.Repository;
 using Logic.DTOs;
 using Model;
 using Model.Exceptions;
@@ -6,9 +7,9 @@ namespace Logic;
 
 public class BookingLogic
 {
-    private readonly BookingRepositories _bookingRepositories;
+    private readonly BookingsRepository _bookingRepositories;
     
-    public BookingLogic(BookingRepositories bookingRepo)
+    public BookingLogic(BookingsRepository bookingRepo)
     {
         _bookingRepositories = bookingRepo;
     }
