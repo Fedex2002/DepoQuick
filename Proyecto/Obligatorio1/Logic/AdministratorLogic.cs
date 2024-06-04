@@ -117,18 +117,5 @@ public class AdministratorLogic
     }
 
     
- 
-    
-    public List<Booking> GetAllUserBookings()
-    {
-        return _bookingRepositories.GetAllFromRepository();
-    }
-    
-    public void ExportToCsv(string filePath)
-    {
-        List<Booking> bookings = GetAllUserBookings();
-        CsvReportExporter csvReportExporter = new CsvReportExporter();
-        csvReportExporter.Export(filePath, bookings);
-    }
     
 }
