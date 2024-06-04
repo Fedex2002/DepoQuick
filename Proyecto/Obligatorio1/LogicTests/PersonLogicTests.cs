@@ -137,8 +137,9 @@ public class PersonLogicTests
     
     [TestMethod]
     
-    public void WhenGeettingPersonDtoFromEmailShouldReturnIt()
+    public void WhenGettingPersonDtoFromEmailShouldReturnIt()
     {
+        _personRepo.AddPerson(_person); 
         PersonDto personDto = _personLogic.GetPersonDtoFromEmail(_person.Email);
         Assert.AreEqual(_personDto.Name, personDto.Name);
         Assert.AreEqual(_personDto.Surname, personDto.Surname);
