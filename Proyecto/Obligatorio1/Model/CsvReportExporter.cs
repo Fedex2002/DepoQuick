@@ -1,8 +1,9 @@
 using System.Text;
+using Model.Interfaces;
 
 namespace Model;
 
-public class CsvReportExporter
+public class CsvReportExporter : IReportExporter
 {
 
     public CsvReportExporter()
