@@ -1,3 +1,5 @@
+using DataAccess.Context;
+using DataAccess.Repository;
 using Logic;
 using Logic.DTOs;
 using Model;
@@ -11,21 +13,23 @@ namespace LogicTests;
 [TestClass]
 public class PersonLogicTests
 {
-    private PersonRepositories _personRepo;
+    private PersonsRepository _personRepo;
     private PersonLogic _personLogic;
     private Person _person;
     private PersonDto _personDto;
     private List<BookingDto> _bookingsDto;
+    private ApplicationDbContext _context;
+    private readonly IApplicationDbContextFactory _contextFactory = new InMemoryAppContextFactory();
     
     [TestInitialize]
     public void TestInitialize()
     {
-        _personRepo = new PersonRepositories();
+        _personRepo = new PersonsRepository(_context);
         _personLogic = new PersonLogic(_personRepo);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#",false);
         _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#",_person.IsAdmin);
         _bookingsDto = new List<BookingDto>();
-        _personRepo.AddToRepository(_person); 
+        _personRepo.AddPerson(_person); 
     }
     
     [TestMethod]

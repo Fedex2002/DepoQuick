@@ -1,3 +1,4 @@
+using DataAccess.Repository;
 using Logic.DTOs;
 using Model;
 using Model.Exceptions;
@@ -7,9 +8,9 @@ namespace Logic;
 
 public class PersonLogic
 {
-    private readonly PersonRepositories _personRepositories;
+    private readonly PersonsRepository _personRepositories;
     
-    public PersonLogic(PersonRepositories personRepositories)
+    public PersonLogic(PersonsRepository personRepositories)
     {
         _personRepositories = personRepositories;
     }
