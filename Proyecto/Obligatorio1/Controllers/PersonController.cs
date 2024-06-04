@@ -15,4 +15,9 @@ public class PersonController
     {
         return _personLogic.Login(email, password);
     }
+    
+    public void SignUp(PersonDto personDto)
+    {
+         _personLogic.SignUp(personDto);
+    }
 }

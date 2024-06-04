@@ -55,7 +55,8 @@ public class PersonControllerTests
     
     public void WhenSigningUpWithCorrectDataReturnPersonDto()
     {
-        PersonDto personDto = _personController.SignUp(_person.Name, _person.Surname, _person.Email, _person.Password, _person.IsAdmin);
+        PersonDto personDto = new PersonDto(_person.Name, _person.Surname, _person.Email, _person.Password, _person.IsAdmin);
+        _personController.SignUp(personDto);
         Assert.AreEqual(_person.Name, personDto.Name);
         Assert.AreEqual(_person.Surname, personDto.Surname);
         Assert.AreEqual(_person.Email, personDto.Email);
