@@ -23,10 +23,17 @@ public class PersonLogicTests
     [TestInitialize]
     public void TestInitialize()
     {
+        _context = _contextFactory.CreateDbContext();
         _personRepo = new PersonsRepository(_context);
         _personLogic = new PersonLogic(_personRepo);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#",false);
         _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#",_person.IsAdmin);
+    }
+    
+     [TestCleanup]
+    public void CleanUp()
+    {
+        _context.Database.EnsureDeleted();
     }
     
     [TestMethod]
