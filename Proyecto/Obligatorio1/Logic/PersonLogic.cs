@@ -75,7 +75,7 @@ public class PersonLogic
     {
         if (!CheckIfEmailIsRegistered(personDto.Email))
         {
-            CheckIfIsUserOrAdministratorAndAddToTheRepository(personDto);
+            AddPersonIfItsValid(personDto);
         }
         else
         {
@@ -83,10 +83,10 @@ public class PersonLogic
         }
     }
 
-    private void CheckIfIsUserOrAdministratorAndAddToTheRepository(PersonDto personDto)
+    private void AddPersonIfItsValid(PersonDto personDto)
     {
         Person personToRepo = new Person(personDto.Name, personDto.Surname,personDto.Email, personDto.Password, personDto.IsAdmin);
-        _personRepositories.AddToRepository(personToRepo);
+        _personRepositories.AddPerson(personToRepo);
         
     }
 
