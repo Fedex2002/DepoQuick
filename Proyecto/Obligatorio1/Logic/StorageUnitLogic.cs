@@ -127,7 +127,7 @@ public class StorageUnitLogic
     public void AddAvailableDateRangeToStorageUnit(string id, DateRangeDto dateRangeDto)
     {
         IfDateRangeIsInvalidThrowException(dateRangeDto);
-        StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(id);
+        StorageUnit storageUnit = _storageUnitRepositories.GetStorageUnitFromId(id);
         DateRange newDateRange = new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate);
         IfDateRangeAlreadyExistsThrowException(storageUnit, newDateRange);
         storageUnit.AvailableDates.Add(newDateRange);
