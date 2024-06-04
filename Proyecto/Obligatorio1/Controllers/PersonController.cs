@@ -7,7 +7,7 @@ public class PersonController
     private PersonLogic _personLogic;
     public PersonController(PersonLogic personLogic)
     {
-        
+        _personLogic = personLogic;
     }
    
 }
