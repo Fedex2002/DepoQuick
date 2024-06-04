@@ -77,6 +77,7 @@ public class PersonLogicTests
     [TestMethod]
     public void WhenPersonIsTryingToLoginShouldReturnPersonIfValidationsAreCorrect()
     {
+        _personRepo.AddPerson(_person); 
         PersonDto loggedInPersonDto = _personLogic.Login(_person.Email, _person.Password);
         PersonDto expectedPersonDto = new PersonDto(_person.Name, _person.Surname, _person.Email, _person.Password, _person.IsAdmin);
         Assert.AreEqual(expectedPersonDto.Name, loggedInPersonDto.Name);
