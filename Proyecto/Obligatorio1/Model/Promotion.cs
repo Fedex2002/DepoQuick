@@ -12,6 +12,7 @@ public class Promotion
     private int _discount;
     private DateTime _dateStart = DateTime.MinValue;
     private DateTime _dateEnd = DateTime.MaxValue;
+    public List<StorageUnit> StorageUnits { get; set; } = new List<StorageUnit>();
     public Promotion()
     {
         
