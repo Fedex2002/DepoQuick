@@ -29,7 +29,6 @@ public class PersonLogicTests
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#",false);
         _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#",_person.IsAdmin);
         _bookingsDto = new List<BookingDto>();
-        _personRepo.AddPerson(_person); 
     }
     
     [TestMethod]
@@ -43,7 +42,7 @@ public class PersonLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPasswordIsNotCorrectThrowException()
     {
-        _personRepo.RemoveFromRepository(_person);
+        _personRepo.AddPerson(_person); 
         _personLogic.CheckIfPasswordIsCorrect(_person.Password, "Catch from page");
     }
 
