@@ -22,9 +22,14 @@ public class PersonControllerTests
         _context = _contextFactory.CreateDbContext();
         _personsRepository = new PersonsRepository(_context);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
-        _personsRepository.AddPerson(_person);
         _personLogic = new PersonLogic(_personsRepository);
         _personController = new PersonController(_personLogic);
+    }
+    
+    [TestCleanup]
+    public void CleanUp()
+    {
+        _context.Database.EnsureDeleted();
     }
     
     [TestMethod]
@@ -37,6 +42,7 @@ public class PersonControllerTests
 
     public void WhenLoggingInWithCorrectEmailAndPasswordReturnPersonDto()
     {
+        _personsRepository.AddPerson(_person);
         PersonDto personDto = _personController.Login(_person.Email, _person.Password);
         Assert.AreEqual(_person.Name, personDto.Name);
         Assert.AreEqual(_person.Surname, personDto.Surname);
