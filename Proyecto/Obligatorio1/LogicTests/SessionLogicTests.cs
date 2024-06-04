@@ -29,7 +29,7 @@ public class SessionLogicTests
     [TestMethod]
     public void WhenPersonIsLoggedInSetItAsCurrentPerson()
     {
-        _sessionLogic.Login(_personLogic.GetRepository().GetFromRepository(_person.Email).Email,_personLogic.GetRepository().GetFromRepository(_person.Email).Password);
+        _sessionLogic.Login(_personLogic.GetRepository().FindPersonByEmail(_person.Email).Email,_personLogic.GetRepository().FindPersonByEmail(_person.Email).Password);
     }
     
     [TestMethod]
