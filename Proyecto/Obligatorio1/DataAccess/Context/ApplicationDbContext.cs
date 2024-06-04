@@ -28,5 +28,26 @@ public class ApplicationDbContext : DbContext
             .HasKey(d => d.Id); 
         modelBuilder.Entity<Booking>()
             .HasKey(b => b.Id); 
+        
+        modelBuilder.Entity<Promotion>()
+            .HasMany(p => p.StorageUnits)
+            .WithMany(s => s.Promotions)
+            .UsingEntity<Dictionary<string, object>>(
+                "StorageUnitPromotion",
+                j => j
+                    .HasOne<StorageUnit>()
+                    .WithMany()
+                    .HasForeignKey("StorageUnitId")
+                    .OnDelete(DeleteBehavior.Cascade),
+                j => j
+                    .HasOne<Promotion>()
+                    .WithMany()
+                    .HasForeignKey("PromotionId")
+                    .OnDelete(DeleteBehavior.Cascade),
+                j =>
+                {
+                    j.HasKey("StorageUnitId", "PromotionId");
+                }
+            );
     }
 }

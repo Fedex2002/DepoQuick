@@ -27,6 +27,22 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Promotions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Label = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Discount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Promotions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StorageUnits",
                 columns: table => new
                 {
@@ -86,25 +102,27 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Promotions",
+                name: "StorageUnitPromotion",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Label = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Discount = table.Column<int>(type: "int", nullable: false),
-                    StorageUnitId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    StorageUnitId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PromotionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Promotions", x => x.Id);
+                    table.PrimaryKey("PK_StorageUnitPromotion", x => new { x.StorageUnitId, x.PromotionId });
                     table.ForeignKey(
-                        name: "FK_Promotions_StorageUnits_StorageUnitId",
+                        name: "FK_StorageUnitPromotion_Promotions_PromotionId",
+                        column: x => x.PromotionId,
+                        principalTable: "Promotions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StorageUnitPromotion_StorageUnits_StorageUnitId",
                         column: x => x.StorageUnitId,
                         principalTable: "StorageUnits",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -118,9 +136,9 @@ namespace DataAccess.Migrations
                 column: "StorageUnitId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Promotions_StorageUnitId",
-                table: "Promotions",
-                column: "StorageUnitId");
+                name: "IX_StorageUnitPromotion_PromotionId",
+                table: "StorageUnitPromotion",
+                column: "PromotionId");
         }
 
         /// <inheritdoc />
@@ -134,6 +152,9 @@ namespace DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Persons");
+
+            migrationBuilder.DropTable(
+                name: "StorageUnitPromotion");
 
             migrationBuilder.DropTable(
                 name: "Promotions");
