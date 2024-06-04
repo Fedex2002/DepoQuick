@@ -51,14 +51,14 @@ public class StorageUnitLogic
 
     public void RemoveStorageUnit(StorageUnitDto storageUnitDto)
     {
-        StorageUnit storageUnitInRepo= _storageUnitRepositories.GetFromRepository(storageUnitDto.Id);
-        if (_storageUnitRepositories.GetFromRepository(storageUnitDto.Id) == null)
+        StorageUnit storageUnitInRepo= _storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id);
+        if (_storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id) == null)
         {
             IfStorageUnitDoesNotExistThrowException();
         }
         else
         {
-            _storageUnitRepositories.(storageUnitInRepo);
+            _storageUnitRepositories.DeleteStorageUnit(storageUnitInRepo);
         }
     }
 

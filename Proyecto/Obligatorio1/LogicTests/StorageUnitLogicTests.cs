@@ -90,7 +90,7 @@ public class StorageUnitLogicTests
     {
         _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
         _storageUnitLogic.RemoveStorageUnit(_storageUnitDto);
-        Assert.IsNull(_storageUnitRepo.GetFromRepository(_storageUnitDto.Id));
+        Assert.IsNull(_storageUnitRepo.GetStorageUnitFromId(_storageUnitDto.Id));
     }
     
     [TestMethod]
