@@ -17,7 +17,7 @@ public class PersonLogic
 
     public bool CheckIfEmailIsRegistered(string email)
     {
-        return _personRepositories.ExistsInRepository(email);
+        return _personRepositories.PersonAlreadyExists(email);
     }
 
     public void IfEmailIsNotRegisteredThrowException(bool registered)

@@ -36,7 +36,6 @@ public class PersonLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenEmailIsNotRegisteredThrowException()
     {
-        _personRepo.RemoveFromRepository(_person);;
         _personLogic.IfEmailIsNotRegisteredThrowException(_personLogic.CheckIfEmailIsRegistered(_person.Email));
     }
 
