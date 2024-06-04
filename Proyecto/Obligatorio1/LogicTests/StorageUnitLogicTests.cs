@@ -46,6 +46,15 @@ public class StorageUnitLogicTests
         _storageUnitDto = new StorageUnitDto("1", AreaType.B, SizeType.Medium, false, _promotionsDto, _availableDatesDto);
        
     }
+    
+    [TestCleanup]
+    public void CleanUp()
+    {
+        _context.Database.EnsureDeleted();
+    }
+    
+    
+    
     [TestMethod]
     public void WhenCreatingPromotionListFromStorageUnitDtoShouldReturnPromotionList()
     {
@@ -53,6 +62,8 @@ public class StorageUnitLogicTests
         Assert.IsNotNull(_promotions);
     }
 
+    
+    
     [TestMethod]
     public void WhenCreatingStorageUnitDtoEmptyShouldReturnEmptyStorageUnitDto()
     {
