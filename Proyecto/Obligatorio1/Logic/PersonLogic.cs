@@ -66,7 +66,7 @@ public class PersonLogic
     }
     
 
-    public PersonRepositories GetRepository()
+    public PersonsRepository GetRepository()
     {
         return _personRepositories;
     }
