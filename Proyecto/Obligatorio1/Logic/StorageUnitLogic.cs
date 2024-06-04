@@ -70,7 +70,7 @@ public class StorageUnitLogic
     public List<StorageUnitDto> GetStorageUnitsDto()
     {
         List<StorageUnitDto> storageUnitsDto = new List<StorageUnitDto>();
-        foreach (var storageUnit in _storageUnitRepositories.GetAllFromRepository())
+        foreach (var storageUnit in _storageUnitRepositories.GetAllStorageUnits())
         {
             StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
             storageUnitsDto.Add(storageUnitDto);

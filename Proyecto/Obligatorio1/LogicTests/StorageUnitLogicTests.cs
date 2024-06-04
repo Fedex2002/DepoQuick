@@ -104,7 +104,7 @@ public class StorageUnitLogicTests
     public void WhenGettingStorageUnitsDtoShouldReturnAListOfStorageUnitsDto()
     {
         StorageUnit storageUnit = new StorageUnit("1", AreaType.B, SizeType.Medium, false, _promotions, _availableDates);
-        _storageUnitRepo.AddToRepository(storageUnit);
+        _storageUnitRepo.AddStorageUnit(storageUnit);
         List<StorageUnitDto> storageUnitsDto = _storageUnitLogic.GetStorageUnitsDto();
         Assert.IsNotNull(storageUnitsDto);
     }
