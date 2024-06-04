@@ -11,7 +11,7 @@ public class PersonControllerTests
     [TestMethod]
     public void WhenCreatingAPersonControllerCantBeNull()
     {
-        _personController = new PersonController();
+        _personController = new PersonController(_personLogic);
         Assert.IsNotNull(_personController);
     }
 }
