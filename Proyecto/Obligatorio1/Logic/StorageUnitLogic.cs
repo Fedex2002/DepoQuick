@@ -173,7 +173,7 @@ public class StorageUnitLogic
     {
         IfDateRangeIsInvalidThrowException(dateRangeDto);
         List<StorageUnitDto> availableStorageUnits = new List<StorageUnitDto>();
-        foreach (var storageUnit in _storageUnitRepositories.GetAllFromRepository())
+        foreach (var storageUnit in _storageUnitRepositories.GetAllStorageUnits())
         {
             foreach (var dateRange in storageUnit.AvailableDates)
             {
