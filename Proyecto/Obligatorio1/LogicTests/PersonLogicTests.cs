@@ -90,6 +90,7 @@ public class PersonLogicTests
     public void WhenPersonIsTryingToLoginAndIsAdministratorShouldReturnPersonWithAdminPrivileges()
     {
         _person.IsAdmin = true;
+        _personRepo.AddPerson(_person); 
         PersonDto loggedInAdministratorDto = _personLogic.Login(_person.Email,_person.Password);
         Assert.AreEqual(_person.Name, loggedInAdministratorDto.Name);
         Assert.AreEqual(_person.Surname, loggedInAdministratorDto.Surname);
