@@ -1,4 +1,5 @@
 ﻿using Logic;
+using Logic.DTOs;
 
 namespace Controllers;
 
@@ -10,4 +11,8 @@ public class PersonController
         _personLogic = personLogic;
     }
    
+    public PersonDto Login(string email, string password)
+    {
+        return _personLogic.Login(email, password);
+    }
 }
