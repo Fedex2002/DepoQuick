@@ -123,7 +123,6 @@ public class PersonLogicTests
     [TestMethod]
     public void WhenPersonIsTryingToSignupAndIsValidShouldAddToTheRepository()
     {
-        _personRepo.RemoveFromRepository(_person);
         PersonDto personDto = new PersonDto(_person.Name, _person.Surname, _person.Email, _person.Password, _person.IsAdmin);
         _personLogic.SignUp(personDto);
     }
