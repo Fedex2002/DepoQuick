@@ -217,7 +217,7 @@ public class StorageUnitLogicTests
     {
         _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
         _storageUnitLogic.EliminateDateRangeFromStorageUnit(_storageUnitDto.Id, _dateRangeDto);
-        Assert.AreEqual(0, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates.Count);
+        Assert.AreEqual(0, _storageUnitRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates.Count);
     }
 
     [TestMethod]

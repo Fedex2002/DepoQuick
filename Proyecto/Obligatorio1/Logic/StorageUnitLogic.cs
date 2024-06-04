@@ -203,7 +203,7 @@ public class StorageUnitLogic
         {
             throw new LogicExceptions("Please select a date range to eliminate");
         }
-        StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(id);
+        StorageUnit storageUnit = _storageUnitRepositories.GetStorageUnitFromId(id);
         foreach (var dateRange in storageUnit.AvailableDates.ToList())
         {
             if (dateRange.StartDate == dateRangeDto.StartDate && dateRange.EndDate == dateRangeDto.EndDate)
