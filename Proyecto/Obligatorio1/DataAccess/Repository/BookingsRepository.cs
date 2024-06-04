@@ -49,5 +49,10 @@ public class BookingsRepository
     {
         return _database.Bookings.FirstOrDefault(b => b.StorageUnit.Id == storageUnitId && b.PersonEmail == email);
     }
-   
+
+    public void DeleteBooking(Booking booking)
+    {
+        _database.Bookings.Remove(booking);
+        _database.SaveChanges();
+    }
 }
