@@ -1,7 +1,10 @@
+using Controllers;
+using Logic;
+
 namespace ControllerTests;
 
 [TestClass]
-public class UnitTest1
+public class PersonControllerTests
 {
     private PersonController _personController;
     private PersonLogic _personLogic;
