@@ -50,4 +50,16 @@ public class PersonControllerTests
         Assert.AreEqual(_person.Password, personDto.Password);
         Assert.AreEqual(_person.IsAdmin, personDto.IsAdmin);
     }
+    
+    [TestMethod]
+    
+    public void WhenSigningUpWithCorrectDataReturnPersonDto()
+    {
+        PersonDto personDto = _personController.SignUp(_person.Name, _person.Surname, _person.Email, _person.Password, _person.IsAdmin);
+        Assert.AreEqual(_person.Name, personDto.Name);
+        Assert.AreEqual(_person.Surname, personDto.Surname);
+        Assert.AreEqual(_person.Email, personDto.Email);
+        Assert.AreEqual(_person.Password, personDto.Password);
+        Assert.AreEqual(_person.IsAdmin, personDto.IsAdmin);
+    }
 }
