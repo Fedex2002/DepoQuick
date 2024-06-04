@@ -15,7 +15,7 @@ public class BookingsRepository
     
     public void AddBooking(Booking booking)
     {
-        if (BookingAlreadyExists(booking))
+        if (BookingExists(booking))
         {
             BookingAlreadyExistsSoThrowException();
         }
@@ -35,7 +35,7 @@ public class BookingsRepository
         throw new RepositoryExceptions("Booking already exists");
     }
 
-    public bool BookingAlreadyExists(Booking booking)
+    public bool BookingExists(Booking booking)
     {
         return _database.Bookings.Any(b => b == booking);
     }
