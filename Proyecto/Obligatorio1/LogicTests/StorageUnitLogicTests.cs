@@ -1,3 +1,5 @@
+using DataAccess.Context;
+using DataAccess.Repository;
 using Model;
 using Model.Enums;
 using Repositories;
@@ -10,7 +12,7 @@ namespace LogicTests;
 [TestClass]
 public class StorageUnitLogicTests
 {
-    private StorageUnitRepositories _storageUnitRepo;
+    private StorageUnitsRepository _storageUnitRepo;
     private StorageUnitLogic _storageUnitLogic;
     private StorageUnitDto _storageUnitDto;
     private List<Promotion> _promotions;
@@ -21,11 +23,13 @@ public class StorageUnitLogicTests
     private List<DateRangeDto> _availableDatesDto;
     private DateRange _dateRange;
     private DateRangeDto _dateRangeDto;
-    
+    private ApplicationDbContext _context;
+    private readonly IApplicationDbContextFactory _contextFactory = new InMemoryAppContextFactory();
     [TestInitialize]
     public void TestInitialize()
     {
-        _storageUnitRepo = new StorageUnitRepositories();
+        _context = _contextFactory.CreateDbContext();
+        _storageUnitRepo = new StorageUnitsRepository(_context);
         _storageUnitLogic = new StorageUnitLogic(_storageUnitRepo);
         _promotions = new List<Promotion>();
         _promotionsDto = new List<PromotionDto>();
@@ -40,6 +44,7 @@ public class StorageUnitLogicTests
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _availableDatesDto.Add(_dateRangeDto);
         _storageUnitDto = new StorageUnitDto("1", AreaType.B, SizeType.Medium, false, _promotionsDto, _availableDatesDto);
+       
     }
     [TestMethod]
     public void WhenCreatingPromotionListFromStorageUnitDtoShouldReturnPromotionList()

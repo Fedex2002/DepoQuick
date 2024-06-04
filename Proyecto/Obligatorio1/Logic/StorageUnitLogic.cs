@@ -1,5 +1,6 @@
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography;
+using DataAccess.Repository;
 using Model;
 using Logic.DTOs;
 using Repositories;
@@ -9,9 +10,9 @@ namespace Logic;
 
 public class StorageUnitLogic
 {
-    private readonly StorageUnitRepositories _storageUnitRepositories;
+    private readonly StorageUnitsRepository _storageUnitRepositories;
     
-    public StorageUnitLogic(StorageUnitRepositories storageUnitRepositories)
+    public StorageUnitLogic(StorageUnitsRepository storageUnitRepositories)
     {
         _storageUnitRepositories = storageUnitRepositories;
     }
