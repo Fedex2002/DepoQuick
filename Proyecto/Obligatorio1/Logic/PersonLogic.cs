@@ -51,7 +51,7 @@ public class PersonLogic
         PersonDto personDto = new PersonDto();
         if (CheckIfEmailIsRegistered(email))
         {
-            Person person = _personRepositories.GetFromRepository(email);
+            Person person = _personRepositories.FindPersonByEmail(email);
             if (CheckIfPasswordIsCorrect(password, person.Password))
             {
                 personDto = new PersonDto(person.Name, person.Surname, person.Email, person.Password,person.IsAdmin);

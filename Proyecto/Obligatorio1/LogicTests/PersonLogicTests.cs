@@ -49,6 +49,7 @@ public class PersonLogicTests
     [TestMethod]
     public void WhenEmailIsRegisteredReturnTrue()
     {
+        _personRepo.AddPerson(_person); 
         Assert.IsTrue(_personLogic.CheckIfEmailIsRegistered(_person.Email));
     }
 
