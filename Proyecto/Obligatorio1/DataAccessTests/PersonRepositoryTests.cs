@@ -42,7 +42,7 @@ public class PersonRepositoryTests
     {
         _repository.AddPerson(_person);
 
-        bool exists = _repository.PersonAlreadyExists(_person);
+        bool exists = _repository.PersonAlreadyExists(_person.Email);
 
         Assert.IsTrue(exists);
     }

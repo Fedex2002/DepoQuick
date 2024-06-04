@@ -15,7 +15,7 @@ public class PersonsRepository
     
     public void AddPerson(Person person)
     {
-        if (PersonAlreadyExists(person))
+        if (PersonAlreadyExists(person.Email))
         {
             PersonAlreadyExistsSoThrowException();
         }
@@ -35,9 +35,9 @@ public class PersonsRepository
         throw new RepositoryExceptions("The person already exists");
     }
 
-    public bool PersonAlreadyExists(Person newPerson)
+    public bool PersonAlreadyExists(string email)
     {
-        return _database.Persons.Any(person => person.Email == newPerson.Email);
+        return _database.Persons.Any(person => person.Email == email);
     }
     
     public Person FindPersonByEmail(string email)
