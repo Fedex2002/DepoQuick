@@ -21,12 +21,13 @@ public class BookingLogic
 
     private void CheckIfAlreadyBookedAndAddBooking(PersonDto userDto, BookingDto bookingDto)
     {
-        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,userDto.Email);
-        List<Booking> bookings = _bookingRepositories.GetAllFromRepository();
-            bool exists = bookings.Any(booking => booking.StorageUnit.Id == newBooking.StorageUnit.Id);
+      
+            List<Booking> bookings = _bookingRepositories.GetAllBookings();
+            bool exists = bookings.Any(booking => booking.StorageUnit.Id == bookingDto.StorageUnitDto.Id && booking.PersonEmail == userDto.Email);
             if (!exists)
             {
-                _bookingRepositories.AddToRepository(newBooking);
+                Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,userDto.Email);
+                _bookingRepositories.AddBooking(newBooking);
             }
             else
             {

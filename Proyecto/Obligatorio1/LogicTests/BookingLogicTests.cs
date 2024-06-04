@@ -91,8 +91,8 @@ public class BookingLogicTests
 
         BookingDto bookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnitDto("", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "", "Reservado", false,_userDto.Email);
         Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _bookingLogic.ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,bookingDto.UserEmail);
-        _bookingRepo.AddToRepository(_booking);
-        _bookingRepo.RemoveFromRepository(_booking);
+        _bookingRepo.AddBooking(_booking);
+        _bookingRepo.DeleteBooking(_booking);
     }
       
     [TestMethod]
