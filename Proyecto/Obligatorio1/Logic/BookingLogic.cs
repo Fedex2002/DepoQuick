@@ -14,19 +14,20 @@ public class BookingLogic
         _bookingRepositories = bookingRepo;
     }
     
-    public void AddBooking(PersonDto userDto, BookingDto bookingDto)
+    public void AddBooking(BookingDto bookingDto)
     {
-        CheckIfAlreadyBookedAndAddBooking(userDto, bookingDto);
+        CheckIfAlreadyBookedAndAddBooking(bookingDto);
     }
 
-    private void CheckIfAlreadyBookedAndAddBooking(PersonDto userDto, BookingDto bookingDto)
+    private void CheckIfAlreadyBookedAndAddBooking( BookingDto bookingDto)
     {
       
             List<Booking> bookings = _bookingRepositories.GetAllBookings();
-            bool exists = bookings.Any(booking => booking.StorageUnit.Id == bookingDto.StorageUnitDto.Id && booking.PersonEmail == userDto.Email);
+            bool exists = bookings.Any(booking =>
+                booking.StorageUnit.Id == bookingDto.StorageUnitDto.Id && booking.PersonEmail == bookingDto.UserEmail);
             if (!exists)
             {
-                Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,userDto.Email);
+                Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,bookingDto.UserEmail);
                 _bookingRepositories.AddBooking(newBooking);
             }
             else
