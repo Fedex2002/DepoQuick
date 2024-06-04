@@ -22,13 +22,13 @@ public class StorageUnitLogic
         List<Promotion> promotions = CreateListPromotions(storageUnitDto);
         List<DateRange> availableDates = CreateListAvailableDates(storageUnitDto);
         StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions, availableDates);
-        if (_storageUnitRepositories.GetFromRepository(storageUnitDto.Id) != null)
+        if (_storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id) != null)
         {
             IfStorageUnitAlreadyExistsThrowException();
         }
         else
         {
-            _storageUnitRepositories.AddToRepository(storageUnit);
+            _storageUnitRepositories.AddStorageUnit(storageUnit);
         }
     }
 
@@ -58,7 +58,7 @@ public class StorageUnitLogic
         }
         else
         {
-            _storageUnitRepositories.RemoveFromRepository(storageUnitInRepo);
+            _storageUnitRepositories.(storageUnitInRepo);
         }
     }
 

@@ -71,10 +71,10 @@ public class StorageUnitLogicTests
     public void WhenStorageUnitIsCreatedShouldBeAddedToRepository()
     {
         _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
-        Assert.AreEqual(_storageUnitDto.Id, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).Id);
-        Assert.AreEqual(_storageUnitDto.Area, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).Area);
-        Assert.AreEqual(_storageUnitDto.Size, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).Size);
-        Assert.AreEqual(_storageUnitDto.Climatization, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).Climatization);
+        Assert.AreEqual(_storageUnitDto.Id, _storageUnitRepo.GetStorageUnitFromId(_storageUnitDto.Id).Id);
+        Assert.AreEqual(_storageUnitDto.Area, _storageUnitRepo.GetStorageUnitFromId(_storageUnitDto.Id).Area);
+        Assert.AreEqual(_storageUnitDto.Size, _storageUnitRepo.GetStorageUnitFromId(_storageUnitDto.Id).Size);
+        Assert.AreEqual(_storageUnitDto.Climatization, _storageUnitRepo.GetStorageUnitFromId(_storageUnitDto.Id).Climatization);
     }
 
     [TestMethod]
