@@ -1,3 +1,5 @@
+using DataAccess.Context;
+using DataAccess.Repository;
 using Logic;
 using Logic.DTOs;
 using Model;
@@ -11,28 +13,33 @@ namespace LogicTests;
 [TestClass]
 public class PersonLogicTests
 {
-    private PersonRepositories _personRepo;
+    private PersonsRepository _personRepo;
     private PersonLogic _personLogic;
     private Person _person;
     private PersonDto _personDto;
-    private List<BookingDto> _bookingsDto;
+    private ApplicationDbContext _context;
+    private readonly IApplicationDbContextFactory _contextFactory = new InMemoryAppContextFactory();
     
     [TestInitialize]
     public void TestInitialize()
     {
-        _personRepo = new PersonRepositories();
+        _context = _contextFactory.CreateDbContext();
+        _personRepo = new PersonsRepository(_context);
         _personLogic = new PersonLogic(_personRepo);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#",false);
         _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#",_person.IsAdmin);
-        _bookingsDto = new List<BookingDto>();
-        _personRepo.AddToRepository(_person); 
+    }
+    
+     [TestCleanup]
+    public void CleanUp()
+    {
+        _context.Database.EnsureDeleted();
     }
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenEmailIsNotRegisteredThrowException()
     {
-        _personRepo.RemoveFromRepository(_person);;
         _personLogic.IfEmailIsNotRegisteredThrowException(_personLogic.CheckIfEmailIsRegistered(_person.Email));
     }
 
@@ -40,13 +47,14 @@ public class PersonLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPasswordIsNotCorrectThrowException()
     {
-        _personRepo.RemoveFromRepository(_person);
+        _personRepo.AddPerson(_person); 
         _personLogic.CheckIfPasswordIsCorrect(_person.Password, "Catch from page");
     }
 
     [TestMethod]
     public void WhenEmailIsRegisteredReturnTrue()
     {
+        _personRepo.AddPerson(_person); 
         Assert.IsTrue(_personLogic.CheckIfEmailIsRegistered(_person.Email));
     }
 
@@ -69,6 +77,7 @@ public class PersonLogicTests
     [TestMethod]
     public void WhenPersonIsTryingToLoginShouldReturnPersonIfValidationsAreCorrect()
     {
+        _personRepo.AddPerson(_person); 
         PersonDto loggedInPersonDto = _personLogic.Login(_person.Email, _person.Password);
         PersonDto expectedPersonDto = new PersonDto(_person.Name, _person.Surname, _person.Email, _person.Password, _person.IsAdmin);
         Assert.AreEqual(expectedPersonDto.Name, loggedInPersonDto.Name);
@@ -81,6 +90,7 @@ public class PersonLogicTests
     public void WhenPersonIsTryingToLoginAndIsAdministratorShouldReturnPersonWithAdminPrivileges()
     {
         _person.IsAdmin = true;
+        _personRepo.AddPerson(_person); 
         PersonDto loggedInAdministratorDto = _personLogic.Login(_person.Email,_person.Password);
         Assert.AreEqual(_person.Name, loggedInAdministratorDto.Name);
         Assert.AreEqual(_person.Surname, loggedInAdministratorDto.Surname);
@@ -93,6 +103,7 @@ public class PersonLogicTests
     public void WhenPersonIsTryingToLoginAndIsUserShouldReturnPersonWithoutAdminPrivileges()
     {
         _person.IsAdmin = false;
+        _personRepo.AddPerson(_person); 
         PersonDto loggedInPersonDto = _personLogic.Login(_person.Email,_person.Password);
         
         Assert.AreEqual(_person.Name, loggedInPersonDto.Name);
@@ -113,22 +124,22 @@ public class PersonLogicTests
     public void WhenPersonsAreAddedToRepositoryShouldReturnTheRepository()
     {
         Person federico = new Person("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#",false);
-        _personRepo.AddToRepository(federico); 
+        _personRepo.AddPerson(federico); 
         Assert.AreEqual(_personRepo, _personLogic.GetRepository());
     }
     
     [TestMethod]
     public void WhenPersonIsTryingToSignupAndIsValidShouldAddToTheRepository()
     {
-        _personRepo.RemoveFromRepository(_person);
         PersonDto personDto = new PersonDto(_person.Name, _person.Surname, _person.Email, _person.Password, _person.IsAdmin);
         _personLogic.SignUp(personDto);
     }
     
     [TestMethod]
     
-    public void WhenGeettingPersonDtoFromEmailShouldReturnIt()
+    public void WhenGettingPersonDtoFromEmailShouldReturnIt()
     {
+        _personRepo.AddPerson(_person); 
         PersonDto personDto = _personLogic.GetPersonDtoFromEmail(_person.Email);
         Assert.AreEqual(_personDto.Name, personDto.Name);
         Assert.AreEqual(_personDto.Surname, personDto.Surname);
@@ -142,6 +153,7 @@ public class PersonLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPersonIsTryingToSignUpAndEmailIsAlreadyRegisteredShouldReturnException()
     {
+        _personRepo.AddPerson(_person); 
         _personLogic.SignUp(_personDto);
     }
     

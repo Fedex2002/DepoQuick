@@ -85,7 +85,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("StorageUnitId");
 
-                    b.ToTable("DateRanges");
+                    b.ToTable("DateRange");
                 });
 
             modelBuilder.Entity("Model.Person", b =>
@@ -134,12 +134,7 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("StorageUnitId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("StorageUnitId");
 
                     b.ToTable("Promotions");
                 });
@@ -163,6 +158,21 @@ namespace DataAccess.Migrations
                     b.ToTable("StorageUnits");
                 });
 
+            modelBuilder.Entity("StorageUnitPromotion", b =>
+                {
+                    b.Property<string>("StorageUnitId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PromotionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StorageUnitId", "PromotionId");
+
+                    b.HasIndex("PromotionId");
+
+                    b.ToTable("StorageUnitPromotion");
+                });
+
             modelBuilder.Entity("Model.Booking", b =>
                 {
                     b.HasOne("Model.StorageUnit", "StorageUnit")
@@ -179,18 +189,24 @@ namespace DataAccess.Migrations
                         .HasForeignKey("StorageUnitId");
                 });
 
-            modelBuilder.Entity("Model.Promotion", b =>
+            modelBuilder.Entity("StorageUnitPromotion", b =>
                 {
+                    b.HasOne("Model.Promotion", null)
+                        .WithMany()
+                        .HasForeignKey("PromotionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Model.StorageUnit", null)
-                        .WithMany("Promotions")
-                        .HasForeignKey("StorageUnitId");
+                        .WithMany()
+                        .HasForeignKey("StorageUnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Model.StorageUnit", b =>
                 {
                     b.Navigation("AvailableDates");
-
-                    b.Navigation("Promotions");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,3 +1,4 @@
+using DataAccess.Repository;
 using Logic.DTOs;
 using Model;
 using Model.Exceptions;
@@ -7,16 +8,16 @@ namespace Logic;
 
 public class PersonLogic
 {
-    private readonly PersonRepositories _personRepositories;
+    private readonly PersonsRepository _personRepositories;
     
-    public PersonLogic(PersonRepositories personRepositories)
+    public PersonLogic(PersonsRepository personRepositories)
     {
         _personRepositories = personRepositories;
     }
 
     public bool CheckIfEmailIsRegistered(string email)
     {
-        return _personRepositories.ExistsInRepository(email);
+        return _personRepositories.PersonAlreadyExists(email);
     }
 
     public void IfEmailIsNotRegisteredThrowException(bool registered)
@@ -50,7 +51,7 @@ public class PersonLogic
         PersonDto personDto = new PersonDto();
         if (CheckIfEmailIsRegistered(email))
         {
-            Person person = _personRepositories.GetFromRepository(email);
+            Person person = _personRepositories.FindPersonByEmail(email);
             if (CheckIfPasswordIsCorrect(password, person.Password))
             {
                 personDto = new PersonDto(person.Name, person.Surname, person.Email, person.Password,person.IsAdmin);
@@ -65,7 +66,7 @@ public class PersonLogic
     }
     
 
-    public PersonRepositories GetRepository()
+    public PersonsRepository GetRepository()
     {
         return _personRepositories;
     }
@@ -74,7 +75,7 @@ public class PersonLogic
     {
         if (!CheckIfEmailIsRegistered(personDto.Email))
         {
-            CheckIfIsUserOrAdministratorAndAddToTheRepository(personDto);
+            AddPersonIfItsValid(personDto);
         }
         else
         {
@@ -82,16 +83,16 @@ public class PersonLogic
         }
     }
 
-    private void CheckIfIsUserOrAdministratorAndAddToTheRepository(PersonDto personDto)
+    private void AddPersonIfItsValid(PersonDto personDto)
     {
         Person personToRepo = new Person(personDto.Name, personDto.Surname,personDto.Email, personDto.Password, personDto.IsAdmin);
-        _personRepositories.AddToRepository(personToRepo);
+        _personRepositories.AddPerson(personToRepo);
         
     }
 
     public PersonDto GetPersonDtoFromEmail(string personEmail)
     {
-        Person person = _personRepositories.GetFromRepository(personEmail);
+        Person person = _personRepositories.FindPersonByEmail(personEmail);
         PersonDto personDto = new PersonDto(person.Name, person.Surname, person.Email, person.Password, person.IsAdmin);
         return personDto;
     }
