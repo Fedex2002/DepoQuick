@@ -153,6 +153,7 @@ public class PersonLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPersonIsTryingToSignUpAndEmailIsAlreadyRegisteredShouldReturnException()
     {
+        _personRepo.AddPerson(_person); 
         _personLogic.SignUp(_personDto);
     }
     
