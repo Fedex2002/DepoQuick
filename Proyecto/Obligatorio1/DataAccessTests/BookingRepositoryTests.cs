@@ -77,4 +77,14 @@ public class BookingRepositoryTests
 
         Assert.AreEqual(_booking, bookingInDb);
     }
+    
+    [TestMethod]
+    
+    public void WhenDeletingABooking_ShouldRemoveTheBookingFromTheDatabase()
+    {
+        _repository.AddBooking(_booking);
+        _repository.DeleteBooking(_booking);
+        List<Booking> bookings = _repository.GetAllBookings();
+        Assert.AreEqual(0, bookings.Count);
+    }
 }
