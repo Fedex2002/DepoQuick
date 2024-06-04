@@ -138,7 +138,7 @@ public class BookingLogicTests
     [TestMethod]
     public void WhenUserPaysABookingShouldSetItToTrue()
     {
-        _bookingLogic.AddBooking(_userDto, _mybookingDto);
+        _bookingLogic.AddBooking(_mybookingDto);
         _bookingLogic.PayBooking(_userDto, _mybookingDto);
     }
 
