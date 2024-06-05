@@ -251,4 +251,15 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
             throw new LogicExceptions("Date range is not included in the available date range");
         }
     }
+    
+    public double CalculateStorageUnitPricePerDay(StorageUnitDto storageUnitDto, DateRangeDto dateRangeDto)
+    {
+        StorageUnit storageUnit = _storageUnitRepositories.GetFromRepository(storageUnitDto.Id);
+        bool promotionIsInDateRange = storageUnit.Promotions.Any(promotion => dateRangeDto.StartDate >= promotion.DateStart && dateRangeDto.EndDate <= promotion.DateEnd);
+        if (!promotionIsInDateRange)
+        {
+            storageUnit.Promotions = new List<Promotion>();
+        }
+        return storageUnit.CalculateStorageUnitPricePerDay();
+    }
 }

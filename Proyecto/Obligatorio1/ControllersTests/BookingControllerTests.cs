@@ -99,15 +99,6 @@ public class BookingControllerTests
     }
     
     [TestMethod]
-    public void WhenUserEntersPageBookingsShouldShowPricePerDayOfStorageUnit()
-    {
-        _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
-        Assert.AreEqual(52.5, _bookingController.CalculateStorageUnitPricePerDay(_storageUnitDto, _dateRangeDto));
-        
-        Assert.AreEqual(70, _bookingController.CalculateStorageUnitPricePerDay(_storageUnitDto, _storageUnitDto.AvailableDates[0]));
-    }
-
-    [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenUserTriesToBookTheSameStorageUnitWithPromotionTwiceShouldThrowException()
     {
