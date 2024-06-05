@@ -13,5 +13,4 @@ public interface IStorageUnitController
     public double CalculateStorageUnitPricePerDay(StorageUnitDto storageUnitDto, DateRangeDto dateRangeDto);
     public void AddAvailableDateRangeToStorageUnit(string id, DateRangeDto dateRangeDto);
     public List<StorageUnitDto> SearchAvailableStorageUnits(DateRangeDto dateRangeDto);
-    public void EliminateDateRangeFromStorageUnit(string id, DateRangeDto dateRangeDto);
 }
