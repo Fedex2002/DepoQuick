@@ -5,11 +5,11 @@ using Model.Exceptions;
 
 namespace Logic;
 
-public class PromotionLogic
+public class PromotionController
 {
     private readonly PromotionsRepositories _promotionRepositories;
     
-    public PromotionLogic(PromotionsRepositories promotionRepositories)
+    public PromotionController(PromotionsRepositories promotionRepositories)
     {
         _promotionRepositories = promotionRepositories;
     }
