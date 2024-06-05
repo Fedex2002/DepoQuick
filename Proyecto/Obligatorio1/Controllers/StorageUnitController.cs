@@ -2,12 +2,13 @@ using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography;
 using Model;
 using Logic.DTOs;
+using Logic.Interfaces;
 using Repositories;
 using Model.Exceptions;
 
 namespace Logic;
 
-public class StorageUnitController
+public class StorageUnitController : IStorageUnitController, IDateRangeController
 {
     private readonly StorageUnitRepositories _storageUnitRepositories;
     
