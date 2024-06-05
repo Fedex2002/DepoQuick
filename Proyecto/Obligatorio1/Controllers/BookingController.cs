@@ -122,14 +122,6 @@ public class BookingController
         }
     }
     
-    public void CheckIfDateStartAndDateEndAreIncludedInDateRange(DateTime dateStart, DateTime dateEnd, DateRangeDto dateRangeDto)
-    {
-        if (!(dateStart >= dateRangeDto.StartDate && dateEnd <= dateRangeDto.EndDate))
-        {
-            throw new LogicExceptions("Date range is not included in the available date range");
-        }
-    }
-    
     public void ApproveBooking(PersonDto userDto, BookingDto bookingDto)
     {
         if (bookingDto.Approved)

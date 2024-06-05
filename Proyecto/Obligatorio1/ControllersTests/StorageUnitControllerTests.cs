@@ -253,4 +253,13 @@ public class StorageUnitControllerTests
         Assert.AreEqual(newRange.StartDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[1].StartDate);
         Assert.AreEqual(newRange.EndDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[1].EndDate);
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void IfSelectedStartDateAndEndDateOfBookingIsNotInDateRangeShouldThrowException()
+    {
+        DateTime startDate = new DateTime(2024, 10, 15);
+        DateTime endDate = new DateTime(2024, 10, 30);
+        _storageUnitController.CheckIfDateStartAndDateEndAreIncludedInDateRange(startDate, endDate, _dateRangeDto);
+    }
 }
