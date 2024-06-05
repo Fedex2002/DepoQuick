@@ -6,6 +6,8 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
+
+        <RootNamespace>LogicTests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Logic\Logic.csproj" />
+      <ProjectReference Include="..\Controllers\Controllers.csproj" />
       <ProjectReference Include="..\Model\Model.csproj" />
     </ItemGroup>
 
