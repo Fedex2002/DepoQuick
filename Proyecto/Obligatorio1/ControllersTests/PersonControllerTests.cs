@@ -14,7 +14,7 @@ namespace LogicTests;
 public class PersonControllerTests
 {
     private PersonsRepository _personRepo;
-    private PersonLogic _personLogic;
+    private PersonController _personController;
     private Person _person;
     private PersonDto _personDto;
     private ApplicationDbContext _context;
@@ -25,7 +25,7 @@ public class PersonControllerTests
     {
         _context = _contextFactory.CreateDbContext();
         _personRepo = new PersonsRepository(_context);
-        _personLogic = new PersonLogic(_personRepo);
+        _personController = new PersonController(_personRepo);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#",false);
         _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#",_person.IsAdmin);
     }
@@ -40,7 +40,7 @@ public class PersonControllerTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenEmailIsNotRegisteredThrowException()
     {
-        _personLogic.IfEmailIsNotRegisteredThrowException(_personLogic.CheckIfEmailIsRegistered(_person.Email));
+        _personController.IfEmailIsNotRegisteredThrowException(_personController.CheckIfEmailIsRegistered(_person.Email));
     }
 
     [TestMethod]
@@ -48,20 +48,20 @@ public class PersonControllerTests
     public void WhenPasswordIsNotCorrectThrowException()
     {
         _personRepo.AddPerson(_person); 
-        _personLogic.CheckIfPasswordIsCorrect(_person.Password, "Catch from page");
+        _personController.CheckIfPasswordIsCorrect(_person.Password, "Catch from page");
     }
 
     [TestMethod]
     public void WhenEmailIsRegisteredReturnTrue()
     {
         _personRepo.AddPerson(_person); 
-        Assert.IsTrue(_personLogic.CheckIfEmailIsRegistered(_person.Email));
+        Assert.IsTrue(_personController.CheckIfEmailIsRegistered(_person.Email));
     }
 
     [TestMethod]
     public void WhenPasswordIsCorrectReturnTrue()
     {
-        Assert.IsTrue(_personLogic.CheckIfPasswordIsCorrect(_person.Password, _person.Password));
+        Assert.IsTrue(_personController.CheckIfPasswordIsCorrect(_person.Password, _person.Password));
     }
 
     [TestMethod]
@@ -78,7 +78,7 @@ public class PersonControllerTests
     public void WhenPersonIsTryingToLoginShouldReturnPersonIfValidationsAreCorrect()
     {
         _personRepo.AddPerson(_person); 
-        PersonDto loggedInPersonDto = _personLogic.Login(_person.Email, _person.Password);
+        PersonDto loggedInPersonDto = _personController.Login(_person.Email, _person.Password);
         PersonDto expectedPersonDto = new PersonDto(_person.Name, _person.Surname, _person.Email, _person.Password, _person.IsAdmin);
         Assert.AreEqual(expectedPersonDto.Name, loggedInPersonDto.Name);
         Assert.AreEqual(expectedPersonDto.Surname, loggedInPersonDto.Surname);
@@ -91,7 +91,7 @@ public class PersonControllerTests
     {
         _person.IsAdmin = true;
         _personRepo.AddPerson(_person); 
-        PersonDto loggedInAdministratorDto = _personLogic.Login(_person.Email,_person.Password);
+        PersonDto loggedInAdministratorDto = _personController.Login(_person.Email,_person.Password);
         Assert.AreEqual(_person.Name, loggedInAdministratorDto.Name);
         Assert.AreEqual(_person.Surname, loggedInAdministratorDto.Surname);
         Assert.AreEqual(_person.Email, loggedInAdministratorDto.Email);
@@ -104,7 +104,7 @@ public class PersonControllerTests
     {
         _person.IsAdmin = false;
         _personRepo.AddPerson(_person); 
-        PersonDto loggedInPersonDto = _personLogic.Login(_person.Email,_person.Password);
+        PersonDto loggedInPersonDto = _personController.Login(_person.Email,_person.Password);
         
         Assert.AreEqual(_person.Name, loggedInPersonDto.Name);
         Assert.AreEqual(_person.Surname, loggedInPersonDto.Surname);
@@ -117,7 +117,7 @@ public class PersonControllerTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPersonIsTryingToLoginAndDoesNotExistShouldReturnException()
     {
-        Assert.AreEqual(_person, _personLogic.Login("mail@gmail.com", "PassWord921#EAa"));
+        Assert.AreEqual(_person, _personController.Login("mail@gmail.com", "PassWord921#EAa"));
     }
 
     [TestMethod]
@@ -125,14 +125,14 @@ public class PersonControllerTests
     {
         Person federico = new Person("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#",false);
         _personRepo.AddPerson(federico); 
-        Assert.AreEqual(_personRepo, _personLogic.GetRepository());
+        Assert.AreEqual(_personRepo, _personController.GetRepository());
     }
     
     [TestMethod]
     public void WhenPersonIsTryingToSignupAndIsValidShouldAddToTheRepository()
     {
         PersonDto personDto = new PersonDto(_person.Name, _person.Surname, _person.Email, _person.Password, _person.IsAdmin);
-        _personLogic.SignUp(personDto);
+        _personController.SignUp(personDto);
     }
     
     [TestMethod]
@@ -140,7 +140,7 @@ public class PersonControllerTests
     public void WhenGettingPersonDtoFromEmailShouldReturnIt()
     {
         _personRepo.AddPerson(_person); 
-        PersonDto personDto = _personLogic.GetPersonDtoFromEmail(_person.Email);
+        PersonDto personDto = _personController.GetPersonDtoFromEmail(_person.Email);
         Assert.AreEqual(_personDto.Name, personDto.Name);
         Assert.AreEqual(_personDto.Surname, personDto.Surname);
         Assert.AreEqual(_personDto.Email, personDto.Email);
@@ -154,7 +154,7 @@ public class PersonControllerTests
     public void WhenPersonIsTryingToSignUpAndEmailIsAlreadyRegisteredShouldReturnException()
     {
         _personRepo.AddPerson(_person); 
-        _personLogic.SignUp(_personDto);
+        _personController.SignUp(_personDto);
     }
     
 }

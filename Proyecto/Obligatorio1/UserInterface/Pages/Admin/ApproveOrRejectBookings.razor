@@ -5,7 +5,7 @@
 @inject BookingController BookingController
 @inject AdministratorLogic administratorLogic
 @inject NavigationManager NavigationManager
-@inject PersonLogic personLogic
+@inject PersonController PersonController
 @inject IJSRuntime JS
 
 <PageTitle>DepoQuick</PageTitle>
@@ -174,7 +174,7 @@
     {
         try
         {
-            PersonDto personInbooking = personLogic.GetPersonDtoFromEmail(bookingEmail);
+            PersonDto personInbooking = PersonController.GetPersonDtoFromEmail(bookingEmail);
             administratorLogic.ApproveBooking(personInbooking, bookingDto);
             OnInitialized();
             _message = "Booking has been approved successfully!";
@@ -191,7 +191,7 @@
     {
         try
         {
-            PersonDto personInbooking = personLogic.GetPersonDtoFromEmail(bookingEmail);
+            PersonDto personInbooking = PersonController.GetPersonDtoFromEmail(bookingEmail);
             administratorLogic.SetRejectionMessage(personInbooking, bookingDto, _rejectionReason);
             OnInitialized();
             _message = "Booking has been rejected successfully!";
