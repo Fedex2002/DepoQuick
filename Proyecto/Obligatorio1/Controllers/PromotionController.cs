@@ -1,11 +1,12 @@
 using Logic.DTOs;
+using Logic.Interfaces;
 using Repositories;
 using Model;
 using Model.Exceptions;
 
 namespace Logic;
 
-public class PromotionController
+public class PromotionController : IPromotionController
 {
     private readonly PromotionsRepositories _promotionRepositories;
     
@@ -14,27 +15,6 @@ public class PromotionController
         _promotionRepositories = promotionRepositories;
     }
     
-    public void ModifyPromotion(PromotionDto promotionDto, string oldLabel)
-    {
-        Promotion promotionInRepo= _promotionRepositories.GetFromRepository(oldLabel);
-        if (!_promotionRepositories.ExistsInRepository(oldLabel))
-        {
-            IfPromotionDoesNotExistThrowException();
-        }
-        else
-        {
-            EditPromotion(promotionDto, promotionInRepo);
-        }
-    }
-
-    private static void EditPromotion(PromotionDto promotionDto, Promotion promotionInRepo)
-    {
-        promotionInRepo.Label = promotionDto.Label;
-        promotionInRepo.Discount = promotionDto.Discount;
-        promotionInRepo.DateStart = promotionDto.DateStart;
-        promotionInRepo.DateEnd = promotionDto.DateEnd;
-    }
-
     public void CreatePromotion(PromotionDto promotionDto)
     {
         Promotion promotion= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
@@ -47,12 +27,37 @@ public class PromotionController
             _promotionRepositories.AddToRepository(promotion);
         }
     }
-
+    
     private static void IfPromotionExistsThrowException()
     {
         throw new LogicExceptions("Promotion already exists");
     }
+    
+    public void ModifyPromotion(string oldLabel, PromotionDto newPromotionDto)
+    {
+        Promotion promotionInRepo= _promotionRepositories.GetFromRepository(oldLabel);
+        if (!_promotionRepositories.ExistsInRepository(oldLabel))
+        {
+            IfPromotionDoesNotExistThrowException();
+        }
+        else
+        {
+            EditPromotion(newPromotionDto, promotionInRepo);
+        }
+    }
+    
+    private static void IfPromotionDoesNotExistThrowException()
+    {
+        throw new LogicExceptions("Promotion does not exist");
+    }
 
+    private static void EditPromotion(PromotionDto promotionDto, Promotion promotionInRepo)
+    {
+        promotionInRepo.Label = promotionDto.Label;
+        promotionInRepo.Discount = promotionDto.Discount;
+        promotionInRepo.DateStart = promotionDto.DateStart;
+        promotionInRepo.DateEnd = promotionDto.DateEnd;
+    }
     public void RemovePromotion(PromotionDto promotionDto)
     {
         Promotion promotionInRepo= _promotionRepositories.GetFromRepository(promotionDto.Label);
@@ -65,12 +70,7 @@ public class PromotionController
             _promotionRepositories.RemoveFromRepository(promotionInRepo);
         }
     }
-
-    private static void IfPromotionDoesNotExistThrowException()
-    {
-        throw new LogicExceptions("Promotion does not exist");
-    }
-
+    
     public List<PromotionDto> GetPromotionsDto()
     {
         List<PromotionDto> promotionsDto = new List<PromotionDto>();
