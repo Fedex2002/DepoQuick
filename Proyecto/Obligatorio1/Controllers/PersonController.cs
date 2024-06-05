@@ -69,11 +69,6 @@ public class PersonController
         CurrentPerson = null;
     }
 
-    public PersonsRepository GetRepository()
-    {
-        return _personRepositories;
-    }
-
     public void SignUp(PersonDto personDto)
     {
         if (!CheckIfEmailIsRegistered(personDto.Email))
