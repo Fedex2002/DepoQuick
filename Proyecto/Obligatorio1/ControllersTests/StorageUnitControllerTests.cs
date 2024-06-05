@@ -262,4 +262,13 @@ public class StorageUnitControllerTests
         DateTime endDate = new DateTime(2024, 10, 30);
         _storageUnitController.CheckIfDateStartAndDateEndAreIncludedInDateRange(startDate, endDate, _dateRangeDto);
     }
+    
+    [TestMethod]
+    public void WhenUserEntersPageBookingsShouldShowPricePerDayOfStorageUnit()
+    {
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
+        _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        Assert.AreEqual(56.25, _storageUnitController.CalculateStorageUnitPricePerDay(_storageUnitDto, _dateRangeDto));
+    }
+
 }

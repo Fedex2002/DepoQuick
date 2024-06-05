@@ -77,17 +77,6 @@ public class BookingController
         Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment, bookingDto.UserEmail);
         return booking.CalculateBookingTotalPrice();
     }
-
-    public double CalculateStorageUnitPricePerDay(StorageUnitDto storageUnitDto, DateRangeDto dateRangeDto)
-    {
-        StorageUnit storageUnit = ChangeToStorageUnit(storageUnitDto);
-        bool promotionIsInDateRange = storageUnit.Promotions.Any(promotion => dateRangeDto.StartDate >= promotion.DateStart && dateRangeDto.EndDate <= promotion.DateEnd);
-        if (!promotionIsInDateRange)
-        {
-            storageUnit.Promotions = new List<Promotion>();
-        }
-        return storageUnit.CalculateStorageUnitPricePerDay();
-    }
     
     public void PayBooking(PersonDto userDto, BookingDto bookingDto)
     {
