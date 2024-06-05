@@ -9,7 +9,7 @@ namespace LogicTests;
 public class SessionLogicTests
 {
     private PersonsRepository _personRepo;
-    private PersonLogic _personLogic;
+    private PersonController _personController;
     private Person _person;
     private SessionLogic _sessionLogic;
     private ApplicationDbContext _context;
@@ -20,10 +20,10 @@ public class SessionLogicTests
     {
         _context = _contextFactory.CreateDbContext();
         _personRepo = new PersonsRepository(_context);
-        _personLogic = new PersonLogic(_personRepo);
+        _personController = new PersonController(_personRepo);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#",false);
         _personRepo.AddPerson(_person);
-        _sessionLogic = new SessionLogic(_personLogic);
+        _sessionLogic = new SessionLogic(_personController);
     }
 
     [TestCleanup]
@@ -35,7 +35,7 @@ public class SessionLogicTests
     [TestMethod]
     public void WhenPersonIsLoggedInSetItAsCurrentPerson()
     {
-        _sessionLogic.Login(_personLogic.GetRepository().FindPersonByEmail(_person.Email).Email,_personLogic.GetRepository().FindPersonByEmail(_person.Email).Password);
+        _sessionLogic.Login(_personController.GetRepository().FindPersonByEmail(_person.Email).Email,_personController.GetRepository().FindPersonByEmail(_person.Email).Password);
     }
     
     [TestMethod]

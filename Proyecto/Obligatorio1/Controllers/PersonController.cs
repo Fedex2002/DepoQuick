@@ -6,11 +6,11 @@ using Repositories;
 
 namespace Logic;
 
-public class PersonLogic
+public class PersonController
 {
     private readonly PersonsRepository _personRepositories;
     
-    public PersonLogic(PersonsRepository personRepositories)
+    public PersonController(PersonsRepository personRepositories)
     {
         _personRepositories = personRepositories;
     }

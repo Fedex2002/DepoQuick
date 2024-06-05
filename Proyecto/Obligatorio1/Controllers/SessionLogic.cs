@@ -5,17 +5,17 @@ namespace Logic;
 
 public class SessionLogic
 {
-    private readonly PersonLogic _personLogic;
+    private readonly PersonController _personController;
     public PersonDto CurrentPerson { get; set; }
     
-    public SessionLogic(PersonLogic personLogic)
+    public SessionLogic(PersonController personController)
     {
-        _personLogic = personLogic;
+        _personController = personController;
     }
     
     public void Login(string email,string password)
     {
-        CurrentPerson = _personLogic.Login(email,password); 
+        CurrentPerson = _personController.Login(email,password); 
     }
     
     public void Logout()
