@@ -2,7 +2,7 @@
 @using Logic
 @using Logic.DTOs
 @layout MainLayout
-@inject BookingLogic BookingLogic
+@inject BookingController BookingController
 @inject AdministratorLogic administratorLogic
 @inject NavigationManager NavigationManager
 @inject PersonLogic personLogic
@@ -150,10 +150,10 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _allBookingDtos = BookingLogic.GetAllBookingsDto();
+        _allBookingDtos = BookingController.GetAllBookingsDto();
             foreach (var bookingDto in _allBookingDtos)
             {
-                _totalPrice[bookingDto.StorageUnitDto.Id] = BookingLogic.CalculateTotalPriceOfBooking(bookingDto);
+                _totalPrice[bookingDto.StorageUnitDto.Id] = BookingController.CalculateTotalPriceOfBooking(bookingDto);
                 _dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
                 _dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
                 _status[bookingDto.StorageUnitDto.Id] = bookingDto.Status;

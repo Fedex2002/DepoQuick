@@ -4,11 +4,11 @@ using Model.Exceptions;
 using Repositories;
 namespace Logic;
 
-public class BookingLogic
+public class BookingController
 {
     private readonly BookingRepositories _bookingRepositories;
     
-    public BookingLogic(BookingRepositories bookingRepo)
+    public BookingController(BookingRepositories bookingRepo)
     {
         _bookingRepositories = bookingRepo;
     }
