@@ -103,7 +103,7 @@ public class BookingControllerTests
     public void WhenUserPaysABookingShouldSetItToTrue()
     {
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
-        _bookingController.PayBooking(_userDto, _mybookingDto);
+        _bookingController.PayBooking(_userDto.Email, _mybookingDto);
     }
 
     [TestMethod]
@@ -111,8 +111,8 @@ public class BookingControllerTests
     public void WhenUserTriesToPayABookingTwiceShouldThrowException()
     {
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
-        _bookingController.PayBooking(_userDto, _mybookingDto);
-        _bookingController.PayBooking(_userDto, _mybookingDto);
+        _bookingController.PayBooking(_userDto.Email, _mybookingDto);
+        _bookingController.PayBooking(_userDto.Email, _mybookingDto);
     }
 
     [TestMethod]
@@ -134,15 +134,15 @@ public class BookingControllerTests
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
             "Reservado", true,_person.Email);
         string rejectionMessage = "The booking has been rejected";
-        _bookingController.CreateBooking(_personDto.Email, _mybookingDto);
-        _bookingController.SetRejectionMessage(_personDto, _mybookingDto, rejectionMessage);
+        _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
+        _bookingController.SetRejectionMessage(_userDto.Email, _mybookingDto, rejectionMessage);
     }
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenAdministratorRejectsABookingDtoWithEmptyMessageShouldThrowException()
     {
-        _bookingController.SetRejectionMessage(_personDto, _mybookingDto, "");
+        _bookingController.SetRejectionMessage(_userDto.Email, _mybookingDto, "");
     }
     
     
@@ -153,7 +153,7 @@ public class BookingControllerTests
         _mybookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
             "Reservado", true,_person.Email);
-        _bookingController.ApproveBooking(_personDto, _mybookingDto);
+        _bookingController.ApproveBooking(_userDto.Email, _mybookingDto);
     }
     
     [TestMethod]
@@ -163,7 +163,7 @@ public class BookingControllerTests
         _mybookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "Rejected",
             "Reservado", true,_person.Email);
-        _bookingController.SetRejectionMessage(_personDto, _mybookingDto, "Rejected");
+        _bookingController.SetRejectionMessage(_userDto.Email, _mybookingDto, "Rejected");
     }
     
     [TestMethod] 
@@ -173,7 +173,7 @@ public class BookingControllerTests
         _mybookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "Rejected",
             "Reservado", false,_person.Email);
-        _bookingController.ApproveBooking(_personDto, _mybookingDto);
+        _bookingController.ApproveBooking(_userDto.Email, _mybookingDto);
     }
     
     [TestMethod]
@@ -183,20 +183,20 @@ public class BookingControllerTests
         _mybookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
             "Reservado", false,_person.Email);
-        _bookingController.SetRejectionMessage(_personDto, _mybookingDto, "Rejected");
+        _bookingController.SetRejectionMessage(_userDto.Email, _mybookingDto, "Rejected");
     }
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenAdministratorTriesToApproveABookingAndUserDidNotMakeThePaymentShouldThrowException()
     {
-        _bookingController.ApproveBooking(_personDto, _mybookingDto);
+        _bookingController.ApproveBooking(_userDto.Email, _mybookingDto);
     }
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenAdministratorTriesToRejectABookingAndUserDidNotMakeThePaymentShouldThrowException()
     {
-        _bookingController.SetRejectionMessage(_personDto, _mybookingDto, "Rejected");
+        _bookingController.SetRejectionMessage(_userDto.Email, _mybookingDto, "Rejected");
     }
 }
