@@ -13,14 +13,14 @@ public class BookingController
         _bookingRepositories = bookingRepo;
     }
     
-    public void AddBooking(PersonDto userDto, BookingDto bookingDto)
+    public void AddBooking(string userEmail, BookingDto bookingDto)
     {
-        CheckIfAlreadyBookedAndAddBooking(userDto, bookingDto);
+        CheckIfAlreadyBookedAndAddBooking(userEmail, bookingDto);
     }
 
-    private void CheckIfAlreadyBookedAndAddBooking(PersonDto userDto, BookingDto bookingDto)
+    private void CheckIfAlreadyBookedAndAddBooking(string userEmail, BookingDto bookingDto)
     {
-        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,userDto.Email);
+        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,userEmail);
         List<Booking> bookings = _bookingRepositories.GetAllFromRepository();
             bool exists = bookings.Any(booking => booking.StorageUnit.Id == newBooking.StorageUnit.Id);
             if (!exists)
