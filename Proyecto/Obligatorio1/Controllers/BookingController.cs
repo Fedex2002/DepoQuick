@@ -1,10 +1,11 @@
 using Logic.DTOs;
+using Logic.Interfaces;
 using Model;
 using Model.Exceptions;
 using Repositories;
 namespace Logic;
 
-public class BookingController
+public class BookingController : IBookingController
 {
     private readonly BookingRepositories _bookingRepositories;
     
@@ -65,11 +66,11 @@ public class BookingController
         return booking.CalculateBookingTotalPrice();
     }
     
-    public void PayBooking(PersonDto userDto, BookingDto bookingDto)
+    public void PayBooking(string userEmail, BookingDto bookingDto)
     {
         List<Booking> bookings = _bookingRepositories.GetAllFromRepository();
         var bookingToPay = bookings.FirstOrDefault(
-            b => b.PersonEmail == userDto.Email && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
+            b => b.PersonEmail == userEmail && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
         );
 
         if (bookingToPay != null)
@@ -98,7 +99,7 @@ public class BookingController
         }
     }
     
-    public void ApproveBooking(PersonDto userDto, BookingDto bookingDto)
+    public void ApproveBooking(string userEmail, BookingDto bookingDto)
     {
         if (bookingDto.Approved)
         {
@@ -116,14 +117,13 @@ public class BookingController
         {
             List<Booking> bookings = _bookingRepositories.GetAllFromRepository();
             var bookingToApprove = bookings.FirstOrDefault(
-                b => b.PersonEmail == userDto.Email && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
+                b => b.PersonEmail == userEmail && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
             );
 
             IfBookingStorageUnitIdIsAMatchSetApprovedToTrueAndStatusToCaptured(bookingDto, bookingToApprove,
                 bookingDto.StorageUnitDto.Id);
         }
     }
-
 
     private static void IfUserDidNotMakeThePaymentThrowException()
     {
@@ -152,7 +152,7 @@ public class BookingController
         }
     }
 
-    public void SetRejectionMessage(PersonDto userDto, BookingDto bookingDto, string rejectionMessage)
+    public void SetRejectionMessage(string userEmail, BookingDto bookingDto, string rejectionMessage)
     {
         if (bookingDto.RejectedMessage != "")
         {
@@ -171,7 +171,7 @@ public class BookingController
             IfRejectionMessageIsEmptyThrowException(rejectionMessage);
             List<Booking> bookings = _bookingRepositories.GetAllFromRepository();
             var bookingToReject = bookings.FirstOrDefault(
-                b => b.PersonEmail == userDto.Email && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
+                b => b.PersonEmail == userEmail && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
             );
 
             IfBookingStorageUnitIdIsAMatchSetRejectedMessageAndChangeStatusToRejected(bookingDto, bookingToReject,
