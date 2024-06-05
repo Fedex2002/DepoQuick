@@ -115,14 +115,6 @@ public class PersonControllerTests
     {
         Assert.AreEqual(_person, _personController.Login("mail@gmail.com", "PassWord921#EAa"));
     }
-
-    [TestMethod]
-    public void WhenPersonsAreAddedToRepositoryShouldReturnTheRepository()
-    {
-        Person federico = new Person("Fede", "Ramos", "FedeRamos@gmail.com", "PaSSWorD921#",false);
-        _personRepo.AddPerson(federico); 
-        Assert.AreEqual(_personRepo, _personController.GetRepository());
-    }
     
     [TestMethod]
     public void WhenPersonIsTryingToSignupAndIsValidShouldAddToTheRepository()
@@ -155,7 +147,7 @@ public class PersonControllerTests
     public void WhenPersonIsLoggedInSetItAsCurrentPerson()
     {
         _personRepo.AddPerson(_person);
-        _personController.Login(_personController.GetRepository().FindPersonByEmail(_person.Email).Email,_personController.GetRepository().FindPersonByEmail(_person.Email).Password);
+        _personController.Login(_person.Email, _person.Password);
     }
     
     [TestMethod]
