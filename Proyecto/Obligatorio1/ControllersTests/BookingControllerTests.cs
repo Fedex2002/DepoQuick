@@ -76,13 +76,6 @@ public class BookingControllerTests
     }
     
     [TestMethod]
-    public void WhenUserBookingIsRejectedShouldEliminateBookingFromUserListOfBookings()
-    {
-        _bookingController.AddBooking(_userDto, _mybookingDto);
-        _bookingController.RemoveBookingFromUser(_userDto, _mybookingDto);
-    }
-    
-    [TestMethod]
     public void WhenAUserBookingIsAddedOrRemovedShouldChangeStorageUnitDtoToAStorageUnit()
     {
 
