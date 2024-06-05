@@ -1,12 +1,13 @@
 using DataAccess.Repository;
 using Logic.DTOs;
+using Logic.Interfaces;
 using Model;
 using Model.Exceptions;
 using Repositories;
 
 namespace Logic;
 
-public class PersonController
+public class PersonController : IPersonController
 {
     public PersonDto CurrentPerson { get; set; }
     private readonly PersonsRepository _personRepositories;
