@@ -20,10 +20,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessTests", "DataAccessTests\DataAccessTests.csproj", "{C52620D9-7429-4900-BDA1-FB1EFE76BA12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControllerTests", "ControllerTests\ControllerTests.csproj", "{35A42516-A18B-4D71-9E5D-C73C72B3C1B7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controllers", "Controllers\Controllers.csproj", "{24489516-CCB4-44C6-A767-F52B1CFF342A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,13 +66,5 @@ Global
 		{C52620D9-7429-4900-BDA1-FB1EFE76BA12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C52620D9-7429-4900-BDA1-FB1EFE76BA12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C52620D9-7429-4900-BDA1-FB1EFE76BA12}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35A42516-A18B-4D71-9E5D-C73C72B3C1B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35A42516-A18B-4D71-9E5D-C73C72B3C1B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35A42516-A18B-4D71-9E5D-C73C72B3C1B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35A42516-A18B-4D71-9E5D-C73C72B3C1B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{24489516-CCB4-44C6-A767-F52B1CFF342A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24489516-CCB4-44C6-A767-F52B1CFF342A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24489516-CCB4-44C6-A767-F52B1CFF342A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24489516-CCB4-44C6-A767-F52B1CFF342A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
