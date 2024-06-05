@@ -35,7 +35,7 @@ public class PromotionControllerTests
     {
         _promotionRepo.AddToRepository(_promotion);
         _promotionDto= new PromotionDto("Summer discount", 50, new DateTime(2025, 7, 15), new DateTime(2025, 10, 15));
-        _promotionController.ModifyPromotion(_promotionDto, "Winter discount");
+        _promotionController.ModifyPromotion("Winter discount", _promotionDto);
         Assert.AreEqual(_promotionDto.Label, _promotionRepo.GetFromRepository(_promotionDto.Label).Label);
         Assert.AreEqual(_promotionDto.Discount, _promotionRepo.GetFromRepository(_promotionDto.Label).Discount);
         Assert.AreEqual(_promotionDto.DateStart, _promotionRepo.GetFromRepository(_promotionDto.Label).DateStart);
@@ -46,7 +46,7 @@ public class PromotionControllerTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenTryingToModifyANonExistingPromotionShouldThrowException()
     {
-        _promotionController.ModifyPromotion(_promotionDto, "Winter discount");
+        _promotionController.ModifyPromotion("Winter discount", _promotionDto);
     }
     
     [TestMethod]
