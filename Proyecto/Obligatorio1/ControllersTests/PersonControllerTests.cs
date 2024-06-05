@@ -40,7 +40,7 @@ public class PersonControllerTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenEmailIsNotRegisteredThrowException()
     {
-        _personController.IfEmailIsNotRegisteredThrowException(_personController.CheckIfEmailIsRegistered(_person.Email));
+        _personController.Login(_person.Email, _person.Password);
     }
 
     [TestMethod]

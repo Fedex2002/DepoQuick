@@ -21,10 +21,9 @@ public class PersonController
         return _personRepositories.PersonAlreadyExists(email);
     }
 
-    public void IfEmailIsNotRegisteredThrowException(bool registered)
+    private void IfEmailIsNotRegisteredThrowException()
     {
-        if (!registered)
-            throw new LogicExceptions("The email is not registered");
+        throw new LogicExceptions("The email is not registered");
     }
     
     public bool CheckIfPasswordIsCorrect(string personpass, string catchFromPage)
@@ -40,8 +39,6 @@ public class PersonController
         return personpass != catchFromPage;
     }
     
-
-
     public PersonDto Login(string email, string password)
     {
         return LoginCheckPersonValidations(email, password);
@@ -60,7 +57,7 @@ public class PersonController
         }
         else
         {
-            throw new LogicExceptions("The email is not registered");
+            IfEmailIsNotRegisteredThrowException();
         }
 
         CurrentPerson = personDto;
