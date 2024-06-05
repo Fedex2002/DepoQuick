@@ -36,7 +36,7 @@ public class CsvReportExporterTests
     [TestMethod]
     public void WhenExportingAsCsvShouldReturnCorrectCsvString()
     {
-        string expectedData = "StorageUnit Id,Area,Size,Climatization,StartDate,EndDate,Status\r\n\"\",\"A\",\"Small\",\"True\",\"2024-07-01\",\"2024-08-15\",\"Reservado\"\r\n";
+        string expectedData = "StorageUnit Id,Area,Size,Climatization,StartDate,EndDate,Status\n\"\",\"A\",\"Small\",\"True\",\"2024-07-01\",\"2024-08-15\",\"Reservado\"\n";
         string actualData = _csvReportExporter.Export(_bookings);
         Assert.AreEqual(expectedData, actualData);
     }
@@ -44,7 +44,7 @@ public class CsvReportExporterTests
     [TestMethod]
     public void WhenGettingDataFromBookingsShouldReturnIt()
     {
-        string expectedData = "StorageUnit Id,Area,Size,Climatization,StartDate,EndDate,Status\r\n\"\",\"A\",\"Small\",\"True\",\"2024-07-01\",\"2024-08-15\",\"Reservado\"\r\n";
+        string expectedData = "StorageUnit Id,Area,Size,Climatization,StartDate,EndDate,Status\n\"\",\"A\",\"Small\",\"True\",\"2024-07-01\",\"2024-08-15\",\"Reservado\"\n";
         Assert.AreEqual(expectedData, _csvReportExporter.GetData(_bookings));
         
     }
