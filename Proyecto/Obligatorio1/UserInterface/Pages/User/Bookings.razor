@@ -5,7 +5,7 @@
 @layout MainLayout
 @inject BookingController BookingController
 @inject SessionLogic sessionLogic
-@inject StorageUnitLogic storageUnitLogic
+@inject StorageUnitController StorageUnitController
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -164,7 +164,7 @@
                     BookingController.AddBooking(sessionLogic.CurrentPerson, _bookingDto);
                     _showUserConfirmationModal = true;
                 _dateRangeDto = new DateRangeDto(_finalDateStart, _finalDateEnd);
-                storageUnitLogic.ModifyOrRemoveDateRange(storageUnitDto, _dateRangeDto);
+                StorageUnitController.ModifyOrRemoveDateRange(storageUnitDto, _dateRangeDto);
             }
         }
         catch (Exception e)
@@ -207,7 +207,7 @@
         try
         {
             _dateRangeDto = new DateRangeDto(_filterStartDate, _filterEndDate);
-            _storageUnits = storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
+            _storageUnits = StorageUnitController.SearchAvailableStorageUnits(_dateRangeDto);
             
             foreach (var storageUnitDto in _storageUnits)
             {

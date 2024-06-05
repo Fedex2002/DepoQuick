@@ -7,11 +7,11 @@ using Model.Exceptions;
 
 namespace Logic;
 
-public class StorageUnitLogic
+public class StorageUnitController
 {
     private readonly StorageUnitRepositories _storageUnitRepositories;
     
-    public StorageUnitLogic(StorageUnitRepositories storageUnitRepositories)
+    public StorageUnitController(StorageUnitRepositories storageUnitRepositories)
     {
         _storageUnitRepositories = storageUnitRepositories;
     }

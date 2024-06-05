@@ -20,9 +20,9 @@ PromotionController promotionController = new PromotionController(promotionsRepo
 builder.Services.AddSingleton(promotionsRepositories);
 builder.Services.AddSingleton(promotionController);
 StorageUnitRepositories storageUnitRepositories = new StorageUnitRepositories();
-StorageUnitLogic storageUnitLogic = new StorageUnitLogic(storageUnitRepositories);
+StorageUnitController storageUnitController = new StorageUnitController(storageUnitRepositories);
 builder.Services.AddSingleton(storageUnitRepositories);
-builder.Services.AddSingleton(storageUnitLogic);
+builder.Services.AddSingleton(storageUnitController);
 BookingRepositories bookingRepositories = new BookingRepositories();
 BookingController bookingController = new BookingController(bookingRepositories);
 builder.Services.AddSingleton(bookingController);
