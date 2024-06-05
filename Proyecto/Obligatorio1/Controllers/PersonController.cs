@@ -8,6 +8,7 @@ namespace Logic;
 
 public class PersonController
 {
+    public PersonDto CurrentPerson { get; set; }
     private readonly PersonsRepository _personRepositories;
     
     public PersonController(PersonsRepository personRepositories)
@@ -62,9 +63,15 @@ public class PersonController
             throw new LogicExceptions("The email is not registered");
         }
 
+        CurrentPerson = personDto;
+
         return personDto;
     }
     
+    public void Logout()
+    {
+        CurrentPerson = null;
+    }
 
     public PersonsRepository GetRepository()
     {

@@ -71,9 +71,6 @@ public class PersonControllerTests
         Assert.IsNotNull(personDto);
     }
     
- 
-
-    
     [TestMethod]
     public void WhenPersonIsTryingToLoginShouldReturnPersonIfValidationsAreCorrect()
     {
@@ -112,7 +109,6 @@ public class PersonControllerTests
         Assert.AreEqual(_person.Password, loggedInPersonDto.Password);
     }
 
-
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenPersonIsTryingToLoginAndDoesNotExistShouldReturnException()
@@ -146,8 +142,6 @@ public class PersonControllerTests
         Assert.AreEqual(_personDto.Email, personDto.Email);
         Assert.AreEqual(_personDto.Password, personDto.Password);
     }
-
-    
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
@@ -155,6 +149,19 @@ public class PersonControllerTests
     {
         _personRepo.AddPerson(_person); 
         _personController.SignUp(_personDto);
+    }
+    
+    [TestMethod]
+    public void WhenPersonIsLoggedInSetItAsCurrentPerson()
+    {
+        _personRepo.AddPerson(_person);
+        _personController.Login(_personController.GetRepository().FindPersonByEmail(_person.Email).Email,_personController.GetRepository().FindPersonByEmail(_person.Email).Password);
+    }
+    
+    [TestMethod]
+    public void WhenPersonIsLoggedOutSetCurrentPersonToEmpty()
+    {
+        _personController.Logout();
     }
     
 }
