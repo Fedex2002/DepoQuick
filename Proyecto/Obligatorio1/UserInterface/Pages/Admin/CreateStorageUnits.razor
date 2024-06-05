@@ -3,7 +3,7 @@
 @using Logic.DTOs
 @using Model.Enums
 @layout MainLayout
-@inject StorageUnitLogic storageUnitLogic
+@inject StorageUnitController StorageUnitController
 @inject PromotionController PromotionController
 
 <PageTitle>DepoQuick</PageTitle>
@@ -139,7 +139,7 @@
         _climatization = false;
       }
       _storageUnitDto = new StorageUnitDto(_id, _area, _size, _climatization, _selectedPromotions, new List<DateRangeDto>());
-      storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+      StorageUnitController.CreateStorageUnit(_storageUnitDto);
       _showAdminConfirmationModal = true;
       
     }
