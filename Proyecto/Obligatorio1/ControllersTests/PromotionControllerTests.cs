@@ -7,7 +7,7 @@ using Model.Exceptions;
 namespace LogicTests;
 
 [TestClass]
-public class PromotionLogicTests
+public class PromotionControllerTests
 {
     private PromotionsRepositories _promotionRepo;
     private PromotionLogic _promotionLogic;
