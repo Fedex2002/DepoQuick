@@ -13,7 +13,7 @@ public class BookingControllerTests
 {
     private Person _person;
     private PersonDto _userDto;
-    private BookingLogic _bookingLogic;
+    private BookingController _bookingController;
     private BookingRepositories _bookingRepo;
     private PromotionDto _promotionDto;
     private List<PromotionDto> _promotionsDto;
@@ -46,7 +46,7 @@ public class BookingControllerTests
         _promotionsDto.Add(_promotionDto);
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 1), new DateTime(2024, 8, 15));
         _availableDatesDto.Add(_dateRangeDto);
-        _bookingLogic = new BookingLogic(_bookingRepo);
+        _bookingController = new BookingController(_bookingRepo);
         _userDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
         _storageUnitDto = new StorageUnitDto("", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto);
         _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false, _person.Email);
@@ -62,22 +62,22 @@ public class BookingControllerTests
     [TestMethod]
     public void WhenUserMakesABookingShouldAddItToBookingRepositories()
     {
-        _bookingLogic.AddBooking(_userDto, _mybookingDto);
+        _bookingController.AddBooking(_userDto, _mybookingDto);
     }
     
     [TestMethod]
     public void WhenUserBookingIsApprovedShouldReturnTrue()
     {
         _mybookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), _storageUnitDto, "", "Reservado", false,_userDto.Email);
-        _bookingLogic.AddBooking(_userDto, _mybookingDto);
-        Assert.IsTrue(_bookingLogic.CheckIfBookingIsApproved(_mybookingDto));
+        _bookingController.AddBooking(_userDto, _mybookingDto);
+        Assert.IsTrue(_bookingController.CheckIfBookingIsApproved(_mybookingDto));
     }
     
     [TestMethod]
     public void WhenUserBookingIsRejectedShouldEliminateBookingFromUserListOfBookings()
     {
-        _bookingLogic.AddBooking(_userDto, _mybookingDto);
-        _bookingLogic.RemoveBookingFromUser(_userDto, _mybookingDto);
+        _bookingController.AddBooking(_userDto, _mybookingDto);
+        _bookingController.RemoveBookingFromUser(_userDto, _mybookingDto);
     }
     
     [TestMethod]
@@ -85,7 +85,7 @@ public class BookingControllerTests
     {
 
         BookingDto bookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnitDto("", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "", "Reservado", false,_userDto.Email);
-        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _bookingLogic.ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,bookingDto.UserEmail);
+        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _bookingController.ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,bookingDto.UserEmail);
         _bookingRepo.AddToRepository(_booking);
         _bookingRepo.RemoveFromRepository(_booking);
     }
@@ -93,24 +93,24 @@ public class BookingControllerTests
     [TestMethod]
     public void WhenUserSelectsStartDayAndEndDayOfBookingShouldShowTotalPrice()
     {
-        Assert.AreEqual(2126.25, _bookingLogic.CalculateTotalPriceOfBooking(_mybookingDto));
+        Assert.AreEqual(2126.25, _bookingController.CalculateTotalPriceOfBooking(_mybookingDto));
     }
     
     [TestMethod]
     public void WhenUserEntersPageBookingsShouldShowPricePerDayOfStorageUnit()
     {
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
-        Assert.AreEqual(52.5, _bookingLogic.CalculateStorageUnitPricePerDay(_storageUnitDto, _dateRangeDto));
+        Assert.AreEqual(52.5, _bookingController.CalculateStorageUnitPricePerDay(_storageUnitDto, _dateRangeDto));
         
-        Assert.AreEqual(70, _bookingLogic.CalculateStorageUnitPricePerDay(_storageUnitDto, _storageUnitDto.AvailableDates[0]));
+        Assert.AreEqual(70, _bookingController.CalculateStorageUnitPricePerDay(_storageUnitDto, _storageUnitDto.AvailableDates[0]));
     }
 
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenUserTriesToBookTheSameStorageUnitWithPromotionTwiceShouldThrowException()
     {
-        _bookingLogic.AddBooking(_userDto, _mybookingDto);
-        _bookingLogic.AddBooking(_userDto, _mybookingDto);
+        _bookingController.AddBooking(_userDto, _mybookingDto);
+        _bookingController.AddBooking(_userDto, _mybookingDto);
     }
 
     [TestMethod]
@@ -119,24 +119,24 @@ public class BookingControllerTests
     {
         _storageUnitDto = new StorageUnitDto("",AreaType.A, SizeType.Small, true, new List<PromotionDto>(), new List<DateRangeDto>());
         _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false, _userDto.Email);
-        _bookingLogic.AddBooking(_userDto, _mybookingDto);
-        _bookingLogic.AddBooking(_userDto, _mybookingDto);
+        _bookingController.AddBooking(_userDto, _mybookingDto);
+        _bookingController.AddBooking(_userDto, _mybookingDto);
     }
 
     [TestMethod]
     public void WhenUserPaysABookingShouldSetItToTrue()
     {
-        _bookingLogic.AddBooking(_userDto, _mybookingDto);
-        _bookingLogic.PayBooking(_userDto, _mybookingDto);
+        _bookingController.AddBooking(_userDto, _mybookingDto);
+        _bookingController.PayBooking(_userDto, _mybookingDto);
     }
 
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenUserTriesToPayABookingTwiceShouldThrowException()
     {
-        _bookingLogic.AddBooking(_userDto, _mybookingDto);
-        _bookingLogic.PayBooking(_userDto, _mybookingDto);
-        _bookingLogic.PayBooking(_userDto, _mybookingDto);
+        _bookingController.AddBooking(_userDto, _mybookingDto);
+        _bookingController.PayBooking(_userDto, _mybookingDto);
+        _bookingController.PayBooking(_userDto, _mybookingDto);
     }
     
     [TestMethod]
@@ -145,18 +145,18 @@ public class BookingControllerTests
     {
         DateTime startDate = new DateTime(2024, 10, 15);
         DateTime endDate = new DateTime(2024, 10, 30);
-        _bookingLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(startDate, endDate, _dateRangeDto);
+        _bookingController.CheckIfDateStartAndDateEndAreIncludedInDateRange(startDate, endDate, _dateRangeDto);
     }
 
     [TestMethod]
     public void WhenGettingAllBookingsDtoShouldReturnThem()
     {
-        _bookingLogic.AddBooking(_userDto, _mybookingDto);
+        _bookingController.AddBooking(_userDto, _mybookingDto);
         _storageUnitDto = new StorageUnitDto("hola",AreaType.A, SizeType.Small, true,_promotionsDto, _availableDatesDto);
         BookingDto booking2 = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             _storageUnitDto, "", "Reservado", false, "samplemail@gmail.com");
-        _bookingLogic.AddBooking(_userDto, booking2);
-        List<BookingDto> bookings = _bookingLogic.GetAllBookingsDto();
+        _bookingController.AddBooking(_userDto, booking2);
+        List<BookingDto> bookings = _bookingController.GetAllBookingsDto();
         Assert.AreEqual(2, bookings.Count);
     }
 }
