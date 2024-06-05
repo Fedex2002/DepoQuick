@@ -9,7 +9,7 @@ using Model.Exceptions;
 namespace LogicTests;
 
 [TestClass]
-public class BookingLogicTests
+public class BookingControllerTests
 {
     private Person _person;
     private PersonDto _userDto;
