@@ -11,7 +11,7 @@ using Repositories;
 namespace LogicTests;
 
 [TestClass]
-public class PersonLogicTests
+public class PersonControllerTests
 {
     private PersonsRepository _personRepo;
     private PersonLogic _personLogic;
