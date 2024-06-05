@@ -8,7 +8,7 @@ using Model.Exceptions;
 namespace LogicTests;
 
 [TestClass]
-public class StorageUnitLogicTests
+public class StorageUnitControllerTests
 {
     private StorageUnitRepositories _storageUnitRepo;
     private StorageUnitLogic _storageUnitLogic;
