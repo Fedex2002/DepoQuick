@@ -31,6 +31,6 @@ public class CsvReportExporter : IReportExporter
                 $"\"{booking.Status}\""
             );
         }
-        return csvBuilder.ToString().Replace("\n", "\r\n");
+        return csvBuilder.ToString();
     }
 }
