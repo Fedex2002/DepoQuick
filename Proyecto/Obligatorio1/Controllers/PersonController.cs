@@ -26,10 +26,9 @@ public class PersonController
         throw new LogicExceptions("The email is not registered");
     }
     
-    public bool CheckIfPasswordIsCorrect(string personpass, string catchFromPage)
+    public bool CheckIfPasswordIsCorrect(string password, string verifyPassword)
     {
-       
-        if (PasswordStringMatch(personpass, catchFromPage))
+        if (PasswordStringMatch(password, verifyPassword))
             throw new LogicExceptions("The password is not correct");
         return true;
     }
