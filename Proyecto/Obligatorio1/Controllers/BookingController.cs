@@ -43,19 +43,6 @@ public class BookingController
         return bookingDto.Approved;
     }
     
-    public void RemoveBookingFromUser(PersonDto userDto, BookingDto bookingDto)
-    {
-        RemoveBookingFromPerson(userDto, bookingDto);
-    }
-
-    private void RemoveBookingFromPerson(PersonDto userDto, BookingDto bookingDto)
-    {
-        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd,
-            ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status,
-            bookingDto.Payment,userDto.Email);
-       _bookingRepositories.RemoveFromRepository(booking);
-    }
-    
     public StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
     {
         List<Promotion> promotions = new List<Promotion>();
