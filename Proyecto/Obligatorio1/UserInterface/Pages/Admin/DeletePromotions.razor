@@ -2,7 +2,7 @@
 @using Logic
 @using Logic.DTOs
 @layout MainLayout
-@inject PromotionLogic promotionLogic
+@inject PromotionController PromotionController
 @inject StorageUnitLogic storageUnitLogic
 
 <PageTitle>DepoQuick</PageTitle>
@@ -80,18 +80,18 @@
     protected override void OnInitialized()
     {
         _promotionDto = new PromotionDto();
-        _promotions = promotionLogic.GetPromotionsDto();
+        _promotions = PromotionController.GetPromotionsDto();
     }
     
     private async Task HandleValidSubmit(string label)
     {
         try
         {
-            _promotionDto = promotionLogic.GetPromotionDtoFromLabel(label);
-            promotionLogic.RemovePromotion(_promotionDto);
+            _promotionDto = PromotionController.GetPromotionDtoFromLabel(label);
+            PromotionController.RemovePromotion(_promotionDto);
             storageUnitLogic.DeletePromotionFromAllStorageUnits(_promotionDto);
             _showAdminConfirmationModal = true;
-            _promotions = promotionLogic.GetPromotionsDto();
+            _promotions = PromotionController.GetPromotionsDto();
         }
         catch (Exception e)
         {

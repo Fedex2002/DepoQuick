@@ -10,7 +10,7 @@ namespace LogicTests;
 public class PromotionControllerTests
 {
     private PromotionsRepositories _promotionRepo;
-    private PromotionLogic _promotionLogic;
+    private PromotionController _promotionController;
     private Promotion _promotion;
     private PromotionDto _promotionDto;
     
@@ -18,7 +18,7 @@ public class PromotionControllerTests
     public void TestInitialize()
     {
         _promotionRepo = new PromotionsRepositories();
-        _promotionLogic = new PromotionLogic(_promotionRepo);
+        _promotionController = new PromotionController(_promotionRepo);
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotionDto= new PromotionDto("Winter discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
     }
@@ -35,7 +35,7 @@ public class PromotionControllerTests
     {
         _promotionRepo.AddToRepository(_promotion);
         _promotionDto= new PromotionDto("Summer discount", 50, new DateTime(2025, 7, 15), new DateTime(2025, 10, 15));
-        _promotionLogic.ModifyPromotion(_promotionDto, "Winter discount");
+        _promotionController.ModifyPromotion(_promotionDto, "Winter discount");
         Assert.AreEqual(_promotionDto.Label, _promotionRepo.GetFromRepository(_promotionDto.Label).Label);
         Assert.AreEqual(_promotionDto.Discount, _promotionRepo.GetFromRepository(_promotionDto.Label).Discount);
         Assert.AreEqual(_promotionDto.DateStart, _promotionRepo.GetFromRepository(_promotionDto.Label).DateStart);
@@ -46,13 +46,13 @@ public class PromotionControllerTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenTryingToModifyANonExistingPromotionShouldThrowException()
     {
-        _promotionLogic.ModifyPromotion(_promotionDto, "Winter discount");
+        _promotionController.ModifyPromotion(_promotionDto, "Winter discount");
     }
     
     [TestMethod]
     public void WhenPromotionIsCreatedShouldBeAddedToRepository()
     {
-        _promotionLogic.CreatePromotion(_promotionDto);
+        _promotionController.CreatePromotion(_promotionDto);
         Assert.AreEqual(_promotionDto.Label, _promotionRepo.GetFromRepository(_promotionDto.Label).Label);
         Assert.AreEqual(_promotionDto.Discount, _promotionRepo.GetFromRepository(_promotionDto.Label).Discount);
         Assert.AreEqual(_promotionDto.DateStart, _promotionRepo.GetFromRepository(_promotionDto.Label).DateStart);
@@ -64,14 +64,14 @@ public class PromotionControllerTests
     public void WhenPromotionIsCreatedWithAnExistingLabelShouldThrowException()
     {
         _promotionRepo.AddToRepository(_promotion);
-        _promotionLogic.CreatePromotion(_promotionDto);
+        _promotionController.CreatePromotion(_promotionDto);
     }
     
     [TestMethod]
     public void WhenPromotionIsEliminatedShouldBeRemovedFromRepository()
     {
         _promotionRepo.AddToRepository(_promotion);
-        _promotionLogic.RemovePromotion(_promotionDto);
+        _promotionController.RemovePromotion(_promotionDto);
         Assert.IsNull(_promotionRepo.GetFromRepository(_promotion.Label));
     }
 
@@ -79,14 +79,14 @@ public class PromotionControllerTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenTryingToEliminateANonExistingPromotionShouldThrowException()
     {
-        _promotionLogic.RemovePromotion(_promotionDto);
+        _promotionController.RemovePromotion(_promotionDto);
     }
     
     [TestMethod]
     public void WhenGettingPromotionsDtoShouldReturnAListOfPromotionsDto()
     {
         _promotionRepo.AddToRepository(_promotion);
-        List<PromotionDto> promotionsDto = _promotionLogic.GetPromotionsDto();
+        List<PromotionDto> promotionsDto = _promotionController.GetPromotionsDto();
         Assert.IsNotNull(promotionsDto);
     }
 
@@ -94,7 +94,7 @@ public class PromotionControllerTests
     public void WhenGettingPromotionsDtoFromLabelShouldReturnIt()
     {
         _promotionRepo.AddToRepository(_promotion);
-        PromotionDto promotionDto = _promotionLogic.GetPromotionDtoFromLabel(_promotion.Label);
+        PromotionDto promotionDto = _promotionController.GetPromotionDtoFromLabel(_promotion.Label);
         Assert.AreEqual(_promotion.Label, promotionDto.Label);
     }
 }
