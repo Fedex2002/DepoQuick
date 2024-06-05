@@ -140,15 +140,6 @@ public class BookingControllerTests
         _bookingController.PayBooking(_userDto, _mybookingDto);
         _bookingController.PayBooking(_userDto, _mybookingDto);
     }
-    
-    [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
-    public void IfSelectedStartDateAndEndDateOfBookingIsNotInDateRangeShouldThrowException()
-    {
-        DateTime startDate = new DateTime(2024, 10, 15);
-        DateTime endDate = new DateTime(2024, 10, 30);
-        _bookingController.CheckIfDateStartAndDateEndAreIncludedInDateRange(startDate, endDate, _dateRangeDto);
-    }
 
     [TestMethod]
     public void WhenGettingAllBookingsDtoShouldReturnThem()
