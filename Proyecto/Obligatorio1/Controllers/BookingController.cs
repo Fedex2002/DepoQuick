@@ -13,7 +13,7 @@ public class BookingController
         _bookingRepositories = bookingRepo;
     }
     
-    public void AddBooking(string userEmail, BookingDto bookingDto)
+    public void CreateBooking(string userEmail, BookingDto bookingDto)
     {
         CheckIfAlreadyBookedAndAddBooking(userEmail, bookingDto);
     }
@@ -43,7 +43,7 @@ public class BookingController
         return bookingDto.Approved;
     }
     
-    public StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
+    private StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
     {
         List<Promotion> promotions = new List<Promotion>();
         foreach (var promotionDto in storageUnitDto.Promotions)

@@ -64,25 +64,15 @@ public class BookingControllerTests
     [TestMethod]
     public void WhenUserMakesABookingShouldAddItToBookingRepositories()
     {
-        _bookingController.AddBooking(_userDto.Email, _mybookingDto);
+        _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
     }
     
     [TestMethod]
     public void WhenUserBookingIsApprovedShouldReturnTrue()
     {
         _mybookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), _storageUnitDto, "", "Reservado", false,_userDto.Email);
-        _bookingController.AddBooking(_userDto.Email, _mybookingDto);
+        _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
         Assert.IsTrue(_bookingController.CheckIfBookingIsApproved(_mybookingDto));
-    }
-    
-    [TestMethod]
-    public void WhenAUserBookingIsAddedOrRemovedShouldChangeStorageUnitDtoToAStorageUnit()
-    {
-
-        BookingDto bookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), new StorageUnitDto("", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "", "Reservado", false,_userDto.Email);
-        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _bookingController.ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,bookingDto.UserEmail);
-        _bookingRepo.AddToRepository(_booking);
-        _bookingRepo.RemoveFromRepository(_booking);
     }
       
     [TestMethod]
@@ -95,8 +85,8 @@ public class BookingControllerTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenUserTriesToBookTheSameStorageUnitWithPromotionTwiceShouldThrowException()
     {
-        _bookingController.AddBooking(_userDto.Email, _mybookingDto);
-        _bookingController.AddBooking(_userDto.Email, _mybookingDto);
+        _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
+        _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
     }
 
     [TestMethod]
@@ -105,14 +95,14 @@ public class BookingControllerTests
     {
         _storageUnitDto = new StorageUnitDto("",AreaType.A, SizeType.Small, true, new List<PromotionDto>(), new List<DateRangeDto>());
         _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false, _userDto.Email);
-        _bookingController.AddBooking(_userDto.Email, _mybookingDto);
-        _bookingController.AddBooking(_userDto.Email, _mybookingDto);
+        _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
+        _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
     }
 
     [TestMethod]
     public void WhenUserPaysABookingShouldSetItToTrue()
     {
-        _bookingController.AddBooking(_userDto.Email, _mybookingDto);
+        _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
         _bookingController.PayBooking(_userDto, _mybookingDto);
     }
 
@@ -120,7 +110,7 @@ public class BookingControllerTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenUserTriesToPayABookingTwiceShouldThrowException()
     {
-        _bookingController.AddBooking(_userDto.Email, _mybookingDto);
+        _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
         _bookingController.PayBooking(_userDto, _mybookingDto);
         _bookingController.PayBooking(_userDto, _mybookingDto);
     }
@@ -128,11 +118,11 @@ public class BookingControllerTests
     [TestMethod]
     public void WhenGettingAllBookingsDtoShouldReturnThem()
     {
-        _bookingController.AddBooking(_userDto.Email, _mybookingDto);
+        _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
         _storageUnitDto = new StorageUnitDto("hola",AreaType.A, SizeType.Small, true,_promotionsDto, _availableDatesDto);
         BookingDto booking2 = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             _storageUnitDto, "", "Reservado", false, "samplemail@gmail.com");
-        _bookingController.AddBooking(_userDto.Email, booking2);
+        _bookingController.CreateBooking(_userDto.Email, booking2);
         List<BookingDto> bookings = _bookingController.GetAllBookingsDto();
         Assert.AreEqual(2, bookings.Count);
     }
@@ -144,7 +134,7 @@ public class BookingControllerTests
             new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
             "Reservado", true,_person.Email);
         string rejectionMessage = "The booking has been rejected";
-        _bookingController.AddBooking(_personDto.Email, _mybookingDto);
+        _bookingController.CreateBooking(_personDto.Email, _mybookingDto);
         _bookingController.SetRejectionMessage(_personDto, _mybookingDto, rejectionMessage);
     }
     
