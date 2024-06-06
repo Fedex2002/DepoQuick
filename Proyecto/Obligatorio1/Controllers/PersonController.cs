@@ -1,20 +1,20 @@
+using DataAccess.Context;
 using DataAccess.Repository;
 using Logic.DTOs;
 using Logic.Interfaces;
 using Model;
 using Model.Exceptions;
-using Repositories;
 
 namespace Logic;
 
 public class PersonController : IPersonController
 {
     public PersonDto CurrentPerson { get; set; }
-    private readonly PersonsRepository _personRepositories;
+    private PersonsRepository _personRepositories;
     
-    public PersonController(PersonsRepository personRepositories)
+    public PersonController(ApplicationDbContext context)
     {
-        _personRepositories = personRepositories;
+        _personRepositories = new PersonsRepository(context);
     }
 
     public bool CheckIfEmailIsRegistered(string email)
