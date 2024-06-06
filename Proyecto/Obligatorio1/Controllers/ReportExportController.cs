@@ -1,10 +1,11 @@
 using DataAccess.Context;
 using DataAccess.Repository;
+using Logic.Interfaces;
 using Model;
 
 namespace Logic;
 
-public class ReportExportController
+public class ReportExportController : IReportExportController
 {
     private readonly BookingsRepository _bookingRepositories;
     private ReportExporter _reportExporter;
