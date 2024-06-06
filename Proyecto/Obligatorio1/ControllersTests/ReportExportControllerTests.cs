@@ -6,19 +6,19 @@ namespace LogicTests;
 
 [TestClass]
 
-public class ExportControllerTests
+public class ReportExportControllerTests
 {
     private ApplicationDbContext _context;
-    private ExportController _exportController;
+    private ReportExportController _exportController;
     private readonly IApplicationDbContextFactory _contextFactory = new InMemoryAppContextFactory();
-    private BookingsRepository _personRepo;
+    private BookingsRepository _bookingsRepo;
 
     [TestInitialize]
     public void TestInitialize()
     {
         _context = _contextFactory.CreateDbContext();
-        _personRepo = new BookingsRepository(_context);
-        _exportController = new ExportController(_context);
+        _bookingsRepo = new BookingsRepository(_context);
+        _exportController = new ReportExportController(_context);
     }
     
     [TestCleanup]
@@ -30,8 +30,9 @@ public class ExportControllerTests
     [TestMethod]
     public void WhenExportingAsCsvShouldExportIt()
     {
-       _exportController.Export("csv");
-       
+       string expectedData = _exportController.Export("csv");
+       Assert.IsNotNull(expectedData);
     }
+    
 
 }
