@@ -2,13 +2,13 @@ using System.Text;
 
 namespace Model;
 
-public class TxtReportExporter
+public class TxtReportExporter : ReportExporter
 {
     public TxtReportExporter()
     {
     }
 
-    public string Export(List<Booking> bookings)
+    public override string Export(List<Booking> bookings)
     {
         return GetData(bookings);
     }
