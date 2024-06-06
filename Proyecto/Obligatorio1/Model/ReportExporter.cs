@@ -2,6 +2,8 @@ namespace Model;
 
 public abstract class ReportExporter
 {
+    public abstract string Export(List<Booking> bookings);
+    
     public static ReportExporter Create(string type)
     {
         return type.ToLower() switch
