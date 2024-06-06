@@ -49,4 +49,14 @@ public class ReportExporterTests
     {
         var exporter = ReportExporter.Create("aa");
     }
+    
+    [TestMethod]
+    public void WhenExportingAsCsvShouldReturnCorrectCsvString()
+    {
+        var exporter = ReportExporter.Create("csv");
+        string expectedData = $"StorageUnit Id,Area,Size,Climatization,StartDate,EndDate,Status{Environment.NewLine}" +
+                              $"\"\",\"A\",\"Small\",\"True\",\"2024-07-01\",\"2024-08-15\",\"Reservado\"{Environment.NewLine}";
+        string actualData = exporter.Export(_bookings);
+        Assert.AreEqual(expectedData, actualData);
+    }
 }
