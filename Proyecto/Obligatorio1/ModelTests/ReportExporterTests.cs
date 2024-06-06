@@ -59,4 +59,19 @@ public class ReportExporterTests
         string actualData = exporter.Export(_bookings);
         Assert.AreEqual(expectedData, actualData);
     }
+    
+    [TestMethod]
+    public void WhenExportingAsTxtShouldReturnCorrectTxtString()
+    {
+        var exporter = ReportExporter.Create("txt");
+        string expectedData = $"StorageUnit Id: {Environment.NewLine}" +
+                              $"Area: A{Environment.NewLine}" +
+                              $"Size: Small{Environment.NewLine}" +
+                              $"Climatization: True{Environment.NewLine}" +
+                              $"StartDate: 2024-07-01{Environment.NewLine}" +
+                              $"EndDate: 2024-08-15{Environment.NewLine}" +
+                              $"Status: Reservado{Environment.NewLine}{Environment.NewLine}";
+        string actualData = exporter.Export(_bookings);
+        Assert.AreEqual(expectedData, actualData);
+    }
 }
