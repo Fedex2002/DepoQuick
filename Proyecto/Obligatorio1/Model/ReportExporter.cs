@@ -7,7 +7,7 @@ public abstract class ReportExporter
         return type.ToLower() switch
         {
             "csv" => new CsvReportExporter(),
-         
+            "txt" => new TxtReportExporter(),
         };
     }
     
