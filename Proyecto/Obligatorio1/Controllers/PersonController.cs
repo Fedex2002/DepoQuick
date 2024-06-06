@@ -9,7 +9,6 @@ namespace Logic;
 
 public class PersonController : IPersonController
 {
-    public PersonDto CurrentPerson { get; set; }
     private readonly PersonsRepository _personRepositories;
     
     public PersonController(ApplicationDbContext context)
@@ -60,14 +59,7 @@ public class PersonController : IPersonController
             IfEmailIsNotRegisteredThrowException();
         }
 
-        CurrentPerson = personDto;
-
         return personDto;
-    }
-    
-    public void Logout()
-    {
-        CurrentPerson = null;
     }
 
     public void SignUp(PersonDto personDto)
