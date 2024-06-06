@@ -1,3 +1,5 @@
+using DataAccess.Context;
+using DataAccess.Repository;
 using Logic.DTOs;
 using Logic.Interfaces;
 using Repositories;
@@ -8,23 +10,23 @@ namespace Logic;
 
 public class PromotionController : IPromotionController
 {
-    private readonly PromotionsRepositories _promotionRepositories;
+    private PromotionsRepository _promotionRepositories;
     
-    public PromotionController(PromotionsRepositories promotionRepositories)
+    public PromotionController(ApplicationDbContext context)
     {
-        _promotionRepositories = promotionRepositories;
+        _promotionRepositories = new PromotionsRepository(context);
     }
     
     public void CreatePromotion(PromotionDto promotionDto)
     {
         Promotion promotion= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
-        if (_promotionRepositories.ExistsInRepository(promotionDto.Label))
+        if (_promotionRepositories.PromotionAlreadyExists(promotionDto.Label))
         {
             IfPromotionExistsThrowException();
         }
         else
         {
-            _promotionRepositories.AddToRepository(promotion);
+            _promotionRepositories.AddPromotion(promotion);
         }
     }
     
@@ -35,8 +37,8 @@ public class PromotionController : IPromotionController
     
     public void ModifyPromotion(string oldLabel, PromotionDto newPromotionDto)
     {
-        Promotion promotionInRepo= _promotionRepositories.GetFromRepository(oldLabel);
-        if (!_promotionRepositories.ExistsInRepository(oldLabel))
+        Promotion promotionInRepo= _promotionRepositories.FindPromotionByLabel(oldLabel);
+        if (!_promotionRepositories.PromotionAlreadyExists(oldLabel))
         {
             IfPromotionDoesNotExistThrowException();
         }
@@ -60,21 +62,21 @@ public class PromotionController : IPromotionController
     }
     public void RemovePromotion(PromotionDto promotionDto)
     {
-        Promotion promotionInRepo= _promotionRepositories.GetFromRepository(promotionDto.Label);
-        if (!_promotionRepositories.ExistsInRepository(promotionDto.Label))
+        Promotion promotionInRepo= _promotionRepositories.FindPromotionByLabel(promotionDto.Label);
+        if (!_promotionRepositories.PromotionAlreadyExists(promotionDto.Label))
         {
             IfPromotionDoesNotExistThrowException();
         }
         else
         {
-            _promotionRepositories.RemoveFromRepository(promotionInRepo);
+            _promotionRepositories.DeletePromotion(promotionInRepo);
         }
     }
     
     public List<PromotionDto> GetPromotionsDto()
     {
         List<PromotionDto> promotionsDto = new List<PromotionDto>();
-        foreach (var promotion in _promotionRepositories.GetAllFromRepository())
+        foreach (var promotion in _promotionRepositories.GetAllPromotions())
         {
             promotionsDto.Add(new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd));
         }
@@ -84,7 +86,7 @@ public class PromotionController : IPromotionController
     
     public PromotionDto GetPromotionDtoFromLabel(string label)
     {
-        Promotion promotion= _promotionRepositories.GetFromRepository(label);
+        Promotion promotion= _promotionRepositories.FindPromotionByLabel(label);
         PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd);
         return promotionDto;
     }
