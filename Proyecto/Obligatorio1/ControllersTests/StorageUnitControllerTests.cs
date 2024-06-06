@@ -1,3 +1,5 @@
+using DataAccess.Context;
+using DataAccess.Repository;
 using Model;
 using Model.Enums;
 using Repositories;
@@ -8,10 +10,12 @@ using Model.Exceptions;
 namespace LogicTests;
 
 [TestClass]
-public class StorageUnitLogicTests
+public class StorageUnitControllerTests
 {
-    private StorageUnitRepositories _storageUnitRepo;
-    private StorageUnitLogic _storageUnitLogic;
+    private ApplicationDbContext _context;
+    private StorageUnitController _storageUnitController;
+    private readonly IApplicationDbContextFactory _contextFactory = new InMemoryAppContextFactory();
+    private StorageUnitsRepository _storageUnitsRepo;
     private StorageUnitDto _storageUnitDto;
     private List<Promotion> _promotions;
     private List<PromotionDto> _promotionsDto;
@@ -25,8 +29,9 @@ public class StorageUnitLogicTests
     [TestInitialize]
     public void TestInitialize()
     {
-        _storageUnitRepo = new StorageUnitRepositories();
-        _storageUnitLogic = new StorageUnitLogic(_storageUnitRepo);
+        _context = _contextFactory.CreateDbContext();
+        _storageUnitsRepo = new StorageUnitsRepository(_context);
+        _storageUnitController = new StorageUnitController(_context);
         _promotions = new List<Promotion>();
         _promotionsDto = new List<PromotionDto>();
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
@@ -41,10 +46,17 @@ public class StorageUnitLogicTests
         _availableDatesDto.Add(_dateRangeDto);
         _storageUnitDto = new StorageUnitDto("1", AreaType.B, SizeType.Medium, false, _promotionsDto, _availableDatesDto);
     }
+    
+    [TestCleanup]
+    public void CleanUp()
+    {
+        _context.Database.EnsureDeleted();
+    }
+    
     [TestMethod]
     public void WhenCreatingPromotionListFromStorageUnitDtoShouldReturnPromotionList()
     {
-        _promotions = _storageUnitLogic.CreateListPromotions(_storageUnitDto);
+        _promotions = _storageUnitController.CreateListPromotions(_storageUnitDto);
         Assert.IsNotNull(_promotions);
     }
 
@@ -65,49 +77,49 @@ public class StorageUnitLogicTests
     [TestMethod]
     public void WhenStorageUnitIsCreatedShouldBeAddedToRepository()
     {
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
-        Assert.AreEqual(_storageUnitDto.Id, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).Id);
-        Assert.AreEqual(_storageUnitDto.Area, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).Area);
-        Assert.AreEqual(_storageUnitDto.Size, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).Size);
-        Assert.AreEqual(_storageUnitDto.Climatization, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).Climatization);
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
+        Assert.AreEqual(_storageUnitDto.Id, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Id);
+        Assert.AreEqual(_storageUnitDto.Area, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Area);
+        Assert.AreEqual(_storageUnitDto.Size, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Size);
+        Assert.AreEqual(_storageUnitDto.Climatization, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Climatization);
     }
 
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenTryingToCreateAnExistingStorageUnitShouldThrowException()
     {
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
     }
     
     [TestMethod]
     public void WhenStorageUnitIsEliminatedShouldBeRemovedFromRepository()
     {
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
-        _storageUnitLogic.RemoveStorageUnit(_storageUnitDto);
-        Assert.IsNull(_storageUnitRepo.GetFromRepository(_storageUnitDto.Id));
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
+        _storageUnitController.RemoveStorageUnit(_storageUnitDto);
+        Assert.IsNull(_storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id));
     }
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenTryingToRemoveANonExistingStorageUnitShouldThrowException()
     {
-        _storageUnitLogic.RemoveStorageUnit(_storageUnitDto);
+        _storageUnitController.RemoveStorageUnit(_storageUnitDto);
     }
 
     [TestMethod]
     public void WhenGettingStorageUnitsDtoShouldReturnAListOfStorageUnitsDto()
     {
         StorageUnit storageUnit = new StorageUnit("1", AreaType.B, SizeType.Medium, false, _promotions, _availableDates);
-        _storageUnitRepo.AddToRepository(storageUnit);
-        List<StorageUnitDto> storageUnitsDto = _storageUnitLogic.GetStorageUnitsDto();
+        _storageUnitsRepo.AddStorageUnit(storageUnit);
+        List<StorageUnitDto> storageUnitsDto = _storageUnitController.GetStorageUnitsDto();
         Assert.IsNotNull(storageUnitsDto);
     }
 
     [TestMethod]
     public void WhenGettingPromotionsFromRepositoryShouldChangeThemToPromotionsDto()
     {
-        List<PromotionDto> promotionsDto = _storageUnitLogic.ChangeToPromotionsDto(_promotions);
+        List<PromotionDto> promotionsDto = _storageUnitController.ChangeToPromotionsDto(_promotions);
         Assert.IsNotNull(promotionsDto);
     }
 
@@ -115,26 +127,26 @@ public class StorageUnitLogicTests
     public void WhenGettingStorageUnitsDtoFromIdShouldReturnIt()
     {
         StorageUnit storageUnit = new StorageUnit("1", AreaType.B, SizeType.Medium, false, _promotions, _availableDates);
-        _storageUnitRepo.AddToRepository(storageUnit);
-        StorageUnitDto storageUnitDto = _storageUnitLogic.GetStorageUnitDtoFromId(storageUnit.Id);
+        _storageUnitsRepo.AddStorageUnit(storageUnit);
+        StorageUnitDto storageUnitDto = _storageUnitController.GetStorageUnitDtoFromId(storageUnit.Id);
         Assert.AreEqual(storageUnit.Id,storageUnitDto.Id);
     }
 
     [TestMethod]
     public void WhenPromotionIsDeletedShouldDeleteItFromAllStorageUnits()
     {
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
-        _storageUnitLogic.DeletePromotionFromAllStorageUnits(_promotionDto);
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
+        _storageUnitController.DeletePromotionFromAllStorageUnits(_promotionDto);
     }
 
     [TestMethod]
     public void WhenAvailableDateRangeIsAddedToAStorageUnitShouldSetIt()
     {
         _storageUnitDto = new StorageUnitDto("5", AreaType.C, SizeType.Medium, true, _promotionsDto, new List<DateRangeDto>());
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
-        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
-        Assert.AreEqual(_dateRangeDto.StartDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].StartDate);
-        Assert.AreEqual(_dateRangeDto.EndDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].EndDate);
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
+        _storageUnitController.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+        Assert.AreEqual(_dateRangeDto.StartDate, _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates[0].StartDate);
+        Assert.AreEqual(_dateRangeDto.EndDate, _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates[0].EndDate);
     }
 
     [TestMethod]
@@ -142,24 +154,24 @@ public class StorageUnitLogicTests
     public void WhenTryingToAddAnIncorrectAvailableDateRangeToAStorageUnitShouldThrowException()
     {
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 10, 15), new DateTime(2024, 5, 15));
-        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+        _storageUnitController.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
     }
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenTryingToAddASameOrIncludedExistingAvailableDateRangeShouldThrowException()
     {
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
-        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
+        _storageUnitController.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
     }
 
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenTryingToAddAnAvailableDateRangeThatCoversAnExistingOneShouldThrowException()
     {
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 1), new DateTime(2024, 10, 30));
-        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+        _storageUnitController.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
         
     }
     
@@ -167,26 +179,26 @@ public class StorageUnitLogicTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenTryingToAddAnAvailableDateRangeThatStartDateExistsInACreatedRangeShouldThrowException()
     {
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 10, 15), new DateTime(2024, 10, 30));
-        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+        _storageUnitController.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
     }
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenTryingToAddAnAvailableDateRangeThatEndDateExistsInACreatedRangeShouldThrowException()
     {
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 10), new DateTime(2024, 7, 15));
-        _storageUnitLogic.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+        _storageUnitController.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
     }
 
     [TestMethod]
     public void WhenSearchingStorageUnitsWithDateRangeShouldReturnThem()
     {
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 27), new DateTime(2024, 10, 12));
-        List<StorageUnitDto> storageUnitsDto = _storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
+        List<StorageUnitDto> storageUnitsDto = _storageUnitController.SearchAvailableStorageUnits(_dateRangeDto);
         Assert.AreEqual(1 ,storageUnitsDto.Count);
     }
 
@@ -195,62 +207,80 @@ public class StorageUnitLogicTests
     public void WhenTryingToSearchStorageUnitsWithDateRangeThatIsInvalidShouldThrowException()
     {
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 10, 15), new DateTime(2024, 5, 15));
-        _storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
+        _storageUnitController.SearchAvailableStorageUnits(_dateRangeDto);
     }
     
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenSearchingStorageUnitsWithDateRangeThatDoesNotExistsShouldThrowException()
     {
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 10, 15), new DateTime(2024, 10, 30));
-        _storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
+        _storageUnitController.SearchAvailableStorageUnits(_dateRangeDto);
     }
     
     [TestMethod]
     public void WhenSelectingDateRangeShouldEliminateItFromStorageUnit()
     {
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
-        _storageUnitLogic.EliminateDateRangeFromStorageUnit(_storageUnitDto.Id, _dateRangeDto);
-        Assert.AreEqual(0, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates.Count);
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
+        _storageUnitController.EliminateDateRangeFromStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+        Assert.AreEqual(0, _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates.Count);
     }
 
     [TestMethod]
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenNotSelectingADateRangeToRemoveFromStorageUnitShouldThrowException()
     {
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
         _dateRangeDto = null;
-        _storageUnitLogic.EliminateDateRangeFromStorageUnit(_storageUnitDto.Id, _dateRangeDto);
+        _storageUnitController.EliminateDateRangeFromStorageUnit(_storageUnitDto.Id, _dateRangeDto);
     }
 
     [TestMethod]
     public void WhenUserMakesABookingInADateRangeShouldReduceDateRangeOfStorageUnitOrRemoveIt()
     {
-        _storageUnitLogic.CreateStorageUnit(_storageUnitDto);
-        _storageUnitLogic.ModifyOrRemoveDateRange(_storageUnitDto, _dateRangeDto);
-        Assert.AreEqual(0, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates.Count);
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
+        _storageUnitController.ModifyOrRemoveDateRange(_storageUnitDto, _dateRangeDto);
+        Assert.AreEqual(0, _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates.Count);
         
-        _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates.Add(_dateRange);
+        _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates.Add(_dateRange);
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 15), new DateTime(2024, 8, 15));
-        _storageUnitLogic.ModifyOrRemoveDateRange(_storageUnitDto, _dateRangeDto);
+        _storageUnitController.ModifyOrRemoveDateRange(_storageUnitDto, _dateRangeDto);
         DateRange newRange = new DateRange(new DateTime(2024, 8, 16), new DateTime(2024, 10, 15));
-        Assert.AreEqual(newRange.StartDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].StartDate);
-        Assert.AreEqual(newRange.EndDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].EndDate);
+        Assert.AreEqual(newRange.StartDate, _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates[0].StartDate);
+        Assert.AreEqual(newRange.EndDate, _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates[0].EndDate);
         
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 9, 15), new DateTime(2024, 10, 15));
-        _storageUnitLogic.ModifyOrRemoveDateRange(_storageUnitDto, _dateRangeDto);
+        _storageUnitController.ModifyOrRemoveDateRange(_storageUnitDto, _dateRangeDto);
         newRange = new DateRange(new DateTime(2024, 8, 16), new DateTime(2024, 9, 14));
-        Assert.AreEqual(newRange.StartDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].StartDate);
-        Assert.AreEqual(newRange.EndDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].EndDate);
+        Assert.AreEqual(newRange.StartDate, _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates[0].StartDate);
+        Assert.AreEqual(newRange.EndDate, _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates[0].EndDate);
         
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 8, 26), new DateTime(2024, 9, 6));
-        _storageUnitLogic.ModifyOrRemoveDateRange(_storageUnitDto, _dateRangeDto);
+        _storageUnitController.ModifyOrRemoveDateRange(_storageUnitDto, _dateRangeDto);
         newRange = new DateRange(new DateTime(2024, 8, 16), new DateTime(2024, 8, 25));
-        Assert.AreEqual(newRange.StartDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].StartDate);
-        Assert.AreEqual(newRange.EndDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[0].EndDate);
+        Assert.AreEqual(newRange.StartDate, _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates[0].StartDate);
+        Assert.AreEqual(newRange.EndDate, _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates[0].EndDate);
         newRange = new DateRange(new DateTime(2024, 9, 7), new DateTime(2024, 9, 14));
-        Assert.AreEqual(newRange.StartDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[1].StartDate);
-        Assert.AreEqual(newRange.EndDate, _storageUnitRepo.GetFromRepository(_storageUnitDto.Id).AvailableDates[1].EndDate);
+        Assert.AreEqual(newRange.StartDate, _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates[1].StartDate);
+        Assert.AreEqual(newRange.EndDate, _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates[1].EndDate);
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void IfSelectedStartDateAndEndDateOfBookingIsNotInDateRangeShouldThrowException()
+    {
+        DateTime startDate = new DateTime(2024, 10, 15);
+        DateTime endDate = new DateTime(2024, 10, 30);
+        _storageUnitController.CheckIfDateStartAndDateEndAreIncludedInDateRange(startDate, endDate, _dateRangeDto);
+    }
+    
+    [TestMethod]
+    public void WhenUserEntersPageBookingsShouldShowPricePerDayOfStorageUnit()
+    {
+        _storageUnitController.CreateStorageUnit(_storageUnitDto);
+        _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        Assert.AreEqual(56.25, _storageUnitController.CalculateStorageUnitPricePerDay(_storageUnitDto, _dateRangeDto));
+    }
+
 }

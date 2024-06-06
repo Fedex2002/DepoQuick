@@ -3,7 +3,7 @@
 @using Logic
 @using Logic.DTOs
 @inherits LayoutComponentBase
-@inject PersonLogic personLogic
+@inject PersonController PersonController
 @inject NavigationManager NavigationManager
 
 <PageTitle>DepoQuick</PageTitle>
@@ -93,20 +93,20 @@
     {
       if (_password != _passwordConfirmation)
       {
-        personLogic.CheckIfPasswordIsCorrect(_password, _passwordConfirmation);
+        PersonController.CheckIfPasswordIsCorrect(_password, _passwordConfirmation);
       }
 
       if (!_adminRegistered)
       {
         _person = new PersonDto(_name, _surname, _email, _password,true);
         _adminRegistered = true;
-        personLogic.SignUp(_person);
+        PersonController.SignUp(_person);
 
       }
       else
       {
         _person = new PersonDto(_name, _surname, _email, _password, false);
-        personLogic.SignUp(_person);
+        PersonController.SignUp(_person);
       }
       
       GoToLogin();

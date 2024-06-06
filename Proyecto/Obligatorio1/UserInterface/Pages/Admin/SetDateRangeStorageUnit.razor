@@ -2,7 +2,7 @@
 @using Logic.DTOs
 @using Logic
 @using System.Globalization
-@inject StorageUnitLogic storageUnitLogic
+@inject StorageUnitController StorageUnitController
 
 <section class="vh-75">
     <div class="container">
@@ -125,7 +125,7 @@
 
     protected override void OnInitialized()
     {
-        storageUnits = storageUnitLogic.GetStorageUnitsDto();
+        storageUnits = StorageUnitController.GetStorageUnitsDto();
         dateStartDictionary = new Dictionary<string, (DateTime DateStart, DateTime DateEnd)>();
         foreach (var storageUnit in storageUnits)
         {
@@ -156,7 +156,7 @@
         {
             var dates = dateStartDictionary[storageUnitDto.Id];
             DateRangeDto dateRangeDto = new DateRangeDto(dates.DateStart, dates.DateEnd);
-            storageUnitLogic.AddAvailableDateRangeToStorageUnit(storageUnitDto.Id, dateRangeDto);
+            StorageUnitController.AddAvailableDateRangeToStorageUnit(storageUnitDto.Id, dateRangeDto);
             Message = "Date range created successfully";
             showAdminConfirmationModal = true;
             OnInitialized();
@@ -177,7 +177,7 @@
     {
         try
         {
-            storageUnitLogic.EliminateDateRangeFromStorageUnit(storageUnitDto.Id, selectedDateRange);
+            StorageUnitController.EliminateDateRangeFromStorageUnit(storageUnitDto.Id, selectedDateRange);
             Message = "Date range eliminated successfully";
             showAdminConfirmationModal = true;
             selectedDateRange = null;
