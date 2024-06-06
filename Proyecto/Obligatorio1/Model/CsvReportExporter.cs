@@ -2,13 +2,13 @@ using System.Text;
 
 namespace Model
 {
-    public class CsvReportExporter : IReportExporter
+    public class CsvReportExporter : ReportExporter
     {
         public CsvReportExporter()
         {
         }
 
-        public string Export(List<Booking> bookings)
+        public override string Export(List<Booking> bookings)
         {
             return GetData(bookings);
         }
