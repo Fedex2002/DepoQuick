@@ -8,7 +8,7 @@ public abstract class ReportExporter
         {
             "csv" => new CsvReportExporter(),
             "txt" => new TxtReportExporter(),
-            
+            _ => throw new ArgumentException("Invalid type", nameof(type))
         };
     }
     
