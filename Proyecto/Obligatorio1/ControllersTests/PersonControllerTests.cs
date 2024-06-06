@@ -13,19 +13,19 @@ namespace LogicTests;
 [TestClass]
 public class PersonControllerTests
 {
-    private PersonsRepository _personRepo;
+    private ApplicationDbContext _context;
     private PersonController _personController;
+    private readonly IApplicationDbContextFactory _contextFactory = new InMemoryAppContextFactory();
+    private PersonsRepository _personRepo;
     private Person _person;
     private PersonDto _personDto;
-    private ApplicationDbContext _context;
-    private readonly IApplicationDbContextFactory _contextFactory = new InMemoryAppContextFactory();
     
     [TestInitialize]
     public void TestInitialize()
     {
         _context = _contextFactory.CreateDbContext();
         _personRepo = new PersonsRepository(_context);
-        _personController = new PersonController(_personRepo);
+        _personController = new PersonController(_context);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#",false);
         _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#",_person.IsAdmin);
     }
