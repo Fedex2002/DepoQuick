@@ -12,7 +12,7 @@ namespace Logic;
 
 public class StorageUnitController : IStorageUnitController, IDateRangeController
 {
-    private StorageUnitsRepository _storageUnitRepositories;
+    private readonly StorageUnitsRepository _storageUnitRepositories;
     
     public StorageUnitController(ApplicationDbContext context)
     {

@@ -10,7 +10,7 @@ namespace Logic;
 
 public class PromotionController : IPromotionController
 {
-    private PromotionsRepository _promotionRepositories;
+    private readonly PromotionsRepository _promotionRepositories;
     
     public PromotionController(ApplicationDbContext context)
     {

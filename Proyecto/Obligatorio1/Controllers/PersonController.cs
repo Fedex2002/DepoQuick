@@ -10,7 +10,7 @@ namespace Logic;
 public class PersonController : IPersonController
 {
     public PersonDto CurrentPerson { get; set; }
-    private PersonsRepository _personRepositories;
+    private readonly PersonsRepository _personRepositories;
     
     public PersonController(ApplicationDbContext context)
     {
