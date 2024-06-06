@@ -1,4 +1,5 @@
 using DataAccess.Context;
+using DataAccess.Repository;
 using Logic;
 using Logic.DTOs;
 using Model.Exceptions;
@@ -11,6 +12,7 @@ public class PromotionControllerTests
     private ApplicationDbContext _context;
     private PromotionController _promotionController;
     private readonly IApplicationDbContextFactory _contextFactory = new InMemoryAppContextFactory();
+    private PromotionsRepository _promotionRepo;
     private PromotionDto _promotionDto;
     
     [TestInitialize]
@@ -18,6 +20,7 @@ public class PromotionControllerTests
     {
         _context = _contextFactory.CreateDbContext();
         _promotionController = new PromotionController(_context);
+        _promotionRepo = new PromotionsRepository(_context);
         _promotionDto= new PromotionDto("Winter discount", 30, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
     }
     
@@ -72,6 +75,7 @@ public class PromotionControllerTests
     {
         _promotionController.CreatePromotion(_promotionDto);
         _promotionController.RemovePromotion(_promotionDto);
+        Assert.IsNull(_promotionRepo.FindPromotionByLabel(_promotionDto.Label));
     }
 
     [TestMethod]
