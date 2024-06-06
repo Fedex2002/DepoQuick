@@ -42,4 +42,11 @@ public class ReportExporterTests
         var exporter = ReportExporter.Create("txt");
         Assert.IsInstanceOfType(exporter, typeof(TxtReportExporter));
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void WhenCreatingAReportExporterUnknownShouldThrowException()
+    {
+        var exporter = ReportExporter.Create("aa");
+    }
 }
