@@ -1,10 +1,9 @@
 @page "/DeletePromotions"
-@using Logic
 @using Logic.DTOs
 @using Logic.Interfaces
 @layout MainLayout
-@inject IPromotionController promotionController
-@inject StorageUnitLogic storageUnitLogic
+@inject IPromotionController PromotionController
+@inject IStorageUnitController StorageUnitController
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -81,18 +80,18 @@
     protected override void OnInitialized()
     {
         _promotionDto = new PromotionDto();
-        _promotions = promotionController.GetPromotionsDto();
+        _promotions = PromotionController.GetPromotionsDto();
     }
     
     private async Task HandleValidSubmit(string label)
     {
         try
         {
-            _promotionDto = promotionController.GetPromotionDtoFromLabel(label);
-            promotionController.DeletePromotion(promotionController.CreatePromotion(_promotionDto));
-            storageUnitLogic.DeletePromotionFromAllStorageUnits(_promotionDto);
+            _promotionDto = PromotionController.GetPromotionDtoFromLabel(label);
+            PromotionController.RemovePromotion(_promotionDto);
+            StorageUnitController.DeletePromotionFromAllStorageUnits(_promotionDto);
             _showAdminConfirmationModal = true;
-            _promotions = promotionController.GetPromotionsDto();
+            _promotions = PromotionController.GetPromotionsDto();
         }
         catch (Exception e)
         {

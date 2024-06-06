@@ -1,10 +1,10 @@
 @page "/MyBookings"
-@using Logic
 @using Logic.DTOs
-@using Repositories
+@using Logic.Interfaces
+@using Logic
 @layout MainLayout
-@inject BookingLogic BookingLogic
-@inject SessionLogic sessionLogic
+@inject IBookingController BookingController
+@inject PersonController PersonController
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -127,13 +127,13 @@
     
     protected override void OnInitialized()
     {
-        _bookings = BookingLogic.GetAllBookingsDto();
-        var currentUser = sessionLogic.CurrentPerson ;
+        _bookings = BookingController.GetAllBookingsDto();
+        var currentUser = PersonController.CurrentPerson ;
             foreach (var bookingDto in _bookings)
             {
                 if (bookingDto.UserEmail == currentUser.Email)
                 {
-                    _totalPrice[bookingDto.StorageUnitDto.Id] = BookingLogic.CalculateTotalPriceOfBooking(bookingDto);
+                    _totalPrice[bookingDto.StorageUnitDto.Id] = BookingController.CalculateTotalPriceOfBooking(bookingDto);
                     _dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
                     _dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
                     _active[bookingDto.StorageUnitDto.Id] = bookingDto.Approved;
@@ -149,8 +149,8 @@
     {
         try
         {
-            var currentUser = sessionLogic.CurrentPerson;
-            BookingLogic.PayBooking(currentUser, booking);
+            var currentUser = PersonController.CurrentPerson;
+            BookingController.PayBooking(currentUser.Email, booking);
             showUserConfirmationModal = true;
             OnInitialized();
         }

@@ -1,9 +1,9 @@
 @page "/Login"
 @layout LoginLayout
 @using Logic
-@using Logic.DTOs
+@using Logic.Interfaces
 @inherits LayoutComponentBase
-@inject SessionLogic sessionLogic
+@inject IPersonController PersonController
 @inject NavigationManager NavigationManager
 
 <PageTitle>DepoQuick</PageTitle>
@@ -59,23 +59,16 @@
 }
 
 @code {
-  PersonDto person;
   private string _email;
   private string _password;
   private bool _showUserErrorModal = false;
   private string _errorMessage = "";
-  
-  protected override void OnInitialized()
-  {
-    person = new PersonDto();
-  }
     
   private async Task HandleValidSubmit()
   {
     try
     {
-      sessionLogic.Login(_email,_password);
-      person = sessionLogic.CurrentPerson;
+      PersonController.Login(_email,_password);
       GoToIndex();
     }
     catch (Exception e)

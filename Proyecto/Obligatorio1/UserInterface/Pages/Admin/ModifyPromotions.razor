@@ -1,9 +1,8 @@
 @page "/ModifyPromotions"
-@using Logic
 @using Logic.DTOs
 @using Logic.Interfaces
 @layout MainLayout
-@inject IPromotionController promotionController
+@inject IPromotionController PromotionController
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -23,7 +22,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach (var promotion in promotionController.GetPromotionsDto())
+                            @foreach (var promotion in PromotionController.GetPromotionsDto())
                             {
                                 <tr>
                                     <td>
@@ -109,7 +108,7 @@
         try
         {
             _newPromotion = new PromotionDto(_newLabel, _newDiscount, _newDateStart, _newDateEnd);
-            promotionController.UpdatePromotion(promotionController.CreatePromotion(promotionController.GetPromotionDtoFromLabel(_oldLabel)), promotionController.CreatePromotion(_newPromotion)); 
+            PromotionController.ModifyPromotion(_oldLabel, _newPromotion); 
             _showAdminConfirmationModal = true;
             
         }

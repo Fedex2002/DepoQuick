@@ -1,8 +1,8 @@
 @page "/DeleteStorageUnits"
-@using Logic
 @using Logic.DTOs
+@using Logic.Interfaces
 @layout MainLayout
-@inject StorageUnitLogic storageUnitLogic
+@inject IStorageUnitController StorageUnitController
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -108,15 +108,15 @@
     protected override void OnInitialized()
     {
         _storageUnitDto = new StorageUnitDto();
-        _storageUnits = storageUnitLogic.GetStorageUnitsDto();
+        _storageUnits = StorageUnitController.GetStorageUnitsDto();
     }
     
     private async Task HandleValidSubmit(string id)
     {
-        _storageUnitDto = storageUnitLogic.GetStorageUnitDtoFromId(id);
-        storageUnitLogic.RemoveStorageUnit(_storageUnitDto);
+        _storageUnitDto = StorageUnitController.GetStorageUnitDtoFromId(id);
+        StorageUnitController.RemoveStorageUnit(_storageUnitDto);
         _showAdminConfirmationModal = true;
-        _storageUnits = storageUnitLogic.GetStorageUnitsDto();
+        _storageUnits = StorageUnitController.GetStorageUnitsDto();
     }
   
     private void ClosePromotionConfirmationModal()

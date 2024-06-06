@@ -81,7 +81,7 @@
     try
     {
       _promotionDto = new PromotionDto(_label, _discount, _dateStart, _dateEnd);
-      PromotionController.AddPromotion(PromotionController.CreatePromotion(_promotionDto));
+      PromotionController.CreatePromotion(_promotionDto);
       _showAdminConfirmationModal = true;
     }
     catch (Exception e)

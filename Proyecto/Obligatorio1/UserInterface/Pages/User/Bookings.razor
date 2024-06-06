@@ -1,11 +1,12 @@
 @page "/Bookings"
 @using Logic
 @using Logic.DTOs
-@using Model
+@using Logic.Interfaces
 @layout MainLayout
-@inject BookingLogic BookingLogic
-@inject SessionLogic sessionLogic
-@inject StorageUnitLogic storageUnitLogic
+@inject IBookingController BookingController
+@inject PersonController PersonController
+@inject IStorageUnitController StorageUnitController
+@inject IDateRangeController DateRangeController
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -159,12 +160,12 @@
             }
             else
             {
-                BookingLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(_finalDateStart, _finalDateEnd, _dateRangeDto);
-                _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false,sessionLogic.CurrentPerson.Email);
-                    BookingLogic.AddBooking(sessionLogic.CurrentPerson, _bookingDto);
+                DateRangeController.CheckIfDateStartAndDateEndAreIncludedInDateRange(_finalDateStart, _finalDateEnd, _dateRangeDto);
+                _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false,PersonController.CurrentPerson.Email);
+                    BookingController.CreateBooking(PersonController.CurrentPerson.Email, _bookingDto);
                     _showUserConfirmationModal = true;
                 _dateRangeDto = new DateRangeDto(_finalDateStart, _finalDateEnd);
-                storageUnitLogic.ModifyOrRemoveDateRange(storageUnitDto, _dateRangeDto);
+                DateRangeController.ModifyOrRemoveDateRange(storageUnitDto, _dateRangeDto);
             }
         }
         catch (Exception e)
@@ -180,9 +181,9 @@
         {
             _finalDateStart = _dateStart[storageUnitDto.Id];
             _finalDateEnd = _dateEnd[storageUnitDto.Id];
-            BookingLogic.CheckIfDateStartAndDateEndAreIncludedInDateRange(_finalDateStart, _finalDateEnd, _dateRangeDto);
-            _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false,sessionLogic.CurrentPerson.Email);
-            _totalPrice[storageUnitDto.Id] = BookingLogic.CalculateTotalPriceOfBooking(_bookingDto);
+            DateRangeController.CheckIfDateStartAndDateEndAreIncludedInDateRange(_finalDateStart, _finalDateEnd, _dateRangeDto);
+            _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false,PersonController.CurrentPerson.Email);
+            _totalPrice[storageUnitDto.Id] = BookingController.CalculateTotalPriceOfBooking(_bookingDto);
         }
         catch (Exception e)
         {
@@ -207,11 +208,11 @@
         try
         {
             _dateRangeDto = new DateRangeDto(_filterStartDate, _filterEndDate);
-            _storageUnits = storageUnitLogic.SearchAvailableStorageUnits(_dateRangeDto);
+            _storageUnits = StorageUnitController.SearchAvailableStorageUnits(_dateRangeDto);
             
             foreach (var storageUnitDto in _storageUnits)
             {
-                _pricePerDay[storageUnitDto.Id] = BookingLogic.CalculateStorageUnitPricePerDay(storageUnitDto, _dateRangeDto);
+                _pricePerDay[storageUnitDto.Id] = StorageUnitController.CalculateStorageUnitPricePerDay(storageUnitDto, _dateRangeDto);
                 _dateStart[storageUnitDto.Id] = _filterStartDate;
                 _dateEnd[storageUnitDto.Id] = _filterEndDate;
                 _totalPrice[storageUnitDto.Id] = 0;

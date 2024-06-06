@@ -10,11 +10,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositorie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoriesTests", "RepositoriesTests\RepositoriesTests.csproj", "{351A6EF7-F9E6-4B99-A911-9D86FBBE70E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{4722E4C6-0C65-4772-967C-5AA59F9C70B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controllers", "Controllers\Controllers.csproj", "{4722E4C6-0C65-4772-967C-5AA59F9C70B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoriesInterface", "RepositoriesInterface\RepositoriesInterface.csproj", "{BFEFB51F-B5B6-4DD9-BEE6-7E89F97D8945}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicTests", "LogicTests\LogicTests.csproj", "{25D89C80-6974-4D38-8F19-96EA008CDDA3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControllersTests", "ControllersTests\ControllersTests.csproj", "{25D89C80-6974-4D38-8F19-96EA008CDDA3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{BD3A1FA9-A28F-4847-952B-35CE6BF1B15D}"
 EndProject

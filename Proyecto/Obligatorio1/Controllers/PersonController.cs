@@ -1,34 +1,35 @@
+using DataAccess.Context;
+using DataAccess.Repository;
 using Logic.DTOs;
+using Logic.Interfaces;
 using Model;
 using Model.Exceptions;
-using Repositories;
 
 namespace Logic;
 
-public class PersonLogic
+public class PersonController : IPersonController
 {
-    private readonly PersonRepositories _personRepositories;
+    public PersonDto CurrentPerson { get; set; }
+    private readonly PersonsRepository _personRepositories;
     
-    public PersonLogic(PersonRepositories personRepositories)
+    public PersonController(ApplicationDbContext context)
     {
-        _personRepositories = personRepositories;
+        _personRepositories = new PersonsRepository(context);
     }
 
     public bool CheckIfEmailIsRegistered(string email)
     {
-        return _personRepositories.ExistsInRepository(email);
+        return _personRepositories.PersonAlreadyExists(email);
     }
 
-    public void IfEmailIsNotRegisteredThrowException(bool registered)
+    private void IfEmailIsNotRegisteredThrowException()
     {
-        if (!registered)
-            throw new LogicExceptions("The email is not registered");
+        throw new LogicExceptions("The email is not registered");
     }
     
-    public bool CheckIfPasswordIsCorrect(string personpass, string catchFromPage)
+    public bool CheckIfPasswordIsCorrect(string password, string verifyPassword)
     {
-       
-        if (PasswordStringMatch(personpass, catchFromPage))
+        if (PasswordStringMatch(password, verifyPassword))
             throw new LogicExceptions("The password is not correct");
         return true;
     }
@@ -38,8 +39,6 @@ public class PersonLogic
         return personpass != catchFromPage;
     }
     
-
-
     public PersonDto Login(string email, string password)
     {
         return LoginCheckPersonValidations(email, password);
@@ -50,7 +49,7 @@ public class PersonLogic
         PersonDto personDto = new PersonDto();
         if (CheckIfEmailIsRegistered(email))
         {
-            Person person = _personRepositories.GetFromRepository(email);
+            Person person = _personRepositories.FindPersonByEmail(email);
             if (CheckIfPasswordIsCorrect(password, person.Password))
             {
                 personDto = new PersonDto(person.Name, person.Surname, person.Email, person.Password,person.IsAdmin);
@@ -58,23 +57,24 @@ public class PersonLogic
         }
         else
         {
-            throw new LogicExceptions("The email is not registered");
+            IfEmailIsNotRegisteredThrowException();
         }
+
+        CurrentPerson = personDto;
 
         return personDto;
     }
     
-
-    public PersonRepositories GetRepository()
+    public void Logout()
     {
-        return _personRepositories;
+        CurrentPerson = null;
     }
 
     public void SignUp(PersonDto personDto)
     {
         if (!CheckIfEmailIsRegistered(personDto.Email))
         {
-            CheckIfIsUserOrAdministratorAndAddToTheRepository(personDto);
+            AddPersonIfItsValid(personDto);
         }
         else
         {
@@ -82,16 +82,16 @@ public class PersonLogic
         }
     }
 
-    private void CheckIfIsUserOrAdministratorAndAddToTheRepository(PersonDto personDto)
+    private void AddPersonIfItsValid(PersonDto personDto)
     {
         Person personToRepo = new Person(personDto.Name, personDto.Surname,personDto.Email, personDto.Password, personDto.IsAdmin);
-        _personRepositories.AddToRepository(personToRepo);
+        _personRepositories.AddPerson(personToRepo);
         
     }
 
     public PersonDto GetPersonDtoFromEmail(string personEmail)
     {
-        Person person = _personRepositories.GetFromRepository(personEmail);
+        Person person = _personRepositories.FindPersonByEmail(personEmail);
         PersonDto personDto = new PersonDto(person.Name, person.Surname, person.Email, person.Password, person.IsAdmin);
         return personDto;
     }

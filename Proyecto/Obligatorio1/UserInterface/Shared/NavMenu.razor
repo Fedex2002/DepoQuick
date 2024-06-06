@@ -1,7 +1,7 @@
 ﻿@using Logic
 @using Logic.DTOs
 @using Model
-@inject SessionLogic SessionLogic
+@inject PersonController PersonController
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -12,7 +12,7 @@
     </div>
 </div>
 
-@if (SessionLogic.CurrentPerson.IsAdmin)
+@if (PersonController.CurrentPerson.IsAdmin)
 {
     <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
         <nav class="flex-column">
