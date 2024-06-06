@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices.ComTypes;
+using DataAccess.Context;
 using Logic;
 using Logic.DTOs;
 using Repositories;
@@ -11,10 +12,11 @@ namespace LogicTests;
 [TestClass]
 public class BookingControllerTests
 {
+    private ApplicationDbContext _context;
+    private BookingController _bookingController;
+    private readonly IApplicationDbContextFactory _contextFactory = new InMemoryAppContextFactory();
     private Person _person;
     private PersonDto _userDto;
-    private BookingController _bookingController;
-    private BookingRepositories _bookingRepo;
     private PromotionDto _promotionDto;
     private List<PromotionDto> _promotionsDto;
     private StorageUnit _storageUnit;
@@ -27,14 +29,14 @@ public class BookingControllerTests
     private Promotion _promotion;
     private List<DateRange> _availableDates;
     private DateRange _dateRange;
-    private PersonDto _personDto;
 
     [TestInitialize]
     public void TestInitialize()
     {
-        _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
+        _context = _contextFactory.CreateDbContext();
+        _bookingController = new BookingController(_context);
+        _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#", true);
         _promotions = new List<Promotion>();
-        _bookingRepo = new BookingRepositories();
         _promotionsDto = new List<PromotionDto>();
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotions.Add(_promotion);
@@ -47,11 +49,15 @@ public class BookingControllerTests
         _promotionsDto.Add(_promotionDto);
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 1), new DateTime(2024, 8, 15));
         _availableDatesDto.Add(_dateRangeDto);
-        _bookingController = new BookingController(_bookingRepo);
         _userDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
-        _storageUnitDto = new StorageUnitDto("", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto);
-        _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false, _person.Email);
-        _personDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
+        _storageUnitDto = new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto);
+        _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false, _userDto.Email);
+    }
+    
+    [TestCleanup]
+    public void CleanUp()
+    {
+        _context.Database.EnsureDeleted();
     }
     
     [TestMethod]

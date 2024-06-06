@@ -1,17 +1,18 @@
+using DataAccess.Context;
+using DataAccess.Repository;
 using Logic.DTOs;
 using Logic.Interfaces;
 using Model;
 using Model.Exceptions;
-using Repositories;
 namespace Logic;
 
 public class BookingController : IBookingController
 {
-    private readonly BookingRepositories _bookingRepositories;
+    private BookingsRepository _bookingRepositories;
     
-    public BookingController(BookingRepositories bookingRepo)
+    public BookingController(ApplicationDbContext context)
     {
-        _bookingRepositories = bookingRepo;
+        _bookingRepositories = new BookingsRepository(context);
     }
     
     public void CreateBooking(string userEmail, BookingDto bookingDto)
@@ -22,11 +23,10 @@ public class BookingController : IBookingController
     private void CheckIfAlreadyBookedAndAddBooking(string userEmail, BookingDto bookingDto)
     {
         Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,userEmail);
-        List<Booking> bookings = _bookingRepositories.GetAllFromRepository();
-            bool exists = bookings.Any(booking => booking.StorageUnit.Id == newBooking.StorageUnit.Id);
+            bool exists = _bookingRepositories.BookingAlreadyExists(newBooking);
             if (!exists)
             {
-                _bookingRepositories.AddToRepository(newBooking);
+                _bookingRepositories.AddBooking(newBooking);
             }
             else
             {
@@ -68,7 +68,7 @@ public class BookingController : IBookingController
     
     public void PayBooking(string userEmail, BookingDto bookingDto)
     {
-        List<Booking> bookings = _bookingRepositories.GetAllFromRepository();
+        List<Booking> bookings = _bookingRepositories.GetAllBookings();
         var bookingToPay = bookings.FirstOrDefault(
             b => b.PersonEmail == userEmail && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
         );
@@ -84,7 +84,7 @@ public class BookingController : IBookingController
     public List<BookingDto> GetAllBookingsDto()
     {
         List<BookingDto> bookingsDto = new List<BookingDto>();
-        foreach (var booking in _bookingRepositories.GetAllFromRepository())
+        foreach (var booking in _bookingRepositories.GetAllBookings())
         {
             bookingsDto.Add(new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd, new StorageUnitDto(booking.StorageUnit.Id, booking.StorageUnit.Area, booking.StorageUnit.Size, booking.StorageUnit.Climatization, new List<PromotionDto>(), new List<DateRangeDto>()), booking.RejectedMessage, booking.Status, booking.Payment, booking.PersonEmail));
         }
@@ -115,7 +115,7 @@ public class BookingController : IBookingController
         }
         else
         {
-            List<Booking> bookings = _bookingRepositories.GetAllFromRepository();
+            List<Booking> bookings = _bookingRepositories.GetAllBookings();
             var bookingToApprove = bookings.FirstOrDefault(
                 b => b.PersonEmail == userEmail && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
             );
@@ -169,7 +169,7 @@ public class BookingController : IBookingController
         else
         {
             IfRejectionMessageIsEmptyThrowException(rejectionMessage);
-            List<Booking> bookings = _bookingRepositories.GetAllFromRepository();
+            List<Booking> bookings = _bookingRepositories.GetAllBookings();
             var bookingToReject = bookings.FirstOrDefault(
                 b => b.PersonEmail == userEmail && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
             );
