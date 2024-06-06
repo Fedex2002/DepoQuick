@@ -34,5 +34,12 @@ public class ReportExportControllerTests
        Assert.IsNotNull(expectedData);
     }
     
+    [TestMethod]
+    public void WhenExportingAsTxtShouldExportIt()
+    {
+       string expectedData = _exportController.Export("txt");
+       Assert.IsNotNull(expectedData);
+    }
+    
 
 }
