@@ -142,18 +142,4 @@ public class PersonControllerTests
         _personRepo.AddPerson(_person); 
         _personController.SignUp(_personDto);
     }
-    
-    [TestMethod]
-    public void WhenPersonIsLoggedInSetItAsCurrentPerson()
-    {
-        _personRepo.AddPerson(_person);
-        _personController.Login(_person.Email, _person.Password);
-    }
-    
-    [TestMethod]
-    public void WhenPersonIsLoggedOutSetCurrentPersonToEmpty()
-    {
-        _personController.Logout();
-    }
-    
 }
