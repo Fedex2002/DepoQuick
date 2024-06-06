@@ -8,7 +8,7 @@ namespace Logic;
 
 public class BookingController : IBookingController
 {
-    private BookingsRepository _bookingRepositories;
+    private readonly BookingsRepository _bookingRepositories;
     
     public BookingController(ApplicationDbContext context)
     {
