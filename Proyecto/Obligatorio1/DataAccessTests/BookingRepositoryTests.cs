@@ -45,7 +45,7 @@ public class BookingRepositoryTests
     {
         _repository.AddBooking(_booking);
 
-        bool exists = _repository.BookingExists(_booking);
+        bool exists = _repository.BookingAlreadyExists(_booking);
 
         Assert.IsTrue(exists);
     }
