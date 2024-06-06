@@ -4,6 +4,7 @@ using Logic;
 using Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
+using UserInterface.Data;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,7 @@ builder.Services.AddDbContextFactory<ApplicationDbContext>(
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddSingleton<UserSession>();
 
 builder.Services.AddScoped<IPersonController,PersonController>();
 builder.Services.AddScoped<IPromotionController,PromotionController>();

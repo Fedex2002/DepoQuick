@@ -2,9 +2,10 @@
 @using Logic.DTOs
 @using Logic.Interfaces
 @using Logic
+@using UserInterface.Data
 @layout MainLayout
 @inject IBookingController BookingController
-@inject PersonController PersonController
+@inject UserSession UserSession
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -128,7 +129,7 @@
     protected override void OnInitialized()
     {
         _bookings = BookingController.GetAllBookingsDto();
-        var currentUser = PersonController.CurrentPerson ;
+        var currentUser = UserSession.LoggedUser ;
             foreach (var bookingDto in _bookings)
             {
                 if (bookingDto.UserEmail == currentUser.Email)
@@ -149,7 +150,7 @@
     {
         try
         {
-            var currentUser = PersonController.CurrentPerson;
+            var currentUser = UserSession.LoggedUser;
             BookingController.PayBooking(currentUser.Email, booking);
             showUserConfirmationModal = true;
             OnInitialized();

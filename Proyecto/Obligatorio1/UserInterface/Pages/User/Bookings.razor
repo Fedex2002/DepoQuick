@@ -2,9 +2,10 @@
 @using Logic
 @using Logic.DTOs
 @using Logic.Interfaces
+@using UserInterface.Data
 @layout MainLayout
 @inject IBookingController BookingController
-@inject PersonController PersonController
+@inject UserSession UserSession
 @inject IStorageUnitController StorageUnitController
 @inject IDateRangeController DateRangeController
 
@@ -161,8 +162,8 @@
             else
             {
                 DateRangeController.CheckIfDateStartAndDateEndAreIncludedInDateRange(_finalDateStart, _finalDateEnd, _dateRangeDto);
-                _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false,PersonController.CurrentPerson.Email);
-                    BookingController.CreateBooking(PersonController.CurrentPerson.Email, _bookingDto);
+                _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false,UserSession.LoggedUser.Email);
+                    BookingController.CreateBooking(UserSession.LoggedUser.Email, _bookingDto);
                     _showUserConfirmationModal = true;
                 _dateRangeDto = new DateRangeDto(_finalDateStart, _finalDateEnd);
                 DateRangeController.ModifyOrRemoveDateRange(storageUnitDto, _dateRangeDto);
@@ -182,7 +183,7 @@
             _finalDateStart = _dateStart[storageUnitDto.Id];
             _finalDateEnd = _dateEnd[storageUnitDto.Id];
             DateRangeController.CheckIfDateStartAndDateEndAreIncludedInDateRange(_finalDateStart, _finalDateEnd, _dateRangeDto);
-            _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false,PersonController.CurrentPerson.Email);
+            _bookingDto = new BookingDto(false, _finalDateStart, _finalDateEnd, storageUnitDto, "", "Reservado", false,UserSession.LoggedUser.Email);
             _totalPrice[storageUnitDto.Id] = BookingController.CalculateTotalPriceOfBooking(_bookingDto);
         }
         catch (Exception e)
