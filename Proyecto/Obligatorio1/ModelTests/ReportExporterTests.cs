@@ -34,4 +34,12 @@ public class ReportExporterTests
         var exporter = ReportExporter.Create("csv");
         Assert.IsInstanceOfType(exporter, typeof(CsvReportExporter));
     }
+    
+    [TestMethod]
+
+    public void WhenCreatingTxtReportExporterShouldReturnCorrectInstance()
+    {
+        var exporter = ReportExporter.Create("txt");
+        Assert.IsInstanceOfType(exporter, typeof(TxtReportExporter));
+    }
 }
