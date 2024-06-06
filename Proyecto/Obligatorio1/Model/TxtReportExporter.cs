@@ -1,16 +1,18 @@
 using System.Text;
-using Model.Interfaces;
 
 namespace Model;
 
-public class TxtReportExporter : IReportExporter
+public class TxtReportExporter
 {
+    public TxtReportExporter()
+    {
+    }
 
     public string Export(List<Booking> bookings)
     {
         return GetData(bookings);
     }
-    
+
     public string GetData(List<Booking> bookings)
     {
         var txtBuilder = new StringBuilder();
@@ -23,7 +25,9 @@ public class TxtReportExporter : IReportExporter
             txtBuilder.AppendLine($"StartDate: {booking.DateStart:yyyy-MM-dd}");
             txtBuilder.AppendLine($"EndDate: {booking.DateEnd:yyyy-MM-dd}");
             txtBuilder.AppendLine($"Status: {booking.Status}");
+            txtBuilder.AppendLine();
         }
+
         return txtBuilder.ToString();
     }
 }
