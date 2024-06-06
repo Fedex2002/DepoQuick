@@ -73,8 +73,18 @@ public class BookingRepositoryTests
     {
         _repository.AddBooking(_booking);
 
-        Booking bookingInDb = _repository.FindBookingByStorageUnitId(_booking.StorageUnit.Id);
+        Booking bookingInDb = _repository.FindBookingByStorageUnitIdAndEmail(_booking.StorageUnit.Id, _booking.PersonEmail);
 
         Assert.AreEqual(_booking, bookingInDb);
+    }
+    
+    [TestMethod]
+    
+    public void WhenDeletingABooking_ShouldRemoveTheBookingFromTheDatabase()
+    {
+        _repository.AddBooking(_booking);
+        _repository.DeleteBooking(_booking);
+        List<Booking> bookings = _repository.GetAllBookings();
+        Assert.AreEqual(0, bookings.Count);
     }
 }
