@@ -283,4 +283,13 @@ public class StorageUnitControllerTests
         Assert.AreEqual(56.25, _storageUnitController.CalculateStorageUnitPricePerDay(_storageUnitDto, _dateRangeDto));
     }
 
+    [TestMethod]
+    public void WhenConvertingAreaTypeToAreaTypeDtoShouldReturnIt()
+    {
+        AreaType areaType = AreaType.A;
+        AreaTypeDto areaTypeDto = _storageUnitController.ConvertAreaTypeToAreaTypeDto(areaType);
+        Assert.AreEqual((int)areaType, areaTypeDto.Value);
+        Assert.AreEqual(areaType.ToString(), areaTypeDto.Name);
+    }
+
 }
