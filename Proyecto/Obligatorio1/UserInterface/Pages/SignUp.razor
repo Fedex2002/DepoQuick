@@ -95,7 +95,7 @@
         PersonController.CheckIfPasswordIsCorrect(_password, _passwordConfirmation);
       }
 
-      if (!PersonController.AdminRegistered())
+      if (!PersonController.CheckIfAdminExists())
       {
         _person = new PersonDto(_name, _surname, _email, _password,true);
         PersonController.SignUp(_person);
