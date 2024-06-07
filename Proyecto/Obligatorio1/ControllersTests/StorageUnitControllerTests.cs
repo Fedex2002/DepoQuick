@@ -26,6 +26,7 @@ public class StorageUnitControllerTests
     private DateRange _dateRange;
     private DateRangeDto _dateRangeDto;
     private AreaTypeDto _areaTypeDto;
+    private SizeTypeDto _sizeTypeDto;
     
     [TestInitialize]
     public void TestInitialize()
@@ -46,7 +47,8 @@ public class StorageUnitControllerTests
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _availableDatesDto.Add(_dateRangeDto);
         _areaTypeDto = new AreaTypeDto(AreaType.A);
-        _storageUnitDto = new StorageUnitDto("1", _areaTypeDto, SizeType.Medium, false, _promotionsDto, _availableDatesDto);
+        _sizeTypeDto = new SizeTypeDto(SizeType.Medium);
+        _storageUnitDto = new StorageUnitDto("1", _areaTypeDto, _sizeTypeDto, false, _promotionsDto, _availableDatesDto);
     }
     
     [TestCleanup]
@@ -144,7 +146,7 @@ public class StorageUnitControllerTests
     [TestMethod]
     public void WhenAvailableDateRangeIsAddedToAStorageUnitShouldSetIt()
     {
-        _storageUnitDto = new StorageUnitDto("5", _areaTypeDto, SizeType.Medium, true, _promotionsDto, new List<DateRangeDto>());
+        _storageUnitDto = new StorageUnitDto("5", _areaTypeDto, _sizeTypeDto, true, _promotionsDto, new List<DateRangeDto>());
         _storageUnitController.CreateStorageUnit(_storageUnitDto);
         _storageUnitController.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
         Assert.AreEqual(_dateRangeDto.StartDate, _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates[0].StartDate);
