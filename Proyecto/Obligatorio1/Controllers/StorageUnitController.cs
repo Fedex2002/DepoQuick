@@ -272,4 +272,9 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     {
         return (AreaType)areaTypeDto.Value;
     }
+    
+    public SizeTypeDto ConvertSizeTypeToSizeTypeDto(SizeType sizeType)
+    {
+        return new SizeTypeDto(sizeType);
+    }
 }
