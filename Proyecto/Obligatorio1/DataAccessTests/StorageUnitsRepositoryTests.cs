@@ -86,4 +86,16 @@ public class StorageUnitsRepositoryTests
 
         Assert.AreEqual(0, _context.StorageUnits.Count());
     }
+    
+    [TestMethod]
+    
+    public void WhenAddingAValidDateRangeToStorageUnit_ShouldAddTheDateRangeToTheStorageUnit()
+    {
+        DateRange dateRange = new DateRange(DateTime.Now, DateTime.Now.AddDays(1));
+        _storageUnit.AvailableDates.Add(dateRange);
+        _repository.AddAvailableDateToStorageUnit(_storageUnit, dateRange);
+        StorageUnit storageUnitInDb = _repository.GetStorageUnitFromId(_storageUnit.Id);
+
+        Assert.AreEqual(1, storageUnitInDb.AvailableDates.Count);
+    }
 }
