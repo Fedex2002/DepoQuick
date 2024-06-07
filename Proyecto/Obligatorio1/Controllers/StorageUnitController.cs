@@ -1,11 +1,9 @@
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Cryptography;
 using DataAccess.Context;
 using DataAccess.Repository;
 using Model;
 using Logic.DTOs;
 using Logic.Interfaces;
-using Repositories;
+using Model.Enums;
 using Model.Exceptions;
 
 namespace Logic;
@@ -263,5 +261,10 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
             storageUnit.Promotions = new List<Promotion>();
         }
         return storageUnit.CalculateStorageUnitPricePerDay();
+    }
+
+    public AreaTypeDto ConvertAreaTypeToAreaTypeDto(AreaType areaType)
+    {
+        return new AreaTypeDto(areaType);
     }
 }
