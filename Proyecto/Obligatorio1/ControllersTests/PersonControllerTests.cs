@@ -148,6 +148,6 @@ public class PersonControllerTests
     {
         _person.IsAdmin = true;
         _personRepo.AddPerson(_person); 
-        Assert.IsTrue(_personController.CheckIfAdminExists(_person.Email));
+        Assert.IsTrue(_personController.CheckIfAdminExists());
     }
 }
