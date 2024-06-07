@@ -81,12 +81,15 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     public List<PromotionDto> ChangeToPromotionsDto(List<Promotion> promotions)
     {
         List<PromotionDto> promotionsDto = new List<PromotionDto>();
-        foreach(var promotion in promotions)
+        if (promotions != null)
         {
-            PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd);
-            promotionsDto.Add(promotionDto);
+            foreach(var promotion in promotions)
+            {
+                PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd);
+                promotionsDto.Add(promotionDto);
+            }
         }
-
+        
         return promotionsDto;
     }
     
