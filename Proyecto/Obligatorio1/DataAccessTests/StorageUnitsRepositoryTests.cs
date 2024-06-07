@@ -114,4 +114,5 @@ public class StorageUnitsRepositoryTests
 
         Assert.AreEqual(0, storageUnitInDb.AvailableDates.Count);
     }
+
 }
