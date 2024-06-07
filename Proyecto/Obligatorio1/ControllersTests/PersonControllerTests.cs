@@ -143,6 +143,7 @@ public class PersonControllerTests
         _personController.SignUp(_personDto);
     }
 
+
     
     [TestMethod]
     public void WhenAdminIsRegisteredShouldReturnTrue()
@@ -151,5 +152,6 @@ public class PersonControllerTests
         _personRepo.AddPerson(_person); 
         Assert.IsTrue(_personController.CheckIfAdminExists());
     }
+
 
 }
