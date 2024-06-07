@@ -130,7 +130,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
         StorageUnit storageUnit = _storageUnitRepositories.GetStorageUnitFromId(id);
         DateRange newDateRange = new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate);
         IfDateRangeAlreadyExistsThrowException(storageUnit, newDateRange);
-        storageUnit.AvailableDates.Add(newDateRange);
+        _storageUnitRepositories.AddAvailableDateToStorageUnit(id, newDateRange);
     }
 
     private static void IfDateRangeAlreadyExistsThrowException(StorageUnit storageUnit, DateRange newDateRange)
