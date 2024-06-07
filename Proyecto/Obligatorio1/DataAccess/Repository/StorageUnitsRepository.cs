@@ -66,6 +66,7 @@ public class StorageUnitsRepository
         storageUnit.AvailableDates.Add(dateRange);
         _database.SaveChanges();
     }
+
     
     public void DeleteAvailableDateFromStorageUnit(string storageUnitId, DateRange dateRange)
     {
@@ -73,4 +74,5 @@ public class StorageUnitsRepository
         storageUnit.AvailableDates.Remove(dateRange);
         _database.SaveChanges();
     }
+
 }
