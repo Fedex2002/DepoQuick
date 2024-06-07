@@ -291,5 +291,14 @@ public class StorageUnitControllerTests
         Assert.AreEqual((int)areaType, areaTypeDto.Value);
         Assert.AreEqual(areaType.ToString(), areaTypeDto.Name);
     }
+    
+    [TestMethod]
+    public void WhenConvertingAreaTypeDtoToAreaTypeShouldReturnIt()
+    {
+        AreaTypeDto areaTypeDto = new AreaTypeDto(AreaType.A);
+        AreaType areaType = _storageUnitController.ConvertAreaTypeDtoToAreaType(areaTypeDto);
+        Assert.AreEqual((int)areaType, areaTypeDto.Value);
+        Assert.AreEqual(areaType.ToString(), areaTypeDto.Name);
+    }
 
 }
