@@ -93,12 +93,14 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     public List<DateRangeDto> ChangeToDateRangeDto(List<DateRange> availableDates)
     {
         List<DateRangeDto> availableDatesDto = new List<DateRangeDto>();
-        foreach(var dateRange in availableDates)
+        if (availableDates != null)
         {
-            DateRangeDto dateRangeDto = new DateRangeDto(dateRange.StartDate, dateRange.EndDate);
-            availableDatesDto.Add(dateRangeDto);
+            foreach (var dateRange in availableDates)
+            {
+                DateRangeDto dateRangeDto = new DateRangeDto(dateRange.StartDate, dateRange.EndDate);
+                availableDatesDto.Add(dateRangeDto);
+            }
         }
-
         return availableDatesDto;
     }
     
