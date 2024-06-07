@@ -99,8 +99,8 @@
       if (!_adminRegistered)
       {
         _person = new PersonDto(_name, _surname, _email, _password,true);
-        _adminRegistered = true;
         PersonController.SignUp(_person);
+        _adminRegistered = true;
 
       }
       else
