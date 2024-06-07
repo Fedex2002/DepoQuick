@@ -1,11 +1,9 @@
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Cryptography;
 using DataAccess.Context;
 using DataAccess.Repository;
 using Model;
 using Logic.DTOs;
 using Logic.Interfaces;
-using Repositories;
+using Model.Enums;
 using Model.Exceptions;
 
 namespace Logic;
@@ -23,7 +21,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     {
         List<Promotion> promotions = CreateListPromotions(storageUnitDto);
         List<DateRange> availableDates = CreateListAvailableDates(storageUnitDto);
-        StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions, availableDates);
+        StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, ConvertAreaTypeDtoToAreaType(storageUnitDto.Area), ConvertSizeTypeDtoToSizeType(storageUnitDto.Size), storageUnitDto.Climatization, promotions, availableDates);
         if (_storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id) != null)
         {
             IfStorageUnitAlreadyExistsThrowException();
@@ -74,7 +72,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
         List<StorageUnitDto> storageUnitsDto = new List<StorageUnitDto>();
         foreach (var storageUnit in _storageUnitRepositories.GetAllStorageUnits())
         {
-            StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
+            StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, ConvertAreaTypeToAreaTypeDto(storageUnit.Area), ConvertSizeTypeToSizeTypeDto(storageUnit.Size), storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
             storageUnitsDto.Add(storageUnitDto);
         }
         return storageUnitsDto;
@@ -107,7 +105,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     public StorageUnitDto GetStorageUnitDtoFromId(string id)
     {
         StorageUnit storageUnit = _storageUnitRepositories.GetStorageUnitFromId(id);
-        StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
+        StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, ConvertAreaTypeToAreaTypeDto(storageUnit.Area), ConvertSizeTypeToSizeTypeDto(storageUnit.Size), storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
         return storageUnitDto;
     }
     
@@ -181,7 +179,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
             {
                 if (dateRangeDto.StartDate >= dateRange.StartDate && dateRangeDto.EndDate <= dateRange.EndDate)
                 {
-                    StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
+                    StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, ConvertAreaTypeToAreaTypeDto(storageUnit.Area), ConvertSizeTypeToSizeTypeDto(storageUnit.Size), storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
                     availableStorageUnits.Add(storageUnitDto);
                 } 
             }
@@ -263,5 +261,25 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
             storageUnit.Promotions = new List<Promotion>();
         }
         return storageUnit.CalculateStorageUnitPricePerDay();
+    }
+
+    public AreaTypeDto ConvertAreaTypeToAreaTypeDto(AreaType areaType)
+    {
+        return new AreaTypeDto(areaType);
+    }
+    
+    public AreaType ConvertAreaTypeDtoToAreaType(AreaTypeDto areaTypeDto)
+    {
+        return (AreaType)areaTypeDto.Value;
+    }
+    
+    public SizeTypeDto ConvertSizeTypeToSizeTypeDto(SizeType sizeType)
+    {
+        return new SizeTypeDto(sizeType);
+    }
+    
+    public SizeType ConvertSizeTypeDtoToSizeType(SizeTypeDto sizeTypeDto)
+    {
+        return (SizeType)sizeTypeDto.Value;
     }
 }
