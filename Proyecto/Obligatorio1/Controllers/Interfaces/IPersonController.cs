@@ -11,8 +11,7 @@ public interface IPersonController
     public PersonDto Login(string email, string password);
     public void SignUp(PersonDto personDto);
     public PersonDto GetPersonDtoFromEmail(string personEmail);
-
-    
     public bool CheckIfAdminExists();
+
 
 }
