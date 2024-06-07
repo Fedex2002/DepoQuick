@@ -19,20 +19,9 @@ public class PromotionController : IPromotionController
     
     public void CreatePromotion(PromotionDto promotionDto)
     {
-        Promotion promotion= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
-        if (_promotionRepositories.PromotionAlreadyExists(promotionDto.Label))
-        {
-            IfPromotionExistsThrowException();
-        }
-        else
-        {
-            _promotionRepositories.AddPromotion(promotion);
-        }
-    }
-    
-    private static void IfPromotionExistsThrowException()
-    {
-        throw new LogicExceptions("Promotion already exists");
+        Promotion promotion= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd); 
+        _promotionRepositories.AddPromotion(promotion);
+        
     }
     
     public void ModifyPromotion(string oldLabel, PromotionDto newPromotionDto)
