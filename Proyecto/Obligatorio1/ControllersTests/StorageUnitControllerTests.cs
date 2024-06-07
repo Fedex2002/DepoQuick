@@ -309,4 +309,13 @@ public class StorageUnitControllerTests
         Assert.AreEqual((int)sizeType, sizeTypeDto.Value);
         Assert.AreEqual(sizeType.ToString(), sizeTypeDto.Name);
     }
+    
+    [TestMethod]
+    public void WhenConvertingSizeTypeDtoToSizeTypeShouldReturnIt()
+    {
+        SizeTypeDto sizeTypeDto = new SizeTypeDto(SizeType.Small);
+        SizeType sizeType = _storageUnitController.ConvertSizeTypeDtoToSizeType(sizeTypeDto);
+        Assert.AreEqual((int)sizeType, sizeTypeDto.Value);
+        Assert.AreEqual(sizeType.ToString(), sizeTypeDto.Name);
+    }
 }
