@@ -29,6 +29,7 @@ public class BookingControllerTests
     private Promotion _promotion;
     private List<DateRange> _availableDates;
     private DateRange _dateRange;
+    private AreaTypeDto _areaTypeDto;
 
     [TestInitialize]
     public void TestInitialize()
@@ -50,7 +51,8 @@ public class BookingControllerTests
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 1), new DateTime(2024, 8, 15));
         _availableDatesDto.Add(_dateRangeDto);
         _userDto = new PersonDto("John", "Doe", "johndoe@gmail.com", "PassWord921#", false);
-        _storageUnitDto = new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto);
+        _areaTypeDto = new AreaTypeDto(AreaType.A);
+        _storageUnitDto = new StorageUnitDto("12", _areaTypeDto, SizeType.Small, true, _promotionsDto, _availableDatesDto);
         _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false, _userDto.Email);
     }
     
@@ -99,7 +101,7 @@ public class BookingControllerTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenUserTriesToBookTheSameStorageUnitWithoutPromotionTwiceShouldThrowException()
     {
-        _storageUnitDto = new StorageUnitDto("",AreaType.A, SizeType.Small, true, new List<PromotionDto>(), new List<DateRangeDto>());
+        _storageUnitDto = new StorageUnitDto("",_areaTypeDto, SizeType.Small, true, new List<PromotionDto>(), new List<DateRangeDto>());
         _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false, _userDto.Email);
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
@@ -125,7 +127,7 @@ public class BookingControllerTests
     public void WhenGettingAllBookingsDtoShouldReturnThem()
     {
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
-        _storageUnitDto = new StorageUnitDto("hola",AreaType.A, SizeType.Small, true,_promotionsDto, _availableDatesDto);
+        _storageUnitDto = new StorageUnitDto("hola",_areaTypeDto, SizeType.Small, true,_promotionsDto, _availableDatesDto);
         BookingDto booking2 = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             _storageUnitDto, "", "Reservado", false, "samplemail@gmail.com");
         _bookingController.CreateBooking(_userDto.Email, booking2);
@@ -137,7 +139,7 @@ public class BookingControllerTests
     public void WhenAdministratorRejectsABookingDtoShouldWriteARejectionMessage()
     {
         _mybookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
-            new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
+            new StorageUnitDto("12", _areaTypeDto, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
             "Reservado", true,_person.Email);
         string rejectionMessage = "The booking has been rejected";
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
@@ -157,7 +159,7 @@ public class BookingControllerTests
     public void WhenAdministratorAlreadyApprovedABookingShouldThrowException()
     {
         _mybookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
-            new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
+            new StorageUnitDto("12", _areaTypeDto, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
             "Reservado", true,_person.Email);
         _bookingController.ApproveBooking(_userDto.Email, _mybookingDto);
     }
@@ -167,7 +169,7 @@ public class BookingControllerTests
     public void WhenAdministratorAlreadyRejectedABookingShouldThrowException()
     {
         _mybookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
-            new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "Rejected",
+            new StorageUnitDto("12", _areaTypeDto, SizeType.Small, true, _promotionsDto, _availableDatesDto), "Rejected",
             "Reservado", true,_person.Email);
         _bookingController.SetRejectionMessage(_userDto.Email, _mybookingDto, "Rejected");
     }
@@ -177,7 +179,7 @@ public class BookingControllerTests
     public void WhenAdministratorAlreadyRejectedABookingAndTriesToApproveItShouldThrowException()
     {
         _mybookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
-            new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "Rejected",
+            new StorageUnitDto("12", _areaTypeDto, SizeType.Small, true, _promotionsDto, _availableDatesDto), "Rejected",
             "Reservado", false,_person.Email);
         _bookingController.ApproveBooking(_userDto.Email, _mybookingDto);
     }
@@ -187,7 +189,7 @@ public class BookingControllerTests
     public void WhenAdministratorAlreadyApprovedABookingAndTriesToRejectItShouldThrowException()
     {
         _mybookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
-            new StorageUnitDto("12", AreaType.A, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
+            new StorageUnitDto("12", _areaTypeDto, SizeType.Small, true, _promotionsDto, _availableDatesDto), "",
             "Reservado", false,_person.Email);
         _bookingController.SetRejectionMessage(_userDto.Email, _mybookingDto, "Rejected");
     }
