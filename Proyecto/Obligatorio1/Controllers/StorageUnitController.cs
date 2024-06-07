@@ -17,7 +17,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     private readonly StorageUnitsRepository _storageUnitRepositories;
 
     private readonly PromotionsRepository _promotionsRepository;
-
+    
     public StorageUnitController(ApplicationDbContext context)
     {
         _storageUnitRepositories = new StorageUnitsRepository(context);
