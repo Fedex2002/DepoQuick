@@ -139,8 +139,11 @@ public class BookingControllerTests
     [TestMethod]
     public void WhenGettingAllBookingsDtoShouldReturnThem()
     {
+        _storageUnitsRepository.AddStorageUnit(_storageUnit);
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
         _storageUnitDto = new StorageUnitDto("hola",_areaTypeDto, _sizeTypeDto, true,_promotionsDto, _availableDatesDto);
+        _storageUnit = new StorageUnit("hola",AreaType.A, SizeType.Small, true,_promotions, _availableDates);
+        _storageUnitsRepository.AddStorageUnit(_storageUnit);
         BookingDto booking2 = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
             _storageUnitDto, "", "Reservado", false, "samplemail@gmail.com");
         _bookingController.CreateBooking(_userDto.Email, booking2);
