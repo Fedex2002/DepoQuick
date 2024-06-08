@@ -110,6 +110,7 @@ public class BookingControllerTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenUserTriesToBookTheSameStorageUnitWithPromotionTwiceShouldThrowException()
     {
+        _storageUnitsRepository.AddStorageUnit(_storageUnit);
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
     }
