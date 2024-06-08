@@ -132,6 +132,7 @@ public class BookingControllerTests
     [TestMethod]
     public void WhenUserPaysABookingShouldSetItToTrue()
     {
+        _storageUnitsRepository.AddStorageUnit(_storageUnit);
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
         _bookingController.PayBooking(_userDto.Email, _mybookingDto);
     }
