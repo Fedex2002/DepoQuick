@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices.ComTypes;
 using DataAccess.Context;
+using DataAccess.Repository;
 using Logic;
 using Logic.DTOs;
 using Repositories;
@@ -32,6 +33,10 @@ public class BookingControllerTests
 
     private AreaTypeDto _areaTypeDto;
     private SizeTypeDto _sizeTypeDto;
+    private StorageUnitsRepository _storageUnitsRepository;
+    private StorageUnit _storageUnit;
+   
+
 
 
     [TestInitialize]
@@ -39,6 +44,7 @@ public class BookingControllerTests
     {
         _context = _contextFactory.CreateDbContext();
         _bookingController = new BookingController(_context);
+        _storageUnitsRepository = new StorageUnitsRepository(_context);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#", true);
         _promotionsDto = new List<PromotionDto>();
         _availableDatesDto = new List<DateRangeDto>();
@@ -51,6 +57,14 @@ public class BookingControllerTests
         _areaTypeDto = new AreaTypeDto(AreaType.A);
         _sizeTypeDto = new SizeTypeDto(SizeType.Small);
         _storageUnitDto = new StorageUnitDto("12", _areaTypeDto, _sizeTypeDto, true, _promotionsDto, _availableDatesDto);
+
+        _promotions = new List<Promotion>();
+        _availableDates = new List<DateRange>();
+        _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
+        _promotions.Add(_promotion);
+        _dateRange = new DateRange(new DateTime(2024, 7, 1), new DateTime(2024, 8, 15));
+        _availableDates.Add(_dateRange);
+        _storageUnit = new StorageUnit("12", AreaType.A, SizeType.Small, true, _promotions, _availableDates);
 
         _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false, _userDto.Email);
     }
@@ -71,6 +85,7 @@ public class BookingControllerTests
     [TestMethod]
     public void WhenUserMakesABookingShouldAddItToBookingRepositories()
     {
+        _storageUnitsRepository.AddStorageUnit(_storageUnit);
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
     }
     
