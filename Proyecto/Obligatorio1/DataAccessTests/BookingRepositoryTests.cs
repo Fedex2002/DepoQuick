@@ -99,4 +99,16 @@ public class BookingRepositoryTests
         Assert.IsTrue(bookingInDb.Approved);
         Assert.AreEqual("Capturado", bookingInDb.Status);
     }
+    
+    [TestMethod]
+    public void WhenBookingIsRejected_ShouldChangeItInTheDatabase()
+    {
+        _repository.AddBooking(_booking);
+        _booking.RejectedMessage = "Rejected";
+        _booking.Status = "Rechazado";
+        _repository.UpdateBooking(_booking);
+        Booking bookingInDb = _repository.FindBookingByStorageUnitIdAndEmail(_booking.StorageUnit.Id, _booking.PersonEmail);
+        Assert.AreEqual("Rejected", bookingInDb.RejectedMessage);
+        Assert.AreEqual("Rechazado", bookingInDb.Status);
+    }
 }
