@@ -1,11 +1,13 @@
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Cryptography;
+
+
 using DataAccess.Context;
 using DataAccess.Repository;
 using Model;
 using Logic.DTOs;
 using Logic.Interfaces;
-using Repositories;
+
+using Model.Enums;
+
 using Model.Exceptions;
 
 namespace Logic;
@@ -13,17 +15,25 @@ namespace Logic;
 public class StorageUnitController : IStorageUnitController, IDateRangeController
 {
     private readonly StorageUnitsRepository _storageUnitRepositories;
+
+    private readonly PromotionsRepository _promotionsRepository;
+
     
     public StorageUnitController(ApplicationDbContext context)
     {
         _storageUnitRepositories = new StorageUnitsRepository(context);
+
+        _promotionsRepository = new PromotionsRepository(context);
+
     }
     
     public void CreateStorageUnit(StorageUnitDto storageUnitDto)
     {
         List<Promotion> promotions = CreateListPromotions(storageUnitDto);
         List<DateRange> availableDates = CreateListAvailableDates(storageUnitDto);
-        StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions, availableDates);
+
+        StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, ConvertAreaTypeDtoToAreaType(storageUnitDto.Area), ConvertSizeTypeDtoToSizeType(storageUnitDto.Size), storageUnitDto.Climatization, promotions, availableDates);
+
         if (_storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id) != null)
         {
             IfStorageUnitAlreadyExistsThrowException();
@@ -41,7 +51,17 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
 
     public List<Promotion> CreateListPromotions(StorageUnitDto storageUnitDto)
     {
-        List<Promotion> promotions = storageUnitDto.Promotions.Select(promotionDto => new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd)).ToList();
+        List<Promotion> promotions = new List<Promotion>();
+        foreach (var promotion in _promotionsRepository.GetAllPromotions())
+        {
+            foreach (var promotionDto in storageUnitDto.Promotions)
+            {
+                if (promotion.Label == promotionDto.Label)
+                {
+                    promotions.Add(promotion);
+                }
+            }
+        }
         return promotions;
     }
     
@@ -74,7 +94,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
         List<StorageUnitDto> storageUnitsDto = new List<StorageUnitDto>();
         foreach (var storageUnit in _storageUnitRepositories.GetAllStorageUnits())
         {
-            StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
+            StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, ConvertAreaTypeToAreaTypeDto(storageUnit.Area), ConvertSizeTypeToSizeTypeDto(storageUnit.Size), storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
             storageUnitsDto.Add(storageUnitDto);
         }
         return storageUnitsDto;
@@ -83,31 +103,38 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     public List<PromotionDto> ChangeToPromotionsDto(List<Promotion> promotions)
     {
         List<PromotionDto> promotionsDto = new List<PromotionDto>();
-        foreach(var promotion in promotions)
+        if (promotions != null)
         {
-            PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd);
-            promotionsDto.Add(promotionDto);
+            foreach(var promotion in promotions)
+            {
+                PromotionDto promotionDto = new PromotionDto(promotion.Label, promotion.Discount, promotion.DateStart, promotion.DateEnd);
+                promotionsDto.Add(promotionDto);
+            }
         }
-
+        
         return promotionsDto;
     }
     
     public List<DateRangeDto> ChangeToDateRangeDto(List<DateRange> availableDates)
     {
         List<DateRangeDto> availableDatesDto = new List<DateRangeDto>();
-        foreach(var dateRange in availableDates)
+        if (availableDates != null)
         {
-            DateRangeDto dateRangeDto = new DateRangeDto(dateRange.StartDate, dateRange.EndDate);
-            availableDatesDto.Add(dateRangeDto);
+            foreach (var dateRange in availableDates)
+            {
+                DateRangeDto dateRangeDto = new DateRangeDto(dateRange.StartDate, dateRange.EndDate);
+                availableDatesDto.Add(dateRangeDto);
+            }
         }
-
         return availableDatesDto;
     }
     
     public StorageUnitDto GetStorageUnitDtoFromId(string id)
     {
         StorageUnit storageUnit = _storageUnitRepositories.GetStorageUnitFromId(id);
-        StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
+
+        StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, ConvertAreaTypeToAreaTypeDto(storageUnit.Area), ConvertSizeTypeToSizeTypeDto(storageUnit.Size), storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
+
         return storageUnitDto;
     }
     
@@ -132,7 +159,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
         StorageUnit storageUnit = _storageUnitRepositories.GetStorageUnitFromId(id);
         DateRange newDateRange = new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate);
         IfDateRangeAlreadyExistsThrowException(storageUnit, newDateRange);
-        storageUnit.AvailableDates.Add(newDateRange);
+        _storageUnitRepositories.AddAvailableDateToStorageUnit(id, newDateRange);
     }
 
     private static void IfDateRangeAlreadyExistsThrowException(StorageUnit storageUnit, DateRange newDateRange)
@@ -181,7 +208,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
             {
                 if (dateRangeDto.StartDate >= dateRange.StartDate && dateRangeDto.EndDate <= dateRange.EndDate)
                 {
-                    StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, storageUnit.Area, storageUnit.Size, storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
+                    StorageUnitDto storageUnitDto = new StorageUnitDto(storageUnit.Id, ConvertAreaTypeToAreaTypeDto(storageUnit.Area), ConvertSizeTypeToSizeTypeDto(storageUnit.Size), storageUnit.Climatization, ChangeToPromotionsDto(storageUnit.Promotions), ChangeToDateRangeDto(storageUnit.AvailableDates));
                     availableStorageUnits.Add(storageUnitDto);
                 } 
             }
@@ -210,7 +237,9 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
         {
             if (dateRange.StartDate == dateRangeDto.StartDate && dateRange.EndDate == dateRangeDto.EndDate)
             {
-                storageUnit.AvailableDates.Remove(dateRange);
+
+                _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id, dateRange);
+
             }
         }
     }
@@ -263,5 +292,26 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
             storageUnit.Promotions = new List<Promotion>();
         }
         return storageUnit.CalculateStorageUnitPricePerDay();
+    }
+
+
+    public AreaTypeDto ConvertAreaTypeToAreaTypeDto(AreaType areaType)
+    {
+        return new AreaTypeDto(areaType);
+    }
+    
+    public AreaType ConvertAreaTypeDtoToAreaType(AreaTypeDto areaTypeDto)
+    {
+        return (AreaType)areaTypeDto.Value;
+    }
+    
+    public SizeTypeDto ConvertSizeTypeToSizeTypeDto(SizeType sizeType)
+    {
+        return new SizeTypeDto(sizeType);
+    }
+    
+    public SizeType ConvertSizeTypeDtoToSizeType(SizeTypeDto sizeTypeDto)
+    {
+        return (SizeType)sizeTypeDto.Value;
     }
 }

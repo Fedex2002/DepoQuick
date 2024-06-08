@@ -3,6 +3,7 @@ using DataAccess.Repository;
 using Logic.DTOs;
 using Logic.Interfaces;
 using Model;
+using Model.Enums;
 using Model.Exceptions;
 namespace Logic;
 
@@ -57,7 +58,11 @@ public class BookingController : IBookingController
         {
             availableDates.Add(new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate));
         }
-        return new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions, availableDates);
+
+        AreaType areaType = (AreaType)storageUnitDto.Area.Value;
+        SizeType sizeType = (SizeType)storageUnitDto.Size.Value;
+        return new StorageUnit(storageUnitDto.Id, areaType, sizeType, storageUnitDto.Climatization, promotions, availableDates);
+
     }
     
     public double CalculateTotalPriceOfBooking(BookingDto bookingDto)
@@ -86,7 +91,9 @@ public class BookingController : IBookingController
         List<BookingDto> bookingsDto = new List<BookingDto>();
         foreach (var booking in _bookingRepositories.GetAllBookings())
         {
-            bookingsDto.Add(new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd, new StorageUnitDto(booking.StorageUnit.Id, booking.StorageUnit.Area, booking.StorageUnit.Size, booking.StorageUnit.Climatization, new List<PromotionDto>(), new List<DateRangeDto>()), booking.RejectedMessage, booking.Status, booking.Payment, booking.PersonEmail));
+
+            bookingsDto.Add(new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd, new StorageUnitDto(booking.StorageUnit.Id, new AreaTypeDto(booking.StorageUnit.Area), new SizeTypeDto(booking.StorageUnit.Size), booking.StorageUnit.Climatization, new List<PromotionDto>(), new List<DateRangeDto>()), booking.RejectedMessage, booking.Status, booking.Payment, booking.PersonEmail));
+
         }
         return bookingsDto;
     }

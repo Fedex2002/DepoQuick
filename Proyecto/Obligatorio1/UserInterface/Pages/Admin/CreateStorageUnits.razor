@@ -1,10 +1,13 @@
 @page "/CreateStorageUnits"
 @using Logic
 @using Logic.DTOs
+@using Logic.Interfaces
 @using Model.Enums
 @layout MainLayout
-@inject StorageUnitController StorageUnitController
-@inject PromotionController PromotionController
+
+@inject IStorageUnitController StorageUnitController
+@inject IPromotionController PromotionController
+
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -138,7 +141,12 @@
       {
         _climatization = false;
       }
-      _storageUnitDto = new StorageUnitDto(_id, _area, _size, _climatization, _selectedPromotions, new List<DateRangeDto>());
+
+
+      AreaTypeDto areaTypeDto = StorageUnitController.ConvertAreaTypeToAreaTypeDto(_area);
+      SizeTypeDto sizeTypeDto = StorageUnitController.ConvertSizeTypeToSizeTypeDto(_size);
+      _storageUnitDto = new StorageUnitDto(_id, areaTypeDto, sizeTypeDto, _climatization, _selectedPromotions, new List<DateRangeDto>());
+
       StorageUnitController.CreateStorageUnit(_storageUnitDto);
       _showAdminConfirmationModal = true;
       

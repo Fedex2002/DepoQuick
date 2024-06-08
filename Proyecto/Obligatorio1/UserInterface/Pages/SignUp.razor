@@ -1,9 +1,11 @@
 @page "/"
 @layout LoginLayout
-@using Logic
 @using Logic.DTOs
+@using Logic.Interfaces
 @inherits LayoutComponentBase
-@inject PersonController PersonController
+
+@inject IPersonController PersonController
+
 @inject NavigationManager NavigationManager
 
 <PageTitle>DepoQuick</PageTitle>
@@ -80,7 +82,6 @@
   private string? _passwordConfirmation;
   private bool _showUserErrorModal;
   private string? _errorMessage;
-  private static bool _adminRegistered;
   protected override void OnInitialized()
   {
     _person = new PersonDto();
@@ -96,10 +97,11 @@
         PersonController.CheckIfPasswordIsCorrect(_password, _passwordConfirmation);
       }
 
-      if (!_adminRegistered)
+      if (!PersonController.CheckIfAdminExists())
       {
         _person = new PersonDto(_name, _surname, _email, _password,true);
-        _adminRegistered = true;
+
+
         PersonController.SignUp(_person);
 
       }

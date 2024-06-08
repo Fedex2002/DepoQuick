@@ -1,8 +1,10 @@
 @page "/SetDateStorageUnit"
 @using Logic.DTOs
-@using Logic
-@using System.Globalization
-@inject StorageUnitController StorageUnitController
+
+@using Logic.Interfaces
+@inject IStorageUnitController StorageUnitController
+@inject IDateRangeController DateRangeController
+
 
 <section class="vh-75">
     <div class="container">
@@ -35,8 +37,8 @@
                             <tr>
                                 <td>
                                     <strong>Id:</strong>@storageUnit.Id<br/>
-                                    <strong>Area:</strong>@storageUnit.Area<br/>
-                                    <strong>Size:</strong>@storageUnit.Size<br/>
+                                    <strong>Area:</strong>@storageUnit.Area.Name<br/>
+                                    <strong>Size:</strong>@storageUnit.Size.Name<br/>
                                     <strong>Climatization:</strong>@storageUnit.Climatization<br/>
                                     @foreach (var promotion in storageUnit.Promotions)
                                     {
@@ -177,7 +179,9 @@
     {
         try
         {
-            StorageUnitController.EliminateDateRangeFromStorageUnit(storageUnitDto.Id, selectedDateRange);
+
+            DateRangeController.EliminateDateRangeFromStorageUnit(storageUnitDto.Id, selectedDateRange);
+
             Message = "Date range eliminated successfully";
             showAdminConfirmationModal = true;
             selectedDateRange = null;

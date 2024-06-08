@@ -45,8 +45,14 @@ public class BookingsRepository
         return _database.Bookings.ToList();
     }
     
-    public Booking FindBookingByStorageUnitId(string id)
+    public Booking FindBookingByStorageUnitIdAndEmail(string storageUnitId, string email)
     {
-        return _database.Bookings.FirstOrDefault(b => b.StorageUnit.Id == id);
+        return _database.Bookings.FirstOrDefault(b => b.StorageUnit.Id == storageUnitId && b.PersonEmail == email);
+    }
+
+    public void DeleteBooking(Booking booking)
+    {
+        _database.Bookings.Remove(booking);
+        _database.SaveChanges();
     }
 }

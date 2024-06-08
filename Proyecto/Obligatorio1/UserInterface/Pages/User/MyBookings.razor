@@ -1,10 +1,13 @@
 @page "/MyBookings"
-@using Logic
 @using Logic.DTOs
-@using Repositories
+@using Logic.Interfaces
+@using Logic
+@using UserInterface.Data
 @layout MainLayout
-@inject BookingController BookingController
-@inject SessionLogic sessionLogic
+
+@inject IBookingController BookingController
+@inject UserSession UserSession
+
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -22,7 +25,8 @@
                             <th>End Date</th>
                             <th>Active</th>
                             <th>Rejection Message</th>
-                            <th>Status</th>
+                            <th>Booking Status</th>
+                            <th>Payment Status</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -40,8 +44,8 @@
                             <tr>
                                 <td>
                                     <strong>Id:</strong>@booking.StorageUnitDto.Id<br/>
-                                    <strong>Area:</strong>@booking.StorageUnitDto.Area<br/>
-                                    <strong>Size:</strong>@booking.StorageUnitDto.Size<br/>
+                                    <strong>Area:</strong>@booking.StorageUnitDto.Area.Name<br/>
+                                    <strong>Size:</strong>@booking.StorageUnitDto.Size.Name<br/>
                                     <strong>Climatization:</strong>@booking.StorageUnitDto.Climatization<br/>
                                     @foreach (var promotion in booking.StorageUnitDto.Promotions)
                                     {
@@ -71,7 +75,10 @@
                                     <label class="form-label">@_rejectionMessage[booking.StorageUnitDto.Id]</label>
                                 </td>
                                 <td>
-                                    <label class="form-label">@_status[booking.StorageUnitDto.Id]</label>
+                                    <label class="form-label">@_bookingstatus[booking.StorageUnitDto.Id]</label>
+                                </td>
+                                <td>
+                                    <label class="form-label">@_paymentstatus[booking.StorageUnitDto.Id]</label>
                                 </td>
                                 <td>
                                     <button type="submit" class="btn btn-success btn-lg" @onclick="() => HandleValidSubmit(booking)" style="padding-left: 2.5rem; padding-right: 2.5rem;">Pay Booking</button>
@@ -112,7 +119,8 @@
     readonly Dictionary<string, double> _totalPrice = new Dictionary<string, double>();
     readonly Dictionary<string, bool> _active = new Dictionary<string, bool>();
     readonly Dictionary<string, string> _rejectionMessage = new Dictionary<string, string>();
-    readonly Dictionary<string, string> _status = new Dictionary<string, string>();
+    readonly Dictionary<string, string> _bookingstatus = new Dictionary<string, string>();
+    readonly Dictionary<string, bool> _paymentstatus = new Dictionary<string, bool>();
     private List<StorageUnitDto> _storageUnits;
     private List<PersonDto> _users;
     private List<BookingDto> _bookings;
@@ -123,7 +131,9 @@
     protected override void OnInitialized()
     {
         _bookings = BookingController.GetAllBookingsDto();
-        var currentUser = sessionLogic.CurrentPerson ;
+
+        var currentUser = UserSession.LoggedUser ;
+
             foreach (var bookingDto in _bookings)
             {
                 if (bookingDto.UserEmail == currentUser.Email)
@@ -133,11 +143,9 @@
                     _dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
                     _active[bookingDto.StorageUnitDto.Id] = bookingDto.Approved;
                     _rejectionMessage[bookingDto.StorageUnitDto.Id] = bookingDto.RejectedMessage;
-                    _status[bookingDto.StorageUnitDto.Id] = bookingDto.Status;
-                    
+                    _bookingstatus[bookingDto.StorageUnitDto.Id] = bookingDto.Status;
+                    _paymentstatus[bookingDto.StorageUnitDto.Id] = bookingDto.Payment;
                 }
-
-              
             }
         
     }
@@ -146,9 +154,12 @@
     {
         try
         {
-            var currentUser = sessionLogic.CurrentPerson;
-            BookingController.PayBooking(currentUser, booking);
+
+            var currentUser = UserSession.LoggedUser;
+            BookingController.PayBooking(currentUser.Email, booking);
+
             showUserConfirmationModal = true;
+            OnInitialized();
         }
         catch (Exception e)
         {

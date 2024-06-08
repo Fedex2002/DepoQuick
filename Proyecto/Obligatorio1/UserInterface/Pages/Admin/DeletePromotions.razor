@@ -1,9 +1,11 @@
 @page "/DeletePromotions"
-@using Logic
 @using Logic.DTOs
+@using Logic.Interfaces
 @layout MainLayout
-@inject PromotionController PromotionController
-@inject StorageUnitController StorageUnitController
+
+@inject IPromotionController PromotionController
+@inject IStorageUnitController StorageUnitController
+
 
 <PageTitle>DepoQuick</PageTitle>
 

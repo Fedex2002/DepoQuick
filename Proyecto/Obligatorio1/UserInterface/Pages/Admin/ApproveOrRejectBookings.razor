@@ -1,12 +1,13 @@
 @page "/ApproveOrRejectBookings"
 @using Logic
 @using Logic.DTOs
+@using Logic.Interfaces
 @layout MainLayout
-@inject BookingController BookingController
-@inject AdministratorLogic administratorLogic
+
 @inject NavigationManager NavigationManager
-@inject PersonController PersonController
-@inject IJSRuntime JS
+@inject IBookingController BookingController
+@inject IPersonController PersonController
+
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -51,8 +52,8 @@
                                 <tr>
                                     <td>
                                         <strong>Id:</strong>@booking.StorageUnitDto.Id<br/>
-                                        <strong>Area:</strong>@booking.StorageUnitDto.Area<br/>
-                                        <strong>Size:</strong>@booking.StorageUnitDto.Size<br/>
+                                        <strong>Area:</strong>@booking.StorageUnitDto.Area.Name<br/>
+                                        <strong>Size:</strong>@booking.StorageUnitDto.Size.Name<br/>
                                         <strong>Climatization:</strong>@booking.StorageUnitDto.Climatization<br/>
                                         @foreach (var promotion in booking.StorageUnitDto.Promotions)
                                         {
@@ -175,7 +176,9 @@
         try
         {
             PersonDto personInbooking = PersonController.GetPersonDtoFromEmail(bookingEmail);
-            administratorLogic.ApproveBooking(personInbooking, bookingDto);
+
+            BookingController.ApproveBooking(personInbooking.Email, bookingDto);
+
             OnInitialized();
             _message = "Booking has been approved successfully!";
             _showAdminConfirmationModal = true;
@@ -192,7 +195,9 @@
         try
         {
             PersonDto personInbooking = PersonController.GetPersonDtoFromEmail(bookingEmail);
-            administratorLogic.SetRejectionMessage(personInbooking, bookingDto, _rejectionReason);
+
+            BookingController.SetRejectionMessage(personInbooking.Email, bookingDto, _rejectionReason);
+
             OnInitialized();
             _message = "Booking has been rejected successfully!";
             _showAdminConfirmationModal = true;

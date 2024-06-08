@@ -87,5 +87,10 @@ public class PersonController : IPersonController
         PersonDto personDto = new PersonDto(person.Name, person.Surname, person.Email, person.Password, person.IsAdmin);
         return personDto;
     }
+    
+    public bool CheckIfAdminExists()
+    {
+        return _personRepositories.GetAllPersons().Any(p => p.IsAdmin);
+    }
 }
     

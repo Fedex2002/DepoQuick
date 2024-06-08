@@ -1,41 +1,46 @@
 using DataAccess.Context;
+using DataAccess.Repository;
 using Logic;
+using Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
+using UserInterface.Data;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
-PersonRepositories personRepositories = new PersonRepositories();
-PersonController personController = new PersonController(personRepositories);
-builder.Services.AddSingleton(personRepositories);
-builder.Services.AddSingleton(personController);
-SessionLogic sessionLogic = new SessionLogic(personController);
-builder.Services.AddSingleton(sessionLogic);
-PromotionsRepositories promotionsRepositories = new PromotionsRepositories();
-PromotionController promotionController = new PromotionController(promotionsRepositories);
-builder.Services.AddSingleton(promotionsRepositories);
-builder.Services.AddSingleton(promotionController);
-StorageUnitRepositories storageUnitRepositories = new StorageUnitRepositories();
-StorageUnitController storageUnitController = new StorageUnitController(storageUnitRepositories);
-builder.Services.AddSingleton(storageUnitRepositories);
-builder.Services.AddSingleton(storageUnitController);
-BookingRepositories bookingRepositories = new BookingRepositories();
-BookingController bookingController = new BookingController(bookingRepositories);
-builder.Services.AddSingleton(bookingController);
-AdministratorLogic administratorLogic = new AdministratorLogic(bookingRepositories);
-builder.Services.AddSingleton(administratorLogic);
 
 builder.Services.AddDbContextFactory<ApplicationDbContext>(
     options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("ApplicationDBLocalConnection"),
         providerOptions => providerOptions.EnableRetryOnFailure())
-    );
+);
+
+
+// Add services to the container.
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+builder.Services.AddSingleton<UserSession>();
+
+builder.Services.AddScoped<IPersonController,PersonController>();
+builder.Services.AddScoped<IPromotionController,PromotionController>();
+builder.Services.AddScoped<IStorageUnitController,StorageUnitController>();
+builder.Services.AddScoped<IDateRangeController,StorageUnitController>();
+builder.Services.AddScoped<IBookingController,BookingController>();
+
+
+builder.Services.AddScoped<PersonsRepository>();
+builder.Services.AddScoped<PromotionsRepository>();
+builder.Services.AddScoped<StorageUnitsRepository>();
+builder.Services.AddScoped<BookingsRepository>();
+
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    context.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

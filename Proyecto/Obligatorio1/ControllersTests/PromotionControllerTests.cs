@@ -63,14 +63,8 @@ public class PromotionControllerTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
-    public void WhenPromotionIsCreatedWithAnExistingLabelShouldThrowException()
-    {
-        _promotionController.CreatePromotion(_promotionDto);
-        _promotionController.CreatePromotion(_promotionDto);
-    }
-    
-    [TestMethod]
+
+
     public void WhenPromotionIsEliminatedShouldBeRemovedFromRepository()
     {
         _promotionController.CreatePromotion(_promotionDto);

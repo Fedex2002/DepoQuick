@@ -1,8 +1,10 @@
 @page "/ModifyPromotions"
-@using Logic
 @using Logic.DTOs
+@using Logic.Interfaces
 @layout MainLayout
-@inject PromotionController PromotionController
+
+@inject IPromotionController PromotionController
+
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -108,7 +110,9 @@
         try
         {
             _newPromotion = new PromotionDto(_newLabel, _newDiscount, _newDateStart, _newDateEnd);
-            PromotionController.ModifyPromotion(_newPromotion, _oldLabel); 
+
+            PromotionController.ModifyPromotion(_oldLabel, _newPromotion); 
+
             _showAdminConfirmationModal = true;
             
         }

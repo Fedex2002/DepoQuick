@@ -1,4 +1,5 @@
 using DataAccess.Context;
+using Microsoft.EntityFrameworkCore;
 using Model;
 using Model.Exceptions;
 
@@ -57,6 +58,24 @@ public class StorageUnitsRepository
     
     public List<StorageUnit> GetAllStorageUnits()
     {
-        return _database.StorageUnits.ToList();
+       return _database.StorageUnits
+                   .Include(s => s.AvailableDates)
+                   .ToList();
     }
+
+    public void AddAvailableDateToStorageUnit(string storageUnitId, DateRange dateRange)
+    {
+        StorageUnit storageUnit = GetStorageUnitFromId(storageUnitId);
+        storageUnit.AvailableDates.Add(dateRange);
+        _database.SaveChanges();
+    }
+
+    
+    public void DeleteAvailableDateFromStorageUnit(string storageUnitId, DateRange dateRange)
+    {
+        StorageUnit storageUnit = GetStorageUnitFromId(storageUnitId);
+        storageUnit.AvailableDates.Remove(dateRange);
+        _database.SaveChanges();
+    }
+
 }
