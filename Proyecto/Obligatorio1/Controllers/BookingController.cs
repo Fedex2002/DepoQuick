@@ -68,7 +68,7 @@ public class BookingController : IBookingController
     
     public double CalculateTotalPriceOfBooking(BookingDto bookingDto)
     {
-        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment, bookingDto.UserEmail);
+        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _storageUnitsRepository.GetStorageUnitFromId(bookingDto.StorageUnitDto.Id), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment, bookingDto.UserEmail);
         return booking.CalculateBookingTotalPrice();
     }
     
