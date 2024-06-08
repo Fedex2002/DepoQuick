@@ -12,7 +12,9 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
 {
     private readonly StorageUnitsRepository _storageUnitRepositories;
     private readonly PromotionsRepository _promotionsRepository;
-    
+
+
+
     public StorageUnitController(ApplicationDbContext context)
     {
         _storageUnitRepositories = new StorageUnitsRepository(context);
@@ -226,7 +228,9 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
             if (dateRange.StartDate == dateRangeDto.StartDate && dateRange.EndDate == dateRangeDto.EndDate)
             {
 
-                _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id, dateRange);
+
+                _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id,dateRange);
+
 
             }
         }
@@ -274,13 +278,14 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     public double CalculateStorageUnitPricePerDay(StorageUnitDto storageUnitDto, DateRangeDto dateRangeDto)
     {
         StorageUnit storageUnit = _storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id);
-        bool promotionIsInDateRange = storageUnit.Promotions.Any(promotion => dateRangeDto.StartDate >= promotion.DateStart && dateRangeDto.EndDate <= promotion.DateEnd);
-        if (!promotionIsInDateRange)
-        {
-            storageUnit.Promotions = new List<Promotion>();
-        }
+        var promotionsInDateRange = _promotionsRepository.GetAllPromotions()
+            .Where(promotion => promotion.DateStart <= dateRangeDto.EndDate && promotion.DateEnd >= dateRangeDto.StartDate)
+            .ToList();
+        storageUnit.Promotions = promotionsInDateRange.Any() ? promotionsInDateRange : new List<Promotion>();
+
         return storageUnit.CalculateStorageUnitPricePerDay();
     }
+
 
     public AreaTypeDto ConvertAreaTypeToAreaTypeDto(AreaType areaType)
     {
