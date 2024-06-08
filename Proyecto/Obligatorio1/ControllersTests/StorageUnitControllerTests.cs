@@ -90,8 +90,8 @@ public class StorageUnitControllerTests
     {
         _storageUnitController.CreateStorageUnit(_storageUnitDto);
         Assert.AreEqual(_storageUnitDto.Id, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Id);
-        Assert.AreEqual(_storageUnitDto.Area, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Area);
-        Assert.AreEqual(_storageUnitDto.Size, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Size);
+        Assert.AreEqual(_storageUnitDto.Area.Name, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Area.Name);
+        Assert.AreEqual(_storageUnitDto.Size.Name, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Size.Name);
         Assert.AreEqual(_storageUnitDto.Climatization, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Climatization);
     }
 
