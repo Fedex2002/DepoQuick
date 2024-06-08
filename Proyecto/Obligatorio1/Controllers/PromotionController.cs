@@ -19,32 +19,21 @@ public class PromotionController : IPromotionController
     
     public void CreatePromotion(PromotionDto promotionDto)
     {
-        Promotion promotion= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd);
-        if (_promotionRepositories.PromotionAlreadyExists(promotionDto.Label))
-        {
-            IfPromotionExistsThrowException();
-        }
-        else
-        {
-            _promotionRepositories.AddPromotion(promotion);
-        }
-    }
-    
-    private static void IfPromotionExistsThrowException()
-    {
-        throw new LogicExceptions("Promotion already exists");
+        Promotion promotion= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd); 
+        _promotionRepositories.AddPromotion(promotion);
+        
     }
     
     public void ModifyPromotion(string oldLabel, PromotionDto newPromotionDto)
     {
-        Promotion promotionInRepo= _promotionRepositories.FindPromotionByLabel(oldLabel);
         if (!_promotionRepositories.PromotionAlreadyExists(oldLabel))
         {
             IfPromotionDoesNotExistThrowException();
         }
         else
         {
-            EditPromotion(newPromotionDto, promotionInRepo);
+            Promotion newPromotion= new Promotion(newPromotionDto.Label, newPromotionDto.Discount, newPromotionDto.DateStart, newPromotionDto.DateEnd);
+            _promotionRepositories.UpdatePromotion(oldLabel, newPromotion);
         }
     }
     
@@ -52,14 +41,7 @@ public class PromotionController : IPromotionController
     {
         throw new LogicExceptions("Promotion does not exist");
     }
-
-    private static void EditPromotion(PromotionDto promotionDto, Promotion promotionInRepo)
-    {
-        promotionInRepo.Label = promotionDto.Label;
-        promotionInRepo.Discount = promotionDto.Discount;
-        promotionInRepo.DateStart = promotionDto.DateStart;
-        promotionInRepo.DateEnd = promotionDto.DateEnd;
-    }
+    
     public void RemovePromotion(PromotionDto promotionDto)
     {
         Promotion promotionInRepo= _promotionRepositories.FindPromotionByLabel(promotionDto.Label);
