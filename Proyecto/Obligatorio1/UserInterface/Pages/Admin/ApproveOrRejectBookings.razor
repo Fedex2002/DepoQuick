@@ -8,6 +8,8 @@
 @inject IBookingController BookingController
 @inject IPersonController PersonController
 
+@inject IReportExportController ReportExporterController
+@inject IJSRuntime JS
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -238,19 +240,11 @@
     {
         try
         {
-            //comentado hasta acabar la exportacion
-            // Console.WriteLine("About to export");
-            // if (selectedFormat == "csv")
-            // {
-            //     var csvData = administratorLogic.ExportToCsv();
-            //     await JS.InvokeVoidAsync("downloadCsv", "bookings_report.csv", csvData);
-            //     _message = "Bookings report exported successfully!";
-            // }
-            // else if (selectedFormat == "txt")
-            // {
-            //     _errorMessage = "TXT export is not implemented yet.";
-            //     _showAdminErrorModal = true;
-            // }
+            var exportData = ReportExporterController.Export(selectedFormat);
+            await JS.InvokeVoidAsync("download", $"bookings_report.{selectedFormat}", exportData);
+
+            _message = "Bookings report exported successfully!";
+            _showAdminConfirmationModal = true;
         }
         catch (Exception e)
         {
