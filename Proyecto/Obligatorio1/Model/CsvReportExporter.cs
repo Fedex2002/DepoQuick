@@ -1,36 +1,37 @@
 using System.Text;
-using Model.Interfaces;
 
-namespace Model;
-
-public class CsvReportExporter : IReportExporter
+namespace Model
 {
-
-    public CsvReportExporter()
+    public class CsvReportExporter : ReportExporter
     {
-    }
-
-    public string Export(List<Booking> bookings)
-    {
-        return GetData(bookings);
-    }
-    
-    public string GetData(List<Booking> bookings)
-    {
-        var csvBuilder = new StringBuilder();
-        csvBuilder.AppendLine("StorageUnit Id,Area,Size,Climatization,StartDate,EndDate,Status");
-        foreach (var booking in bookings)
+        public CsvReportExporter()
         {
-            csvBuilder.AppendLine(
-                $"\"{booking.StorageUnit.Id}\"," +
-                $"\"{booking.StorageUnit.Area}\"," +
-                $"\"{booking.StorageUnit.Size}\"," +
-                $"\"{booking.StorageUnit.Climatization}\"," +
-                $"\"{booking.DateStart:yyyy-MM-dd}\"," +
-                $"\"{booking.DateEnd:yyyy-MM-dd}\"," +
-                $"\"{booking.Status}\""
-            );
         }
-        return csvBuilder.ToString();
+
+        public override string Export(List<Booking> bookings)
+        {
+            return GetData(bookings);
+        }
+
+        public string GetData(List<Booking> bookings)
+        {
+            var csvBuilder = new StringBuilder();
+            csvBuilder.Append("StorageUnit Id,Area,Size,Climatization,StartDate,EndDate,Status");
+            csvBuilder.Append(Environment.NewLine);
+            foreach (var booking in bookings)
+            {
+                csvBuilder.Append(
+                    $"\"{booking.StorageUnit.Id}\"," +
+                    $"\"{booking.StorageUnit.Area}\"," +
+                    $"\"{booking.StorageUnit.Size}\"," +
+                    $"\"{booking.StorageUnit.Climatization}\"," +
+                    $"\"{booking.DateStart:yyyy-MM-dd}\"," +
+                    $"\"{booking.DateEnd:yyyy-MM-dd}\"," +
+                    $"\"{booking.Status}\""
+                );
+                csvBuilder.Append(Environment.NewLine);
+            }
+            return csvBuilder.ToString();
+        }
     }
 }

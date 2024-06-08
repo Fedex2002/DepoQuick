@@ -38,7 +38,13 @@ namespace ModelTests
         [TestMethod]
         public void WhenExportingAsTxtShouldReturnCorrectTxtString()
         {
-            string expectedData = "StorageUnit Id: \r\nArea: A\r\nSize: Small\r\nClimatization: True\r\nStartDate: 2024-07-01\r\nEndDate: 2024-08-15\r\nStatus: Reservado\r\n\r\n";
+            string expectedData = $"StorageUnit Id: {Environment.NewLine}" +
+                                  $"Area: A{Environment.NewLine}" +
+                                  $"Size: Small{Environment.NewLine}" +
+                                  $"Climatization: True{Environment.NewLine}" +
+                                  $"StartDate: 2024-07-01{Environment.NewLine}" +
+                                  $"EndDate: 2024-08-15{Environment.NewLine}" +
+                                  $"Status: Reservado{Environment.NewLine}{Environment.NewLine}";
             string actualData = _txtReportExporter.Export(_bookings);
             Assert.AreEqual(expectedData, actualData);
         }
@@ -46,7 +52,13 @@ namespace ModelTests
         [TestMethod]
         public void WhenGettingDataFromBookingsShouldReturnIt()
         {
-            string expectedData = "StorageUnit Id: \r\nArea: A\r\nSize: Small\r\nClimatization: True\r\nStartDate: 2024-07-01\r\nEndDate: 2024-08-15\r\nStatus: Reservado\r\n\r\n";
+            string expectedData = $"StorageUnit Id: {Environment.NewLine}" +
+                                  $"Area: A{Environment.NewLine}" +
+                                  $"Size: Small{Environment.NewLine}" +
+                                  $"Climatization: True{Environment.NewLine}" +
+                                  $"StartDate: 2024-07-01{Environment.NewLine}" +
+                                  $"EndDate: 2024-08-15{Environment.NewLine}" +
+                                  $"Status: Reservado{Environment.NewLine}{Environment.NewLine}";
             Assert.AreEqual(expectedData, _txtReportExporter.GetData(_bookings));
         }
     }

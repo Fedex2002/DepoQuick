@@ -3,16 +3,18 @@ using DataAccess.Repository;
 using Logic.DTOs;
 using Logic.Interfaces;
 using Model;
+using Model.Enums;
 using Model.Exceptions;
 namespace Logic;
 
 public class BookingController : IBookingController
 {
     private readonly BookingsRepository _bookingRepositories;
-    
+    private readonly StorageUnitsRepository _storageUnitsRepository;
     public BookingController(ApplicationDbContext context)
     {
         _bookingRepositories = new BookingsRepository(context);
+        _storageUnitsRepository = new StorageUnitsRepository(context);
     }
     
     public void CreateBooking(string userEmail, BookingDto bookingDto)
@@ -22,7 +24,7 @@ public class BookingController : IBookingController
 
     private void CheckIfAlreadyBookedAndAddBooking(string userEmail, BookingDto bookingDto)
     {
-        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,userEmail);
+        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _storageUnitsRepository.GetStorageUnitFromId(bookingDto.StorageUnitDto.Id), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,userEmail);
             bool exists = _bookingRepositories.BookingAlreadyExists(newBooking);
             if (!exists)
             {
@@ -44,35 +46,18 @@ public class BookingController : IBookingController
         return bookingDto.Approved;
     }
     
-    private StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
-    {
-        List<Promotion> promotions = new List<Promotion>();
-        foreach (var promotionDto in storageUnitDto.Promotions)
-        {
-            promotions.Add(new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd));
-        }
-        
-        List<DateRange> availableDates = new List<DateRange>();
-        foreach (var dateRangeDto in storageUnitDto.AvailableDates)
-        {
-            availableDates.Add(new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate));
-        }
-        return new StorageUnit(storageUnitDto.Id, storageUnitDto.Area, storageUnitDto.Size, storageUnitDto.Climatization, promotions, availableDates);
-    }
+  
     
     public double CalculateTotalPriceOfBooking(BookingDto bookingDto)
     {
-        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment, bookingDto.UserEmail);
+        Booking booking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _storageUnitsRepository.GetStorageUnitFromId(bookingDto.StorageUnitDto.Id), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment, bookingDto.UserEmail);
         return booking.CalculateBookingTotalPrice();
     }
     
     public void PayBooking(string userEmail, BookingDto bookingDto)
     {
-        List<Booking> bookings = _bookingRepositories.GetAllBookings();
-        var bookingToPay = bookings.FirstOrDefault(
-            b => b.PersonEmail == userEmail && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
-        );
-
+        
+        Booking bookingToPay = _bookingRepositories.FindBookingByStorageUnitIdAndEmail(bookingDto.StorageUnitDto.Id, userEmail);
         if (bookingToPay != null)
         {
             IfBookingPaymentIsAlreadyTrueThrowException(bookingToPay);
@@ -86,7 +71,18 @@ public class BookingController : IBookingController
         List<BookingDto> bookingsDto = new List<BookingDto>();
         foreach (var booking in _bookingRepositories.GetAllBookings())
         {
-            bookingsDto.Add(new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd, new StorageUnitDto(booking.StorageUnit.Id, booking.StorageUnit.Area, booking.StorageUnit.Size, booking.StorageUnit.Climatization, new List<PromotionDto>(), new List<DateRangeDto>()), booking.RejectedMessage, booking.Status, booking.Payment, booking.PersonEmail));
+            var storageUnit = _storageUnitsRepository.GetStorageUnitFromId(booking.StorageUnit.Id); 
+            var promotionDtos = storageUnit.Promotions.Select(p => new PromotionDto(p.Label, p.Discount, p.DateStart, p.DateEnd)).ToList();
+            var dateRangeDtos = storageUnit.AvailableDates.Select(dr => new DateRangeDto(dr.StartDate, dr.EndDate)).ToList();
+
+            var storageUnitDto = new StorageUnitDto(storageUnit.Id, 
+                new AreaTypeDto(storageUnit.Area), 
+                new SizeTypeDto(storageUnit.Size), 
+                storageUnit.Climatization, 
+                promotionDtos, 
+                dateRangeDtos);
+
+            bookingsDto.Add(new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd, storageUnitDto, booking.RejectedMessage, booking.Status, booking.Payment, booking.PersonEmail));
         }
         return bookingsDto;
     }
@@ -115,13 +111,10 @@ public class BookingController : IBookingController
         }
         else
         {
-            List<Booking> bookings = _bookingRepositories.GetAllBookings();
-            var bookingToApprove = bookings.FirstOrDefault(
-                b => b.PersonEmail == userEmail && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
-            );
-
-            IfBookingStorageUnitIdIsAMatchSetApprovedToTrueAndStatusToCaptured(bookingDto, bookingToApprove,
-                bookingDto.StorageUnitDto.Id);
+            var bookingToApprove = _bookingRepositories.FindBookingByStorageUnitIdAndEmail(bookingDto.StorageUnitDto.Id, userEmail);
+            bookingToApprove.Approved = true;
+            bookingToApprove.Status = "Capturado";
+            _bookingRepositories.UpdateBooking(bookingToApprove);
         }
     }
 
@@ -138,18 +131,6 @@ public class BookingController : IBookingController
     private static void IfBookingRejectedMessageIsNotEmptyThrowException()
     {
         throw new LogicExceptions("Booking is already rejected");
-    }
-
-    private void IfBookingStorageUnitIdIsAMatchSetApprovedToTrueAndStatusToCaptured(BookingDto bookingDto,
-        Booking booking, string oldBookingId)
-    {
-        if (booking.StorageUnit.Id == oldBookingId)
-        {
-            booking.Approved = true;
-            booking.Status = "Capturado";
-            bookingDto.Approved = true;
-            bookingDto.Status = "Capturado";
-        }
     }
 
     public void SetRejectionMessage(string userEmail, BookingDto bookingDto, string rejectionMessage)
@@ -169,25 +150,10 @@ public class BookingController : IBookingController
         else
         {
             IfRejectionMessageIsEmptyThrowException(rejectionMessage);
-            List<Booking> bookings = _bookingRepositories.GetAllBookings();
-            var bookingToReject = bookings.FirstOrDefault(
-                b => b.PersonEmail == userEmail && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
-            );
-
-            IfBookingStorageUnitIdIsAMatchSetRejectedMessageAndChangeStatusToRejected(bookingDto, bookingToReject,
-                rejectionMessage);
-        }
-    }
-
-    private void IfBookingStorageUnitIdIsAMatchSetRejectedMessageAndChangeStatusToRejected(BookingDto bookingDto,
-        Booking booking, string rejectionMessage)
-    {
-        if (booking.StorageUnit.Id == bookingDto.StorageUnitDto.Id)
-        {
+            Booking booking = _bookingRepositories.FindBookingByStorageUnitIdAndEmail(bookingDto.StorageUnitDto.Id, userEmail);
             booking.RejectedMessage = rejectionMessage;
             booking.Status = "Rechazado";
-            bookingDto.RejectedMessage = rejectionMessage;
-            bookingDto.Status = "Rechazado";
+            _bookingRepositories.UpdateBooking(booking);
         }
     }
 

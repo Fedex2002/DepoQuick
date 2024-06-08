@@ -23,8 +23,11 @@ public class StorageUnitControllerTests
     private PromotionDto _promotionDto;
     private List<DateRange> _availableDates;
     private List<DateRangeDto> _availableDatesDto;
+    private PromotionsRepository _promotionsRepository;
     private DateRange _dateRange;
     private DateRangeDto _dateRangeDto;
+    private AreaTypeDto _areaTypeDto;
+    private SizeTypeDto _sizeTypeDto;
     
     [TestInitialize]
     public void TestInitialize()
@@ -32,11 +35,13 @@ public class StorageUnitControllerTests
         _context = _contextFactory.CreateDbContext();
         _storageUnitsRepo = new StorageUnitsRepository(_context);
         _storageUnitController = new StorageUnitController(_context);
+        _promotionsRepository = new PromotionsRepository(_context);
         _promotions = new List<Promotion>();
         _promotionsDto = new List<PromotionDto>();
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotionDto = new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotions.Add(_promotion);
+        _promotionsRepository.AddPromotion(_promotion);
         _promotionsDto.Add(_promotionDto);
         _availableDates = new List<DateRange>();
         _dateRange = new DateRange(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
@@ -44,7 +49,9 @@ public class StorageUnitControllerTests
         _availableDatesDto = new List<DateRangeDto>();
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _availableDatesDto.Add(_dateRangeDto);
-        _storageUnitDto = new StorageUnitDto("1", AreaType.B, SizeType.Medium, false, _promotionsDto, _availableDatesDto);
+        _areaTypeDto = new AreaTypeDto(AreaType.A);
+        _sizeTypeDto = new SizeTypeDto(SizeType.Medium);
+        _storageUnitDto = new StorageUnitDto("1", _areaTypeDto, _sizeTypeDto, false, _promotionsDto, _availableDatesDto);
     }
     
     [TestCleanup]
@@ -79,8 +86,8 @@ public class StorageUnitControllerTests
     {
         _storageUnitController.CreateStorageUnit(_storageUnitDto);
         Assert.AreEqual(_storageUnitDto.Id, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Id);
-        Assert.AreEqual(_storageUnitDto.Area, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Area);
-        Assert.AreEqual(_storageUnitDto.Size, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Size);
+        Assert.AreEqual(_storageUnitDto.Area.Name, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Area.Name);
+        Assert.AreEqual(_storageUnitDto.Size.Name, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Size.Name);
         Assert.AreEqual(_storageUnitDto.Climatization, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Climatization);
     }
 
@@ -142,7 +149,7 @@ public class StorageUnitControllerTests
     [TestMethod]
     public void WhenAvailableDateRangeIsAddedToAStorageUnitShouldSetIt()
     {
-        _storageUnitDto = new StorageUnitDto("5", AreaType.C, SizeType.Medium, true, _promotionsDto, new List<DateRangeDto>());
+        _storageUnitDto = new StorageUnitDto("5", _areaTypeDto, _sizeTypeDto, true, _promotionsDto, new List<DateRangeDto>());
         _storageUnitController.CreateStorageUnit(_storageUnitDto);
         _storageUnitController.AddAvailableDateRangeToStorageUnit(_storageUnitDto.Id, _dateRangeDto);
         Assert.AreEqual(_dateRangeDto.StartDate, _storageUnitsRepo.GetStorageUnitFromId(_storageUnitDto.Id).AvailableDates[0].StartDate);
@@ -283,4 +290,39 @@ public class StorageUnitControllerTests
         Assert.AreEqual(56.25, _storageUnitController.CalculateStorageUnitPricePerDay(_storageUnitDto, _dateRangeDto));
     }
 
+    [TestMethod]
+    public void WhenConvertingAreaTypeToAreaTypeDtoShouldReturnIt()
+    {
+        AreaType areaType = AreaType.A;
+        AreaTypeDto areaTypeDto = _storageUnitController.ConvertAreaTypeToAreaTypeDto(areaType);
+        Assert.AreEqual((int)areaType, areaTypeDto.Value);
+        Assert.AreEqual(areaType.ToString(), areaTypeDto.Name);
+    }
+    
+    [TestMethod]
+    public void WhenConvertingAreaTypeDtoToAreaTypeShouldReturnIt()
+    {
+        AreaTypeDto areaTypeDto = new AreaTypeDto(AreaType.A);
+        AreaType areaType = _storageUnitController.ConvertAreaTypeDtoToAreaType(areaTypeDto);
+        Assert.AreEqual((int)areaType, areaTypeDto.Value);
+        Assert.AreEqual(areaType.ToString(), areaTypeDto.Name);
+    }
+
+    [TestMethod]
+    public void WhenConvertingSizeTypeToSizeTypeDtoShouldReturnIt()
+    {
+        SizeType sizeType = SizeType.Small;
+        SizeTypeDto sizeTypeDto = _storageUnitController.ConvertSizeTypeToSizeTypeDto(sizeType);
+        Assert.AreEqual((int)sizeType, sizeTypeDto.Value);
+        Assert.AreEqual(sizeType.ToString(), sizeTypeDto.Name);
+    }
+    
+    [TestMethod]
+    public void WhenConvertingSizeTypeDtoToSizeTypeShouldReturnIt()
+    {
+        SizeTypeDto sizeTypeDto = new SizeTypeDto(SizeType.Small);
+        SizeType sizeType = _storageUnitController.ConvertSizeTypeDtoToSizeType(sizeTypeDto);
+        Assert.AreEqual((int)sizeType, sizeTypeDto.Value);
+        Assert.AreEqual(sizeType.ToString(), sizeTypeDto.Name);
+    }
 }
