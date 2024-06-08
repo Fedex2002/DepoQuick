@@ -83,6 +83,7 @@ public class BookingControllerTests
     [TestMethod]
     public void WhenUserBookingIsApprovedShouldReturnTrue()
     {
+        _storageUnitsRepository.AddStorageUnit(_storageUnit);
         _mybookingDto = new BookingDto(true, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15), _storageUnitDto, "", "Reservado", false,_userDto.Email);
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
         Assert.IsTrue(_bookingController.CheckIfBookingIsApproved(_mybookingDto));
