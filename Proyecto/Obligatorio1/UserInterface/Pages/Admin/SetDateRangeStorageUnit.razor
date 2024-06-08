@@ -35,8 +35,8 @@
                             <tr>
                                 <td>
                                     <strong>Id:</strong>@storageUnit.Id<br/>
-                                    <strong>Area:</strong>@storageUnit.Area<br/>
-                                    <strong>Size:</strong>@storageUnit.Size<br/>
+                                    <strong>Area:</strong>@storageUnit.Area.Name<br/>
+                                    <strong>Size:</strong>@storageUnit.Size.Name<br/>
                                     <strong>Climatization:</strong>@storageUnit.Climatization<br/>
                                     @foreach (var promotion in storageUnit.Promotions)
                                     {

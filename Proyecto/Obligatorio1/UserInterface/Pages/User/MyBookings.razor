@@ -42,8 +42,8 @@
                             <tr>
                                 <td>
                                     <strong>Id:</strong>@booking.StorageUnitDto.Id<br/>
-                                    <strong>Area:</strong>@booking.StorageUnitDto.Area<br/>
-                                    <strong>Size:</strong>@booking.StorageUnitDto.Size<br/>
+                                    <strong>Area:</strong>@booking.StorageUnitDto.Area.Name<br/>
+                                    <strong>Size:</strong>@booking.StorageUnitDto.Size.Name<br/>
                                     <strong>Climatization:</strong>@booking.StorageUnitDto.Climatization<br/>
                                     @foreach (var promotion in booking.StorageUnitDto.Promotions)
                                     {
