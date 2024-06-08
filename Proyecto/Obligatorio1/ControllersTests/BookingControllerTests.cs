@@ -154,8 +154,9 @@ public class BookingControllerTests
     [TestMethod]
     public void WhenAdministratorRejectsABookingDtoShouldWriteARejectionMessage()
     {
+        _storageUnitsRepository.AddStorageUnit(_storageUnit);
         _mybookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
-            new StorageUnitDto("12", _areaTypeDto, _sizeTypeDto, true, _promotionsDto, _availableDatesDto), "",
+            _storageUnitDto, "",
             "Reservado", true,_person.Email);
         string rejectionMessage = "The booking has been rejected";
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
