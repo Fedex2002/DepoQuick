@@ -152,6 +152,16 @@ public class BookingControllerTests
     }
     
     [TestMethod]
+    public void WhenAdministratorApprovesABookingDtoShouldSetItToTrue()
+    {
+        _storageUnitsRepository.AddStorageUnit(_storageUnit);
+        _mybookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
+            _storageUnitDto, "", "Reservado", true,_person.Email);
+        _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
+        _bookingController.ApproveBooking(_userDto.Email, _mybookingDto);
+    }
+    
+    [TestMethod]
     public void WhenAdministratorRejectsABookingDtoShouldWriteARejectionMessage()
     {
         _storageUnitsRepository.AddStorageUnit(_storageUnit);
