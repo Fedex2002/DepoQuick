@@ -11,10 +11,11 @@ namespace Logic;
 public class StorageUnitController : IStorageUnitController, IDateRangeController
 {
     private readonly StorageUnitsRepository _storageUnitRepositories;
-    
+    private readonly PromotionsRepository _promotionsRepository;
     public StorageUnitController(ApplicationDbContext context)
     {
         _storageUnitRepositories = new StorageUnitsRepository(context);
+        _promotionsRepository = new PromotionsRepository(context);
     }
     
     public void CreateStorageUnit(StorageUnitDto storageUnitDto)
@@ -39,7 +40,17 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
 
     public List<Promotion> CreateListPromotions(StorageUnitDto storageUnitDto)
     {
-        List<Promotion> promotions = storageUnitDto.Promotions.Select(promotionDto => new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd)).ToList();
+        List<Promotion> promotions = new List<Promotion>();
+        foreach (var promotion in _promotionsRepository.GetAllPromotions())
+        {
+            foreach (var promotionDto in storageUnitDto.Promotions)
+            {
+                if (promotion.Label == promotionDto.Label)
+                {
+                    promotions.Add(promotion);
+                }
+            }
+        }
         return promotions;
     }
     
