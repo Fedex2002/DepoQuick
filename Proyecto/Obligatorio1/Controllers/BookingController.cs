@@ -73,11 +73,8 @@ public class BookingController : IBookingController
     
     public void PayBooking(string userEmail, BookingDto bookingDto)
     {
-        List<Booking> bookings = _bookingRepositories.GetAllBookings();
-        var bookingToPay = bookings.FirstOrDefault(
-            b => b.PersonEmail == userEmail && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
-        );
-
+        
+        Booking bookingToPay = _bookingRepositories.FindBookingByStorageUnitIdAndEmail(bookingDto.StorageUnitDto.Id, userEmail);
         if (bookingToPay != null)
         {
             IfBookingPaymentIsAlreadyTrueThrowException(bookingToPay);
