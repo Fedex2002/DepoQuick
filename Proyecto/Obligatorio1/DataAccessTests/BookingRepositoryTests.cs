@@ -87,4 +87,16 @@ public class BookingRepositoryTests
         List<Booking> bookings = _repository.GetAllBookings();
         Assert.AreEqual(0, bookings.Count);
     }
+
+    [TestMethod]
+    public void WhenBookingIsApproved_ShouldChangeItInTheDatabase()
+    {
+        _repository.AddBooking(_booking);
+        _booking.Approved = true;
+        _booking.Status = "Capturado";
+        _repository.UpdateBooking(_booking);
+        Booking bookingInDb = _repository.FindBookingByStorageUnitIdAndEmail(_booking.StorageUnit.Id, _booking.PersonEmail);
+        Assert.IsTrue(bookingInDb.Approved);
+        Assert.AreEqual("Capturado", bookingInDb.Status);
+    }
 }
