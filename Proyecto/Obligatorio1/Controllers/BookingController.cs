@@ -10,10 +10,11 @@ namespace Logic;
 public class BookingController : IBookingController
 {
     private readonly BookingsRepository _bookingRepositories;
-    
+    private readonly StorageUnitsRepository _storageUnitsRepository;
     public BookingController(ApplicationDbContext context)
     {
         _bookingRepositories = new BookingsRepository(context);
+        _storageUnitsRepository = new StorageUnitsRepository(context);
     }
     
     public void CreateBooking(string userEmail, BookingDto bookingDto)
@@ -23,7 +24,7 @@ public class BookingController : IBookingController
 
     private void CheckIfAlreadyBookedAndAddBooking(string userEmail, BookingDto bookingDto)
     {
-        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, ChangeToStorageUnit(bookingDto.StorageUnitDto), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,userEmail);
+        Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _storageUnitsRepository.GetStorageUnitFromId(bookingDto.StorageUnitDto.Id), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,userEmail);
             bool exists = _bookingRepositories.BookingAlreadyExists(newBooking);
             if (!exists)
             {
