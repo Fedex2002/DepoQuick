@@ -208,7 +208,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
         {
             if (dateRange.StartDate == dateRangeDto.StartDate && dateRange.EndDate == dateRangeDto.EndDate)
             {
-                storageUnit.AvailableDates.Remove(dateRange);
+                _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id, dateRange);
             }
         }
     }
