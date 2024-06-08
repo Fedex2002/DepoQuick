@@ -25,6 +25,7 @@ builder.Services.AddScoped<IPromotionController,PromotionController>();
 builder.Services.AddScoped<IStorageUnitController,StorageUnitController>();
 builder.Services.AddScoped<IDateRangeController,StorageUnitController>();
 builder.Services.AddScoped<IBookingController,BookingController>();
+builder.Services.AddScoped<IReportExportController,ReportExportController>();
 
 
 builder.Services.AddScoped<PersonsRepository>();

@@ -5,7 +5,7 @@
     Layout = "_Layout";
 }
 <script>
-    function downloadCsv(filename, csvData) {
+    function download(filename, csvData) {
         var blob = new Blob([csvData], { type: 'text/csv' });
         var link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
