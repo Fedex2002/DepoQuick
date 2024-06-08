@@ -90,8 +90,18 @@ public class BookingController : IBookingController
         foreach (var booking in _bookingRepositories.GetAllBookings())
         {
 
-            bookingsDto.Add(new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd, new StorageUnitDto(booking.StorageUnit.Id, new AreaTypeDto(booking.StorageUnit.Area), new SizeTypeDto(booking.StorageUnit.Size), booking.StorageUnit.Climatization, new List<PromotionDto>(), new List<DateRangeDto>()), booking.RejectedMessage, booking.Status, booking.Payment, booking.PersonEmail));
+            var storageUnit = _storageUnitsRepository.GetStorageUnitFromId(booking.StorageUnit.Id); 
+            var promotionDtos = storageUnit.Promotions.Select(p => new PromotionDto(p.Label, p.Discount, p.DateStart, p.DateEnd)).ToList();
+            var dateRangeDtos = storageUnit.AvailableDates.Select(dr => new DateRangeDto(dr.StartDate, dr.EndDate)).ToList();
 
+            var storageUnitDto = new StorageUnitDto(storageUnit.Id, 
+                new AreaTypeDto(storageUnit.Area), 
+                new SizeTypeDto(storageUnit.Size), 
+                storageUnit.Climatization, 
+                promotionDtos, 
+                dateRangeDtos);
+
+            bookingsDto.Add(new BookingDto(booking.Approved, booking.DateStart, booking.DateEnd, storageUnitDto, booking.RejectedMessage, booking.Status, booking.Payment, booking.PersonEmail));
         }
         return bookingsDto;
     }
