@@ -46,24 +46,7 @@ public class BookingController : IBookingController
         return bookingDto.Approved;
     }
     
-    private StorageUnit ChangeToStorageUnit(StorageUnitDto storageUnitDto)
-    {
-        List<Promotion> promotions = new List<Promotion>();
-        foreach (var promotionDto in storageUnitDto.Promotions)
-        {
-            promotions.Add(new Promotion(promotionDto.Label, promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd));
-        }
-        
-        List<DateRange> availableDates = new List<DateRange>();
-        foreach (var dateRangeDto in storageUnitDto.AvailableDates)
-        {
-            availableDates.Add(new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate));
-        }
-
-        AreaType areaType = (AreaType)storageUnitDto.Area.Value;
-        SizeType sizeType = (SizeType)storageUnitDto.Size.Value;
-        return new StorageUnit(storageUnitDto.Id, areaType, sizeType, storageUnitDto.Climatization, promotions, availableDates);
-    }
+  
     
     public double CalculateTotalPriceOfBooking(BookingDto bookingDto)
     {
