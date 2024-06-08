@@ -61,4 +61,10 @@ public class BookingsRepository
         _database.Bookings.Remove(booking);
         _database.SaveChanges();
     }
+    
+    public void UpdateBooking(Booking booking)
+    {
+        _database.Bookings.Update(booking);
+        _database.SaveChanges();
+    }
 }
