@@ -63,7 +63,7 @@ public class BookingController : IBookingController
         {
             IfBookingPaymentIsAlreadyTrueThrowException(bookingToPay);
             bookingToPay.Payment = true;
-            bookingDto.Payment = true;
+            _bookingRepositories.UpdateBooking(bookingToPay);
         }
     }
     
