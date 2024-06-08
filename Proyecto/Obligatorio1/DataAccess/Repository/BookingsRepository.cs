@@ -37,7 +37,7 @@ public class BookingsRepository
 
     public bool BookingAlreadyExists(Booking booking)
     {
-        return _database.Bookings.Any(b => b == booking);
+        return _database.Bookings.Any(b => b.PersonEmail == booking.PersonEmail && b.StorageUnit.Id == booking.StorageUnit.Id);
     }
     
     public List<Booking> GetAllBookings()
