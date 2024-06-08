@@ -106,7 +106,6 @@ public class StorageUnitsRepositoryTests
     
     public void WhenDeletingAValidDateRangeFromStorageUnit_ShouldDeleteTheDateRangeFromTheStorageUnit()
 
-
     {
         _repository.AddStorageUnit(_storageUnit);
         DateRange dateRange = new DateRange(DateTime.Now, DateTime.Now.AddDays(1));
