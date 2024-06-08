@@ -107,12 +107,14 @@ public class StorageUnitsRepositoryTests
         DateRange dateRange = new DateRange(DateTime.Now, DateTime.Now.AddDays(1));
         _repository.AddAvailableDateToStorageUnit(_storageUnit.Id, dateRange);
 
+
         StorageUnit storageUnitInDb = _repository.GetStorageUnitFromId(_storageUnit.Id);
         Assert.AreEqual(1, storageUnitInDb.AvailableDates.Count);
         _repository.DeleteAvailableDateFromStorageUnit(_storageUnit.Id, dateRange);
         storageUnitInDb = _repository.GetStorageUnitFromId(_storageUnit.Id);
 
         Assert.AreEqual(0, storageUnitInDb.AvailableDates.Count);
+
     }
 
 }
