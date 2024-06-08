@@ -19,16 +19,10 @@ public class BookingControllerTests
     private PersonDto _userDto;
     private PromotionDto _promotionDto;
     private List<PromotionDto> _promotionsDto;
-    private StorageUnit _storageUnit;
     private StorageUnitDto _storageUnitDto;
     private BookingDto _mybookingDto;
     private List<DateRangeDto> _availableDatesDto;
     private DateRangeDto _dateRangeDto;
-    private Booking _booking;
-    private List<Promotion> _promotions;
-    private Promotion _promotion;
-    private List<DateRange> _availableDates;
-    private DateRange _dateRange;
     private AreaTypeDto _areaTypeDto;
     private SizeTypeDto _sizeTypeDto;
 
@@ -38,14 +32,7 @@ public class BookingControllerTests
         _context = _contextFactory.CreateDbContext();
         _bookingController = new BookingController(_context);
         _person = new Person("John", "Doe", "johndoe@gmail.com", "PassWord921#", true);
-        _promotions = new List<Promotion>();
         _promotionsDto = new List<PromotionDto>();
-        _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
-        _promotions.Add(_promotion);
-        _availableDates = new List<DateRange>();
-        _dateRange = new DateRange(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
-        _availableDates.Add(_dateRange);
-        _storageUnit= new StorageUnit("1", AreaType.B, SizeType.Medium, false, _promotions, _availableDates);
         _availableDatesDto = new List<DateRangeDto>();
         _promotionDto = new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotionsDto.Add(_promotionDto);

@@ -62,7 +62,7 @@ public class BookingController : IBookingController
         {
             IfBookingPaymentIsAlreadyTrueThrowException(bookingToPay);
             bookingToPay.Payment = true;
-            bookingDto.Payment = true;
+            _bookingRepositories.UpdateBooking(bookingToPay);
         }
     }
     
@@ -111,13 +111,10 @@ public class BookingController : IBookingController
         }
         else
         {
-            List<Booking> bookings = _bookingRepositories.GetAllBookings();
-            var bookingToApprove = bookings.FirstOrDefault(
-                b => b.PersonEmail == userEmail && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
-            );
-
-            IfBookingStorageUnitIdIsAMatchSetApprovedToTrueAndStatusToCaptured(bookingDto, bookingToApprove,
-                bookingDto.StorageUnitDto.Id);
+            var bookingToApprove = _bookingRepositories.FindBookingByStorageUnitIdAndEmail(bookingDto.StorageUnitDto.Id, userEmail);
+            bookingToApprove.Approved = true;
+            bookingToApprove.Status = "Capturado";
+            _bookingRepositories.UpdateBooking(bookingToApprove);
         }
     }
 
@@ -134,18 +131,6 @@ public class BookingController : IBookingController
     private static void IfBookingRejectedMessageIsNotEmptyThrowException()
     {
         throw new LogicExceptions("Booking is already rejected");
-    }
-
-    private void IfBookingStorageUnitIdIsAMatchSetApprovedToTrueAndStatusToCaptured(BookingDto bookingDto,
-        Booking booking, string oldBookingId)
-    {
-        if (booking.StorageUnit.Id == oldBookingId)
-        {
-            booking.Approved = true;
-            booking.Status = "Capturado";
-            bookingDto.Approved = true;
-            bookingDto.Status = "Capturado";
-        }
     }
 
     public void SetRejectionMessage(string userEmail, BookingDto bookingDto, string rejectionMessage)
@@ -165,25 +150,10 @@ public class BookingController : IBookingController
         else
         {
             IfRejectionMessageIsEmptyThrowException(rejectionMessage);
-            List<Booking> bookings = _bookingRepositories.GetAllBookings();
-            var bookingToReject = bookings.FirstOrDefault(
-                b => b.PersonEmail == userEmail && b.StorageUnit.Id == bookingDto.StorageUnitDto.Id
-            );
-
-            IfBookingStorageUnitIdIsAMatchSetRejectedMessageAndChangeStatusToRejected(bookingDto, bookingToReject,
-                rejectionMessage);
-        }
-    }
-
-    private void IfBookingStorageUnitIdIsAMatchSetRejectedMessageAndChangeStatusToRejected(BookingDto bookingDto,
-        Booking booking, string rejectionMessage)
-    {
-        if (booking.StorageUnit.Id == bookingDto.StorageUnitDto.Id)
-        {
+            Booking booking = _bookingRepositories.FindBookingByStorageUnitIdAndEmail(bookingDto.StorageUnitDto.Id, userEmail);
             booking.RejectedMessage = rejectionMessage;
             booking.Status = "Rechazado";
-            bookingDto.RejectedMessage = rejectionMessage;
-            bookingDto.Status = "Rechazado";
+            _bookingRepositories.UpdateBooking(booking);
         }
     }
 
