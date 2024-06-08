@@ -1,4 +1,5 @@
 using DataAccess.Context;
+using Microsoft.EntityFrameworkCore;
 using Model;
 using Model.Exceptions;
 
@@ -42,7 +43,12 @@ public class BookingsRepository
     
     public List<Booking> GetAllBookings()
     {
-        return _database.Bookings.ToList();
+        return _database.Bookings
+            .Include(b => b.StorageUnit)         
+            .ThenInclude(s => s.Promotions)       
+            .Include(b => b.StorageUnit)         
+            .ThenInclude(s => s.AvailableDates)    
+            .ToList();
     }
     
     public Booking FindBookingByStorageUnitIdAndEmail(string storageUnitId, string email)
