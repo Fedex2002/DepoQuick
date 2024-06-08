@@ -110,7 +110,9 @@ public class BookingControllerTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenUserTriesToBookTheSameStorageUnitWithoutPromotionTwiceShouldThrowException()
     {
-        _storageUnitDto = new StorageUnitDto("",_areaTypeDto, _sizeTypeDto, true, new List<PromotionDto>(), new List<DateRangeDto>());
+        _storageUnitDto = new StorageUnitDto("12",_areaTypeDto, _sizeTypeDto, true, new List<PromotionDto>(), new List<DateRangeDto>());
+        _storageUnit = new StorageUnit("12",AreaType.A, SizeType.Small, true, new List<Promotion>(), new List<DateRange>());
+        _storageUnitsRepository.AddStorageUnit(_storageUnit);
         _mybookingDto = new BookingDto(false, new DateTime(2024, 7, 1), new DateTime(2024, 8, 15), _storageUnitDto, "", "Reservado", false, _userDto.Email);
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
