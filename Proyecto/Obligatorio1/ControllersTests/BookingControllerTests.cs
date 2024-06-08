@@ -101,6 +101,8 @@ public class BookingControllerTests
     [TestMethod]
     public void WhenUserSelectsStartDayAndEndDayOfBookingShouldShowTotalPrice()
     {
+        _storageUnitsRepository.AddStorageUnit(_storageUnit);
+        _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
         Assert.AreEqual(2126.25, _bookingController.CalculateTotalPriceOfBooking(_mybookingDto));
     }
     
