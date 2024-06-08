@@ -23,6 +23,7 @@ public class StorageUnitControllerTests
     private PromotionDto _promotionDto;
     private List<DateRange> _availableDates;
     private List<DateRangeDto> _availableDatesDto;
+    private PromotionsRepository _promotionsRepository;
     private DateRange _dateRange;
     private DateRangeDto _dateRangeDto;
     private AreaTypeDto _areaTypeDto;
@@ -34,11 +35,13 @@ public class StorageUnitControllerTests
         _context = _contextFactory.CreateDbContext();
         _storageUnitsRepo = new StorageUnitsRepository(_context);
         _storageUnitController = new StorageUnitController(_context);
+        _promotionsRepository = new PromotionsRepository(_context);
         _promotions = new List<Promotion>();
         _promotionsDto = new List<PromotionDto>();
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotionDto = new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotions.Add(_promotion);
+        _promotionsRepository.AddPromotion(_promotion);
         _promotionsDto.Add(_promotionDto);
         _availableDates = new List<DateRange>();
         _dateRange = new DateRange(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
