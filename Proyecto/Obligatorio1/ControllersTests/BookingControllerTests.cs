@@ -130,6 +130,7 @@ public class BookingControllerTests
     [ExpectedException(typeof(LogicExceptions))]
     public void WhenUserTriesToPayABookingTwiceShouldThrowException()
     {
+        _storageUnitsRepository.AddStorageUnit(_storageUnit);
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
         _bookingController.PayBooking(_userDto.Email, _mybookingDto);
         _bookingController.PayBooking(_userDto.Email, _mybookingDto);
