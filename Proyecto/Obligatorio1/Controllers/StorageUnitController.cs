@@ -144,19 +144,11 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     {
         foreach (var dateRange in storageUnit.AvailableDates)
         {
-            if (newDateRange.StartDate >= dateRange.StartDate && newDateRange.EndDate <= dateRange.EndDate)
-            {
-                DateRangeExistsSoThrowException();
-            }
-            if (newDateRange.StartDate <= dateRange.StartDate && newDateRange.EndDate >= dateRange.EndDate)
-            {
-                DateRangeExistsSoThrowException();
-            }
-            if (newDateRange.StartDate >= dateRange.StartDate && newDateRange.StartDate <= dateRange.EndDate)
-            {
-                DateRangeExistsSoThrowException();
-            }
-            if (newDateRange.EndDate >= dateRange.StartDate && newDateRange.EndDate <= dateRange.EndDate)
+            var isContained = newDateRange.StartDate >= dateRange.StartDate && newDateRange.EndDate <= dateRange.EndDate;
+            var contains = newDateRange.StartDate <= dateRange.StartDate && newDateRange.EndDate >= dateRange.EndDate;
+            var startsWithinRange = newDateRange.StartDate >= dateRange.StartDate && newDateRange.StartDate <= dateRange.EndDate;
+            var endsWithinRange = newDateRange.EndDate >= dateRange.StartDate && newDateRange.EndDate <= dateRange.EndDate;
+            if (isContained || contains || startsWithinRange || endsWithinRange)
             {
                 DateRangeExistsSoThrowException();
             }
