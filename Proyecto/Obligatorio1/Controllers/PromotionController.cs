@@ -18,24 +18,21 @@ public class PromotionController : IPromotionController
     
     public void CreatePromotion(PromotionDto promotionDto)
     {
-
-
+        Promotion promotion= new Promotion(promotionDto.Label,promotionDto.Discount, promotionDto.DateStart, promotionDto.DateEnd); 
+        _promotionRepositories.AddPromotion(promotion);
+        
     }
     
     public void ModifyPromotion(string oldLabel, PromotionDto newPromotionDto)
     {
-
-
         if (!_promotionRepositories.PromotionAlreadyExists(oldLabel))
         {
             IfPromotionDoesNotExistThrowException();
         }
         else
         {
-
             Promotion newPromotion= new Promotion(newPromotionDto.Label, newPromotionDto.Discount, newPromotionDto.DateStart, newPromotionDto.DateEnd);
             _promotionRepositories.UpdatePromotion(oldLabel, newPromotion);
-
         }
     }
     
@@ -43,9 +40,7 @@ public class PromotionController : IPromotionController
     {
         throw new LogicExceptions("Promotion does not exist");
     }
-
     
-
     public void RemovePromotion(PromotionDto promotionDto)
     {
         Promotion promotionInRepo= _promotionRepositories.FindPromotionByLabel(promotionDto.Label);
