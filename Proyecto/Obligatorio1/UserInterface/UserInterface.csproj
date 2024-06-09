@@ -9,7 +9,6 @@
     <ItemGroup>
       <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
       <ProjectReference Include="..\Controllers\Controllers.csproj" />
-      <ProjectReference Include="..\Repositories\Repositories.csproj" />
     </ItemGroup>
 
     <ItemGroup>
