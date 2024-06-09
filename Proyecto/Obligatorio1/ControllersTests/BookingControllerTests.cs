@@ -234,4 +234,11 @@ public class BookingControllerTests
     {
         _bookingController.SetRejectionMessage(_userDto.Email, _mybookingDto, "Rejected");
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenAdministratorSetsRejectionMessageEmptyShouldThrowException()
+    {
+        _bookingController.SetRejectionMessage(_userDto.Email, _mybookingDto, "");
+    }
 }
