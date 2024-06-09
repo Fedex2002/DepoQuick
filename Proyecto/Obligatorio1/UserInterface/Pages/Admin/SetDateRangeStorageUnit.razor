@@ -1,10 +1,14 @@
 @page "/SetDateStorageUnit"
 
-@using System.Globalization
-@using Controllers
+
+@inject IStorageUnitController StorageUnitController
+@inject IDateRangeController DateRangeController
+
+
 @using Controllers.Dtos
-@inject StorageUnitController StorageUnitController
->>>>>>> 5cd88b8 ([REFACTOR] namespace change from logic to Controllers)
+@using Controllers.Interfaces
+
+
 
 <section class="vh-75">
     <div class="container">
