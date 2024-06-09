@@ -1,4 +1,5 @@
 using Model.Enums;
+using Model.Exceptions;
 
 namespace Model;
 
@@ -20,11 +21,28 @@ public class StorageUnit
         Id = id;
         Area = area;
         Size = size;
-        Climatization = climatization; 
+        Climatization = climatization;
+        checkIfPromotionsDoesntExceedOneHundred(promotions);
         Promotions = promotions;
         AvailableDates = availableDates;
     }
-    
+
+    private void checkIfPromotionsDoesntExceedOneHundred(List<Promotion> promotions)
+    {
+        if (promotions != null)
+        {
+            int totalDiscount = 0;
+            foreach (Promotion promotion in promotions)
+            {
+                totalDiscount += promotion.Discount;
+            }
+            if (totalDiscount >= 100)
+            {
+                throw new StorageUnitExceptions("The total discount of the promotions exceeds or are equal to 100%");
+            }
+        }
+    }
+
     public string Id
     {
         get => _id;
