@@ -72,6 +72,7 @@ public class StorageUnitsRepository
     {
        return _database.StorageUnits
                    .Include(s => s.AvailableDates)
+                   .Include(s => s.Promotions)
                    .ToList();
     }
 
