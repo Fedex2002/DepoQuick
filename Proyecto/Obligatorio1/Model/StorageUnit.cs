@@ -99,12 +99,12 @@ public class StorageUnit
     
     private double ValueOfClimatization()
     {
-        int c = 0;
+        int valueOfClimatization = 0;
         if (_climatization)
         {
-            c = 20;
+            valueOfClimatization = 20;
         }
-        return c;
+        return valueOfClimatization;
     }
     
     private double GetValuePromotions()
