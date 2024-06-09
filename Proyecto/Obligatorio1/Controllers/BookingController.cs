@@ -27,11 +27,7 @@ public class BookingController : IBookingController
         Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _storageUnitsRepository.GetStorageUnitFromId(bookingDto.StorageUnitDto.Id), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,userEmail);
         _bookingRepositories.AddBooking(newBooking);
     }
-
-    private static void IfUserAlreadyBookTheStorageUnitThrowException()
-    {
-        throw new LogicExceptions("Booking for this StorageUnit already exists");
-    }
+    
 
     public bool CheckIfBookingIsApproved(BookingDto bookingDto)
     {
