@@ -1,4 +1,4 @@
-using Logic.DTOs;
+using Controllers.Dtos;
 
 namespace UserInterface.Data;
 
