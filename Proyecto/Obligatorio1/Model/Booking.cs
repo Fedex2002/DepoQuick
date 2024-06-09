@@ -150,7 +150,8 @@ public class Booking
     
     public bool CheckRejection()
     {
-        return RejectedMessage.Length <= 300;
+        int maxRejectionLength = 300;
+        return RejectedMessage.Length <= maxRejectionLength;
     }
 
     public bool CheckDate()
