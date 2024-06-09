@@ -121,4 +121,13 @@ public class BookingRepositoryTests
         Booking bookingInDb = _repository.FindBookingByStorageUnitIdAndEmail(_booking.StorageUnit.Id, _booking.PersonEmail);
         Assert.IsTrue(bookingInDb.Payment);
     }
+
+    
+    [TestMethod]
+    [ExpectedException(typeof(RepositoryExceptions))]
+    public void WhenDeletingBookingThatDoesNotExist_ShouldThrowRepositoryException()
+    {
+        _repository.DeleteBooking(_booking);
+    }
+
 }

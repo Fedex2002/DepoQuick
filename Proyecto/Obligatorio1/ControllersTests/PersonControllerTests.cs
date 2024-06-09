@@ -3,6 +3,9 @@ using DataAccess.Repository;
 using Model;
 using Model.Enums;
 using Model.Exceptions;
+
+
+
 using Controllers;
 using Controllers.Dtos;
 
@@ -142,7 +145,6 @@ public class PersonControllerTests
         _personController.SignUp(_personDto);
     }
 
-
     
     [TestMethod]
     public void WhenAdminIsRegisteredShouldReturnTrue()
@@ -151,6 +153,5 @@ public class PersonControllerTests
         _personRepo.AddPerson(_person); 
         Assert.IsTrue(_personController.CheckIfAdminExists());
     }
-
 
 }

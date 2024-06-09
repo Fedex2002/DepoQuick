@@ -4,6 +4,8 @@ using DataAccess.Context;
 using DataAccess.Repository;
 using Model;
 using Model.Enums;
+
+
 using Model.Exceptions;
 
 namespace LogicTests;
@@ -95,7 +97,7 @@ public class StorageUnitControllerTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(RepositoryExceptions))]
     public void WhenTryingToCreateAnExistingStorageUnitShouldThrowException()
     {
         _storageUnitController.CreateStorageUnit(_storageUnitDto);
@@ -111,7 +113,7 @@ public class StorageUnitControllerTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(RepositoryExceptions))]
     public void WhenTryingToRemoveANonExistingStorageUnitShouldThrowException()
     {
         _storageUnitController.RemoveStorageUnit(_storageUnitDto);

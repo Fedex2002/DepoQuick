@@ -3,6 +3,7 @@ using Controllers;
 using Controllers.Dtos;
 using DataAccess.Context;
 using DataAccess.Repository;
+
 using Model;
 using Model.Enums;
 using Model.Exceptions;
@@ -24,17 +25,18 @@ public class BookingControllerTests
     private List<DateRangeDto> _availableDatesDto;
     private DateRangeDto _dateRangeDto;
 
+
     private Booking _booking;
     private List<Promotion> _promotions;
     private Promotion _promotion;
     private List<DateRange> _availableDates;
     private DateRange _dateRange;
 
+
     private AreaTypeDto _areaTypeDto;
     private SizeTypeDto _sizeTypeDto;
     private StorageUnitsRepository _storageUnitsRepository;
     private StorageUnit _storageUnit;
-   
 
 
 
@@ -106,7 +108,7 @@ public class BookingControllerTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(RepositoryExceptions))]
     public void WhenUserTriesToBookTheSameStorageUnitWithPromotionTwiceShouldThrowException()
     {
         _storageUnitsRepository.AddStorageUnit(_storageUnit);
@@ -115,7 +117,7 @@ public class BookingControllerTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(RepositoryExceptions))]
     public void WhenUserTriesToBookTheSameStorageUnitWithoutPromotionTwiceShouldThrowException()
     {
 
@@ -179,7 +181,10 @@ public class BookingControllerTests
     {
         _storageUnitsRepository.AddStorageUnit(_storageUnit);
         _mybookingDto = new BookingDto(false, new DateTime(2023, 7, 5), new DateTime(2026, 8, 15),
-            _storageUnitDto, "", "Reservado", true,_person.Email);
+
+            _storageUnitDto, "",
+            "Reservado", true,_person.Email);
+
         string rejectionMessage = "The booking has been rejected";
         _bookingController.CreateBooking(_userDto.Email, _mybookingDto);
         _bookingController.SetRejectionMessage(_userDto.Email, _mybookingDto, rejectionMessage);
@@ -253,5 +258,12 @@ public class BookingControllerTests
     public void WhenAdministratorTriesToRejectABookingAndUserDidNotMakeThePaymentShouldThrowException()
     {
         _bookingController.SetRejectionMessage(_userDto.Email, _mybookingDto, "Rejected");
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(LogicExceptions))]
+    public void WhenAdministratorSetsRejectionMessageEmptyShouldThrowException()
+    {
+        _bookingController.SetRejectionMessage(_userDto.Email, _mybookingDto, "");
     }
 }
