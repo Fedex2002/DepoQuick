@@ -49,6 +49,11 @@ public class StorageUnitsRepository
             throw new RepositoryExceptions("Storage unit does not exist");
         }
         StorageUnit dbStorageUnit = GetStorageUnitFromId(storageUnit.Id);
+        var bookingsToDelete = _database.Bookings
+            .Where(b => b.StorageUnit.Id == storageUnit.Id)
+            .ToList();
+
+        _database.Bookings.RemoveRange(bookingsToDelete);
         _database.StorageUnits.Remove(dbStorageUnit);
         _database.SaveChanges();
      
