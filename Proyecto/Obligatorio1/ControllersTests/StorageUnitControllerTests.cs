@@ -4,7 +4,6 @@ using DataAccess.Context;
 using DataAccess.Repository;
 using Model;
 using Model.Enums;
-using Repositories;
 using Model.Exceptions;
 
 namespace LogicTests;
