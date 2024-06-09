@@ -107,7 +107,8 @@ public class Person
     
     private bool HasCorrectNumberOfDigits()
     {
-        return Password.Length >= 8;
+        int minimumPasswordLength = 8;
+        return Password.Length >= minimumPasswordLength;
     }
 
     private bool HasUppercaseLetter()
