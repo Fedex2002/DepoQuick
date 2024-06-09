@@ -77,4 +77,13 @@ public class StorageUnitTests
         _mystorageunit.AddDateRange(dateRange);
         Assert.IsTrue(_mystorageunit.IsInDateRange(date));
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(StorageUnitException))]
+    public void WhenPromotionsExceedOrAreEqualToOneHundredShouldThrowException()
+    {
+        Promotion promotion = new Promotion("Descuento Invierno", 100, new DateTime(2024,7,15), new DateTime(2024,10,15));
+        _promotions.Add(promotion);
+        _mystorageunit = new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions, _availableDates);
+    }
 }
