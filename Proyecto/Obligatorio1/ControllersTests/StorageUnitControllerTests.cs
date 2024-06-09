@@ -92,7 +92,7 @@ public class StorageUnitControllerTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(RepositoryExceptions))]
     public void WhenTryingToCreateAnExistingStorageUnitShouldThrowException()
     {
         _storageUnitController.CreateStorageUnit(_storageUnitDto);

@@ -26,14 +26,8 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
         List<Promotion> promotions = CreateListPromotions(storageUnitDto);
         List<DateRange> availableDates = CreateListAvailableDates(storageUnitDto);
         StorageUnit storageUnit= new StorageUnit(storageUnitDto.Id, ConvertAreaTypeDtoToAreaType(storageUnitDto.Area), ConvertSizeTypeDtoToSizeType(storageUnitDto.Size), storageUnitDto.Climatization, promotions, availableDates);
-        if (_storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id) != null)
-        {
-            IfStorageUnitAlreadyExistsThrowException();
-        }
-        else
-        {
-            _storageUnitRepositories.AddStorageUnit(storageUnit);
-        }
+        _storageUnitRepositories.AddStorageUnit(storageUnit);
+
     }
 
     private static void IfStorageUnitAlreadyExistsThrowException()
