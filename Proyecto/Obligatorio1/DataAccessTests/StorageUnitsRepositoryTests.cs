@@ -58,6 +58,13 @@ public class StorageUnitsRepositoryTests
     }
     
     [TestMethod]
+    [ExpectedException(typeof(RepositoryExceptions))]
+    public void WhenStorageUnitDoesNotExist_ShouldThrowRepositoryException()
+    {
+        _repository.DeleteStorageUnit(_storageUnit);
+    }
+    
+    [TestMethod]
     public void WhenTryingToFindAStorageUnit_ShouldReturnTheStorageUnitIfItIsInTheDatabase()
     {
         _repository.AddStorageUnit(_storageUnit);
