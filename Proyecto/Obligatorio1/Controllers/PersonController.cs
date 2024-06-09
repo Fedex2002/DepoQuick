@@ -23,13 +23,13 @@ public class PersonController : IPersonController
 
     private void IfEmailIsNotRegisteredThrowException()
     {
-        throw new LogicExceptions("The email is not registered");
+        throw new ControllerExceptions("The email is not registered");
     }
     
     public bool CheckIfPasswordIsCorrect(string password, string verifyPassword)
     {
         if (PasswordStringMatch(password, verifyPassword))
-            throw new LogicExceptions("The password is not correct");
+            throw new ControllerExceptions("The password is not correct");
         return true;
     }
 
@@ -70,7 +70,7 @@ public class PersonController : IPersonController
         }
         else
         {
-            throw new LogicExceptions("The email is already registered");
+            throw new ControllerExceptions("The email is already registered");
         }
     }
 

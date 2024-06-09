@@ -156,14 +156,14 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
 
     private static void DateRangeExistsSoThrowException()
     {
-        throw new LogicExceptions("Date range already exists");
+        throw new ControllerExceptions("Date range already exists");
     }
 
     private static void IfDateRangeIsInvalidThrowException(DateRangeDto dateRangeDto)
     {
         if (dateRangeDto.EndDate < dateRangeDto.StartDate)
         {
-            throw new LogicExceptions("Date error: end date is before start date");
+            throw new ControllerExceptions("Date error: end date is before start date");
         }
     }
     
@@ -191,7 +191,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     {
         if (availableStorageUnits.Count == 0)
         {
-            throw new LogicExceptions("No storage units available for this date range");
+            throw new ControllerExceptions("No storage units available for this date range");
         }
     }
     
@@ -213,7 +213,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     {
         if (dateRangeDto == null)
         {
-            throw new LogicExceptions("Please select a date range to eliminate");
+            throw new ControllerExceptions("Please select a date range to eliminate");
         }
     }
 
@@ -258,7 +258,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     {
         if (!(dateStart >= dateRangeDto.StartDate && dateEnd <= dateRangeDto.EndDate))
         {
-            throw new LogicExceptions("Date range is not included in the available date range");
+            throw new ControllerExceptions("Date range is not included in the available date range");
         }
     }
     

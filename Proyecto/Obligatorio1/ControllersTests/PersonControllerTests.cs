@@ -39,14 +39,14 @@ public class PersonControllerTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void WhenEmailIsNotRegisteredThrowException()
     {
         _personController.Login(_person.Email, _person.Password);
     }
 
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void WhenPasswordIsNotCorrectThrowException()
     {
         _personRepo.AddPerson(_person); 
@@ -112,7 +112,7 @@ public class PersonControllerTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void WhenPersonIsTryingToLoginAndDoesNotExistShouldReturnException()
     {
         Assert.AreEqual(_person, _personController.Login("mail@gmail.com", "PassWord921#EAa"));
@@ -138,7 +138,7 @@ public class PersonControllerTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void WhenPersonIsTryingToSignUpAndEmailIsAlreadyRegisteredShouldReturnException()
     {
         _personRepo.AddPerson(_person); 

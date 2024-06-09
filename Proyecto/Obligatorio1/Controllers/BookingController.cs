@@ -81,7 +81,7 @@ public class BookingController : IBookingController
     {
         if (booking.Payment)
         {
-            throw new LogicExceptions("Booking already paid");
+            throw new ControllerExceptions("Booking already paid");
         }
     }
     
@@ -110,17 +110,17 @@ public class BookingController : IBookingController
 
     private static void IfUserDidNotMakeThePaymentThrowException()
     {
-        throw new LogicExceptions("The booking can't be approved without user payment");
+        throw new ControllerExceptions("The booking can't be approved without user payment");
     }
 
     private static void IfBookingIsAlreadyApprovedThrowException()
     {
-        throw new LogicExceptions("Booking is already approved");
+        throw new ControllerExceptions("Booking is already approved");
     }
 
     private static void IfBookingRejectedMessageIsNotEmptyThrowException()
     {
-        throw new LogicExceptions("Booking is already rejected");
+        throw new ControllerExceptions("Booking is already rejected");
     }
 
     public void SetRejectionMessage(string userEmail, BookingDto bookingDto, string rejectionMessage)
@@ -162,7 +162,7 @@ public class BookingController : IBookingController
     {
         if (rejectionMessage == "")
         {
-            throw new LogicExceptions("The rejection message can't be empty.");
+            throw new ControllerExceptions("The rejection message can't be empty.");
         }
     }
 }
