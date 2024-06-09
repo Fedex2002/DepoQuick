@@ -1,12 +1,12 @@
+using Controllers.Dtos;
+using Controllers.Interfaces;
 using DataAccess.Context;
 using DataAccess.Repository;
 using Model;
-using Logic.DTOs;
-using Logic.Interfaces;
 using Model.Enums;
 using Model.Exceptions;
 
-namespace Logic;
+namespace Controllers;
 
 public class StorageUnitController : IStorageUnitController, IDateRangeController
 {
