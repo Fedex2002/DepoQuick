@@ -68,12 +68,15 @@ public class Promotion
     
     public bool ValidateLabel()
     {
-        return Label.Length <= 20;
+        int maxLabelLength = 20;
+        return Label.Length <= maxLabelLength;
     }
 
     public bool ValidateDiscount()
     {
-        return _discount >= 5 && _discount <= 75;
+        int minDiscount = 5;
+        int maxDiscount = 75;
+        return _discount >= minDiscount && _discount <= maxDiscount;
     }
     
     public bool ValidateDate()
