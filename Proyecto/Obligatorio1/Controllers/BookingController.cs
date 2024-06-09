@@ -25,15 +25,7 @@ public class BookingController : IBookingController
     private void CheckIfAlreadyBookedAndAddBooking(string userEmail, BookingDto bookingDto)
     {
         Booking newBooking = new Booking(bookingDto.Approved, bookingDto.DateStart, bookingDto.DateEnd, _storageUnitsRepository.GetStorageUnitFromId(bookingDto.StorageUnitDto.Id), bookingDto.RejectedMessage, bookingDto.Status, bookingDto.Payment,userEmail);
-            bool exists = _bookingRepositories.BookingAlreadyExists(newBooking);
-            if (!exists)
-            {
-                _bookingRepositories.AddBooking(newBooking);
-            }
-            else
-            {
-                IfUserAlreadyBookTheStorageUnitThrowException();
-            }
+        _bookingRepositories.AddBooking(newBooking);
     }
 
     private static void IfUserAlreadyBookTheStorageUnitThrowException()

@@ -98,7 +98,7 @@ public class BookingControllerTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(RepositoryExceptions))]
     public void WhenUserTriesToBookTheSameStorageUnitWithPromotionTwiceShouldThrowException()
     {
         _storageUnitsRepository.AddStorageUnit(_storageUnit);
@@ -107,7 +107,7 @@ public class BookingControllerTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(RepositoryExceptions))]
     public void WhenUserTriesToBookTheSameStorageUnitWithoutPromotionTwiceShouldThrowException()
     {
         _storageUnitDto = new StorageUnitDto("12",_areaTypeDto, _sizeTypeDto, true, new List<PromotionDto>(), new List<DateRangeDto>());
