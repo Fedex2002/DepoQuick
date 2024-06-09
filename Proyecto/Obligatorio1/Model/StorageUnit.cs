@@ -109,15 +109,15 @@ public class StorageUnit
     
     private double GetValuePromotions()
     {
-        int p = 0;
+        int promotionDiscount = 0;
         if (_promotions != null)
         {
             foreach (Promotion promotion in _promotions)
             {
-                p += promotion.Discount;
+                promotionDiscount += promotion.Discount;
             }
         }
-        return p;
+        return promotionDiscount;
     }
     
     public void AddDateRange(DateRange dateRange)
