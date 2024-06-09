@@ -60,7 +60,7 @@ public class StorageUnitsRepository
     public StorageUnit GetStorageUnitFromId(string id)
     {
         return _database.StorageUnits
-            .Include(s => s.Promotions) // Incluir las promociones relacionadas
+            .Include(s => s.Promotions) 
             .FirstOrDefault(s => s.Id == id);
     }
     public List<StorageUnit> GetAllStorageUnits()
