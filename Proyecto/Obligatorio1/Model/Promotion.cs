@@ -66,7 +66,8 @@ public class Promotion
     
     public bool ValidateLabel()
     {
-        return Label.Length <= 20;
+        int maxLabelLength = 20;
+        return Label.Length <= maxLabelLength;
     }
 
     public bool ValidateDiscount()
