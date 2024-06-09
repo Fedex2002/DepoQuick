@@ -1,6 +1,8 @@
 using System.Transactions;
 using Model;
 using Model.Enums;
+using Model.Exceptions;
+
 namespace ModelTests;
 
 [TestClass]
@@ -79,11 +81,13 @@ public class StorageUnitTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(StorageUnitException))]
+    [ExpectedException(typeof(StorageUnitExceptions))]
     public void WhenPromotionsExceedOrAreEqualToOneHundredShouldThrowException()
     {
-        Promotion promotion = new Promotion("Descuento Invierno", 100, new DateTime(2024,7,15), new DateTime(2024,10,15));
+        Promotion promotion = new Promotion("Descuento Invierno", 75, new DateTime(2024,7,15), new DateTime(2024,10,15));
+        Promotion promotion2 = new Promotion("Descuento Verano", 25, new DateTime(2024,7,15), new DateTime(2024,10,15));
         _promotions.Add(promotion);
+        _promotions.Add(promotion2);
         _mystorageunit = new StorageUnit("",AreaType.A, SizeType.Small, true, _promotions, _availableDates);
     }
 }
