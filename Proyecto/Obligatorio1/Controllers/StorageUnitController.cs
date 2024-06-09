@@ -197,22 +197,23 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     }
     
     public void EliminateDateRangeFromStorageUnit(string id, DateRangeDto dateRangeDto)
-    {
-        if (dateRangeDto == null)
-        {
-            throw new LogicExceptions("Please select a date range to eliminate");
-        }
+    { 
+        DateRangeExists(dateRangeDto);
         StorageUnit storageUnit = _storageUnitRepositories.GetStorageUnitFromId(id);
         foreach (var dateRange in storageUnit.AvailableDates.ToList())
         {
             if (dateRange.StartDate == dateRangeDto.StartDate && dateRange.EndDate == dateRangeDto.EndDate)
             {
-
-
                 _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id,dateRange);
-
-
             }
+        }
+    }
+
+    private static void DateRangeExists(DateRangeDto dateRangeDto)
+    {
+        if (dateRangeDto == null)
+        {
+            throw new LogicExceptions("Please select a date range to eliminate");
         }
     }
 
