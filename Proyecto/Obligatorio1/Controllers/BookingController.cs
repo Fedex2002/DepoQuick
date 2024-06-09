@@ -123,7 +123,14 @@ public class BookingController : IBookingController
 
     public void SetRejectionMessage(string userEmail, BookingDto bookingDto, string rejectionMessage)
     {
-        if (bookingDto.RejectedMessage != "")
+        ValidateRejectionMessage(bookingDto, rejectionMessage);
+        Booking booking = _bookingRepositories.FindBookingByStorageUnitIdAndEmail(bookingDto.StorageUnitDto.Id, userEmail);
+        UpdateBookingWithRejectionMessage(booking, rejectionMessage);
+    }
+
+    private void ValidateRejectionMessage(BookingDto bookingDto, string rejectionMessage)
+    {
+        if (!string.IsNullOrEmpty(bookingDto.RejectedMessage))
         {
             IfBookingRejectedMessageIsNotEmptyThrowException();
         }
@@ -131,18 +138,21 @@ public class BookingController : IBookingController
         {
             IfBookingIsAlreadyApprovedThrowException();
         }
-        else if (bookingDto.Payment == false)
+        else if (!bookingDto.Payment)
         {
             IfUserDidNotMakeThePaymentThrowException();
         }
-        else
+        else if (string.IsNullOrEmpty(rejectionMessage))
         {
             IfRejectionMessageIsEmptyThrowException(rejectionMessage);
-            Booking booking = _bookingRepositories.FindBookingByStorageUnitIdAndEmail(bookingDto.StorageUnitDto.Id, userEmail);
-            booking.RejectedMessage = rejectionMessage;
-            booking.Status = "Rechazado";
-            _bookingRepositories.UpdateBooking(booking);
         }
+    }
+
+    private void UpdateBookingWithRejectionMessage(Booking booking, string rejectionMessage)
+    {
+        booking.RejectedMessage = rejectionMessage;
+        booking.Status = "Rechazado";
+        _bookingRepositories.UpdateBooking(booking);
     }
 
     private static void IfRejectionMessageIsEmptyThrowException(string rejectionMessage)
