@@ -12,11 +12,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:Proyecto/Obligatorio1/DataAccess/Migrations/20240604173448_Migrations.Designer.cs
-    [Migration("20240604173448_Migrations")]
-========
+
     [Migration("20240606180817_Migrations")]
->>>>>>>> feature/UserInterface:Proyecto/Obligatorio1/DataAccess/Migrations/20240606180817_Migrations.Designer.cs
+
     partial class Migrations
     {
         /// <inheritdoc />

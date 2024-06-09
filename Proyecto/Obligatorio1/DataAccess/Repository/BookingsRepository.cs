@@ -1,4 +1,5 @@
 using DataAccess.Context;
+using Microsoft.EntityFrameworkCore;
 using Model;
 using Model.Exceptions;
 
@@ -37,12 +38,17 @@ public class BookingsRepository
 
     public bool BookingAlreadyExists(Booking booking)
     {
-        return _database.Bookings.Any(b => b == booking);
+        return _database.Bookings.Any(b => b.PersonEmail == booking.PersonEmail && b.StorageUnit.Id == booking.StorageUnit.Id);
     }
     
     public List<Booking> GetAllBookings()
     {
-        return _database.Bookings.ToList();
+        return _database.Bookings
+            .Include(b => b.StorageUnit)         
+            .ThenInclude(s => s.Promotions)       
+            .Include(b => b.StorageUnit)         
+            .ThenInclude(s => s.AvailableDates)    
+            .ToList();
     }
     
     public Booking FindBookingByStorageUnitIdAndEmail(string storageUnitId, string email)
@@ -53,6 +59,12 @@ public class BookingsRepository
     public void DeleteBooking(Booking booking)
     {
         _database.Bookings.Remove(booking);
+        _database.SaveChanges();
+    }
+    
+    public void UpdateBooking(Booking booking)
+    {
+        _database.Bookings.Update(booking);
         _database.SaveChanges();
     }
 }

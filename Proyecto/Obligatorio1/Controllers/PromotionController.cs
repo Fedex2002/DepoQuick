@@ -1,12 +1,11 @@
+using Controllers.Dtos;
+using Controllers.Interfaces;
 using DataAccess.Context;
 using DataAccess.Repository;
-using Logic.DTOs;
-using Logic.Interfaces;
-using Repositories;
 using Model;
 using Model.Exceptions;
 
-namespace Logic;
+namespace Controllers;
 
 public class PromotionController : IPromotionController
 {

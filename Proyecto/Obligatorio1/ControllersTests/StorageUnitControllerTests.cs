@@ -1,10 +1,10 @@
+using Controllers;
+using Controllers.Dtos;
 using DataAccess.Context;
 using DataAccess.Repository;
 using Model;
 using Model.Enums;
 using Repositories;
-using Logic;
-using Logic.DTOs;
 using Model.Exceptions;
 
 namespace LogicTests;
@@ -23,6 +23,7 @@ public class StorageUnitControllerTests
     private PromotionDto _promotionDto;
     private List<DateRange> _availableDates;
     private List<DateRangeDto> _availableDatesDto;
+    private PromotionsRepository _promotionsRepository;
     private DateRange _dateRange;
     private DateRangeDto _dateRangeDto;
 
@@ -36,11 +37,13 @@ public class StorageUnitControllerTests
         _context = _contextFactory.CreateDbContext();
         _storageUnitsRepo = new StorageUnitsRepository(_context);
         _storageUnitController = new StorageUnitController(_context);
+        _promotionsRepository = new PromotionsRepository(_context);
         _promotions = new List<Promotion>();
         _promotionsDto = new List<PromotionDto>();
         _promotion = new Promotion("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotionDto = new PromotionDto("Winter discount", 25, new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
         _promotions.Add(_promotion);
+        _promotionsRepository.AddPromotion(_promotion);
         _promotionsDto.Add(_promotionDto);
         _availableDates = new List<DateRange>();
         _dateRange = new DateRange(new DateTime(2024, 7, 15), new DateTime(2024, 10, 15));
@@ -87,8 +90,8 @@ public class StorageUnitControllerTests
     {
         _storageUnitController.CreateStorageUnit(_storageUnitDto);
         Assert.AreEqual(_storageUnitDto.Id, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Id);
-        Assert.AreEqual(_storageUnitDto.Area, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Area);
-        Assert.AreEqual(_storageUnitDto.Size, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Size);
+        Assert.AreEqual(_storageUnitDto.Area.Name, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Area.Name);
+        Assert.AreEqual(_storageUnitDto.Size.Name, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Size.Name);
         Assert.AreEqual(_storageUnitDto.Climatization, _storageUnitController.GetStorageUnitDtoFromId(_storageUnitDto.Id).Climatization);
     }
 

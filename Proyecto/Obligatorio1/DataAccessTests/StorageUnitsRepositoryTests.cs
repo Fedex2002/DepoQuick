@@ -100,7 +100,6 @@ public class StorageUnitsRepositoryTests
         Assert.AreEqual(1, storageUnitInDb.AvailableDates.Count);
 
     }
-
     
     [TestMethod]
     

@@ -1,14 +1,20 @@
 @page "/ApproveOrRejectBookings"
-@using Logic
-@using Logic.DTOs
-@using Logic.Interfaces
+
+@using Controllers.Dtos
+@using Controllers.Interfaces
+
 @layout MainLayout
 
 @inject NavigationManager NavigationManager
 @inject IBookingController BookingController
 @inject IPersonController PersonController
+<<<<<<< HEAD
 
 
+=======
+@inject IReportExportController ReportExporterController
+@inject IJSRuntime JS
+>>>>>>> feature/UserInterface
 <PageTitle>DepoQuick</PageTitle>
 
 <section class="vh-75">
@@ -30,7 +36,6 @@
                     <thead>
                     <tr>
                         <th>StorageUnit data</th>
-                        <th>booking</th>
                         <th>Total Price</th>
                         <th>Start Date</th>
                         <th>End Date</th>
@@ -238,19 +243,11 @@
     {
         try
         {
-            //comentado hasta acabar la exportacion
-            // Console.WriteLine("About to export");
-            // if (selectedFormat == "csv")
-            // {
-            //     var csvData = administratorLogic.ExportToCsv();
-            //     await JS.InvokeVoidAsync("downloadCsv", "bookings_report.csv", csvData);
-            //     _message = "Bookings report exported successfully!";
-            // }
-            // else if (selectedFormat == "txt")
-            // {
-            //     _errorMessage = "TXT export is not implemented yet.";
-            //     _showAdminErrorModal = true;
-            // }
+            var exportData = ReportExporterController.Export(selectedFormat);
+            await JS.InvokeVoidAsync("download", $"bookings_report.{selectedFormat}", exportData);
+
+            _message = "Bookings report exported successfully!";
+            _showAdminConfirmationModal = true;
         }
         catch (Exception e)
         {

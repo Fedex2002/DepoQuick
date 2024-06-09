@@ -1,16 +1,15 @@
 
-
+using Controllers.Dtos;
+using Controllers.Interfaces;
 using DataAccess.Context;
 using DataAccess.Repository;
 using Model;
-using Logic.DTOs;
-using Logic.Interfaces;
 
 using Model.Enums;
 
 using Model.Exceptions;
 
-namespace Logic;
+namespace Controllers;
 
 public class StorageUnitController : IStorageUnitController, IDateRangeController
 {
@@ -18,7 +17,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
 
     private readonly PromotionsRepository _promotionsRepository;
 
-    
+
     public StorageUnitController(ApplicationDbContext context)
     {
         _storageUnitRepositories = new StorageUnitsRepository(context);
@@ -238,7 +237,9 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
             if (dateRange.StartDate == dateRangeDto.StartDate && dateRange.EndDate == dateRangeDto.EndDate)
             {
 
-                _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id, dateRange);
+
+                _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id,dateRange);
+
 
             }
         }
@@ -251,27 +252,27 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
         {
             if (dateRangeDto.StartDate == dateRange.StartDate && dateRangeDto.EndDate == dateRange.EndDate)
             {
-                storageUnit.AvailableDates.Remove(dateRange);
+                _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id, dateRange);
             }
             if (dateRangeDto.StartDate == dateRange.StartDate && dateRangeDto.EndDate < dateRange.EndDate)
             {
-                storageUnit.AvailableDates.Remove(dateRange);
+                _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id, dateRange);
                 DateRange newDateRange = new DateRange(dateRangeDto.EndDate.AddDays(1), dateRange.EndDate);
-                _storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id).AvailableDates.Add(newDateRange);
+                _storageUnitRepositories.AddAvailableDateToStorageUnit(storageUnit.Id, newDateRange);
             }
             if (dateRangeDto.EndDate == dateRange.EndDate && dateRangeDto.StartDate > dateRange.StartDate)
             {
-                storageUnit.AvailableDates.Remove(dateRange);
+                _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id, dateRange);
                 DateRange newDateRange = new DateRange(dateRange.StartDate, dateRangeDto.StartDate.AddDays(-1));
-                _storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id).AvailableDates.Add(newDateRange);
+                _storageUnitRepositories.AddAvailableDateToStorageUnit(storageUnit.Id, newDateRange);
             }
             if (dateRangeDto.StartDate > dateRange.StartDate && dateRangeDto.EndDate < dateRange.EndDate)
             {
-                storageUnit.AvailableDates.Remove(dateRange);
+                _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id, dateRange);
                 DateRange newDateRange = new DateRange(dateRange.StartDate, dateRangeDto.StartDate.AddDays(-1));
-                _storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id).AvailableDates.Add(newDateRange);
+                _storageUnitRepositories.AddAvailableDateToStorageUnit(storageUnit.Id, newDateRange);
                 DateRange newDateRange2 = new DateRange(dateRangeDto.EndDate.AddDays(1), dateRange.EndDate);
-                _storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id).AvailableDates.Add(newDateRange2);
+                _storageUnitRepositories.AddAvailableDateToStorageUnit(storageUnit.Id, newDateRange2);
             }
         }
     }
@@ -286,11 +287,11 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     public double CalculateStorageUnitPricePerDay(StorageUnitDto storageUnitDto, DateRangeDto dateRangeDto)
     {
         StorageUnit storageUnit = _storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id);
-        bool promotionIsInDateRange = storageUnit.Promotions.Any(promotion => dateRangeDto.StartDate >= promotion.DateStart && dateRangeDto.EndDate <= promotion.DateEnd);
-        if (!promotionIsInDateRange)
-        {
-            storageUnit.Promotions = new List<Promotion>();
-        }
+        var promotionsInDateRange = _promotionsRepository.GetAllPromotions()
+            .Where(promotion => promotion.DateStart <= dateRangeDto.EndDate && promotion.DateEnd >= dateRangeDto.StartDate)
+            .ToList();
+        storageUnit.Promotions = promotionsInDateRange.Any() ? promotionsInDateRange : new List<Promotion>();
+
         return storageUnit.CalculateStorageUnitPricePerDay();
     }
 

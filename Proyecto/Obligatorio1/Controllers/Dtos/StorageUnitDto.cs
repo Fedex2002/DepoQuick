@@ -1,6 +1,4 @@
-using Model;
-using Model.Enums;
-namespace Logic.DTOs;
+namespace Controllers.Dtos;
 
 
 public class StorageUnitDto
