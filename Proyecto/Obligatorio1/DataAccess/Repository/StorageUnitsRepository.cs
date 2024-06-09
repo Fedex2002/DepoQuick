@@ -43,12 +43,18 @@ public class StorageUnitsRepository
     
     public void DeleteStorageUnit(StorageUnit storageUnit)
     {
-        StorageUnit dbStorageUnit = GetStorageUnitFromId(storageUnit.Id);
-        if (dbStorageUnit != null)
+      
+        if (!StorageUnitAlreadyExists(storageUnit))
         {
-            _database.StorageUnits.Remove(dbStorageUnit);
-            _database.SaveChanges();
+            throw new RepositoryExceptions("Storage unit does not exist");
         }
+        StorageUnit dbStorageUnit = GetStorageUnitFromId(storageUnit.Id);
+        _database.StorageUnits.Remove(dbStorageUnit);
+        _database.SaveChanges();
+     
+
+    
+   
     }
     
     public StorageUnit GetStorageUnitFromId(string id)
