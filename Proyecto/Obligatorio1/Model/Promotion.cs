@@ -72,7 +72,9 @@ public class Promotion
 
     public bool ValidateDiscount()
     {
-        return _discount >= 5 && _discount <= 75;
+        int minDiscount = 5;
+        int maxDiscount = 75;
+        return _discount >= minDiscount && _discount <= maxDiscount;
     }
     
     public bool ValidateDate()
