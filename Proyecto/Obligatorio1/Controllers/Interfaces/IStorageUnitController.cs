@@ -1,10 +1,9 @@
-using Logic.DTOs;
-using Model;
 
+using Controllers.Dtos;
 using Model.Enums;
 
+namespace Controllers.Interfaces;
 
-namespace Logic.Interfaces;
 
 public interface IStorageUnitController
 {

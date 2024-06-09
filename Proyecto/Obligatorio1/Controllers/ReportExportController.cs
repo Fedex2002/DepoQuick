@@ -1,9 +1,9 @@
+using Controllers.Interfaces;
 using DataAccess.Context;
 using DataAccess.Repository;
-using Logic.Interfaces;
 using Model;
 
-namespace Logic;
+namespace Controllers;
 
 public class ReportExportController : IReportExportController
 {

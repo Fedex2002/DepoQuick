@@ -1,7 +1,6 @@
-using Logic.DTOs;
-using Model;
+using Controllers.Dtos;
 
-namespace Logic.Interfaces;
+namespace Controllers.Interfaces;
 
 public interface IPromotionController
 {

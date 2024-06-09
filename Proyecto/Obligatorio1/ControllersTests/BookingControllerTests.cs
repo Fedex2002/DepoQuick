@@ -1,8 +1,8 @@
 using System.Runtime.InteropServices.ComTypes;
+using Controllers;
+using Controllers.Dtos;
 using DataAccess.Context;
 using DataAccess.Repository;
-using Logic;
-using Logic.DTOs;
 using Repositories;
 using Model;
 using Model.Enums;

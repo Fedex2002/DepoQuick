@@ -1,10 +1,10 @@
+using Controllers;
+using Controllers.Dtos;
 using DataAccess.Context;
 using DataAccess.Repository;
 using Model;
 using Model.Enums;
 using Repositories;
-using Logic;
-using Logic.DTOs;
 using Model.Exceptions;
 
 namespace LogicTests;
