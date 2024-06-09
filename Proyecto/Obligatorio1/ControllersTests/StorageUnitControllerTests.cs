@@ -164,7 +164,7 @@ public class StorageUnitControllerTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void WhenTryingToAddAnIncorrectAvailableDateRangeToAStorageUnitShouldThrowException()
     {
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 10, 15), new DateTime(2024, 5, 15));
@@ -172,7 +172,7 @@ public class StorageUnitControllerTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void WhenTryingToAddASameOrIncludedExistingAvailableDateRangeShouldThrowException()
     {
         _storageUnitController.CreateStorageUnit(_storageUnitDto);
@@ -180,7 +180,7 @@ public class StorageUnitControllerTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void WhenTryingToAddAnAvailableDateRangeThatCoversAnExistingOneShouldThrowException()
     {
         _storageUnitController.CreateStorageUnit(_storageUnitDto);
@@ -190,7 +190,7 @@ public class StorageUnitControllerTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void WhenTryingToAddAnAvailableDateRangeThatStartDateExistsInACreatedRangeShouldThrowException()
     {
         _storageUnitController.CreateStorageUnit(_storageUnitDto);
@@ -199,7 +199,7 @@ public class StorageUnitControllerTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void WhenTryingToAddAnAvailableDateRangeThatEndDateExistsInACreatedRangeShouldThrowException()
     {
         _storageUnitController.CreateStorageUnit(_storageUnitDto);
@@ -217,7 +217,7 @@ public class StorageUnitControllerTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void WhenTryingToSearchStorageUnitsWithDateRangeThatIsInvalidShouldThrowException()
     {
         _dateRangeDto = new DateRangeDto(new DateTime(2024, 10, 15), new DateTime(2024, 5, 15));
@@ -225,7 +225,7 @@ public class StorageUnitControllerTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void WhenSearchingStorageUnitsWithDateRangeThatDoesNotExistsShouldThrowException()
     {
         _storageUnitController.CreateStorageUnit(_storageUnitDto);
@@ -242,7 +242,7 @@ public class StorageUnitControllerTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void WhenNotSelectingADateRangeToRemoveFromStorageUnitShouldThrowException()
     {
         _storageUnitController.CreateStorageUnit(_storageUnitDto);
@@ -281,7 +281,7 @@ public class StorageUnitControllerTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void IfSelectedStartDateAndEndDateOfBookingIsNotInDateRangeShouldThrowException()
     {
         DateTime startDate = new DateTime(2024, 10, 15);

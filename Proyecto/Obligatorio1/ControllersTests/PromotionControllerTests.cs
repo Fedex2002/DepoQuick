@@ -46,7 +46,7 @@ public class PromotionControllerTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void WhenTryingToModifyANonExistingPromotionShouldThrowException()
     {
         _promotionController.ModifyPromotion("Winter discount", _promotionDto);
@@ -73,7 +73,7 @@ public class PromotionControllerTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(ControllerExceptions))]
     public void WhenTryingToEliminateANonExistingPromotionShouldThrowException()
     {
         _promotionController.RemovePromotion(_promotionDto);

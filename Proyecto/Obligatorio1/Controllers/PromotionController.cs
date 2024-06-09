@@ -38,7 +38,7 @@ public class PromotionController : IPromotionController
     
     private static void IfPromotionDoesNotExistThrowException()
     {
-        throw new LogicExceptions("Promotion does not exist");
+        throw new ControllerExceptions("Promotion does not exist");
     }
     
     public void RemovePromotion(PromotionDto promotionDto)
