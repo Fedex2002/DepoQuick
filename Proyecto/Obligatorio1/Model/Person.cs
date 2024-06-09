@@ -95,7 +95,8 @@ public class Person
     
     private bool CheckLength()
     {
-        return Name.Length + Surname.Length <= 100;
+        int maxLengthNameAndSurname = 100; 
+        return Name.Length + Surname.Length <= maxLengthNameAndSurname;
     }
     
     private bool CheckPattern()
