@@ -60,14 +60,8 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     public void RemoveStorageUnit(StorageUnitDto storageUnitDto)
     {
         StorageUnit storageUnitInRepo= _storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id);
-        if (_storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id) == null)
-        {
-            IfStorageUnitDoesNotExistThrowException();
-        }
-        else
-        {
-            _storageUnitRepositories.DeleteStorageUnit(storageUnitInRepo);
-        }
+        _storageUnitRepositories.DeleteStorageUnit(storageUnitInRepo);
+
     }
 
     private static void IfStorageUnitDoesNotExistThrowException()

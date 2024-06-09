@@ -108,7 +108,7 @@ public class StorageUnitControllerTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(LogicExceptions))]
+    [ExpectedException(typeof(RepositoryExceptions))]
     public void WhenTryingToRemoveANonExistingStorageUnitShouldThrowException()
     {
         _storageUnitController.RemoveStorageUnit(_storageUnitDto);
