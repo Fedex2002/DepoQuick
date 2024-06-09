@@ -1,5 +1,5 @@
 
-namespace Logic.DTOs;
+namespace Controllers.Dtos;
 
 public class PersonDto
 {

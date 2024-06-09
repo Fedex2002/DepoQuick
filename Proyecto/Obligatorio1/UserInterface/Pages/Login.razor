@@ -1,8 +1,10 @@
 @page "/Login"
 @layout LoginLayout
-@using Logic
-@using Logic.Interfaces
+
 @using UserInterface.Data
+
+@using Controllers.Dtos
+@using Controllers.Interfaces
 @inherits LayoutComponentBase
 @inject IPersonController PersonController
 @inject NavigationManager NavigationManager

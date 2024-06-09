@@ -1,7 +1,8 @@
+using Controllers;
+using Controllers.Interfaces;
 using DataAccess.Context;
 using DataAccess.Repository;
-using Logic;
-using Logic.Interfaces;
+
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 using UserInterface.Data;

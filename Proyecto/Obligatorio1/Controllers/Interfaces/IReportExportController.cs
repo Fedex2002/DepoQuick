@@ -1,4 +1,4 @@
-namespace Logic.Interfaces;
+namespace Controllers.Interfaces;
 
 public interface IReportExportController
 {

@@ -1,6 +1,6 @@
+using Controllers;
 using DataAccess.Context;
 using DataAccess.Repository;
-using Logic;
 
 namespace LogicTests;
 

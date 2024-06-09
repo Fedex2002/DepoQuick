@@ -1,6 +1,6 @@
-using Logic.DTOs;
+using Controllers.Dtos;
 
-namespace Logic.Interfaces;
+namespace Controllers.Interfaces;
 
 public interface IDateRangeController
 {
