@@ -226,28 +226,28 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
             {
                 _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id, dateRange);
             }
-            if (dateRangeDto.StartDate == dateRange.StartDate && dateRangeDto.EndDate < dateRange.EndDate)
+            else if (dateRangeDto.StartDate == dateRange.StartDate && dateRangeDto.EndDate < dateRange.EndDate)
             {
-                _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id, dateRange);
-                DateRange newDateRange = new DateRange(dateRangeDto.EndDate.AddDays(1), dateRange.EndDate);
-                _storageUnitRepositories.AddAvailableDateToStorageUnit(storageUnit.Id, newDateRange);
+                UpdateDateRanges(storageUnit.Id, dateRange, new DateRange(dateRangeDto.EndDate.AddDays(1), dateRange.EndDate));
             }
-            if (dateRangeDto.EndDate == dateRange.EndDate && dateRangeDto.StartDate > dateRange.StartDate)
+            else if (dateRangeDto.EndDate == dateRange.EndDate && dateRangeDto.StartDate > dateRange.StartDate)
             {
-                _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id, dateRange);
-                DateRange newDateRange = new DateRange(dateRange.StartDate, dateRangeDto.StartDate.AddDays(-1));
-                _storageUnitRepositories.AddAvailableDateToStorageUnit(storageUnit.Id, newDateRange);
+                UpdateDateRanges(storageUnit.Id, dateRange, new DateRange(dateRange.StartDate, dateRangeDto.StartDate.AddDays(-1)));
             }
-            if (dateRangeDto.StartDate > dateRange.StartDate && dateRangeDto.EndDate < dateRange.EndDate)
+            else if (dateRangeDto.StartDate > dateRange.StartDate && dateRangeDto.EndDate < dateRange.EndDate)
             {
-                _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnit.Id, dateRange);
-                DateRange newDateRange = new DateRange(dateRange.StartDate, dateRangeDto.StartDate.AddDays(-1));
-                _storageUnitRepositories.AddAvailableDateToStorageUnit(storageUnit.Id, newDateRange);
-                DateRange newDateRange2 = new DateRange(dateRangeDto.EndDate.AddDays(1), dateRange.EndDate);
-                _storageUnitRepositories.AddAvailableDateToStorageUnit(storageUnit.Id, newDateRange2);
+                UpdateDateRanges(storageUnit.Id, dateRange, new DateRange(dateRange.StartDate, dateRangeDto.StartDate.AddDays(-1)));
+                UpdateDateRanges(storageUnit.Id, dateRange, new DateRange(dateRangeDto.EndDate.AddDays(1), dateRange.EndDate));
             }
         }
     }
+    
+    private void UpdateDateRanges(string storageUnitId, DateRange oldDateRange, DateRange newDateRange)
+    {
+        _storageUnitRepositories.DeleteAvailableDateFromStorageUnit(storageUnitId, oldDateRange);
+        _storageUnitRepositories.AddAvailableDateToStorageUnit(storageUnitId, newDateRange);
+    }
+    
     public void CheckIfDateStartAndDateEndAreIncludedInDateRange(DateTime dateStart, DateTime dateEnd, DateRangeDto dateRangeDto)
     {
         if (!(dateStart >= dateRangeDto.StartDate && dateEnd <= dateRangeDto.EndDate))
