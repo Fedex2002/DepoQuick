@@ -29,12 +29,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
         _storageUnitRepositories.AddStorageUnit(storageUnit);
 
     }
-
-    private static void IfStorageUnitAlreadyExistsThrowException()
-    {
-        throw new LogicExceptions("Storage unit already exists");
-    }
-
+    
     public List<Promotion> CreateListPromotions(StorageUnitDto storageUnitDto)
     {
         List<Promotion> promotions = new List<Promotion>();
@@ -50,8 +45,8 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
         }
         return promotions;
     }
-    
-    public List<DateRange> CreateListAvailableDates(StorageUnitDto storageUnitDto)
+
+    private List<DateRange> CreateListAvailableDates(StorageUnitDto storageUnitDto)
     {
         List<DateRange> availableDates = storageUnitDto.AvailableDates.Select(dateRangeDto => new DateRange(dateRangeDto.StartDate, dateRangeDto.EndDate)).ToList();
         return availableDates;
@@ -63,12 +58,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
         _storageUnitRepositories.DeleteStorageUnit(storageUnitInRepo);
 
     }
-
-    private static void IfStorageUnitDoesNotExistThrowException()
-    {
-        throw new LogicExceptions("Storage unit does not exist");
-    }
-
+    
     public List<StorageUnitDto> GetStorageUnitsDto()
     {
         List<StorageUnitDto> storageUnitsDto = new List<StorageUnitDto>();
@@ -95,7 +85,7 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
         return promotionsDto;
     }
     
-    public List<DateRangeDto> ChangeToDateRangeDto(List<DateRange> availableDates)
+    private List<DateRangeDto> ChangeToDateRangeDto(List<DateRange> availableDates)
     {
         List<DateRangeDto> availableDatesDto = new List<DateRangeDto>();
         if (availableDates != null)
