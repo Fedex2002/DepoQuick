@@ -58,6 +58,11 @@ public class BookingsRepository
 
     public void DeleteBooking(Booking booking)
     {
+        if (!BookingAlreadyExists(booking))
+        {
+            throw new RepositoryExceptions("Booking does not exist");
+        
+        }
         _database.Bookings.Remove(booking);
         _database.SaveChanges();
     }
