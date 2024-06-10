@@ -38,7 +38,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @if (_bookings.Count == 0)
+                    @if (_bookingsDtoFromUser.Count == 0)
                     {
                         <tr>
                             <td colspan="8">No bookings found</td>
@@ -46,7 +46,7 @@
                     }
                     else
                     {
-                        @foreach (var booking in _bookings)
+                        @foreach (var booking in _bookingsDtoFromUser)
                         {
                             <tr>
                                 <td>
@@ -134,17 +134,19 @@
     private bool showUserErrorModal;
     private string errorMessage = "";
     private bool showUserConfirmationModal;
+    private  List<BookingDto> _bookingsDtoFromUser = new List<BookingDto>();
     
     protected override void OnInitialized()
     {
         _bookings = BookingController.GetAllBookingsDto();
-
+        _bookingsDtoFromUser = new List<BookingDto>();
         var currentUser = UserSession.LoggedUser ;
 
             foreach (var bookingDto in _bookings)
             {
                 if (bookingDto.UserEmail == currentUser.Email)
                 {
+                    _bookingsDtoFromUser.Add(bookingDto);
                     _totalPrice[bookingDto.StorageUnitDto.Id] = BookingController.CalculateTotalPriceOfBooking(bookingDto);
                     _dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
                     _dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
