@@ -265,12 +265,15 @@ public class StorageUnitController : IStorageUnitController, IDateRangeControlle
     public double CalculateStorageUnitPricePerDay(StorageUnitDto storageUnitDto, DateRangeDto dateRangeDto)
     {
         StorageUnit storageUnit = _storageUnitRepositories.GetStorageUnitFromId(storageUnitDto.Id);
-        var promotionsInDateRange = storageUnit.Promotions
+        var originalPromotions = storageUnit.Promotions.ToList();
+        var promotionsInDateRange = originalPromotions
             .Where(promotion => promotion.DateStart <= dateRangeDto.EndDate && promotion.DateEnd >= dateRangeDto.StartDate)
             .ToList();
-        storageUnit.Promotions = promotionsInDateRange.Any() ? promotionsInDateRange : new List<Promotion>();
-        storageUnitDto.Promotions = ChangeToPromotionsDto(storageUnit.Promotions);
-        return storageUnit.CalculateStorageUnitPricePerDay();
+        storageUnit.Promotions = promotionsInDateRange;
+        double pricePerDay = storageUnit.CalculateStorageUnitPricePerDay();
+        storageUnit.Promotions = originalPromotions;
+        storageUnitDto.Promotions = ChangeToPromotionsDto(promotionsInDateRange);
+        return pricePerDay;
     }
 
 
