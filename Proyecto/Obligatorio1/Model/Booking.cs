@@ -1,60 +1,106 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Model.Exceptions;
 namespace Model;
 
 public class Booking
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
     private bool _approved;
-    private DateTime _dateStart;
-    private DateTime _dateEnd;
+    private DateTime _dateStart = DateTime.MinValue;
+    private DateTime _dateEnd = DateTime.MaxValue;
     private StorageUnit _storageUnit;
-    private string RejectedMessage { get; set; }
+
+    private string _status = "Reservado";
+    private bool _payment;
+    private string _rejectedMessage;
+    private string _personEmail;
     
     public Booking()
     {
     }
     
-    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedMessage)
+    public Booking(bool approved, DateTime dateStart, DateTime dateEnd, StorageUnit storageUnit, string rejectedMessage, string status, bool payment,string personEmail)
     {
-        _approved = false;
-        SetApproved(approved);
-        _dateStart = DateTime.MinValue;
-        _dateEnd = DateTime.MaxValue;
-        SetDate(dateStart, dateEnd);
-        _storageUnit = storageUnit;
-        RejectedMessage = "";
-        SetRejectedBooking(rejectedMessage);
-    }
-    
-    public bool GetApproved()
-    {
-        return _approved;
-    }
-    
-    public DateTime GetDateStart()
-    {
-        return _dateStart;
-    }
-    
-    public DateTime GetDateEnd()
-    {
-        return _dateEnd;
-    }
-    
-    public string GetRejectedMessage()
-    {
-        return RejectedMessage;
-    }
-    
-    public StorageUnit GetStorageUnit()
-    {
-        return _storageUnit;
-    }
-    
-    private void SetRejectedBooking(string rejectedMessage)
-    {
+        Approved = approved;
+        DateStart = dateStart;
+        DateEnd = dateEnd;
+        StorageUnit = storageUnit;
         RejectedMessage = rejectedMessage;
-        IfHasInvalidRejectionThrowException();
+        Status = status;
+        Payment = payment;
+        PersonEmail = personEmail;
     }
+    
+    
+    public bool Approved
+    {
+        get => _approved;
+        set => _approved = value;
+    }
+    
+    public string PersonEmail
+    {
+        get => _personEmail;
+        set => _personEmail = value;
+    }
+    
+    
+    public DateTime DateStart
+    {
+        get => _dateStart;
+        set
+        {
+            _dateStart = value;
+            IfHasInvalidDateThrowException();
+        }
+    }
+
+    public DateTime DateEnd
+    {
+        get => _dateEnd;
+        set
+        {
+            _dateEnd = value;
+            IfHasInvalidDateThrowException();
+        }
+    }
+    
+    public StorageUnit StorageUnit
+    {
+        get => _storageUnit;
+        set => _storageUnit = value;
+    }
+    
+    
+    public string RejectedMessage
+    {
+
+        get => _rejectedMessage;
+        set
+        {
+            _rejectedMessage = value;
+            IfHasInvalidRejectionThrowException();
+        }
+    }
+
+    public string Status
+    {
+        get => _status;
+        set => _status = value;
+
+    }
+    
+    public bool Payment
+    {
+
+        get => _payment;
+        set => _payment = value;
+
+    }
+
 
     private void IfHasInvalidRejectionThrowException()
     {
@@ -109,12 +155,8 @@ public class Booking
     
     public bool CheckRejection()
     {
-        return RejectedMessage.Length <= 300;
-    }
-
-    private void SetApproved(bool approved)
-    {
-        _approved = approved;
+        int maxRejectionLength = 300;
+        return RejectedMessage.Length <= maxRejectionLength;
     }
 
     public bool CheckDate()
@@ -122,13 +164,6 @@ public class Booking
         return _dateStart < _dateEnd;
     }
     
-    private void SetDate(DateTime dateStart, DateTime dateEnd)
-    {
-        _dateStart = dateStart;
-        _dateEnd = dateEnd;
-        IfHasInvalidDateThrowException();
-    }
-
     private void IfHasInvalidDateThrowException()
     {
         if (!CheckDate())

@@ -1,8 +1,17 @@
 @page "/DeleteStorageUnits"
-@using Logic
-@using Logic.DTOs
+
+
+@using Controllers.Dtos
+
+
+
+
+@using Controllers.Interfaces
+
 @layout MainLayout
-@inject StorageUnitLogic storageUnitLogic
+
+@inject IStorageUnitController StorageUnitController
+
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -19,32 +28,68 @@
                             <th>Size</th>
                             <th>Climatization</th>
                             <th>Promotions</th>
+                            <th>Date Ranges</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var storageUnit in _storageUnits)
+                        @if (_storageUnits.Count == 0)
                         {
                             <tr>
-                                <td>@storageUnit.Id</td>
-                                <td>@storageUnit.Area</td>
-                                <td>@storageUnit.Size</td>
-                                <td>@storageUnit.Climatization</td>
-                                <td>
-                                    @foreach (var promotion in storageUnit.Promotions)
-                                    {
-                                        <div>
-                                            <strong>Label:</strong> @promotion.Label<br />
-                                            <strong>Discount:</strong> @promotion.Discount<br />
-                                            <strong>StartDate:</strong> @promotion.DateStart<br />
-                                            <strong>EndDate:</strong> @promotion.DateEnd<br />
-                                        </div>
-                                    }
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-danger" @onclick="() =>HandleValidSubmit(storageUnit.Id)">Delete</button>
-                                </td>
+                                <td colspan="7">No storage units found</td>
                             </tr>
+                        }
+                        else
+                        {
+                            @foreach (var storageUnit in _storageUnits)
+                            {
+                                <tr>
+                                    <td>@storageUnit.Id</td>
+                                    <td>@storageUnit.Area.Name</td>
+                                    <td>@storageUnit.Size.Name</td>
+                                    <td>@storageUnit.Climatization</td>
+                                    <td>
+                                        @if (storageUnit.Promotions.Count == 0)
+                                        {
+                                            <p>No promotions set</p>
+                                        }
+                                        else
+                                        {
+                                            @foreach (var promotion in storageUnit.Promotions)
+                                            {
+                                                <div>
+                                                    <strong>Label:</strong> @promotion.Label<br/>
+                                                    <strong>Discount:</strong> @promotion.Discount<br/>
+                                                    <strong>StartDate:</strong> @promotion.DateStart<br/>
+                                                    <strong>EndDate:</strong> @promotion.DateEnd<br/>
+                                                </div>
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                         @if (storageUnit.AvailableDates.Count == 0)
+                                         {
+                                             <p>No date ranges set</p>
+                                         }
+                                         else
+                                         {
+                                             var dateRangeCount = 1; 
+                                             @foreach (var dateRange in storageUnit.AvailableDates) 
+                                             { 
+                                                 <div>
+                                                     <p style="margin-bottom: 0;">Date Range @dateRangeCount</p>
+                                                     <strong>Start Date:</strong> @dateRange.StartDate.ToString("dd/MM/yyy")<br/>
+                                                     <strong>End Date:</strong> @dateRange.EndDate.ToString("dd/MM/yyy")<br/>
+                                                 </div>
+                                                 dateRangeCount++;
+                                             }
+                                         }
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" @onclick="() => HandleValidSubmit(storageUnit.Id)">Delete</button>
+                                    </td>
+                                </tr>
+                            }
                         }
                     </tbody>
                 </table>
@@ -72,15 +117,15 @@
     protected override void OnInitialized()
     {
         _storageUnitDto = new StorageUnitDto();
-        _storageUnits = storageUnitLogic.GetStorageUnitsDto();
+        _storageUnits = StorageUnitController.GetStorageUnitsDto();
     }
     
     private async Task HandleValidSubmit(string id)
     {
-        _storageUnitDto = storageUnitLogic.GetStorageUnitDtoFromId(id);
-        storageUnitLogic.RemoveStorageUnit(_storageUnitDto);
+        _storageUnitDto = StorageUnitController.GetStorageUnitDtoFromId(id);
+        StorageUnitController.RemoveStorageUnit(_storageUnitDto);
         _showAdminConfirmationModal = true;
-        _storageUnits = storageUnitLogic.GetStorageUnitsDto();
+        _storageUnits = StorageUnitController.GetStorageUnitsDto();
     }
   
     private void ClosePromotionConfirmationModal()

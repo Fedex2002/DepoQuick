@@ -1,51 +1,83 @@
 using Model.Enums;
+using Model.Exceptions;
 
 namespace Model;
 
 public class StorageUnit
 {
-    private readonly string _id;
-    private readonly AreaType _area;
-    private readonly SizeType _size;
-    private readonly bool _climatization;
-    private readonly List<Promotion>? _promotions;
+    private  string _id;
+    private  AreaType _area;
+    private  SizeType _size;
+    private  bool _climatization;
+    private  List<Promotion>? _promotions;
+    private List<DateRange> _availableDates;
     public StorageUnit()
     {
+        
     }
     
-    public StorageUnit(string id,AreaType area, SizeType size, bool climatization, List<Promotion> promotions)
+    public StorageUnit(string id,AreaType area, SizeType size, bool climatization, List<Promotion> promotions, List<DateRange> availableDates)
     {
-        this._id = id;
-        this._area = area;
-        this._size = size;
-        this._climatization = climatization; 
-        this._promotions = promotions;
+        Id = id;
+        Area = area;
+        Size = size;
+        Climatization = climatization;
+        checkIfPromotionsDoesntExceedOneHundred(promotions);
+        Promotions = promotions;
+        AvailableDates = availableDates;
+    }
+
+    private void checkIfPromotionsDoesntExceedOneHundred(List<Promotion> promotions)
+    {
+        if (promotions != null)
+        {
+            int totalDiscount = 0;
+            foreach (Promotion promotion in promotions)
+            {
+                totalDiscount += promotion.Discount;
+            }
+            if (totalDiscount >= 100)
+            {
+                throw new StorageUnitExceptions("The total discount of the promotions exceeds or are equal to 100%");
+            }
+        }
+    }
+
+    public string Id
+    {
+        get => _id;
+        set => _id = value;
     }
        
-    public AreaType GetArea()
+    public AreaType Area
     {
-        return _area;
+        get => _area;
+        set => _area = value;
     }
     
-    public string GetId()
+    public SizeType Size
     {
-        return _id;
+        get => _size;
+        set => _size = value;
     }
     
-    public SizeType GetSize()
+    public bool Climatization
     {
-        return _size;
+        get => _climatization;
+        set => _climatization = value;
+    }
+    public List<Promotion>? Promotions
+    {
+        get => _promotions;
+        set => _promotions = value;
     }
     
-    public bool GetClimatization()
+    public List<DateRange> AvailableDates
     {
-        return _climatization;
+        get => _availableDates;
+        set => _availableDates = value;
     }
-    
-    public List<Promotion> GetPromotions()
-    {
-        return _promotions;
-    }
+
     
     public double CalculateStorageUnitPricePerDay()
     {
@@ -85,24 +117,35 @@ public class StorageUnit
     
     private double ValueOfClimatization()
     {
-        int c = 0;
+        int valueOfClimatization = 0;
         if (_climatization)
         {
-            c = 20;
+            valueOfClimatization = 20;
         }
-        return c;
+        return valueOfClimatization;
     }
     
     private double GetValuePromotions()
     {
-        int p = 0;
+        int promotionDiscount = 0;
         if (_promotions != null)
         {
             foreach (Promotion promotion in _promotions)
             {
-                p += promotion.GetDiscount();
+                promotionDiscount += promotion.Discount;
             }
         }
-        return p;
+        return promotionDiscount;
+    }
+    
+    public void AddDateRange(DateRange dateRange)
+    {
+        _availableDates.Add(dateRange);
+    }
+    
+    public bool IsInDateRange(DateTime date)
+    {
+        return _availableDates.Any(range => range.Includes(date));
     }
 }
+

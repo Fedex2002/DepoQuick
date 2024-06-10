@@ -1,0 +1,212 @@
+@page "/SetDateStorageUnit"
+
+
+
+@inject IStorageUnitController StorageUnitController
+@inject IDateRangeController DateRangeController
+
+
+@using Controllers.Dtos
+@using Controllers.Interfaces
+
+
+
+<section class="vh-75">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mt-5 mb-4">
+                <h2 class="mb-0">Set possible booking days for Storage Units</h2>
+            </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>StorageUnit data</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Date Ranges</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if (storageUnits.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="5">No storage units found</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var storageUnit in storageUnits)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>Id:</strong>@storageUnit.Id<br/>
+                                    <strong>Area:</strong>@storageUnit.Area.Name<br/>
+                                    <strong>Size:</strong>@storageUnit.Size.Name<br/>
+                                    <strong>Climatization:</strong>@storageUnit.Climatization<br/>
+                                    @foreach (var promotion in storageUnit.Promotions)
+                                    {
+                                        <div>
+                                            <br/>
+                                            <p style="margin-bottom: 0;">Promotion</p>
+                                            <strong>Label:</strong> @promotion.Label<br/>
+                                            <strong>Discount:</strong> @promotion.Discount<br/>
+                                            <strong>StartDate:</strong> @promotion.DateStart.ToShortDateString()<br/>
+                                            <strong>EndDate:</strong> @promotion.DateEnd.ToShortDateString()<br/>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <input type="date" class="form-control form-control-lg" value="@dateStartDictionary[storageUnit.Id].Item1.ToString("yyyy-MM-dd")" @onchange="e => UpdateDateStart(storageUnit.Id, e.Value.ToString())" required/>
+                                    <label class="form-label">DateStart</label>
+                                </td>
+                                <td>
+                                    <input type="date" class="form-control form-control-lg" value="@dateStartDictionary[storageUnit.Id].Item2.ToString("yyyy-MM-dd")" @onchange="e => UpdateDateEnd(storageUnit.Id, e.Value.ToString())" required/>
+                                    <label class="form-label">DateEnd</label>
+                                </td>
+                                <td>
+                                    @if (storageUnit.AvailableDates.Count == 0)
+                                    {
+                                        <p>No date ranges set</p>
+                                    }
+                                    else
+                                    {
+                                        var dateRangeCount = 1;
+                                        @foreach (var dateRange in storageUnit.AvailableDates)
+                                        {
+                                            <div class="form-check">
+                                                <p style="margin-bottom: 0;">Date Range @dateRangeCount</p>
+                                                <input class="form-check-input" type="radio" name="selectedDateRange" value="@dateRange" @onclick="() => SetSelectedDateRange(dateRange)" required/>
+                                                <label class="form-check-label">@dateRange.StartDate.ToString("dd/MM/yyy") - @dateRange.EndDate.ToString("dd/MM/yyy")</label>
+                                            </div>
+                                            dateRangeCount++;
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                         <button type="submit" class="btn btn-success mb-2 w-80" @onclick="() => CreateDateRange(storageUnit)" style="padding-left: 2.5rem; padding-right: 2.5rem;">Set possible date range</button>
+                                         <button type="submit" class="btn btn-danger w-80" @onclick="() => EliminateDateRange(storageUnit)" style="padding-left: 2.5rem; padding-right: 2.5rem;">Eliminate selected date range</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (showAdminErrorModal)
+{
+  <AuthenticationModal
+    Title="StorageUnit error"
+    Text="@errorMessage"
+    DialogType=AuthenticationModal.ModalDialogType.Ok
+    OnClose="@CloseStorageUnitErrorModal">
+  </AuthenticationModal>
+}
+
+@if(showAdminConfirmationModal)
+{
+    <AuthenticationModal 
+      Title="@Message"
+      Text="@Message"
+      DialogType=AuthenticationModal.ModalDialogType.Ok
+      OnClose="@CloseStorageUnitConfirmationModal">
+    </AuthenticationModal>
+}
+
+
+@code {
+    private List<StorageUnitDto> storageUnits;
+    private Dictionary<string, (DateTime DateStart, DateTime DateEnd)> dateStartDictionary;
+    private bool showAdminErrorModal;
+    private string errorMessage = "";
+    private string Message = "";
+    private bool showAdminConfirmationModal;
+    DateRangeDto selectedDateRange;
+
+    protected override void OnInitialized()
+    {
+        storageUnits = StorageUnitController.GetStorageUnitsDto();
+        dateStartDictionary = new Dictionary<string, (DateTime DateStart, DateTime DateEnd)>();
+        foreach (var storageUnit in storageUnits)
+        {
+            dateStartDictionary[storageUnit.Id] = (DateTime.Today, DateTime.Today);
+        }
+    }
+    
+    private void UpdateDateStart(string storageUnitId, string newDate)
+    {
+        if (DateTime.TryParse(newDate, out DateTime parsedDate))
+        {
+            dateStartDictionary[storageUnitId] = (parsedDate, dateStartDictionary[storageUnitId].DateEnd);
+        }
+    }
+
+    private void UpdateDateEnd(string storageUnitId, string newDate)
+    {
+        if (DateTime.TryParse(newDate, out DateTime parsedDate))
+        {
+            dateStartDictionary[storageUnitId] = (dateStartDictionary[storageUnitId].DateStart, parsedDate);
+        }
+    }
+
+
+    private async Task CreateDateRange(StorageUnitDto storageUnitDto)
+    {
+        try
+        {
+            var dates = dateStartDictionary[storageUnitDto.Id];
+            DateRangeDto dateRangeDto = new DateRangeDto(dates.DateStart, dates.DateEnd);
+            StorageUnitController.AddAvailableDateRangeToStorageUnit(storageUnitDto.Id, dateRangeDto);
+            Message = "Date range created successfully";
+            showAdminConfirmationModal = true;
+            OnInitialized();
+        }
+        catch (Exception e)
+        {
+            showAdminErrorModal = true;
+            errorMessage = e.Message;
+        }
+    }
+
+    private void SetSelectedDateRange(DateRangeDto dateRangeDto)
+    {
+        selectedDateRange = dateRangeDto;
+    }
+    
+    private async Task EliminateDateRange(StorageUnitDto storageUnitDto)
+    {
+        try
+        {
+
+            DateRangeController.EliminateDateRangeFromStorageUnit(storageUnitDto.Id, selectedDateRange);
+
+            Message = "Date range eliminated successfully";
+            showAdminConfirmationModal = true;
+            selectedDateRange = null;
+            OnInitialized();
+        }
+        catch (Exception e)
+        {
+            showAdminErrorModal = true;
+            errorMessage = e.Message;
+        }
+    }
+    
+    private void CloseStorageUnitErrorModal()
+    {
+        showAdminErrorModal = false;
+    }
+
+    private void CloseStorageUnitConfirmationModal()
+    {
+        showAdminConfirmationModal = false;
+    }
+
+}

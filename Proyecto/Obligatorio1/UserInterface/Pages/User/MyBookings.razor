@@ -1,10 +1,20 @@
 @page "/MyBookings"
-@using Logic
-@using Logic.DTOs
-@using Repositories
+
+
+
+@using Controllers.Dtos
+
+
+@using Controllers.Interfaces
+@using UserInterface.Data
+
+
+
 @layout MainLayout
-@inject UserLogic userLogic
-@inject SessionLogic sessionLogic
+
+@inject IBookingController BookingController
+@inject UserSession UserSession
+
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -22,46 +32,66 @@
                             <th>End Date</th>
                             <th>Active</th>
                             <th>Rejection Message</th>
+                            <th>Booking Status</th>
+                            <th>Payment Status</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach (var booking in _bookings)
+                    @if (_bookingsDtoFromUser.Count == 0)
                     {
                         <tr>
-                        <td>
-                            <strong>Id:</strong>@booking.StorageUnitDto.Id<br/>
-                            <strong>Area:</strong>@booking.StorageUnitDto.Area<br/>
-                            <strong>Size:</strong>@booking.StorageUnitDto.Size<br/>
-                            <strong>Climatization:</strong>@booking.StorageUnitDto.Climatization<br/>
-                            @foreach (var promotion in booking.StorageUnitDto.Promotions)
-                            {
-                                <div>
-                                    <br/>
-                                    <p style="margin-bottom: 0;">Promotion</p>
-                                    <strong>Label:</strong> @promotion.Label<br/>
-                                    <strong>Discount:</strong> @promotion.Discount<br/>
-                                    <strong>StartDate:</strong> @promotion.DateStart<br/>
-                                    <strong>EndDate:</strong> @promotion.DateEnd<br/>
-                                </div>
-                            }
-                        </td>
-                        <td>
-                            <label class="form-label">$@_totalPrice[booking.StorageUnitDto.Id]</label>
-                        </td>
-                        <td>
-                            <label class="form-label">@_dateStart[booking.StorageUnitDto.Id]</label>
-                        </td>
-                        <td>
-                            <label class="form-label">@_dateEnd[booking.StorageUnitDto.Id]</label>
-                        </td>
-                        <td>
-                            <label class="form-label">@_active[booking.StorageUnitDto.Id]</label>
-                        </td>
-                        <td>
-                            <label class="form-label">@_rejectionMessage[booking.StorageUnitDto.Id]</label>
-                        </td>
+                            <td colspan="8">No bookings found</td>
                         </tr>
+                    }
+                    else
+                    {
+                        @foreach (var booking in _bookingsDtoFromUser)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>Id:</strong>@booking.StorageUnitDto.Id<br/>
+                                    <strong>Area:</strong>@booking.StorageUnitDto.Area.Name<br/>
+                                    <strong>Size:</strong>@booking.StorageUnitDto.Size.Name<br/>
+                                    <strong>Climatization:</strong>@booking.StorageUnitDto.Climatization<br/>
+                                    @foreach (var promotion in booking.StorageUnitDto.Promotions)
+                                    {
+                                        <div>
+                                            <br/>
+                                            <p style="margin-bottom: 0;">Promotion</p>
+                                            <strong>Label:</strong> @promotion.Label<br/>
+                                            <strong>Discount:</strong> @promotion.Discount<br/>
+                                            <strong>StartDate:</strong> @promotion.DateStart.ToShortDateString()<br/>
+                                            <strong>EndDate:</strong> @promotion.DateEnd.ToShortDateString()<br/>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <label class="form-label">$@_totalPrice[booking.StorageUnitDto.Id]</label>
+                                </td>
+                                <td>
+                                    <label class="form-label">@_dateStart[booking.StorageUnitDto.Id].ToShortDateString()</label>
+                                </td>
+                                <td>
+                                    <label class="form-label">@_dateEnd[booking.StorageUnitDto.Id].ToShortDateString()</label>
+                                </td>
+                                <td>
+                                    <label class="form-label">@_active[booking.StorageUnitDto.Id]</label>
+                                </td>
+                                <td>
+                                    <label class="form-label">@_rejectionMessage[booking.StorageUnitDto.Id]</label>
+                                </td>
+                                <td>
+                                    <label class="form-label">@_bookingstatus[booking.StorageUnitDto.Id]</label>
+                                </td>
+                                <td>
+                                    <label class="form-label">@_paymentstatus[booking.StorageUnitDto.Id]</label>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-success btn-lg" @onclick="() => HandleValidSubmit(booking)" style="padding-left: 2.5rem; padding-right: 2.5rem;">Pay Booking</button>
+                                </td>
+                            </tr>
+                        }
                     }
                     </tbody>
                 </table>
@@ -70,6 +100,25 @@
     </div>
 </section>
 
+@if (showUserErrorModal)
+{
+  <AuthenticationModal
+    Title="Booking error"
+    Text="@errorMessage"
+    DialogType=AuthenticationModal.ModalDialogType.Ok
+    OnClose="@CloseBookingErrorModal">
+  </AuthenticationModal>
+}
+@if(showUserConfirmationModal)
+{
+    <AuthenticationModal 
+      Title="Booking payment is done"
+      Text="Booking payment is done"
+      DialogType=AuthenticationModal.ModalDialogType.Ok
+      OnClose="@CloseBookingConfirmationModal">
+    </AuthenticationModal>
+}
+
 @code {
     BookingDto _bookingDto;
     readonly Dictionary<string, DateTime> _dateStart = new Dictionary<string, DateTime>();
@@ -77,24 +126,65 @@
     readonly Dictionary<string, double> _totalPrice = new Dictionary<string, double>();
     readonly Dictionary<string, bool> _active = new Dictionary<string, bool>();
     readonly Dictionary<string, string> _rejectionMessage = new Dictionary<string, string>();
+    readonly Dictionary<string, string> _bookingstatus = new Dictionary<string, string>();
+    readonly Dictionary<string, bool> _paymentstatus = new Dictionary<string, bool>();
     private List<StorageUnitDto> _storageUnits;
-    private List<UserDto> _users;
+    private List<PersonDto> _users;
     private List<BookingDto> _bookings;
+    private bool showUserErrorModal;
+    private string errorMessage = "";
+    private bool showUserConfirmationModal;
+    private  List<BookingDto> _bookingsDtoFromUser = new List<BookingDto>();
     
     protected override void OnInitialized()
     {
-        var currentUser = sessionLogic.CurrentPerson as UserDto;
-        if (currentUser != null)
-        {
-            _bookings = currentUser.Bookings;
+        _bookings = BookingController.GetAllBookingsDto();
+        _bookingsDtoFromUser = new List<BookingDto>();
+        var currentUser = UserSession.LoggedUser ;
+
             foreach (var bookingDto in _bookings)
             {
-                _totalPrice[bookingDto.StorageUnitDto.Id] = userLogic.CalculateTotalPriceOfBooking(bookingDto);
-                _dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
-                _dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
-                _active[bookingDto.StorageUnitDto.Id] = bookingDto.Approved;
-                _rejectionMessage[bookingDto.StorageUnitDto.Id] = bookingDto.RejectedMessage;
+                if (bookingDto.UserEmail == currentUser.Email)
+                {
+                    _bookingsDtoFromUser.Add(bookingDto);
+                    _totalPrice[bookingDto.StorageUnitDto.Id] = BookingController.CalculateTotalPriceOfBooking(bookingDto);
+                    _dateStart[bookingDto.StorageUnitDto.Id] = bookingDto.DateStart;
+                    _dateEnd[bookingDto.StorageUnitDto.Id] = bookingDto.DateEnd; 
+                    _active[bookingDto.StorageUnitDto.Id] = bookingDto.Approved;
+                    _rejectionMessage[bookingDto.StorageUnitDto.Id] = bookingDto.RejectedMessage;
+                    _bookingstatus[bookingDto.StorageUnitDto.Id] = bookingDto.Status;
+                    _paymentstatus[bookingDto.StorageUnitDto.Id] = bookingDto.Payment;
+                }
             }
+        
+    }
+
+    private async Task HandleValidSubmit(BookingDto booking)
+    {
+        try
+        {
+
+            var currentUser = UserSession.LoggedUser;
+            BookingController.PayBooking(currentUser.Email, booking);
+
+            showUserConfirmationModal = true;
+            OnInitialized();
+        }
+        catch (Exception e)
+        {
+            showUserErrorModal = true;
+            errorMessage = e.Message;
         }
     }
+    
+    private void CloseBookingErrorModal()
+    {
+        showUserErrorModal = false;
+    }
+
+    private void CloseBookingConfirmationModal()
+    {
+        showUserConfirmationModal = false;
+    }
+
 }

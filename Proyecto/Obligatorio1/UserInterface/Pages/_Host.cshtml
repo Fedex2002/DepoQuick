@@ -1,10 +1,19 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @namespace UserInterface.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_Layout";
 }
-
+<script>
+    function download(filename, csvData) {
+        var blob = new Blob([csvData], { type: 'text/csv' });
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+    }
+</script>
 
 
 <component type="typeof(App)" render-mode="ServerPrerendered"/>

@@ -1,8 +1,17 @@
 @page "/CreatePromotions"
-@using Logic
-@using Logic.DTOs
+
+
+@using Controllers.Dtos
+
+
+
+@using Controllers.Interfaces
+
+
 @layout MainLayout
-@inject PromotionLogic promotionLogic
+
+@inject IPromotionController PromotionController
+
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -80,7 +89,7 @@
     try
     {
       _promotionDto = new PromotionDto(_label, _discount, _dateStart, _dateEnd);
-      promotionLogic.CreatePromotion(_promotionDto);
+      PromotionController.CreatePromotion(_promotionDto);
       _showAdminConfirmationModal = true;
     }
     catch (Exception e)

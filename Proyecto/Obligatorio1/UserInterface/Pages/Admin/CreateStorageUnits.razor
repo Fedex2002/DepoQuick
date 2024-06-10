@@ -1,10 +1,19 @@
 @page "/CreateStorageUnits"
-@using Logic
-@using Logic.DTOs
+
+
+
 @using Model.Enums
+@using Controllers.Dtos
+
+
+@using Controllers.Interfaces
+
+
 @layout MainLayout
-@inject StorageUnitLogic storageUnitLogic
-@inject PromotionLogic promotionLogic
+
+@inject IStorageUnitController StorageUnitController
+@inject IPromotionController PromotionController
+
 
 <PageTitle>DepoQuick</PageTitle>
 
@@ -123,7 +132,7 @@
   {
     _storageUnitDto = new StorageUnitDto();
     _selectedPromotions = new List<PromotionDto>();
-    _promotions = promotionLogic.GetPromotionsDto();
+    _promotions = PromotionController.GetPromotionsDto();
   }
   
   private async Task HandleValidSubmit()
@@ -138,8 +147,13 @@
       {
         _climatization = false;
       }
-      _storageUnitDto = new StorageUnitDto(_id, _area, _size, _climatization, _selectedPromotions);
-      storageUnitLogic.CreateStorageUnit(_storageUnitDto);
+
+
+      AreaTypeDto areaTypeDto = StorageUnitController.ConvertAreaTypeToAreaTypeDto(_area);
+      SizeTypeDto sizeTypeDto = StorageUnitController.ConvertSizeTypeToSizeTypeDto(_size);
+      _storageUnitDto = new StorageUnitDto(_id, areaTypeDto, sizeTypeDto, _climatization, _selectedPromotions, new List<DateRangeDto>());
+
+      StorageUnitController.CreateStorageUnit(_storageUnitDto);
       _showAdminConfirmationModal = true;
       
     }
@@ -152,7 +166,7 @@
   
   private void AddToSelectedPromotions(string promotionLabel)
   {
-    _promotion = promotionLogic.GetPromotionDtoFromLabel(promotionLabel);
+    _promotion = PromotionController.GetPromotionDtoFromLabel(promotionLabel);
     bool exists = _selectedPromotions.Any(p => p.Label == _promotion.Label);
 
     if (exists)
